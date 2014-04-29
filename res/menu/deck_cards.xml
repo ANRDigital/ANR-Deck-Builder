@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- <item android:id="@+id/mnuInfoBar" android:title="Info Bar" android:titleCondensed="INFO"></item> -->
+	<!-- <item android:id="@+id/mnuSearch"
+          android:title="@string/menu_search"
+          android:icon="@drawable/ic_action_search"
+          yourapp:showAsAction="ifRoom|collapseActionView"
+          yourapp:actionViewClass="android.support.v7.widget.SearchView" /> -->
+</menu>

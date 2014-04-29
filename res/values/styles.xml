@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <!-- ListViewItems -->
+    <style name="ListViewItemSelected">
+        <item name="android:background">#CCC</item>
+    </style>
+
+    <style name="ListViewItemNormal">
+        <item name="android:background">#0000</item>
+    </style>
+
+    <!-- InfoBar Color Scheme -->
+    <style name="InfoBarGood">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#30AD23</item>
+    </style>
+
+    <style name="InfoBarBad">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#BA0000</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="buttonBarStyle">@style/ButtonBar</item>
+        <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
+    </style>
+
+    <style name="ButtonBar">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+    
+    <style name="DrawerHeader">
+<!--    <item name="android:textAllCaps">true</item> -->
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
+    <style name="ButtonBarButton" />
+
+</resources>
