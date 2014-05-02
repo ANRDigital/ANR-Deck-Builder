@@ -50,6 +50,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 	// Request Codes for activity launch
 	public static final int REQUEST_NEW_IDENTITY = 1;
 	public static final int REQUEST_CHANGE_IDENTITY = 2;
+	public static final int REQUEST_SETTINGS = 3;
 	
 	// Database
 	private DatabaseHelper mDb;
@@ -232,8 +233,12 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 			if (fragDeck != null)
 				fragDeck.onDeckIdentityChanged(newIdentity);
 			break;
+			
+		case REQUEST_SETTINGS:
+			if (fragDeck != null)
+				fragDeck.onSettingsChanged();
+			break;
 		}
-		
 	}
 
 	@Override
@@ -275,7 +280,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 				doDownloadCards();
 				break;
 			case R.id.mnuOptions:
-				startActivity(new Intent(this, SettingsActivity.class));
+				startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
 				break;
 			case R.id.mnuAbout:
 				TextView txt = new TextView(this);
@@ -326,6 +331,10 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 		mDrawerAdapter.notifyDataSetChanged();
 		// Load the deck on screen
 		loadDeckFragment(deck);
+	}
+
+	@Override
+	public void onSettingsChanged() {
 	}
 
 	@Override

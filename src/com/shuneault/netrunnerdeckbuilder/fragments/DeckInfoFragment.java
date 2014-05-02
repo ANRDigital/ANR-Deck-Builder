@@ -143,5 +143,10 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
 		// Save to the database
 		mDb.updateDeck(mDeck);
 	}
+
+	@Override
+	public void onSettingsChanged() {
+		
+	}
 	
 }

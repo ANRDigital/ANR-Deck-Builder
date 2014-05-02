@@ -3,26 +3,45 @@ package com.shuneault.netrunnerdeckbuilder.adapters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.opengl.Visibility;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 
 public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 	
-	static class ViewHolderItem {
-		ImageView imgFaction;
-		TextView lblIdentityName;
+	public interface OnButtonClickListener {
+		void onPlusClick(Card card);
+		void onMinusClick(Card card);
+	}
+	
+	private static class ViewHolderItem {
+		ImageView imgImage;
+		TextView lblTitle;
+		TextView lblText;
+		TextView lblAmount;
 		TextView lblInfluence;
-		TextView lblCardCount;
+		Button btnMinus;
+		Button btnPlus;
 	}
 	
 	private LayoutInflater mInflater;
@@ -31,17 +50,19 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 	private HashMap<String, ArrayList<Card>> mArrDataChild;
 	private Deck mDeck; // The containing deck
 	private boolean mMyCards = false;
+	private OnButtonClickListener mListener;
 	
-	public ExpandableDeckCardListAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck) {
+	public ExpandableDeckCardListAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck, OnButtonClickListener listener) {
 		this.mContext = context;
 		this.mArrDataHeader = listDataHeader;
 		this.mArrDataChild = listChildData;
 		this.mDeck = deck;
+		this.mListener = listener;
 		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public ExpandableDeckCardListAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck, boolean isMyCards) {
-		this(context, listDataHeader, listChildData, deck);
+	public ExpandableDeckCardListAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck, boolean isMyCards, OnButtonClickListener listener) {
+		this(context, listDataHeader, listChildData, deck, listener);
 		mMyCards = true;
 	}
 
@@ -59,34 +80,40 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		
-		ViewHolderItem viewHolder;
-		
+		final ViewHolderItem viewHolder;		
 		if (convertView == null) {
 			// Inflate the layout
-			convertView = mInflater.inflate(R.layout.list_view_item_deck_card, parent, false);
+			convertView = mInflater.inflate(R.layout.list_view_item_cards_build, parent, false);
 			
 			// Set up the ViewHolder
 			viewHolder = new ViewHolderItem();
-			viewHolder.imgFaction = (ImageView) convertView.findViewById(R.id.imgFaction);
-			viewHolder.lblIdentityName = (TextView) convertView.findViewById(R.id.lblIdentityName);
-			viewHolder.lblCardCount = (TextView) convertView.findViewById(R.id.lblCardCount);
+			viewHolder.imgImage = (ImageView) convertView.findViewById(R.id.imgImage);
+			viewHolder.lblTitle = (TextView) convertView.findViewById(R.id.lblTitre);
+			viewHolder.lblText = (TextView) convertView.findViewById(R.id.lblText);
+			viewHolder.lblAmount = (TextView) convertView.findViewById(R.id.lblAmount);
+			viewHolder.btnMinus = (Button) convertView.findViewById(R.id.btnMinus);
+			viewHolder.btnPlus = (Button) convertView.findViewById(R.id.btnPlus);
 			viewHolder.lblInfluence = (TextView) convertView.findViewById(R.id.lblInfluence);
-			
+//			
 			// Store the ViewHolder
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolderItem) convertView.getTag();
 		}
+		final View view = convertView;
 		
 		// Get the object
-		Card card = (Card) this.getChild(groupPosition, childPosition);
+		final Card card = (Card) this.getChild(groupPosition, childPosition);
+		
+		// Set the background color
+		setBackgroundColor(view, card);
 		
 		// Assign the values
 		if (card != null) {
-			viewHolder.lblIdentityName.setText(card.getTitle());
-			//viewHolder.imgFaction.setImageResource(mContext.getResources().getIdentifier(card.getFactionImageResName(), "drawable", mContext.getPackageName()));
-			viewHolder.imgFaction.setImageResource(card.getFactionImageRes(mContext));
-			viewHolder.lblCardCount.setText(mDeck.getCardCount(card) + "/" + Deck.MAX_INDIVIDUAL_CARD);
+			viewHolder.lblTitle.setText(card.getTitle());
+			viewHolder.lblText.setText(card.getFormattedText(mContext));
+			ImageDisplayer.fillSmall(viewHolder.imgImage, card, mContext);
+			viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + Deck.MAX_INDIVIDUAL_CARD);
 			
 			// Influence count
 			if (!mDeck.getIdentity().getFaction().equals(card.getFaction())) {
@@ -97,12 +124,45 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 			} else {
 				viewHolder.lblInfluence.setText("");
 			}
+			
+			// Plus and minus buttons
+			viewHolder.btnMinus.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					mDeck.setCardCount(card, mDeck.getCardCount(card) - 1);
+					viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + Deck.MAX_INDIVIDUAL_CARD);
+					setBackgroundColor(view, card);
+					mListener.onMinusClick(card);
+				}
+			});
+			viewHolder.btnPlus.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					mDeck.setCardCount(card, mDeck.getCardCount(card) + 1);
+					viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + Deck.MAX_INDIVIDUAL_CARD);
+					setBackgroundColor(view, card);
+					mListener.onPlusClick(card);
+				}
+			});
 				
 		}
 		
 		// Return the view
 		return convertView;
 		
+	}
+	
+	private void setBackgroundColor(View view, Card card) {
+		// Do nothing for my cards
+		if (mMyCards) return;
+		// Green background for the cards I own
+		if (mDeck.getCardCount(card) > 0) {
+			view.setBackgroundColor(Color.parseColor("#DEFFF0"));
+		} else {
+			view.setBackgroundColor(Color.TRANSPARENT);
+		}
 	}
 
 	@Override

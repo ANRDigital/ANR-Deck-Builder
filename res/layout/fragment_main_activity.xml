@@ -20,7 +20,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/lblTitre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/total_number_of_decks"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/lblText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/number_images_cached"

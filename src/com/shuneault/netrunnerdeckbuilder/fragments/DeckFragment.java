@@ -361,6 +361,18 @@ public class DeckFragment extends Fragment implements OnDeckChangedListener {
 	}
  
 	@Override
+	public void onSettingsChanged() {
+		// Forward the event to sub fragments
+		if (fragDeckInfo != null)
+			fragDeckInfo.onSettingsChanged();
+		if (fragDeckBuild != null)
+			fragDeckBuild.onSettingsChanged();
+		if (fragDeckCards != null)
+			fragDeckCards.onSettingsChanged();
+		
+	}
+
+	@Override
 	public void onPause() {
 		super.onPause();
 		

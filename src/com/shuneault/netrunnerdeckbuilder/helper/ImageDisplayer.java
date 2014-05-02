@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
@@ -17,12 +18,12 @@ public class ImageDisplayer {
 	private ImageView mImageView;
 	private static SingleCardDownloader singleCardDownloader;
 	
-	public void fillImageWithCard(ImageView imageView, Card card, Context context) {
+	public void fillImageWithCard(ImageView imageView, Card card, Context context, boolean small) {
 		this.mContext = context;
 		this.mImageView = imageView;
 		
 		// Get the image in a thread and display in the ImageView
-		Bitmap theImage = card.getImage(context);
+		Bitmap theImage = small ? card.getSmallImage(context) : card.getImage(context);
 		if (theImage != null) {
 			imageView.setImageBitmap(theImage);
 		} else {
@@ -35,7 +36,11 @@ public class ImageDisplayer {
 	
 	public static void fill(ImageView imageView, Card card, Context context) {
 		ImageDisplayer im = new ImageDisplayer();
-		im.fillImageWithCard(imageView, card, context);
+		im.fillImageWithCard(imageView, card, context, false);
+	}
+	public static void fillSmall(ImageView imageView, Card card, Context context) {
+		ImageDisplayer im = new ImageDisplayer();
+		im.fillImageWithCard(imageView, card, context, true);
 	}
 	
 	public class SingleCardDownloader extends AsyncTask<Card, Void, Bitmap> {

@@ -157,5 +157,10 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
 		// 
 		
 	}
+
+	@Override
+	public void onSettingsChanged() {
+		
+	}
 	
 }

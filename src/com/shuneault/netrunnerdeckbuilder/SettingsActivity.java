@@ -78,6 +78,12 @@ public class SettingsActivity extends PreferenceActivity
 		if (packs != null) {
 			prefDataPacks.setSummary(TextUtils.join(", ", packs));
 		}
-	}	
+	}
+	
+	@Override
+	public void onBackPressed() {
+		setResult(RESULT_OK);
+		super.onBackPressed();
+	}
 
 }

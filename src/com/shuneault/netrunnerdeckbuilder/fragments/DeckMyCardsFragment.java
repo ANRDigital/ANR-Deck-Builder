@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,26 +15,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
-import android.widget.NumberPicker.OnValueChangeListener;
-import android.widget.Spinner;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewImageActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
+import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter.OnButtonClickListener;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
-import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
@@ -49,9 +43,6 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 	private Card currentCard;
 	private View mainView;
 	private ExpandableListView lstDeckCards;
-	private ImageView imgCardInfo;
-	private NumberPicker pickNumCards;
-	private Spinner spinNumCards;
 	private ExpandableDeckCardListAdapter mDeckCardsAdapter;
 	
 	// Database
@@ -75,55 +66,9 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 		
 		// The GUI items
 		lstDeckCards = (ExpandableListView) mainView.findViewById(R.id.lstDeckCards);
-		imgCardInfo = (ImageView) mainView.findViewById(R.id.imgCardInfo);
-		pickNumCards = (NumberPicker) mainView.findViewById(R.id.pickNumCards);
-		spinNumCards = (Spinner) mainView.findViewById(R.id.spinNumCards);
 		
 		// Database
 		mDb = new DatabaseHelper(getActivity());
-
-		// Number Picker (v14)
-		if (pickNumCards != null) {
-			pickNumCards.setMinValue(0);
-			pickNumCards.setMaxValue(Deck.MAX_INDIVIDUAL_CARD);
-			pickNumCards.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS); // Prevent number input using keyboard
-			pickNumCards.setOnValueChangedListener(new OnValueChangeListener() {
-				
-				@Override
-				public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-					// Add the card to the deck
-					mDeck.setCardCount(currentCard, newVal);
-					
-					// OnDeckChanged Listener
-					mListener.onDeckCardsChanged();
-				}
-			});
-		} else {
-			// Add 0-3 choices
-			ArrayList<String> arrNum = new ArrayList<String>();
-			for (int i = 0; i <= Deck.MAX_INDIVIDUAL_CARD; i++)
-				arrNum.add(String.valueOf(i));
-			spinNumCards.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrNum));
-			
-			spinNumCards.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-				@Override
-				public void onItemSelected(AdapterView<?> arg0, View arg1,
-						int arg2, long arg3) {
-					// Add the card to the deck
-					mDeck.setCardCount(currentCard, arg2);
-					
-					// OnDeckChanged Listener
-					mListener.onDeckCardsChanged();
-				}
-
-				@Override
-				public void onNothingSelected(AdapterView<?> arg0) {
-					// 
-					
-				}
-			});
-		}
 		
 		// Get the cards
 		mListHeaders = AppManager.getInstance().getAllCards().getCardType(mDeck.getIdentity().getSide());
@@ -131,39 +76,34 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 		Collections.sort(mListHeaders);
 		
 		// Adapters
-		mDeckCardsAdapter = new ExpandableDeckCardListAdapter(getActivity(), mListHeaders, mListCards, mDeck, true);
+		mDeckCardsAdapter = new ExpandableDeckCardListAdapter(getActivity(), mListHeaders, mListCards, mDeck, true, new OnButtonClickListener() {
+			
+			@Override
+			public void onPlusClick(Card card) {
+				mListener.onDeckCardsChanged();
+			}
+			
+			@Override
+			public void onMinusClick(Card card) {
+				mListener.onDeckCardsChanged();
+			}
+		});
 		lstDeckCards.setAdapter(mDeckCardsAdapter);
 		lstDeckCards.setOnChildClickListener(new OnChildClickListener() {
 			
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
-				
-				// Set the card
-				displayCard(mListCards.get(mListHeaders.get(groupPosition)).get(childPosition));
-
-				return true;
+				currentCard = (Card) mDeckCardsAdapter.getChild(groupPosition, childPosition);
+				Intent intent = new Intent(getActivity(), ViewImageActivity.class);
+				intent.putExtra(ViewImageActivity.EXTRA_CARD_CODE, currentCard.getCode());
+				startActivity(intent);
+				return false;
 			}
 		});
 		
 		// Refresh the cards list
 		refreshCardList();
-
-		// Display the card if resume
-		if (savedInstanceState != null) {
-			displayCard(AppManager.getInstance().getCard(savedInstanceState.getString(SAVED_SELECTED_CARD_CODE)));
-		}
-		
-		// Image Click - Display the image bigger
-		imgCardInfo.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), ViewImageActivity.class);
-				intent.putExtra(ViewImageActivity.EXTRA_CARD_CODE, currentCard.getCode());
-				startActivity(intent);
-			}
-		});
 		
 		return mainView;
 
@@ -240,27 +180,6 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 		
 	}
 	
-	@SuppressLint("NewApi")
-	private void displayCard(Card card) {
-		if (card == null) return;
-		
-		// Change the current card
-		currentCard = card;
-		ImageDisplayer.fill(imgCardInfo, currentCard, getActivity());
-		
-		// Display the image
-		imgCardInfo.setVisibility(View.VISIBLE);
-		
-		// Show the number picker or spinner
-		if (pickNumCards != null) {
-			pickNumCards.setValue(mDeck.getCardCount(currentCard));
-			pickNumCards.setVisibility(View.VISIBLE);
-		} else {
-			spinNumCards.setSelection(mDeck.getCardCount(currentCard));
-			spinNumCards.setVisibility(View.VISIBLE);
-		}
-	}
-	
 	private void refreshDisplay() {
 		// Update the adapters
 		mDeckCardsAdapter.notifyDataSetChanged();
@@ -287,6 +206,11 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 	@Override
 	public void onDeckIdentityChanged(Card newIdentity) {
 		refreshDisplay();
+	}
+
+	@Override
+	public void onSettingsChanged() {
+		
 	}
 	
 }

@@ -9,4 +9,5 @@ public interface OnDeckChangedListener {
 	void onDeckCloned(Deck deck);
 	void onDeckCardsChanged();
 	void onDeckIdentityChanged(Card newIdentity);
+	void onSettingsChanged();
 }

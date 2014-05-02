@@ -6,6 +6,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +14,10 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -205,14 +210,40 @@ public class Card {
 		return imagesrc;
 	}
 	
+	/**
+	 * 
+	 * @return Formatted text with images
+	 */
+	public SpannableString getFormattedText(Context context) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("[Click]", R.drawable.click);
+		map.put("[Trash]", R.drawable.trash);
+		map.put("[Credits]", R.drawable.credits);
+		map.put("[Subroutine]", R.drawable.subroutine);
+		map.put("[Memory Unit]", R.drawable.memory_unit);
+		map.put("[Recurring Credits]", R.drawable.credit_recurr);
+		map.put("[Link]", R.drawable.links);
+		
+		// replace all occurences
+		SpannableString span = new SpannableString(Html.fromHtml(this.getText().replace("\r\n",  "<br />")));
+		for (String txt : map.keySet()) {
+			int index = span.toString().indexOf(txt);
+			while (index >= 0) {
+				span.setSpan(new ImageSpan(context, map.get(txt), ImageSpan.ALIGN_BOTTOM), index, index + txt.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				index = span.toString().indexOf(txt, index+1);
+			}
+		}
+
+		return span;
+	}
+	
 	public Bitmap getImage(Context context) {
-//		try {
-			//return BitmapFactory.decodeStream(context.openFileInput(this.getImageFileName()));
-			return BitmapFactory.decodeFile(new File(context.getCacheDir(), this.getImageFileName()).getAbsolutePath());
-//		} catch (FileNotFoundException e) {
-//			Log.i(AppManager.LOGCAT, "Card " + this.getTitle() + " image: File Not Found");
-//		}
-//		return null;
+		return BitmapFactory.decodeFile(new File(context.getCacheDir(), this.getImageFileName()).getAbsolutePath());
+	}
+	public Bitmap getSmallImage(Context context) {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inSampleSize = 4;
+		return BitmapFactory.decodeFile(new File(context.getCacheDir(), this.getImageFileName()).getAbsolutePath(), options);
 	}
 	
 	public boolean isImageFileExists(Context context) {
