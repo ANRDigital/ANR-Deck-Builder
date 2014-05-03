@@ -42,6 +42,8 @@
     <string name="data_packs_to_display">Data packs to display</string>
     <string name="data_packs_to_display_desc">Which data packs are displayed in MyCards</string>
     <string name="cards">cards</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="import_deck">Import Deck</string>
 
     <!-- Drawer -->
     <string name="drawer_new_deck_runner">New Runner Deck</string>
@@ -101,13 +103,14 @@
     <!-- About page -->
     <string name="about_text">Images have been created by <a href="http://prisoner453.deviantart.com/art/Netrunner-Assets-351310060">prisoner453</a>.\n\nThe copyrightable portions of Android: Netrunner: The Card Game and its expansions are &#169; 2012&#8211;2013 Wizards &amp; Fantasy Flight Publishing, Inc. Netrunner is licensed by Wizards of the Coast LLC. Netrunner is a TM of R. Talsorian Games, Inc. Android, all Android: Netrunner: The Card Game expansion titles, Living Card Game, LCG, LCG logo and Fantasy Flight Supply are trademarks and/or registered trademarks of Fantasy Flight Publishing, Inc. All rights reserved to their respective owners.</string>
     <string name="title_activity_import_deck_from_net_runner_db">Import Deck</string>
-    
-    
+
     <string-array name="arr">
         <item>Item 1</item>
         <item>Item 2</item>
         <item>Item 3</item>
     </string-array>
     <string-array name="arrEmpty" />
+
+    <string name="title_activity_import_octgn">Import Deck</string>
 
 </resources>

@@ -52,6 +52,9 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 	public static final int REQUEST_CHANGE_IDENTITY = 2;
 	public static final int REQUEST_SETTINGS = 3;
 	
+	// EXTRAS
+	public static final String EXTRA_DECK_ID = "com.shuneault.netrunnerdeckbuilder.EXTRA_DECK_ID";
+	
 	// Database
 	private DatabaseHelper mDb;
 	
@@ -202,6 +205,11 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setHomeButtonEnabled(true);
+		
+		// Load a deck immediately
+		if (getIntent().getLongExtra(EXTRA_DECK_ID, 0) > 0) {
+			loadDeckFragment(AppManager.getInstance().getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0)));
+		}
 		
 	}
 

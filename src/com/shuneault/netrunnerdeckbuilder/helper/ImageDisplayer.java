@@ -2,11 +2,12 @@ package com.shuneault.netrunnerdeckbuilder.helper;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URL;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
@@ -29,6 +30,8 @@ public class ImageDisplayer {
 		} else {
 			// Remove the image prior to download
 			imageView.setImageResource(context.getResources().getIdentifier("card_back_" + card.getSideCode(), "drawable", context.getPackageName()));
+			
+			// Download
 			singleCardDownloader = new SingleCardDownloader();
 			singleCardDownloader.execute(card);
 		}
@@ -62,6 +65,7 @@ public class ImageDisplayer {
 		
 		@Override
 		protected void onPostExecute(Bitmap result) {
+			// Only display if still in the queue
 			if (!this.isCancelled())
 				mImageView.setImageBitmap(result);
 			//mImageView.setVisibility(View.VISIBLE);
