@@ -347,7 +347,8 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 
 	@Override
 	public void onDeckIdentityChanged(Card newIdentity) {
-		
+		if (fragDeck != null)
+			fragDeck.onDeckIdentityChanged(newIdentity);
 		
 	}
 

@@ -1,5 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
+    <item android:id="@+id/mnuShareDeck"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_social_share"
+        android:title="@string/menu_share" />
+    
     <item android:id="@+id/mnuChangeIdentity"
         android:showAsAction="never"
         android:title="@string/menu_change_identity" />

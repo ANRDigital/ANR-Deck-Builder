@@ -2,10 +2,17 @@ package com.shuneault.netrunnerdeckbuilder.fragments;
 
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -34,6 +41,7 @@ import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
+import com.shuneault.netrunnerdeckbuilder.octgn.OCTGN;
 
 public class DeckFragment extends Fragment implements OnDeckChangedListener {
 	
@@ -308,6 +316,27 @@ public class DeckFragment extends Fragment implements OnDeckChangedListener {
 			getActivity().startActivityForResult(intentChooseIdentity, MainActivity.REQUEST_CHANGE_IDENTITY);
 			return true;
 			
+		case R.id.mnuShareDeck:
+			String filename = mDeck.getName() + ".o8d";
+			// Save the file as OCTGN format
+			try {
+				FileOutputStream fileOut = getActivity().openFileOutput(filename, Context.MODE_WORLD_READABLE);
+				fileOut.write(OCTGN.fromDeck(mDeck).getBytes());
+				fileOut.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			// Create the send intent
+			Intent intentEmail = new Intent(Intent.ACTION_SEND);
+			intentEmail.setType("text/plain");
+			intentEmail.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + mDeck.getName());
+			intentEmail.putExtra(Intent.EXTRA_TEXT, "\r\n\r\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
+			intentEmail.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(getActivity().getFileStreamPath(filename)));
+			startActivity(Intent.createChooser(intentEmail, getActivity().getText(R.string.menu_share)));
+			
+			return true;
+			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -358,6 +387,9 @@ public class DeckFragment extends Fragment implements OnDeckChangedListener {
 		
 		// Change the actionbar icon
 		((MainActivity) getActivity()).getSupportActionBar().setIcon(newIdentity.getFactionImageRes(getActivity()));
+		
+		// Update the infobar
+		updateInfoBar();
 	}
  
 	@Override
