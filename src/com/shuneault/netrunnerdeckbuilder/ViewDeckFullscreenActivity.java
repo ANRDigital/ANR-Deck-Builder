@@ -66,12 +66,14 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
 	// Arguments
 	public static final String EXTRA_DECK_ID = "com.example.netrunnerdeckbuilder.EXTRA_DECK_ID";
 	public static final String EXTRA_SET_NAME = "com.example.netrunnerdeckbuilder.EXTRA_SET_NAME";
+	public static final String EXTRA_CARD_CODE = "com.example.netrunnerdeckbuilder.EXTRA_CARD_CODE";
 	
 	// GUI Elements
 	private ViewPager mPager;
 	
 	private Deck mDeck = null;
 	private String mSetName = null;
+	private String mCardCode = null;
 	
 	private ArrayList<Card> mCards = new ArrayList<Card>();
 
@@ -87,6 +89,7 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
 		// Get the deck / set name
 		mDeck = AppManager.getInstance().getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0));
 		mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
+		mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
 		
 		// Build the image array
 		if (mDeck != null) {
@@ -96,6 +99,9 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
 		} else if (mSetName != null) {
 			mCards = AppManager.getInstance().getCardsBySetName(mSetName);
 			Collections.sort(mCards, new CardSorterByCardNumber());
+		} else if (mCardCode != null) {
+			mCards = new ArrayList<Card>();
+			mCards.add(AppManager.getInstance().getCard(mCardCode));
 		}
 		
 		// Quit if deck is empty

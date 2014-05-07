@@ -2,10 +2,7 @@ package com.shuneault.netrunnerdeckbuilder.fragments;
 
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 
 import android.app.Activity;
 import android.app.AlertDialog;

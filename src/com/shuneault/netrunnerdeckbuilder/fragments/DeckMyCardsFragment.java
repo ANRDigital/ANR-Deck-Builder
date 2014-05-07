@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,10 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ImageView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
-import com.shuneault.netrunnerdeckbuilder.ViewImageActivity;
+import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter.OnButtonClickListener;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
@@ -95,8 +93,8 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
 				currentCard = (Card) mDeckCardsAdapter.getChild(groupPosition, childPosition);
-				Intent intent = new Intent(getActivity(), ViewImageActivity.class);
-				intent.putExtra(ViewImageActivity.EXTRA_CARD_CODE, currentCard.getCode());
+				Intent intent = new Intent(getActivity(), ViewDeckFullscreenActivity.class);
+				intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARD_CODE, currentCard.getCode());
 				startActivity(intent);
 				return false;
 			}
