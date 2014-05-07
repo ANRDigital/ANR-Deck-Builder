@@ -44,6 +44,7 @@
     <string name="cards">cards</string>
     <string name="please_wait">Please wait...</string>
     <string name="import_deck">Import Deck</string>
+    <string name="search_hint">Search cards...</string>
 
     <!-- Drawer -->
     <string name="drawer_new_deck_runner">New Runner Deck</string>

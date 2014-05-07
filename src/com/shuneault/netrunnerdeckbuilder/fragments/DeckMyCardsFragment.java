@@ -9,6 +9,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
+import com.shuneault.netrunnerdeckbuilder.MainActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
@@ -67,7 +72,68 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 		
 		// Database
 		mDb = new DatabaseHelper(getActivity());
+
+		// Set the list view
+		setListView();
 		
+		return mainView;
+
+	}
+	
+	private void refreshCardList() {
+		// Generate a new card list to display and notify the adapter
+		for (String theHeader : mListHeaders) {
+			mListCards.put(theHeader, new ArrayList<Card>());
+		}
+		for (Card theCard : mDeck.getCards()) {
+			// Only add the cards that are on my side
+			// Do not add the identities
+			if (!theCard.getTypeCode().equals(Card.Type.IDENTITY) && theCard.getSide().equals(mDeck.getIdentity().getSide())) {
+				if (mListCards.get(theCard.getType()) == null)
+					mListCards.put(theCard.getType(), new ArrayList<Card>());
+				mListCards.get(theCard.getType()).add(theCard);
+			}
+		}
+		sortListCards();
+		mDeckCardsAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// 
+		switch (item.getItemId()) {
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+		
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			mListener = (OnDeckChangedListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + " must implement OnDeckChangedListener");
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		// Remember the selected card
+		if (currentCard != null)
+			outState.putString(SAVED_SELECTED_CARD_CODE, currentCard.getCode());
+	}
+	
+	private void setListView() {
 		// Get the cards
 		mListHeaders = AppManager.getInstance().getAllCards().getCardType(mDeck.getIdentity().getSide());
 		mListHeaders.remove(mDeck.getIdentity().getType()); // Remove the Identity category
@@ -102,68 +168,7 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 		
 		// Refresh the cards list
 		refreshCardList();
-		
-		return mainView;
-
 	}
-	
-	private void refreshCardList() {
-		// Generate a new card list to display and notify the adapter
-		for (String theHeader : mListHeaders) {
-			mListCards.put(theHeader, new ArrayList<Card>());
-		}
-		for (Card theCard : mDeck.getCards()) {
-			// Only add the cards that are on my side
-			// Do not add the identities
-			if (!theCard.getTypeCode().equals(Card.Type.IDENTITY) && theCard.getSide().equals(mDeck.getIdentity().getSide())) {
-				if (mListCards.get(theCard.getType()) == null)
-					mListCards.put(theCard.getType(), new ArrayList<Card>());
-				mListCards.get(theCard.getType()).add(theCard);
-			}
-		}
-		sortListCards();
-		mDeckCardsAdapter.notifyDataSetChanged();
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// Do not inflate if already there
-		super.onCreateOptionsMenu(menu, inflater);
-//		if (menu.findItem(R.id.mnuInfoBar) != null)
-//			inflater.inflate(R.menu.deck_cards, menu);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// 
-		switch (item.getItemId()) {
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-		
-	}
-	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			mListener = (OnDeckChangedListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString() + " must implement OnDeckChangedListener");
-		}
-	}
-	
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		
-		// Remember the selected card
-		if (currentCard != null)
-			outState.putString(SAVED_SELECTED_CARD_CODE, currentCard.getCode());
-	}
-	
-	
 
 	private void sortListCards() {
 		// Sort by faction,
@@ -176,11 +181,6 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 			}
 		}
 		
-	}
-	
-	private void refreshDisplay() {
-		// Update the adapters
-		mDeckCardsAdapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -198,12 +198,13 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 	@Override
 	public void onDeckCardsChanged() {
 		// Refresh my cards
-		refreshCardList();
+		setListView();
 	}
 
 	@Override
 	public void onDeckIdentityChanged(Card newIdentity) {
-		refreshDisplay();
+		if (!isAdded()) return;
+		setListView();
 	}
 
 	@Override

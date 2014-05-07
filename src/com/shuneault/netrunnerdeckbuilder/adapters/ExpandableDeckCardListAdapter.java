@@ -3,16 +3,9 @@ package com.shuneault.netrunnerdeckbuilder.adapters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.opengl.Visibility;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +18,7 @@ import android.widget.TextView;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 
 public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
@@ -48,6 +42,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 	private Context mContext;
 	private ArrayList<String> mArrDataHeader; // The headers
 	private HashMap<String, ArrayList<Card>> mArrDataChild;
+	private ArrayList<String> mArrDataHeaderOriginal; // The headers
+	private HashMap<String, ArrayList<Card>> mArrDataChildOriginal;
 	private Deck mDeck; // The containing deck
 	private boolean mMyCards = false;
 	private OnButtonClickListener mListener;
@@ -56,6 +52,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 		this.mContext = context;
 		this.mArrDataHeader = listDataHeader;
 		this.mArrDataChild = listChildData;
+		this.mArrDataHeaderOriginal = (ArrayList<String>) listDataHeader.clone();
+		this.mArrDataChildOriginal = (HashMap<String, ArrayList<Card>>) listChildData.clone();
 		this.mDeck = deck;
 		this.mListener = listener;
 		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -75,6 +73,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 	public long getChildId(int groupPosition, int childPosition) {
 		return childPosition;
 	}
+	
+	
 
 	@Override
 	public View getChildView(int groupPosition, int childPosition,
@@ -110,7 +110,11 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 		
 		// Assign the values
 		if (card != null) {
-			viewHolder.lblTitle.setText(card.getTitle());
+			if (!card.getSubtype().isEmpty()) {
+				viewHolder.lblTitle.setText(card.getTitle() + " (" + card.getSubtype() + ")");
+			} else {
+				viewHolder.lblTitle.setText(card.getTitle());
+			}
 			viewHolder.lblText.setText(card.getFormattedText(mContext));
 			ImageDisplayer.fillSmall(viewHolder.imgImage, card, mContext);
 			viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + Deck.MAX_INDIVIDUAL_CARD);
@@ -228,6 +232,41 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
+	}
+	
+	public void filterData(String query) {
+		query = query.toLowerCase();
+		mArrDataChild.clear();
+		mArrDataHeader.clear();
+		
+		// empty query? show all
+		if (query.isEmpty()) {
+			mArrDataHeader.addAll(mArrDataHeaderOriginal);
+			for (String type : mArrDataHeader) {
+				if (mArrDataChildOriginal.get(type) != null) {
+					mArrDataChild.put(type, new ArrayList<Card>());
+					mArrDataChild.get(type).addAll(mArrDataChildOriginal.get(type));
+				}
+			}
+		} else {
+			// Do filter
+			for (String type : mArrDataHeaderOriginal) {
+				mArrDataChild.put(type, new ArrayList<Card>());
+				for (Card card : mArrDataChildOriginal.get(type)) {
+					if (card.getTitle().toLowerCase().contains(query) ||
+							card.getText().toLowerCase().contains(query) ||
+							card.getSubtype().toLowerCase().contains(query)) {
+						// Add the header
+						if (!mArrDataHeader.contains(type)) {
+							mArrDataHeader.add(type);
+						}
+						mArrDataChild.get(type).add(card);
+					}
+				}
+			}
+		}
+		// Show the new list
+		notifyDataSetChanged();
 	}
 
 }

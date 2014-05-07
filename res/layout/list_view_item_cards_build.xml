@@ -40,44 +40,50 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/lblText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-			android:textSize="12sp"
-            android:text="TextView" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/lblText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textSize="12sp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical" >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
 
-        <Button
-            android:id="@+id/btnMinus"
-            android:layout_width="36dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:focusable="false"
-            android:text="-" />
+                <Button
+                    android:id="@+id/btnMinus"
+                    android:layout_width="36dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:focusable="false"
+                    android:text="-" />
 
-        <TextView
-            android:id="@+id/lblAmount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="0" />
+                <TextView
+                    android:id="@+id/lblAmount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="0" />
 
-        <Button
-            android:id="@+id/btnPlus"
-            android:layout_width="36dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:focusable="false"
-            android:text="+" />
+                <Button
+                    android:id="@+id/btnPlus"
+                    android:layout_width="36dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:focusable="false"
+                    android:text="+" />
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
