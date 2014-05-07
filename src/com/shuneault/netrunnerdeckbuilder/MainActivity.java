@@ -373,7 +373,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 		loadDeckFragment(deck, 0);
 	}
 	
-	private void doLoadCards() {		
+	public void doLoadCards() {		
 		// Cards downloaded, load them
 		try {
 			/* Load the card list

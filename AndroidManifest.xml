@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shuneault.netrunnerdeckbuilder"
-    android:versionCode="13"
-    android:versionName="0.93 PUBLIC BETA" >
+    android:versionCode="14"
+    android:versionName="0.95 PUBLIC BETA" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -52,14 +52,14 @@
             android:theme="@style/FullscreenTheme" >
         </activity>
         <activity
-            android:name="com.shuneault.netrunnerdeckbuilder.ImportOCTGNActivity"
+            android:name="com.shuneault.netrunnerdeckbuilder.externalactivities.ImportOCTGNActivity"
             android:label="@string/title_activity_import_octgn" >
                         
             <!-- File o8d -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-				<category android:name="" />
+				<category android:name="android.intent.category.BROWSABLE" />
                 <data 
                 	android:host="*"
                 	android:pathPattern=".*\\.o8d"
@@ -70,6 +70,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
                 <data 
                     android:scheme="file"
                 	android:host="*"

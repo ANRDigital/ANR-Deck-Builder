@@ -1,6 +1,7 @@
-package com.shuneault.netrunnerdeckbuilder;
+package com.shuneault.netrunnerdeckbuilder.externalactivities;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -10,6 +11,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -20,12 +22,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.shuneault.netrunnerdeckbuilder.MainActivity;
+import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
+import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.octgn.OCTGN;
 
 public class ImportOCTGNActivity extends Activity {
+	
+	private DatabaseHelper mDb;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +41,14 @@ public class ImportOCTGNActivity extends Activity {
 		
 		// Get the intent
 		Intent intent = getIntent();
+
+		// Initialize the database
+		mDb = new DatabaseHelper(this);
+		
+		// Load the cards and decks
+		if (AppManager.getInstance().getAllCards().size() <= 0) {
+			doLoadCards();
+		}
 		
 		// Ask for a new deck name
 		ProgressDialog pDialog = new ProgressDialog(this);
@@ -107,7 +123,6 @@ public class ImportOCTGNActivity extends Activity {
 
 			return strResult;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -159,6 +174,46 @@ public class ImportOCTGNActivity extends Activity {
 			mListener.onDownloadFinish(result);
 		}
 		
+	}
+	
+	
+	
+	
+	public void doLoadCards() {		
+		// Cards downloaded, load them
+		try {
+			/* Load the card list
+			 * 
+			 * - Create the card
+			 * - Add the card to the array
+			 * - Generate the faction list
+			 * - Generate the side list
+			 * - Generate the card set list
+			 * 
+			 */
+			JSONArray jsonFile = AppManager.getInstance().getJSONCardsFile(this);
+			CardList arrCards = AppManager.getInstance().getAllCards();
+			arrCards.clear();
+			for (int i = 0; i < jsonFile.length(); i++) {
+				// Create the card and add to the array
+				//		Do not load cards from the Alternates set
+				Card card = new Card(jsonFile.getJSONObject(i));
+				if (!card.getSetName().equals(Card.SetName.ALTERNATES))
+					arrCards.add(card);
+			}
+			
+			// Load the decks
+			doLoadDecks();
+			
+		} catch (FileNotFoundException e) {
+			return;
+		} catch (Exception e) { e.printStackTrace(); }
+	}
+	
+	private void doLoadDecks() {
+		// Load the decks from the DB
+		AppManager.getInstance().getAllDecks().clear();
+		AppManager.getInstance().getAllDecks().addAll(mDb.getAllDecks(true));
 	}
 	
 
