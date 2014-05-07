@@ -212,12 +212,14 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 
 	@Override
 	public void onDeckIdentityChanged(Card newIdentity) {
+		if (!isAdded()) return;
 		setListView();
 	}
 
 	@Override
 	public void onSettingsChanged() {
 		// Refresh the cards
+		if (!isAdded()) return;
 		setListView();
 	}
 	
