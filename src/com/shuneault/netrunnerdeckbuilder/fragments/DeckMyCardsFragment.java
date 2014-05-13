@@ -9,10 +9,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
-import com.shuneault.netrunnerdeckbuilder.MainActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
@@ -80,24 +75,6 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 
 	}
 	
-	private void refreshCardList() {
-		// Generate a new card list to display and notify the adapter
-		for (String theHeader : mListHeaders) {
-			mListCards.put(theHeader, new ArrayList<Card>());
-		}
-		for (Card theCard : mDeck.getCards()) {
-			// Only add the cards that are on my side
-			// Do not add the identities
-			if (!theCard.getTypeCode().equals(Card.Type.IDENTITY) && theCard.getSide().equals(mDeck.getIdentity().getSide())) {
-				if (mListCards.get(theCard.getType()) == null)
-					mListCards.put(theCard.getType(), new ArrayList<Card>());
-				mListCards.get(theCard.getType()).add(theCard);
-			}
-		}
-		sortListCards();
-		mDeckCardsAdapter.notifyDataSetChanged();
-	}
-
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -133,6 +110,24 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 			outState.putString(SAVED_SELECTED_CARD_CODE, currentCard.getCode());
 	}
 	
+	private void refreshCardList() {
+		// Generate a new card list to display and notify the adapter
+		for (String theHeader : mListHeaders) {
+			mListCards.put(theHeader, new ArrayList<Card>());
+		}
+		for (Card theCard : mDeck.getCards()) {
+			// Only add the cards that are on my side
+			// Do not add the identities
+			if (!theCard.getTypeCode().equals(Card.Type.IDENTITY) && theCard.getSide().equals(mDeck.getIdentity().getSide())) {
+				if (mListCards.get(theCard.getType()) == null)
+					mListCards.put(theCard.getType(), new ArrayList<Card>());
+				mListCards.get(theCard.getType()).add(theCard);
+			}
+		}
+		sortListCards();
+		mDeckCardsAdapter.notifyDataSetChanged();
+	}
+
 	private void setListView() {
 		// Get the cards
 		mListHeaders = AppManager.getInstance().getAllCards().getCardType(mDeck.getIdentity().getSide());
@@ -144,11 +139,17 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 			
 			@Override
 			public void onPlusClick(Card card) {
+				// Update the listview
 				mListener.onDeckCardsChanged();
 			}
 			
 			@Override
 			public void onMinusClick(Card card) {
+				// Remove zero cards
+				if (mDeck.getCardCount(card) <= 0) {
+					mListCards.get(card.getType()).remove(card);
+				}
+				// Update the list
 				mListener.onDeckCardsChanged();
 			}
 		});
@@ -198,7 +199,7 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 	@Override
 	public void onDeckCardsChanged() {
 		// Refresh my cards
-		setListView();
+		refreshCardList();
 	}
 
 	@Override
