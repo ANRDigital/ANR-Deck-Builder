@@ -306,6 +306,7 @@ public class Card {
 
 	public static class Type {
 		public static final String IDENTITY = "identity";
+		public static final String AGENDA = "agenda";
 	}
 	
 	public static class SetName {

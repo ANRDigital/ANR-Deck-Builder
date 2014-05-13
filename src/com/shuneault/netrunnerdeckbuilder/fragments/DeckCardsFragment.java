@@ -173,9 +173,12 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 		mListCards = new HashMap<String, ArrayList<Card>>();
 		for (Card theCard : AppManager.getInstance().getCardsFromDataPacksToDisplay()) {
 			// Only add the cards that are on my side
+			boolean isSameSide = theCard.getSide().equals(mDeck.getIdentity().getSide());
 			// Do not add the identities
-			if (!theCard.getTypeCode().equals(Card.Type.IDENTITY)
-					&& theCard.getSide().equals(mDeck.getIdentity().getSide())) {
+			boolean isIdentity = theCard.getTypeCode().equals(Card.Type.IDENTITY);
+			// Only display agendas that belong to neutral or my faction
+			boolean isGoodAgenda = !theCard.getTypeCode().equals(Card.Type.AGENDA) || theCard.getFaction().equals(mDeck.getIdentity().getFaction()) || theCard.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL);
+			if (isSameSide && !isIdentity && isGoodAgenda) {
 				if (mListCards.get(theCard.getType()) == null)
 					mListCards.put(theCard.getType(), new ArrayList<Card>());
 				mListCards.get(theCard.getType()).add(theCard);
