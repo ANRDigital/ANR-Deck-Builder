@@ -185,6 +185,14 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
 			//imgCard.setImageBitmap(card.getImage(ViewDeckFullscreenActivity.this));
 			ImageDisplayer.fill(imgCard, card, ViewDeckFullscreenActivity.this);
 			imgCard.setVisibility(View.VISIBLE);
+			// Close the activity if the image is clicked
+			imgCard.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					ViewDeckFullscreenActivity.this.finish();
+				}
+			});
 			v.addView(imgCard);
 			((ViewPager) container).addView(v, 0);
 			return v;

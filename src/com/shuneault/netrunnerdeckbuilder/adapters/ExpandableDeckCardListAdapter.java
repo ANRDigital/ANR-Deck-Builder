@@ -110,10 +110,12 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 		
 		// Assign the values
 		if (card != null) {
+			// Title
+			String strUnique = (card.isUniqueness() ? mContext.getString(R.string.influence_char) + " " : "");
 			if (!card.getSubtype().isEmpty()) {
-				viewHolder.lblTitle.setText(card.getTitle() + " (" + card.getSubtype() + ")");
+				viewHolder.lblTitle.setText(strUnique + card.getTitle() + " (" + card.getSubtype() + ")");
 			} else {
-				viewHolder.lblTitle.setText(card.getTitle());
+				viewHolder.lblTitle.setText(strUnique + card.getTitle());
 			}
 			viewHolder.lblText.setText(card.getFormattedText(mContext));
 			ImageDisplayer.fillSmall(viewHolder.imgImage, card, mContext);

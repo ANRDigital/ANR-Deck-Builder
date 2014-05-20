@@ -103,7 +103,7 @@ public class Card {
 			this.quantity = json.optString(NAME_QUANTITY);
 			this.setName = json.optString(NAME_SET_NAME);
 			this.setCode = json.optString(NAME_SET_CODE);
-			this.uniqueness = Boolean.getBoolean(json.optString(NAME_UNIQUENESS));
+			this.uniqueness = json.optBoolean(NAME_UNIQUENESS);
 			this.url = new URL(json.optString(NAME_URL));
 			this.imagesrc = new URL(NetRunnerBD.BASE_URL + json.optString(NAME_IMAGE_SRC));
 			this.side = json.optString(NAME_SIDE);
@@ -212,7 +212,12 @@ public class Card {
 		return imagesrc;
 	}
 	
-	public int getMaxCardCount() {
+	/**
+	 * Calculates how many of that card you can add in a deck
+	 * - Checks how many core decks you have and calculate
+	 * @return How many cards you can use in a deck
+	 */
+	public int getMaxCardCount() {		
 		try {
 			if (this.setName.equals(SetName.CORE_SET)) {
 				int iAmountCoreDecks = Integer.parseInt(AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_AMOUNT_OF_CORE_DECKS, "3"));
