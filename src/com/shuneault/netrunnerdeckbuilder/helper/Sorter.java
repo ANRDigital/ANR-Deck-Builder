@@ -39,7 +39,7 @@ public final class Sorter {
 
 		@Override
 		public int compare(Card lhs, Card rhs) {
-			return lhs.getTitle().compareTo(rhs.getTitle());
+			return lhs.getTitle().toLowerCase().compareTo(rhs.getTitle().toLowerCase());
 		}
 		
 	}
@@ -48,7 +48,7 @@ public final class Sorter {
 
 		@Override
 		public int compare(CardCount lhs, CardCount rhs) {
-			return lhs.getCard().getTitle().compareTo(rhs.getCard().getTitle());
+			return lhs.getCard().getTitle().toLowerCase().compareTo(rhs.getCard().getTitle().toLowerCase());
 		}
 		
 	}
@@ -58,7 +58,7 @@ public final class Sorter {
 		@Override
 		public int compare(Card lhs, Card rhs) {
 			if (lhs.getFaction().equals(rhs.getFaction())) {
-				return lhs.getTitle().compareTo(rhs.getTitle());
+				return lhs.getTitle().toLowerCase().compareTo(rhs.getTitle().toLowerCase());
 			} else {
 				return lhs.getFaction().compareTo(rhs.getFaction());
 			}
@@ -86,7 +86,7 @@ public final class Sorter {
 		public int compare(Card lhs, Card rhs) {
 			// Faction is my faction
 			if (lhs.getFaction().equals(mIdentity.getFaction()) && rhs.getFaction().equals(mIdentity.getFaction())) {
-				return lhs.getTitle().compareTo(rhs.getTitle());
+				return lhs.getTitle().toLowerCase().compareTo(rhs.getTitle().toLowerCase());
 			} else {
 				if (lhs.getFaction().equals(mIdentity.getFaction())) {
 					return -1;
@@ -98,7 +98,7 @@ public final class Sorter {
 					
 					// Faction is neutral
 					if (lhs.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL) && rhs.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL)) {
-						return lhs.getTitle().compareTo(rhs.getTitle());
+						return lhs.getTitle().toLowerCase().compareTo(rhs.getTitle().toLowerCase());
 					} else {
 						if (lhs.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL)) {
 							return -1;
@@ -109,7 +109,7 @@ public final class Sorter {
 
 							// NOT my faction and NOT neutral
 							if (lhs.getFaction().equals(rhs.getFaction())) {
-								return lhs.getTitle().compareTo(rhs.getTitle());
+								return lhs.getTitle().toLowerCase().compareTo(rhs.getTitle().toLowerCase());
 							} else {
 								return lhs.getFaction().compareTo(rhs.getFaction());
 							}
@@ -132,7 +132,7 @@ public final class Sorter {
 		@Override
 		public int compare(Card lhs, Card rhs) {
 			if (lhs.getType().equals(rhs.getType())) {
-				return lhs.getTitle().compareTo(rhs.getTitle());
+				return lhs.getTitle().toLowerCase().compareTo(rhs.getTitle().toLowerCase());
 			} else {
 				return lhs.getType().compareTo(rhs.getType());
 			}
