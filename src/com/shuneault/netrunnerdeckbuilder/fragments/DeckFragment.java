@@ -50,6 +50,7 @@ public class DeckFragment extends Fragment implements OnDeckChangedListener {
 	private DeckBuildFragment fragDeckBuild;
 	private DeckCardsFragment fragDeckCards;
 	private DeckMyCardsFragment fragDeckMyCards;
+	private DeckHandFragment fragDeckHand;
 	
 	private OnDeckChangedListener mListener;
 
@@ -159,7 +160,7 @@ public class DeckFragment extends Fragment implements OnDeckChangedListener {
 		mActionBar.addTab(mActionBar.newTab().setText(R.string.tab_my_cards).setTabListener(tabListener), (mSelectedTab == mActionBar.getTabCount()));
 		mActionBar.addTab(mActionBar.newTab().setText(R.string.tab_cards).setTabListener(tabListener), (mSelectedTab == mActionBar.getTabCount()));
 		mActionBar.addTab(mActionBar.newTab().setText(R.string.tab_build).setTabListener(tabListener), (mSelectedTab == mActionBar.getTabCount()));
-		//mActionBar.addTab(mActionBar.newTab().setText(R.string.tab_stats).setTabListener(tabListener), (mSelectedTab == mActionBar.getTabCount()));
+		mActionBar.addTab(mActionBar.newTab().setText(R.string.tab_hand).setTabListener(tabListener), (mSelectedTab == mActionBar.getTabCount()));
 		
 		// Update the infobar
 		updateInfoBar();
@@ -227,7 +228,11 @@ public class DeckFragment extends Fragment implements OnDeckChangedListener {
 				fragDeckBuild.setArguments(bundle);
 				return fragDeckBuild;
 			case 4:
-				return new DeckStatsFragment();
+				fragDeckHand = new DeckHandFragment();
+				bundle = new Bundle();
+				bundle.putLong(DeckHandFragment.ARGUMENT_DECK_ID, mDeck.getRowId());
+				fragDeckHand.setArguments(bundle);
+				return fragDeckHand;
 			default:
 				return new DeckInfoFragment();
 			}
@@ -236,7 +241,7 @@ public class DeckFragment extends Fragment implements OnDeckChangedListener {
 		@Override
 		public int getCount() {
 			// 
-			return 4;
+			return 5;
 		}
 		
 		@Override

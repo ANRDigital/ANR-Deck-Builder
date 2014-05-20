@@ -49,6 +49,8 @@
     <string name="data_packs">Data Packs</string>
     <string name="gui">Interface</string>
     <string name="display_set_names_with_cards">Display set names with cards</string>
+    <string name="new_hand">New Hand</string>
+    <string name="draw">Draw</string>
 
     <!-- Drawer -->
     <string name="drawer_new_deck_runner">New Runner Deck</string>
@@ -78,6 +80,7 @@
     <string name="tab_cards">Cards</string>
     <string name="tab_build">Build</string>
     <string name="tab_stats">Stats</string>
+    <string name="tab_hand">Draw</string>
 
     <!-- Info Bar -->
     <string name="info_influence">Influence: </string>
