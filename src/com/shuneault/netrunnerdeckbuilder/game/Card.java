@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.Html;
@@ -20,6 +21,7 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 public class Card {
@@ -208,6 +210,20 @@ public class Card {
 	}
 	public URL getImagesrc() {
 		return imagesrc;
+	}
+	
+	public int getMaxCardCount() {
+		try {
+			if (this.setName.equals(SetName.CORE_SET)) {
+				int iAmountCoreDecks = Integer.parseInt(AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_AMOUNT_OF_CORE_DECKS, "3"));
+				return Math.min(iAmountCoreDecks * Integer.parseInt(this.quantity), Deck.MAX_INDIVIDUAL_CARD);
+			} else {
+				return Integer.parseInt(this.quantity);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Deck.MAX_INDIVIDUAL_CARD;
+		}
 	}
 	
 	/**

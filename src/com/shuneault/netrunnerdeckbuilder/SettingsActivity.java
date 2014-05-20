@@ -19,11 +19,13 @@ public class SettingsActivity extends PreferenceActivity
 	
 	public static final String KEY_PREF_DISPLAY_ALL_DATA_PACKS = "pref_DataPacksShowAll";
 	public static final String KEY_PREF_DATA_PACKS_TO_DISPLAY = "pref_DataPacks";
+	public static final String KEY_PREF_AMOUNT_OF_CORE_DECKS = "pref_AmountOfCoreDecks";
 	
 	private String mInitialPacksToDisplay;
 	
 	// Preferences
 	Preference prefDataPacks;
+	Preference prefAmountOfCoreDecks;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,9 @@ public class SettingsActivity extends PreferenceActivity
 		
 		// Preferences
 		prefDataPacks = findPreference(KEY_PREF_DATA_PACKS_TO_DISPLAY);
+		prefAmountOfCoreDecks = findPreference(KEY_PREF_AMOUNT_OF_CORE_DECKS);
+		
+		// Listeners
 		prefDataPacks.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			
 			@Override
@@ -66,7 +71,9 @@ public class SettingsActivity extends PreferenceActivity
 			mInitialPacksToDisplay = sharedPreferences.getString(key, "");
 			refreshPrefsSummaries();
 		} else if (key.equals(KEY_PREF_DISPLAY_ALL_DATA_PACKS)) {
-
+			refreshPrefsSummaries();
+		} else if (key.equals(KEY_PREF_AMOUNT_OF_CORE_DECKS)) {
+			refreshPrefsSummaries();
 		}
 		
 	}
@@ -74,10 +81,14 @@ public class SettingsActivity extends PreferenceActivity
 	private void refreshPrefsSummaries() {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		
+		// Packs
 		String packs[] = SetNamesPreferenceMultiSelect.parseStoredValue(sharedPreferences.getString(KEY_PREF_DATA_PACKS_TO_DISPLAY, ""));
 		if (packs != null) {
 			prefDataPacks.setSummary(TextUtils.join(", ", packs));
 		}
+		
+		// Amount of core decks
+		prefAmountOfCoreDecks.setSummary(sharedPreferences.getString(KEY_PREF_AMOUNT_OF_CORE_DECKS, "1"));
 	}
 	
 	@Override

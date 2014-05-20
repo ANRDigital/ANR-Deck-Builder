@@ -117,7 +117,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 			}
 			viewHolder.lblText.setText(card.getFormattedText(mContext));
 			ImageDisplayer.fillSmall(viewHolder.imgImage, card, mContext);
-			viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + Deck.MAX_INDIVIDUAL_CARD);
+			viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + card.getMaxCardCount());
 			
 			// Influence count
 			if (!mDeck.getIdentity().getFaction().equals(card.getFaction())) {
@@ -135,7 +135,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onClick(View v) {
 					mDeck.setCardCount(card, mDeck.getCardCount(card) - 1);
-					viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + Deck.MAX_INDIVIDUAL_CARD);
+					viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + card.getMaxCardCount());
 					setBackgroundColor(view, card);
 					mListener.onMinusClick(card);
 				}
@@ -145,7 +145,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onClick(View v) {
 					mDeck.setCardCount(card, mDeck.getCardCount(card) + 1);
-					viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + Deck.MAX_INDIVIDUAL_CARD);
+					viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + card.getMaxCardCount());
 					setBackgroundColor(view, card);
 					mListener.onPlusClick(card);
 				}

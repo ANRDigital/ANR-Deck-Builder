@@ -108,7 +108,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
 	public void setCardCount(Card card, int count) {
 		// Count must be between 0 and the maximum allowed by the game
 		count = Math.max(0, count);
-		count = Math.min(Deck.MAX_INDIVIDUAL_CARD, count);
+		count = Math.min(card.getMaxCardCount(), count);
 		
 		// Add or remove the card count
 		int iCountToAdd = (mCardsToAdd.get(card) == null ? 0 : mCardsToAdd.get(card).getCount());
