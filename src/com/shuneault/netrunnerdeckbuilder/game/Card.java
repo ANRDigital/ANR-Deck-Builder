@@ -323,12 +323,17 @@ public class Card {
 	public static class Type {
 		public static final String IDENTITY = "identity";
 		public static final String AGENDA = "agenda";
+		public static final String PROGRAM = "program";
 	}
 	
 	public static class SetName {
 		public static final String ALTERNATES = "Alternates";
 		public static final String CORE_SET = "Core Set";
 		public static final String SPECIAL = "Special";
+	}
+	
+	public static class SpecialCards {
+		public static final String CARD_THE_PROCESSOR = "03029";
 	}
 	
 	

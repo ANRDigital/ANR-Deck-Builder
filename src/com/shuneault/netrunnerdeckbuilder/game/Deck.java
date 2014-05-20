@@ -184,9 +184,23 @@ public class Deck implements Serializable, HeaderListItemInterface {
 	
 	public int getDeckInfluence() {
 		int iInfluence = 0;
-		for (Card card : getCards()) {
-			if (!mIdentity.getFaction().equals(card.getFaction())) {
-				iInfluence = iInfluence + (card.getFactionCost() * getCardCount(card));
+		// IDENTITY: The Professor (03029) does count influence diffently
+		if (mIdentity.getCode().equals(Card.SpecialCards.CARD_THE_PROCESSOR)) {
+			for (Card card : getCards()) {
+				if (!mIdentity.getFaction().equals(card.getFaction())) {
+					if (card.getTypeCode().equals(Card.Type.PROGRAM)) {
+						// First copy of each program does not count toward the influence value
+						iInfluence = iInfluence + (card.getFactionCost() * Math.max(getCardCount(card)-1, 0));
+					} else {
+						iInfluence = iInfluence + (card.getFactionCost() * getCardCount(card));
+					}
+				}
+			}
+		} else {
+			for (Card card : getCards()) {
+				if (!mIdentity.getFaction().equals(card.getFaction())) {
+					iInfluence = iInfluence + (card.getFactionCost() * getCardCount(card));
+				}
 			}
 		}
 		return iInfluence;
