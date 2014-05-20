@@ -46,6 +46,9 @@
     <string name="import_deck">Import Deck</string>
     <string name="search_hint">Search cards...</string>
     <string name="amount_of_core_decks">Amount of core decks</string>
+    <string name="data_packs">Data Packs</string>
+    <string name="gui">Interface</string>
+    <string name="display_set_names_with_cards">Display set names with cards</string>
 
     <!-- Drawer -->
     <string name="drawer_new_deck_runner">New Runner Deck</string>

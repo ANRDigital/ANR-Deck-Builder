@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -34,6 +35,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 		TextView lblText;
 		TextView lblAmount;
 		TextView lblInfluence;
+		TextView lblSetName;
 		Button btnMinus;
 		Button btnPlus;
 	}
@@ -94,6 +96,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 			viewHolder.btnMinus = (Button) convertView.findViewById(R.id.btnMinus);
 			viewHolder.btnPlus = (Button) convertView.findViewById(R.id.btnPlus);
 			viewHolder.lblInfluence = (TextView) convertView.findViewById(R.id.lblInfluence);
+			viewHolder.lblSetName = (TextView) convertView.findViewById(R.id.lblSetName);
 //			
 			// Store the ViewHolder
 			convertView.setTag(viewHolder);
@@ -120,6 +123,13 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 			viewHolder.lblText.setText(card.getFormattedText(mContext));
 			ImageDisplayer.fillSmall(viewHolder.imgImage, card, mContext);
 			viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + card.getMaxCardCount());
+			// Set names
+			viewHolder.lblSetName.setText(card.getSetName());
+			if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false)) {
+				viewHolder.lblSetName.setVisibility(View.VISIBLE);
+			} else {
+				viewHolder.lblSetName.setVisibility(View.GONE);
+			}
 			
 			// Influence count
 			if (!mDeck.getIdentity().getFaction().equals(card.getFaction())) {
