@@ -178,7 +178,9 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 			boolean isIdentity = theCard.getTypeCode().equals(Card.Type.IDENTITY);
 			// Only display agendas that belong to neutral or my faction
 			boolean isGoodAgenda = !theCard.getTypeCode().equals(Card.Type.AGENDA) || theCard.getFaction().equals(mDeck.getIdentity().getFaction()) || theCard.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL);
-			if (isSameSide && !isIdentity && isGoodAgenda) {
+			// Cannot add Jinteki card for "Custom Biotics: Engineered for Success" Identity
+			boolean isJintekiOK =  !theCard.getFactionCode().equals(Card.Faction.FACTION_JINTEKI) || !mDeck.getIdentity().getCode().equals(Card.SpecialCards.CARD_CUSTOM_BIOTICS_ENGINEERED_FOR_SUCCESS);
+			if (isSameSide && !isIdentity && isGoodAgenda && isJintekiOK) {
 				if (mListCards.get(theCard.getType()) == null)
 					mListCards.put(theCard.getType(), new ArrayList<Card>());
 				mListCards.get(theCard.getType()).add(theCard);
