@@ -64,12 +64,15 @@ public class DeckHandFragment extends Fragment {
 			
 			@Override
 			public void onClick(View arg0) {
-				// Clear and generate 5 new cards
+				// Clear and generate 5 new cards (or 9 for Andromeda identity
+				int handSize = 5;
+				if (mDeck.getIdentity().getCode().equals(Card.SpecialCards.CARD_ANDROMEDA))
+					handSize = 9;
 				mAdapter.clear();
 				// Shuffle
 				shuffleArray(mCards);
-				// Display the first 5
-				for (int i = 0; i < Math.min(5, mCards.length); i++) {
+				// Display the first hand
+				for (int i = 0; i < Math.min(handSize, mCards.length); i++) {
 					mAdapter.add(mCards[i]);
 				}
 				// Disable the btnDraw if necessary

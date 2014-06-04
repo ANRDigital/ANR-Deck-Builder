@@ -339,6 +339,8 @@ public class Card {
 	
 	public static class SpecialCards {
 		public static final String CARD_THE_PROCESSOR = "03029";
+		public static final String CARD_ANDROMEDA = "02083";
+		
 	}
 	
 	
