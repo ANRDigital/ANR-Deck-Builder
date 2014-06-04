@@ -32,6 +32,11 @@
             android:key="pref_ShowSetNames"
             android:defaultValue="false"
             android:title="@string/display_set_names_with_cards" />
+        
+        <CheckBoxPreference 
+            android:key="pref_TapToCloseCardPreview"
+            android:defaultValue="true"
+            android:title="@string/tap_to_close_card_preview" />
     </PreferenceCategory>
     
 

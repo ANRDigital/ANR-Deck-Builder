@@ -41,6 +41,7 @@
     <string name="display_all_data_packs">Display all data packs</string>
     <string name="data_packs_to_display">Data packs to display</string>
     <string name="data_packs_to_display_desc">Which data packs are displayed in MyCards</string>
+    <string name="tap_to_close_card_preview">Tap to close card preview</string>
     <string name="cards">cards</string>
     <string name="please_wait">Please wait...</string>
     <string name="import_deck">Import Deck</string>

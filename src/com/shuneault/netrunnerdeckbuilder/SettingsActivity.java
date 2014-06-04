@@ -21,6 +21,7 @@ public class SettingsActivity extends PreferenceActivity
 	public static final String KEY_PREF_DATA_PACKS_TO_DISPLAY = "pref_DataPacks";
 	public static final String KEY_PREF_AMOUNT_OF_CORE_DECKS = "pref_AmountOfCoreDecks";
 	public static final String KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS = "pref_ShowSetNames";
+	public static final String KEY_PREF_TAP_TO_CLOSE_CARD_PREVIEW = "pref_TapToCloseCardPreview";
 	
 	private String mInitialPacksToDisplay;
 	

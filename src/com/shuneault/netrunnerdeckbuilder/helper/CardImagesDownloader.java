@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 
+import com.shuneault.netrunnerdeckbuilder.MainActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
@@ -35,8 +38,11 @@ public class CardImagesDownloader extends AsyncTask<Context, Integer, Bitmap> {
 		mListener = listener;
 		this.mContext = context;
 		
+		PendingIntent contentIntent = PendingIntent.getActivity(mContext, NOTIFICATION_DOWNLOAD_IMAGES, new Intent(mContext, MainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT);
+		
 		mNotifManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotifBuilder = new NotificationCompat.Builder(context);
+		mNotifBuilder.setContentIntent(contentIntent);
 		mNotifBuilder.setSmallIcon(R.drawable.ic_launcher);
 		mNotifBuilder.setContentTitle(context.getResources().getString(R.string.downloading_images));
 		mNotifBuilder.setOngoing(true);

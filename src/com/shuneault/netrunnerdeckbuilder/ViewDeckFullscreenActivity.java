@@ -190,7 +190,9 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
 				
 				@Override
 				public void onClick(View arg0) {
-					ViewDeckFullscreenActivity.this.finish();
+					if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_TAP_TO_CLOSE_CARD_PREVIEW, false)) {
+						ViewDeckFullscreenActivity.this.finish();
+					}
 				}
 			});
 			v.addView(imgCard);
