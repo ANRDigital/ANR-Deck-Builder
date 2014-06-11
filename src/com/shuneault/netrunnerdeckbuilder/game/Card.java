@@ -28,6 +28,7 @@ public class Card {
 	
 	public static final String NAME_LAST_MODIFIED = "last-modified";
 	public static final String NAME_CODE = "code";
+	public static final String NAME_COST = "cost";
 	public static final String NAME_TITLE = "title";
 	public static final String NAME_TYPE = "type";
 	public static final String NAME_TYPE_CODE = "type_code";
@@ -52,9 +53,14 @@ public class Card {
 	public static final String NAME_URL = "url";
 	public static final String NAME_IMAGE_SRC = "imagesrc";
 	public static final String NAME_AGENDA_POINTS = "agendapoints";
+	public static final String NAME_ADVANCEMENT_COST = "advancementcost";
+	public static final String NAME_MEMORY_UNITS = "memoryunits";
+	public static final String NAME_TRASH = "trash";
+	public static final String NAME_STRENGTH = "strength";
 	
 	private Date lastModified;
 	private String code;
+	private String cost;
 	private String title;
 	private String type;
 	private String typeCode;
@@ -75,6 +81,10 @@ public class Card {
 	private String side;
 	private String sideCode;
 	private int agendaPoints;
+	private int advancementCost;
+	private int memoryunits;
+	private int trash;
+	private int strength;
 	private boolean uniqueness;
 	private URL url;
 	private URL imagesrc;
@@ -86,6 +96,7 @@ public class Card {
 			this.lastModified = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(json.getString(NAME_LAST_MODIFIED));
 			//this.lastModified.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(json.getString(NAME_LAST_MODIFIED)));
 			this.code = json.optString(NAME_CODE);
+			this.cost = json.optString(NAME_COST);
 			this.title = json.optString(NAME_TITLE);
 			this.type = json.optString(NAME_TYPE);
 			this.typeCode = json.optString(NAME_TYPE_CODE);
@@ -109,6 +120,10 @@ public class Card {
 			this.side = json.optString(NAME_SIDE);
 			this.sideCode = json.optString(NAME_SIDE_CODE);
 			this.agendaPoints = json.optInt(NAME_AGENDA_POINTS, 0);
+			this.advancementCost = json.optInt(NAME_ADVANCEMENT_COST, 0);
+			this.memoryunits = json.optInt(NAME_MEMORY_UNITS, 0);
+			this.trash = json.optInt(NAME_TRASH, 0);
+			this.strength = json.optInt(NAME_STRENGTH, 0);
 		} catch (ParseException e) {
 			// 
 			e.printStackTrace();
@@ -128,6 +143,10 @@ public class Card {
 	
 	public String getCode() {
 		return code;
+	}
+	
+	public String getCost() {
+		return cost;
 	}
 	public String getTitle() {
 		return title;
@@ -205,6 +224,23 @@ public class Card {
 	public boolean isUniqueness() {
 		return uniqueness;
 	}
+	public int getAgendaPoints() {
+		return agendaPoints;
+	}
+	public int getAdvancementCost() {
+		return advancementCost;
+	}
+	public int getMemoryUnits() {
+		return memoryunits;
+	}
+	public int getTrashCost() {
+		return trash;
+	}
+	public int getStrength() {
+		return strength;
+	}
+
+
 	public URL getUrl() {
 		return url;
 	}
@@ -236,7 +272,12 @@ public class Card {
 	 * @return Formatted text with images
 	 */
 	public SpannableString getFormattedText(Context context) {
+		return getFormattedString(context, this.getText());
+	}
+	
+	public static SpannableString getFormattedString(Context context, String text) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("[Agenda]", R.drawable.agenda);
 		map.put("[Click]", R.drawable.click);
 		map.put("[Trash]", R.drawable.trash);
 		map.put("[Credits]", R.drawable.credits);
@@ -244,9 +285,10 @@ public class Card {
 		map.put("[Memory Unit]", R.drawable.memory_unit);
 		map.put("[Recurring Credits]", R.drawable.credit_recurr);
 		map.put("[Link]", R.drawable.links);
+		map.put("[Fist]", R.drawable.fist);
 		
 		// replace all occurences
-		SpannableString span = new SpannableString(Html.fromHtml(this.getText().replace("\r\n",  "<br />")));
+		SpannableString span = new SpannableString(Html.fromHtml(text.replace("\r\n",  "<br />")));
 		for (String txt : map.keySet()) {
 			int index = span.toString().indexOf(txt);
 			while (index >= 0) {
@@ -273,11 +315,6 @@ public class Card {
 		File f = new File(context.getCacheDir(), this.getImageFileName());
 		return f.exists();
 	}
-	
-	public int getAgendaPoints() {
-		return agendaPoints;
-	}
-	
 	
 	@Override
 	public String toString() {
@@ -324,11 +361,18 @@ public class Card {
 		public static final String SIDE_RUNNER = "runner";
 		public static final String SIDE_CORPORATION = "corp";
 	}
-
+	
 	public static class Type {
-		public static final String IDENTITY = "identity";
 		public static final String AGENDA = "agenda";
+		public static final String ASSET = "asset";
+		public static final String EVENT = "event";
+		public static final String ICE = "ice";
+		public static final String IDENTITY = "identity";
+		public static final String HARDWARE = "hardware";
+		public static final String OPERATION = "operation";
 		public static final String PROGRAM = "program";
+		public static final String RESOURCE = "resource";
+		public static final String UPGRADE = "upgrade";
 	}
 	
 	public static class SetName {

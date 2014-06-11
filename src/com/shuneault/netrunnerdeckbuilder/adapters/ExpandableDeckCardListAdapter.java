@@ -31,6 +31,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 	
 	private static class ViewHolderItem {
 		ImageView imgImage;
+		TextView lblIcons;
 		TextView lblTitle;
 		TextView lblText;
 		TextView lblAmount;
@@ -90,6 +91,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 			// Set up the ViewHolder
 			viewHolder = new ViewHolderItem();
 			viewHolder.imgImage = (ImageView) convertView.findViewById(R.id.imgImage);
+			viewHolder.lblIcons = (TextView) convertView.findViewById(R.id.lblIcons);
 			viewHolder.lblTitle = (TextView) convertView.findViewById(R.id.lblTitre);
 			viewHolder.lblText = (TextView) convertView.findViewById(R.id.lblText);
 			viewHolder.lblAmount = (TextView) convertView.findViewById(R.id.lblAmount);
@@ -97,7 +99,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 			viewHolder.btnPlus = (Button) convertView.findViewById(R.id.btnPlus);
 			viewHolder.lblInfluence = (TextView) convertView.findViewById(R.id.lblInfluence);
 			viewHolder.lblSetName = (TextView) convertView.findViewById(R.id.lblSetName);
-//			
+
 			// Store the ViewHolder
 			convertView.setTag(viewHolder);
 		} else {
@@ -129,6 +131,29 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 				viewHolder.lblSetName.setVisibility(View.VISIBLE);
 			} else {
 				viewHolder.lblSetName.setVisibility(View.GONE);
+			}
+			
+			// Icons
+			if (card.getTypeCode().equals(Card.Type.AGENDA)) {
+				viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getAdvancementCost() + " [Credits]" + "  " + card.getAgendaPoints() + " [Agenda]"));
+			} else if (card.getTypeCode().equals(Card.Type.ASSET)) {
+				viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]" + "  " + card.getTrashCost() + " [Trash]"));
+			} else if (card.getTypeCode().equals(Card.Type.EVENT)) {
+				viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]"));
+			} else if (card.getTypeCode().equals(Card.Type.HARDWARE)) {
+				viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]"));
+			} else if (card.getTypeCode().equals(Card.Type.ICE)) {
+				viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]" + "  " + card.getStrength() + "[Fist]"));
+			} else if (card.getTypeCode().equals(Card.Type.OPERATION)) {
+				viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]"));
+			} else if (card.getTypeCode().equals(Card.Type.PROGRAM)) {
+				viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]" + "  " + card.getMemoryUnits() + " [Memory Unit]" + "  " + card.getStrength() + "[Fist]"));
+			} else if (card.getTypeCode().equals(Card.Type.RESOURCE)) {
+				viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]"));
+			} else if (card.getTypeCode().equals(Card.Type.UPGRADE)) {
+				viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]" + "  " + card.getTrashCost() + " [Trash]"));
+			} else {
+				viewHolder.lblIcons.setText("");
 			}
 			
 			// Influence count
