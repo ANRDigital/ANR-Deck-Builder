@@ -12,3 +12,6 @@
 # PERMISSIONS #
 * Internet: Download cards and images
 * Read External Storage: Required to import deck file
+
+# DOWNLOAD #
+[Get the application on Google Play](https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder)
