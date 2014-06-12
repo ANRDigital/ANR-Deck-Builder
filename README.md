@@ -15,3 +15,6 @@
 
 # DOWNLOAD #
 [Get the application on Google Play](https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder)
+
+# THANKS #
+Icons and logo created by [prisoner453](http://prisoner453.deviantart.com/art/Netrunner-Assets-351310060)
