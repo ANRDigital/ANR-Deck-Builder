@@ -111,7 +111,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <!-- About page -->
-    <string name="about_text">Images have been created by <a href="http://prisoner453.deviantart.com/art/Netrunner-Assets-351310060">prisoner453</a>.\n\nThe copyrightable portions of Android: Netrunner: The Card Game and its expansions are &#169; 2012&#8211;2013 Wizards &amp; Fantasy Flight Publishing, Inc. Netrunner is licensed by Wizards of the Coast LLC. Netrunner is a TM of R. Talsorian Games, Inc. Android, all Android: Netrunner: The Card Game expansion titles, Living Card Game, LCG, LCG logo and Fantasy Flight Supply are trademarks and/or registered trademarks of Fantasy Flight Publishing, Inc. All rights reserved to their respective owners.</string>
+    <string name="about_text" formatted="false">Version %s\n\nImages have been created by <a href="http://prisoner453.deviantart.com/art/Netrunner-Assets-351310060">prisoner453</a>.\n\nThe copyrightable portions of Android: Netrunner: The Card Game and its expansions are &#169; 2012&#8211;2013 Wizards &amp; Fantasy Flight Publishing, Inc. Netrunner is licensed by Wizards of the Coast LLC. Netrunner is a TM of R. Talsorian Games, Inc. Android, all Android: Netrunner: The Card Game expansion titles, Living Card Game, LCG, LCG logo and Fantasy Flight Supply are trademarks and/or registered trademarks of Fantasy Flight Publishing, Inc. All rights reserved to their respective owners.</string>
     <string name="title_activity_import_deck_from_net_runner_db">Import Deck</string>
 
     <string-array name="arr">

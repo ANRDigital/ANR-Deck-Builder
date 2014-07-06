@@ -9,10 +9,13 @@ import java.util.HashMap;
 import org.json.JSONArray;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -291,8 +294,15 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 				startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
 				break;
 			case R.id.mnuAbout:
+				PackageInfo pInfo;
 				TextView txt = new TextView(this);
-				txt.setText(R.string.about_text);
+				try {
+					pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+					txt.setText(getString(R.string.about_text, pInfo.versionName));
+				} catch (NameNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				txt.setMovementMethod(LinkMovementMethod.getInstance());
 				txt.setPadding(25, 25, 25, 25);
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
