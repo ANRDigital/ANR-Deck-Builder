@@ -96,8 +96,10 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 			
 			@Override
 			public boolean onQueryTextChange(String arg0) {
-				mDeckCardsAdapter.filterData(arg0);
-				return false;
+                if (mDeckCardsAdapter != null) {
+                    mDeckCardsAdapter.filterData(arg0);
+                }
+                return false;
 			}
 		});
 		MenuItemCompat.setOnActionExpandListener(item, new OnActionExpandListener() {

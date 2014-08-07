@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shuneault.netrunnerdeckbuilder"
-    android:versionCode="20"
+    android:versionCode="21"
     android:versionName="1.31" >
 
     <uses-sdk
@@ -36,10 +36,6 @@
         <activity
             android:name="com.shuneault.netrunnerdeckbuilder.SettingsActivity"
             android:label="@string/menu_options" >
-        </activity>
-        <activity
-            android:name="com.shuneault.netrunnerdeckbuilder.ViewImageActivity"
-            android:theme="@style/FullscreenTheme" >
         </activity>
         <activity
             android:name="com.shuneault.netrunnerdeckbuilder.ChooseIdentityActivity"
