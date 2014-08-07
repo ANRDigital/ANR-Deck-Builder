@@ -38,10 +38,12 @@ public class ImageDisplayer {
 	}
 	
 	public static void fill(ImageView imageView, Card card, Context context) {
+        if (card == null) return;
 		ImageDisplayer im = new ImageDisplayer();
 		im.fillImageWithCard(imageView, card, context, false);
 	}
 	public static void fillSmall(ImageView imageView, Card card, Context context) {
+        if (card == null) return;
 		ImageDisplayer im = new ImageDisplayer();
 		im.fillImageWithCard(imageView, card, context, true);
 	}
