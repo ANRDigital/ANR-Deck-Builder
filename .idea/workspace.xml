@@ -24,9 +24,6 @@
   <component name="ChangeListManager">
     <list default="true" id="44434fe7-0988-45fd-967c-b1793a6c76e0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/shuneault/netrunnerdeckbuilder/fragments/DeckCardsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/shuneault/netrunnerdeckbuilder/fragments/DeckCardsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/menu/deck_cards.xml" afterPath="$PROJECT_DIR$/app/src/main/res/menu/deck_cards.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/menu/deck_my_cards.xml" afterPath="$PROJECT_DIR$/app/src/main/res/menu/deck_my_cards.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="android-netrunner-deck-builder.iws" />
@@ -100,15 +97,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DeckCardsFragment.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="DeckCardsFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/shuneault/netrunnerdeckbuilder/fragments/DeckCardsFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.67058825" vertical-offset="1019" max-vertical-offset="3825">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1019" max-vertical-offset="3825">
               <caret line="103" column="11" selection-start-line="103" selection-start-column="11" selection-end-line="103" selection-end-column="11" />
               <folding>
                 <element signature="e#3696#3697#0" expanded="true" />
                 <element signature="e#3718#3719#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.25373134" vertical-offset="0" max-vertical-offset="1717">
+              <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -827,11 +834,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/shuneault/netrunnerdeckbuilder/fragments/DeckFragment.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/shuneault/netrunnerdeckbuilder/ViewDeckFullscreenActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/deck.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/deck_cards.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/deck_my_cards.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/shuneault/netrunnerdeckbuilder/fragments/DeckCardsFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       </list>
     </option>
   </component>
@@ -920,62 +927,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-netrunner-deck-builder" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-netrunner-deck-builder" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-netrunner-deck-builder" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-netrunner-deck-builder" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="menu" />
               <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1180,7 +1131,11 @@
       <created>1407429845741</created>
       <updated>1407429845741</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Bug fix - Search cards issue">
+      <created>1407435745433</created>
+      <updated>1407435745433</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1255,7 +1210,8 @@
     <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;Conflicts:&#10;&#9;.idea/workspace.xml&#10;" />
     <MESSAGE value="Disable DRAW button when no cards are in the deck" />
     <MESSAGE value="Export to plain text" />
-    <option name="LAST_COMMIT_MESSAGE" value="Export to plain text" />
+    <MESSAGE value="Bug fix - Search cards issue" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bug fix - Search cards issue" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1437,16 +1393,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.2" vertical-offset="1462" max-vertical-offset="1717">
-          <caret line="38" column="19" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
-          <folding>
-            <element signature="e#1566#1588#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/shuneault/netrunnerdeckbuilder/fragments/DeckFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1751" max-vertical-offset="7242">
@@ -1489,12 +1435,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/shuneault/netrunnerdeckbuilder/fragments/DeckCardsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67058825" vertical-offset="1019" max-vertical-offset="3825">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1019" max-vertical-offset="3825">
           <caret line="103" column="11" selection-start-line="103" selection-start-column="11" selection-end-line="103" selection-end-column="11" />
           <folding>
             <element signature="e#3696#3697#0" expanded="true" />
             <element signature="e#3718#3719#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25373134" vertical-offset="0" max-vertical-offset="1717">
+          <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+          <folding />
         </state>
       </provider>
     </entry>
