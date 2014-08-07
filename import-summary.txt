@@ -1,0 +1,291 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Manifest Merging:
+-----------------
+Your project uses libraries that provide manifests, and your Eclipse
+project did not explicitly turn on manifest merging. In Android Gradle
+projects, manifests are always merged (meaning that contents from your
+libraries' manifests will be merged into the app manifest. If you had
+manually copied contents from library manifests into your app manifest
+you may need to remove these for the app to build correctly.
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .gitignore
+* .idea\
+* .idea\.name
+* .idea\compiler.xml
+* .idea\copyright\
+* .idea\copyright\profiles_settings.xml
+* .idea\encodings.xml
+* .idea\misc.xml
+* .idea\modules.xml
+* .idea\scopes\
+* .idea\scopes\scope_settings.xml
+* .idea\vcs.xml
+* .idea\workspace.xml
+* README.md
+* app\
+* app\build.gradle
+* app\libs\
+* app\libs\android-support-v13.jar
+* app\lint.xml
+* app\src\
+* app\src\main\
+* app\src\main\AndroidManifest.xml
+* app\src\main\java\
+* app\src\main\java\com\
+* app\src\main\java\com\shuneault\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\ChooseIdentityActivity.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\MainActivity.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\SettingsActivity.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\ViewDeckFullscreenActivity.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\adapters\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\adapters\CheckedCardListAdapter.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\adapters\ExpandableCardListAdapter.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\adapters\ExpandableDeckCardListAdapter.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\adapters\ExpandableDeckListAdapter.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\adapters\HandCardsListAdapter.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\adapters\HeaderListAdapter.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\adapters\HeaderListItem.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\adapters\HeaderListItemInterface.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\adapters\IdentitySpinnerAdapter.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\db\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\db\DatabaseHelper.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\externalactivities\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\externalactivities\ImportOCTGNActivity.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\fragments\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\fragments\DeckBuildFragment.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\fragments\DeckCardsFragment.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\fragments\DeckFragment.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\fragments\DeckHandFragment.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\fragments\DeckInfoFragment.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\fragments\DeckMyCardsFragment.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\fragments\DeckStatsFragment.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\fragments\MainActivityFragment.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\fragments\NewDeckChooseIdentityFragment.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\game\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\game\Card.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\game\CardCount.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\game\CardList.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\game\Deck.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\game\NetRunnerBD.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\helper\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\helper\AppManager.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\helper\CardDownloader.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\helper\CardImagesDownloader.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\helper\ImageDisplayer.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\helper\Sorter.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\interfaces\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\interfaces\OnDeckChangedListener.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\interfaces\OnFragmentDeletedListener.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\octgn\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\octgn\OCTGN.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\prefs\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\prefs\ListPreferenceMultiSelect.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\prefs\SetNamesPreferenceMultiSelect.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\util\
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\util\SystemUiHider.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\util\SystemUiHiderBase.java
+* app\src\main\java\com\shuneault\netrunnerdeckbuilder\util\SystemUiHiderHoneycomb.java
+* app\src\main\res\
+* app\src\main\res\anim\
+* app\src\main\res\anim\slide_down.xml
+* app\src\main\res\anim\slide_up.xml
+* app\src\main\res\drawable-hdpi\
+* app\src\main\res\drawable-hdpi\ic_action_search.png
+* app\src\main\res\drawable-hdpi\ic_content_copy.png
+* app\src\main\res\drawable-hdpi\ic_content_delete.png
+* app\src\main\res\drawable-hdpi\ic_content_new.png
+* app\src\main\res\drawable-hdpi\ic_content_new_deck.png
+* app\src\main\res\drawable-hdpi\ic_drawer.png
+* app\src\main\res\drawable-hdpi\ic_launcher.png
+* app\src\main\res\drawable-hdpi\ic_social_share.png
+* app\src\main\res\drawable-hdpi\icon_agenda.png
+* app\src\main\res\drawable-hdpi\icon_deck.png
+* app\src\main\res\drawable-mdpi\
+* app\src\main\res\drawable-mdpi\ic_action_search.png
+* app\src\main\res\drawable-mdpi\ic_content_copy.png
+* app\src\main\res\drawable-mdpi\ic_content_delete.png
+* app\src\main\res\drawable-mdpi\ic_content_new.png
+* app\src\main\res\drawable-mdpi\ic_content_new_deck.png
+* app\src\main\res\drawable-mdpi\ic_drawer.png
+* app\src\main\res\drawable-mdpi\ic_launcher.png
+* app\src\main\res\drawable-mdpi\ic_social_share.png
+* app\src\main\res\drawable-mdpi\icon_agenda.png
+* app\src\main\res\drawable-mdpi\icon_deck.png
+* app\src\main\res\drawable-xhdpi\
+* app\src\main\res\drawable-xhdpi\ic_action_search.png
+* app\src\main\res\drawable-xhdpi\ic_content_copy.png
+* app\src\main\res\drawable-xhdpi\ic_content_delete.png
+* app\src\main\res\drawable-xhdpi\ic_content_new.png
+* app\src\main\res\drawable-xhdpi\ic_content_new_deck.png
+* app\src\main\res\drawable-xhdpi\ic_drawer.png
+* app\src\main\res\drawable-xhdpi\ic_launcher.png
+* app\src\main\res\drawable-xhdpi\ic_social_share.png
+* app\src\main\res\drawable-xhdpi\icon_agenda.png
+* app\src\main\res\drawable-xhdpi\icon_deck.png
+* app\src\main\res\drawable-xxhdpi\
+* app\src\main\res\drawable-xxhdpi\ic_action_search.png
+* app\src\main\res\drawable-xxhdpi\ic_content_copy.png
+* app\src\main\res\drawable-xxhdpi\ic_content_delete.png
+* app\src\main\res\drawable-xxhdpi\ic_content_new.png
+* app\src\main\res\drawable-xxhdpi\ic_content_new_deck.png
+* app\src\main\res\drawable-xxhdpi\ic_drawer.png
+* app\src\main\res\drawable-xxhdpi\ic_launcher.png
+* app\src\main\res\drawable-xxhdpi\ic_social_share.png
+* app\src\main\res\drawable-xxhdpi\icon_agenda.png
+* app\src\main\res\drawable-xxhdpi\icon_deck.png
+* app\src\main\res\drawable\
+* app\src\main\res\drawable\agenda.png
+* app\src\main\res\drawable\anarch.png
+* app\src\main\res\drawable\bottom_border.xml
+* app\src\main\res\drawable\card_back_corp.png
+* app\src\main\res\drawable\card_back_runner.png
+* app\src\main\res\drawable\click.png
+* app\src\main\res\drawable\corp_neutral.png
+* app\src\main\res\drawable\credit_recurr.png
+* app\src\main\res\drawable\credits.png
+* app\src\main\res\drawable\criminal.png
+* app\src\main\res\drawable\fist.png
+* app\src\main\res\drawable\haas_bioroid.png
+* app\src\main\res\drawable\jinteki.png
+* app\src\main\res\drawable\links.png
+* app\src\main\res\drawable\list_selector.xml
+* app\src\main\res\drawable\memory_unit.png
+* app\src\main\res\drawable\nbn.png
+* app\src\main\res\drawable\netrunner.png
+* app\src\main\res\drawable\neutral.png
+* app\src\main\res\drawable\runner_neutral.png
+* app\src\main\res\drawable\shaper.png
+* app\src\main\res\drawable\subroutine.png
+* app\src\main\res\drawable\trash.png
+* app\src\main\res\drawable\weyland_consortium.png
+* app\src\main\res\layout-port\
+* app\src\main\res\layout-port\activity_main.xml
+* app\src\main\res\layout-port\fragment_deck_build.xml
+* app\src\main\res\layout-port\fragment_deck_cards.xml
+* app\src\main\res\layout-port\fragment_deck_info.xml
+* app\src\main\res\layout\
+* app\src\main\res\layout\action_bar_main_activity.xml
+* app\src\main\res\layout\activity_fullscreen_view.xml
+* app\src\main\res\layout\activity_import_octgn.xml
+* app\src\main\res\layout\activity_main.xml
+* app\src\main\res\layout\activity_view_image.xml
+* app\src\main\res\layout\fragment_deck.xml
+* app\src\main\res\layout\fragment_deck_build.xml
+* app\src\main\res\layout\fragment_deck_cards.xml
+* app\src\main\res\layout\fragment_deck_hand.xml
+* app\src\main\res\layout\fragment_deck_info.xml
+* app\src\main\res\layout\fragment_deck_stats.xml
+* app\src\main\res\layout\fragment_main_activity.xml
+* app\src\main\res\layout\fragment_pick_identity.xml
+* app\src\main\res\layout\list_view_deck.xml
+* app\src\main\res\layout\list_view_header.xml
+* app\src\main\res\layout\list_view_item.xml
+* app\src\main\res\layout\list_view_item_card.xml
+* app\src\main\res\layout\list_view_item_card_checked.xml
+* app\src\main\res\layout\list_view_item_cards_build.xml
+* app\src\main\res\layout\list_view_item_deck_card.xml
+* app\src\main\res\layout\list_view_item_dropdown_identity.xml
+* app\src\main\res\layout\list_view_item_hand_card.xml
+* app\src\main\res\layout\list_view_item_identity.xml
+* app\src\main\res\layout\searchable.xml
+* app\src\main\res\menu\
+* app\src\main\res\menu\deck.xml
+* app\src\main\res\menu\deck_cards.xml
+* app\src\main\res\menu\deck_info.xml
+* app\src\main\res\menu\deck_my_cards.xml
+* app\src\main\res\menu\main.xml
+* app\src\main\res\menu\main_fragment.xml
+* app\src\main\res\raw\
+* app\src\main\res\raw\image.png
+* app\src\main\res\values-large\
+* app\src\main\res\values-large\refs.xml
+* app\src\main\res\values-sw600dp\
+* app\src\main\res\values-sw600dp\dimens.xml
+* app\src\main\res\values-sw600dp\refs.xml
+* app\src\main\res\values-sw720dp-land\
+* app\src\main\res\values-sw720dp-land\dimens.xml
+* app\src\main\res\values-v11\
+* app\src\main\res\values-v11\styles.xml
+* app\src\main\res\values-v14\
+* app\src\main\res\values-v14\styles.xml
+* app\src\main\res\values-v16\
+* app\src\main\res\values-v16\style.xml
+* app\src\main\res\values\
+* app\src\main\res\values\attrs.xml
+* app\src\main\res\values\colors.xml
+* app\src\main\res\values\dimens.xml
+* app\src\main\res\values\strings.xml
+* app\src\main\res\values\styles.xml
+* app\src\main\res\xml\
+* app\src\main\res\xml\preferences.xml
+* build.gradle
+* gradle\
+* gradle\wrapper\
+* gradle\wrapper\gradle-wrapper.jar
+* gradle\wrapper\gradle-wrapper.properties
+* gradlew
+* gradlew.bat
+* ic_launcher-web.png
+* proguard-project.txt
+* settings.gradle
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:+
+android-support-v7-appcompat.jar => com.android.support:appcompat-v7:+
+
+Replaced Libraries with Dependencies:
+-------------------------------------
+The importer recognized the following library projects as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the source files in your project were of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the library replacement in the import wizard and try
+again:
+
+android-support-v7-appcompat => [com.android.support:appcompat-v7:+]
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app\src\main\AndroidManifest.xml
+* libs\android-support-v13.jar => app\libs\android-support-v13.jar
+* lint.xml => app\lint.xml
+* res\ => app\src\main\res\
+* src\ => app\src\main\java\
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
