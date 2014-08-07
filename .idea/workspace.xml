@@ -13,166 +13,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44434fe7-0988-45fd-967c-b1793a6c76e0" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\.settings\org.eclipse.jdt.core.prefs" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\app\libs\android-support-v13.jar" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\libs\android-support-v13.jar" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\anim\slide_down.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\anim\slide_up.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-hdpi\ic_action_search.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-hdpi\ic_content_copy.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-hdpi\ic_content_delete.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-hdpi\ic_content_new.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-hdpi\ic_content_new_deck.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-hdpi\ic_drawer.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-hdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-hdpi\ic_social_share.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-hdpi\icon_agenda.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-hdpi\icon_deck.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-mdpi\ic_action_search.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-mdpi\ic_content_copy.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-mdpi\ic_content_delete.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-mdpi\ic_content_new.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-mdpi\ic_content_new_deck.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-mdpi\ic_drawer.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-mdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-mdpi\ic_social_share.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-mdpi\icon_agenda.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-mdpi\icon_deck.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xhdpi\ic_action_search.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xhdpi\ic_content_copy.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xhdpi\ic_content_delete.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xhdpi\ic_content_new.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xhdpi\ic_content_new_deck.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xhdpi\ic_drawer.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xhdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xhdpi\ic_social_share.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xhdpi\icon_agenda.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xhdpi\icon_deck.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xxhdpi\ic_action_search.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xxhdpi\ic_content_copy.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xxhdpi\ic_content_delete.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xxhdpi\ic_content_new.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xxhdpi\ic_content_new_deck.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xxhdpi\ic_drawer.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xxhdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xxhdpi\ic_social_share.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xxhdpi\icon_agenda.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable-xxhdpi\icon_deck.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\agenda.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\anarch.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\bottom_border.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\card_back_corp.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\card_back_runner.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\click.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\corp_neutral.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\credit_recurr.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\credits.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\criminal.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\fist.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\haas_bioroid.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\jinteki.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\links.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\list_selector.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\memory_unit.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\nbn.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\netrunner.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\neutral.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\runner_neutral.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\shaper.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\subroutine.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\trash.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\drawable\weyland_consortium.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout-port\activity_main.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout-port\fragment_deck_build.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout-port\fragment_deck_cards.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout-port\fragment_deck_info.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\action_bar_main_activity.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\activity_fullscreen_view.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\activity_import_octgn.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\activity_main.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\activity_view_image.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\fragment_deck.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\fragment_deck_build.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\fragment_deck_cards.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\fragment_deck_hand.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\fragment_deck_info.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\fragment_deck_stats.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\fragment_main_activity.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\fragment_pick_identity.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\list_view_deck.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\list_view_header.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\list_view_item.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\list_view_item_card.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\list_view_item_card_checked.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\list_view_item_cards_build.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\list_view_item_deck_card.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\list_view_item_dropdown_identity.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\list_view_item_hand_card.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\list_view_item_identity.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\layout\searchable.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\menu\deck.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\menu\deck_cards.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\menu\deck_info.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\menu\deck_my_cards.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\menu\main.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\menu\main_fragment.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\raw\image.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values-large\refs.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values-sw600dp\dimens.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values-sw600dp\refs.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values-sw720dp-land\dimens.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values-v11\styles.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values-v14\styles.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values-v16\style.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values\attrs.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values\colors.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values\dimens.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values\strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\values\styles.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\res\xml\preferences.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\ChooseIdentityActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\MainActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\SettingsActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\ViewDeckFullscreenActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\adapters\CheckedCardListAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\adapters\ExpandableCardListAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\adapters\ExpandableDeckCardListAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\adapters\ExpandableDeckListAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\adapters\HandCardsListAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\adapters\HeaderListAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\adapters\HeaderListItem.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\adapters\HeaderListItemInterface.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\adapters\IdentitySpinnerAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\db\DatabaseHelper.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\externalactivities\ImportOCTGNActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\fragments\DeckBuildFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\fragments\DeckCardsFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\fragments\DeckFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\fragments\DeckHandFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\fragments\DeckInfoFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\fragments\DeckMyCardsFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\fragments\DeckStatsFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\fragments\MainActivityFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\fragments\NewDeckChooseIdentityFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\game\Card.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\game\CardCount.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\game\CardList.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\game\Deck.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\game\NetRunnerBD.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\helper\AppManager.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\helper\CardDownloader.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\helper\CardImagesDownloader.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\helper\ImageDisplayer.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\helper\Sorter.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\interfaces\OnDeckChangedListener.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\interfaces\OnFragmentDeletedListener.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\octgn\OCTGN.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\prefs\ListPreferenceMultiSelect.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\prefs\SetNamesPreferenceMultiSelect.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\util\SystemUiHider.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\util\SystemUiHiderBase.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\sebast\AndroidStudioProjects\android-netrunner-deck-builder\src\com\shuneault\netrunnerdeckbuilder\util\SystemUiHiderHoneycomb.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
     </list>
     <ignored path="android-netrunner-deck-builder.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -195,11 +36,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="View.class" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="View.class" pinned="false" current="false" current-in-tab="false">
         <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/view/View.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5184136" vertical-offset="19843" max-vertical-offset="20196">
+            <state vertical-scroll-proportion="0.0" vertical-offset="19750" max-vertical-offset="20196">
               <caret line="1179" column="0" selection-start-line="1179" selection-start-column="0" selection-end-line="1179" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -898,6 +749,7 @@
       <list>
         <option value="$PROJECT_DIR$/app/src/main/java/com/shuneault/netrunnerdeckbuilder/fragments/DeckHandFragment.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -934,6 +786,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -954,7 +807,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1150,7 +1002,6 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4020443" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1172,6 +1023,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4020443" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1196,6 +1048,14 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/view/View.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="19843" max-vertical-offset="20196">
+          <caret line="1179" column="0" selection-start-line="1179" selection-start-column="0" selection-end-line="1179" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/shuneault/netrunnerdeckbuilder/fragments/DeckCardsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33225808" vertical-offset="2583" max-vertical-offset="3757">
@@ -1248,8 +1108,16 @@
     </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/view/View.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5184136" vertical-offset="19843" max-vertical-offset="20196">
+        <state vertical-scroll-proportion="0.0" vertical-offset="19750" max-vertical-offset="20196">
           <caret line="1179" column="0" selection-start-line="1179" selection-start-column="0" selection-end-line="1179" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="366">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
