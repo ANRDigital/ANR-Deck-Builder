@@ -149,6 +149,16 @@ public class Deck implements Serializable, HeaderListItemInterface {
 		else
 			return iCount;
 	}
+
+    public int getCardCountByType(String type) {
+        int iCount = 0;
+        for (Card card : mCards.keySet()) {
+            if (card.getType().equals(type)) {
+                iCount = iCount + getCardCount(card);
+            }
+        }
+        return iCount;
+    }
 	
 	public ArrayList<CardCount> getCardsToAdd() {
 		mArrCardsToAdd.clear();

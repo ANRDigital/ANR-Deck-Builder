@@ -3,6 +3,8 @@ package com.shuneault.netrunnerdeckbuilder.fragments;
 
 
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,6 +39,7 @@ import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
+import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 import com.shuneault.netrunnerdeckbuilder.octgn.OCTGN;
 
@@ -318,7 +321,7 @@ public class DeckFragment extends Fragment implements OnDeckChangedListener {
 			getActivity().startActivityForResult(intentChooseIdentity, MainActivity.REQUEST_CHANGE_IDENTITY);
 			return true;
 			
-		case R.id.mnuShareDeck:
+		case R.id.mnuOCTGN:
 			String filename = mDeck.getName() + ".o8d";
 			// Save the file as OCTGN format
 			try {
@@ -338,6 +341,44 @@ public class DeckFragment extends Fragment implements OnDeckChangedListener {
 			startActivity(Intent.createChooser(intentEmail, getActivity().getText(R.string.menu_share)));
 			
 			return true;
+
+            case R.id.mnuPlainText:
+                // Generate the text to send
+                //      TITLE (Card Count)
+                //      IDENTITY
+                //      -- Card Category (Card Count)
+                //      <Count> <Card>...
+                //      <Count> <Card>...
+                //      -- Card Category (Card Count)
+                //      <Count> <Card>...
+                //      <Count> <Card>...
+
+                // Sort the cards
+                ArrayList<Card> theCards = mDeck.getCards();
+                Collections.sort(theCards, new Sorter.CardSorterByCardType());
+
+                StringBuilder sb = new StringBuilder();
+                // Title
+                sb.append(String.format("%s (%s %s)\n", mDeck.getName(), mDeck.getDeckSize(), getResources().getString(R.string.cards)));
+                // Identity
+                sb.append(String.format("%s\n", mDeck.getIdentity().getTitle()));
+                // Cards
+                String lastType = "";
+                for (Card card : theCards) {
+                    if (!card.getType().equals(lastType)) {
+                        lastType = card.getType();
+                        sb.append(String.format("-- %s (%s %s)\n", lastType, mDeck.getCardCountByType(card.getType()), getResources().getString(R.string.cards)));
+                    }
+                    sb.append(String.format("%s %s\n", mDeck.getCardCount(card), card.getTitle()));
+                }
+
+                // Create the send intent
+                Intent intentEmailPlain = new Intent(Intent.ACTION_SEND);
+                intentEmailPlain.setType("text/plain");
+                intentEmailPlain.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + mDeck.getName());
+                intentEmailPlain.putExtra(Intent.EXTRA_TEXT, sb.toString() + "\n\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
+                startActivity(Intent.createChooser(intentEmailPlain, getActivity().getText(R.string.menu_share)));
+
 			
 		default:
 			return super.onOptionsItemSelected(item);

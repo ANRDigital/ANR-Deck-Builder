@@ -127,5 +127,7 @@
     <string-array name="arrEmpty" />
 
     <string name="title_activity_import_octgn">Import Deck</string>
+    <string name="octgn_file">OCTGN file</string>
+    <string name="plain_text">Plain Text</string>
 
 </resources>

@@ -1,22 +1,35 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item android:id="@+id/mnuShareDeck"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_social_share"
-        android:title="@string/menu_share" />
+        android:title="@string/menu_share">
+
+        <menu>
+            <item android:id="@+id/mnuOCTGN"
+                app:showAsAction="ifRoom"
+                android:title="@string/octgn_file" />
+            <item android:id="@+id/mnuPlainText"
+                app:showAsAction="ifRoom"
+                android:title="@string/plain_text" />
+        </menu>
+
+    </item>
     
     <item android:id="@+id/mnuChangeIdentity"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/menu_change_identity" />
     <item android:id="@+id/mnuCloneDeck"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/clone_deck"
 		android:icon="@drawable/ic_content_copy" />
     <item android:id="@+id/mnuDeleteDeck"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/delete_deck"
         android:icon="@drawable/ic_content_delete" />
     <item android:id="@+id/mnuViewFullScreen"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/view_fullscreen" />
 </menu>
