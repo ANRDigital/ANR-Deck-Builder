@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory 
+        android:title="@string/data_packs">
+
+	    <ListPreference
+	        android:key="pref_AmountOfCoreDecks"
+	        android:title="@string/amount_of_core_decks"
+	        android:entryValues="@array/arrAmountOfCoreDecks"
+	        android:defaultValue="3"
+	        android:entries="@array/arrAmountOfCoreDecks"/>
+	    
+	    <CheckBoxPreference
+	        android:key="pref_DataPacksShowAll"
+	        android:disableDependentsState="true"
+	        android:defaultValue="true"
+	        android:title="@string/display_all_data_packs" />
+	    
+	    <com.shuneault.netrunnerdeckbuilder.prefs.SetNamesPreferenceMultiSelect
+	        android:key="pref_DataPacks"
+	        android:dependency="pref_DataPacksShowAll"
+	        android:title="@string/data_packs_to_display"
+	        android:defaultValue="Core Set"
+	        android:entries="@array/arr"
+	        android:entryValues="@array/arr" />
+	    
+    
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/gui">
+        <CheckBoxPreference 
+            android:key="pref_ShowSetNames"
+            android:defaultValue="false"
+            android:title="@string/display_set_names_with_cards" />
+        
+        <CheckBoxPreference 
+            android:key="pref_TapToCloseCardPreview"
+            android:defaultValue="true"
+            android:title="@string/tap_to_close_card_preview" />
+    </PreferenceCategory>
+    
+
+</PreferenceScreen>
