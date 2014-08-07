@@ -5,7 +5,6 @@ import java.util.Random;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,6 +53,9 @@ public class DeckHandFragment extends Fragment {
 		lstCards = (ListView) theView.findViewById(R.id.lstCards);
 		btnNewHand = (Button) theView.findViewById(R.id.btnNewHand);
 		btnDraw = (Button) theView.findViewById(R.id.btnDraw);
+
+        // Disable the btnDraw if necessary
+        btnDraw.setEnabled(mCards.length > 0);
 		
 		// List
 		mAdapter = new HandCardsListAdapter(getActivity(), new ArrayList<Card>());

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import org.json.JSONArray;
 
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -300,7 +299,6 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 					pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
 					txt.setText(getString(R.string.about_text, pInfo.versionName));
 				} catch (NameNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				txt.setMovementMethod(LinkMovementMethod.getInstance());
