@@ -292,7 +292,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 				for (Card card : mArrDataChildOriginal.get(type)) {
 					if (card.getTitle().toLowerCase().contains(query) ||
 							card.getText().toLowerCase().contains(query) ||
-							card.getSubtype().toLowerCase().contains(query)) {
+							card.getSubtype().toLowerCase().contains(query) ||
+                            card.getSetName().toLowerCase().contains(query)) {
 						// Add the header
 						if (!mArrDataHeader.contains(type)) {
 							mArrDataHeader.add(type);
