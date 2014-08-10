@@ -2,10 +2,6 @@ package com.shuneault.netrunnerdeckbuilder.fragments;
 
 
 
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -42,6 +38,10 @@ import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 import com.shuneault.netrunnerdeckbuilder.octgn.OCTGN;
+
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class DeckFragment extends Fragment implements OnDeckChangedListener {
 	

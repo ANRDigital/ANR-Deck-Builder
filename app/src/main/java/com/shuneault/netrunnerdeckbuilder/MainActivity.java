@@ -82,11 +82,6 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer);
 		
-		// Change the title to the image
-		ActionBar mActionBar = getSupportActionBar();
-		mActionBar.setCustomView(R.layout.action_bar_main_activity);
-		mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
-		
 		// Display the main fragment
 		if (savedInstanceState == null) {
 			fragMain = new MainActivityFragment();
@@ -205,8 +200,6 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setHomeButtonEnabled(true);
 		
 		// Load a deck immediately
 		if (getIntent().getLongExtra(EXTRA_DECK_ID, 0) > 0) {
@@ -367,10 +360,21 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 		bundle.putInt(DeckFragment.ARGUMENT_SELECTED_TAB, selectedTab);
 		fragDeck = new DeckFragment();
 		fragDeck.setArguments(bundle);
-		getSupportFragmentManager()
-			.beginTransaction()
-			.replace(R.id.main_content_frame, fragDeck, "DeckFragment")
-			.commit();
+        if (getSupportFragmentManager().findFragmentByTag("DeckFragment") == null) {
+            getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_content_frame, fragDeck, "DeckFragment")
+                .addToBackStack(null)
+                .commit();
+        } else {
+            getSupportFragmentManager()
+                    .popBackStack();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_content_frame, fragDeck, "DeckFragment")
+                    .addToBackStack(null)
+                    .commit();
+        }
 		
 		// Add the deck to the drawer if necessary
 		if (!mDrawerListDecks.get(deck.getSide()).contains(deck))

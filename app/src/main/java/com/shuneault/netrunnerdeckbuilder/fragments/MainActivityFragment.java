@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,6 +49,15 @@ public class MainActivityFragment extends Fragment {
 		
 		// Option menu
 		setHasOptionsMenu(true);
+
+        // Set the action bar
+        ActionBar mActionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+        mActionBar.setCustomView(R.layout.action_bar_main_activity);
+        mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setIcon(R.drawable.ic_launcher);
+        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		
 		// Set the text
 		updateInfo();
