@@ -3,6 +3,7 @@ package com.shuneault.netrunnerdeckbuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -32,7 +33,7 @@ import com.shuneault.netrunnerdeckbuilder.util.SystemUiHider;
  * 
  * @see SystemUiHider
  */
-public class ViewDeckFullscreenActivity extends ActionBarActivity {
+public class ViewDeckFullscreenActivity extends Activity {
 	/**
 	 * Whether or not the system UI should be auto-hidden after
 	 * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -94,7 +95,7 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
 		// Build the image array
 		if (mDeck != null) {
 			mCards = mDeck.getCards();
-			getSupportActionBar().setIcon(mDeck.getIdentity().getFactionImageRes(this));
+			getActionBar().setIcon(mDeck.getIdentity().getFactionImageRes(this));
 			Collections.sort(mCards, new CardSorterByCardType());
 		} else if (mSetName != null) {
 			mCards = AppManager.getInstance().getCardsBySetName(mSetName);

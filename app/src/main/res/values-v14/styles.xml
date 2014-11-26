@@ -5,16 +5,8 @@
         AppBaseTheme from BOTH res/values/styles.xml and
         res/values-v11/styles.xml on API 14+ devices.
     -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppBaseTheme" parent="Theme.Netrunner">
         <!-- API 14 theme customizations can go here. -->
-    </style>
-    
-    <style name="DrawerHeader">
-	    <item name="android:textAllCaps">true</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:paddingTop">20dp</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingBottom">5dp</item>
     </style>
 
 </resources>

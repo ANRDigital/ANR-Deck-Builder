@@ -1,27 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:padding="8dp"
     android:orientation="vertical" >
 
     <Spinner
         android:id="@+id/spinIdentities"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
     
     <android.support.v4.view.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pagerIdentity"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/spinIdentities"
+        android:layout_above="@+id/btnOK" />
 
     <Button
-        android:id="@+id/btnChooseIdentity"
-        android:layout_width="match_parent"
+        android:id="@+id/btnCancel"
+        style="@style/MaterialButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/btnOK"
+        android:text="@string/cancel" />
+
+    <Button
+        android:id="@+id/btnOK"
+        style="@style/MaterialButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:text="@string/ok" />
 
-</LinearLayout>
+</RelativeLayout>

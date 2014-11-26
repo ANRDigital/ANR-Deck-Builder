@@ -7,11 +7,7 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
-import com.shuneault.netrunnerdeckbuilder.MainActivity;
+import com.shuneault.netrunnerdeckbuilder.DeckActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
@@ -63,7 +59,7 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 		mainView = inflater.inflate(R.layout.fragment_deck_cards, container, false);
 		
 		// Get the arguments
-		mDeck = AppManager.getInstance().getDeck(getArguments().getLong(DeckFragment.ARGUMENT_DECK_ID));
+		mDeck = AppManager.getInstance().getDeck(getArguments().getLong(DeckActivity.ARGUMENT_DECK_ID));
 		
 		// The GUI items
 		lstDeckCards = (ExpandableListView) mainView.findViewById(R.id.lstDeckCards);
@@ -80,41 +76,41 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// Do not inflate if already there
-		if (menu.findItem(R.id.mnuSearch) == null)
-			inflater.inflate(R.menu.deck_cards, menu);
-		MenuItem item = menu.findItem(R.id.mnuSearch);
-		SearchView sv = new SearchView(((MainActivity) getActivity()).getSupportActionBar().getThemedContext());
-		MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-		MenuItemCompat.setActionView(item, sv);
-		sv.setOnQueryTextListener(new OnQueryTextListener() {
-			
-			@Override
-			public boolean onQueryTextSubmit(String arg0) {
-				return false;
-			}
-			
-			@Override
-			public boolean onQueryTextChange(String arg0) {
-                if (mDeckCardsAdapter != null) {
-                    mDeckCardsAdapter.filterData(arg0);
-                }
-                return false;
-			}
-		});
-		MenuItemCompat.setOnActionExpandListener(item, new OnActionExpandListener() {
-			
-			@Override
-			public boolean onMenuItemActionExpand(MenuItem arg0) {
-				return true;
-			}
-			
-			@Override
-			public boolean onMenuItemActionCollapse(MenuItem arg0) {
-				mDeckCardsAdapter.filterData("");
-				return true;
-			}
-		});
+//		// Do not inflate if already there
+//		if (menu.findItem(R.id.mnuSearch) == null)
+//			inflater.inflate(R.menu.deck_cards, menu);
+//		MenuItem item = menu.findItem(R.id.mnuSearch);
+//		SearchView sv = new SearchView(((MainActivity) getActivity()).getActionBar().getThemedContext());
+//		MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+//		MenuItemCompat.setActionView(item, sv);
+//		sv.setOnQueryTextListener(new OnQueryTextListener() {
+//
+//			@Override
+//			public boolean onQueryTextSubmit(String arg0) {
+//				return false;
+//			}
+//
+//			@Override
+//			public boolean onQueryTextChange(String arg0) {
+//                if (mDeckCardsAdapter != null) {
+//                    mDeckCardsAdapter.filterData(arg0);
+//                }
+//                return false;
+//			}
+//		});
+//		MenuItemCompat.setOnActionExpandListener(item, new OnActionExpandListener() {
+//
+//			@Override
+//			public boolean onMenuItemActionExpand(MenuItem arg0) {
+//				return true;
+//			}
+//
+//			@Override
+//			public boolean onMenuItemActionCollapse(MenuItem arg0) {
+//				mDeckCardsAdapter.filterData("");
+//				return true;
+//			}
+//		});
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 	

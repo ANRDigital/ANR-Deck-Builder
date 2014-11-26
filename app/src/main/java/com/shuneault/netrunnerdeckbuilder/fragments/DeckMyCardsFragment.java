@@ -8,7 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
+import com.shuneault.netrunnerdeckbuilder.DeckActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
@@ -60,7 +61,7 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 		mainView = inflater.inflate(R.layout.fragment_deck_cards, container, false);
 		
 		// Get the arguments
-		mDeck = AppManager.getInstance().getDeck(getArguments().getLong(DeckFragment.ARGUMENT_DECK_ID));
+		mDeck = AppManager.getInstance().getDeck(getArguments().getLong(DeckActivity.ARGUMENT_DECK_ID));
 		
 		// The GUI items
 		lstDeckCards = (ExpandableListView) mainView.findViewById(R.id.lstDeckCards);

@@ -4,12 +4,10 @@
     android:versionCode="23"
     android:versionName="1.321" >
 
-    <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="18" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -24,14 +22,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--
-                 <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="http" android:host="netrunnerdb.com" android:pathPrefix="/en/deck/copy/" />
-            </intent-filter>
-            -->
+        </activity>
+        <activity
+            android:name="com.shuneault.netrunnerdeckbuilder.DeckActivity"
+            android:label="@string/deck_name" >
         </activity>
         <activity
             android:name="com.shuneault.netrunnerdeckbuilder.SettingsActivity"
@@ -44,51 +38,55 @@
         <activity
             android:name="com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_view_deck_fullscreen"
-            android:theme="@style/FullscreenTheme" >
+            android:label="@string/title_activity_view_deck_fullscreen" >
         </activity>
         <activity
             android:name="com.shuneault.netrunnerdeckbuilder.externalactivities.ImportOCTGNActivity"
             android:label="@string/title_activity_import_octgn" >
-                        
+
             <!-- File o8d -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-                <data 
-                	android:host="*"
-                	android:pathPattern=".*\\.o8d"
-                	android:mimeType="application/octet-stream" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="*"
+                    android:mimeType="application/octet-stream"
+                    android:pathPattern=".*\\.o8d" />
             </intent-filter>
-                        
+
             <!-- File o8d -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-                <data 
-                    android:scheme="file"
-                	android:host="*"
-                	android:pathPattern=".*\\.o8d"
-                	android:mimeType="*/*" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.o8d"
+                    android:scheme="file" />
             </intent-filter>
-                        
+
             <!-- o8d from the web -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="http"
                     android:host="netrunnerdb.com"
-                    android:pathPrefix="/decklist/export/octgn" />
+                    android:pathPrefix="/decklist/export/octgn"
+                    android:scheme="http" />
                 <data
-                    android:scheme="http"
                     android:host="netrunner.meteor.com"
-                    android:pathPrefix="/deckexport/octgn" />
+                    android:pathPrefix="/deckexport/octgn"
+                    android:scheme="http" />
             </intent-filter>
-            
         </activity>
     </application>
 

@@ -26,7 +26,9 @@ public final class Sorter {
 
 		@Override
 		public int compare(Deck lhs, Deck rhs) {
-			if (lhs.getIdentity().getFaction().equals(rhs.getIdentity().getFaction())) {
+            if (lhs.isStarred() != rhs.isStarred()) {
+                return ((Boolean) !lhs.isStarred()).compareTo(!rhs.isStarred());
+            } else if (lhs.getIdentity().getFaction().equals(rhs.getIdentity().getFaction())) {
 				return lhs.getName().compareTo(rhs.getName());
 			} else {
 				return lhs.getIdentity().getFaction().compareTo(rhs.getIdentity().getFaction());
