@@ -97,6 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Perform all upgrade
         onUpgrade(db, 1, DATABASE_VERSION);
+
 	}
 	
 	// Upgrade
