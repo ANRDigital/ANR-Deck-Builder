@@ -21,133 +21,132 @@ import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
 public class DeckInfoFragment extends Fragment implements OnDeckChangedListener {
-		
-	// Listener
-	OnDeckChangedListener mListener;
-	
-	View mainView;
-	TextView txtDeckName;
-	TextView txtDeckDescription;
-	ImageView imgIdentity;
-	Deck mDeck;
-	
-	// Database
-	DatabaseHelper mDb;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		// Main View
-		mainView = (View) inflater.inflate(R.layout.fragment_deck_info, container, false);
-		
-		// Arguments
-		Bundle bundle = getArguments();
-		mDeck = AppManager.getInstance().getDeck(bundle.getLong(DeckActivity.ARGUMENT_DECK_ID));
-		
-		// GUI
-		imgIdentity = (ImageView) mainView.findViewById(R.id.imgIdentity);
-		txtDeckName = (TextView) mainView.findViewById(R.id.lblLabel);
-		txtDeckDescription = (TextView) mainView.findViewById(R.id.txtDeckDescription);
-		
-		// Variables
-		mDb = new DatabaseHelper(getActivity());
-		
-		// Set the info
-		ImageDisplayer.fill(imgIdentity, mDeck.getIdentity(), getActivity());
-		txtDeckName.setText(mDeck.getName());
-		txtDeckDescription.setText(mDeck.getNotes());
-		
-		// Events
-		txtDeckName.addTextChangedListener(new TextWatcher() {
+    // Listener
+    OnDeckChangedListener mListener;
 
-			@Override
-			public void afterTextChanged(Editable arg0) {
-			}
+    View mainView;
+    TextView txtDeckName;
+    TextView txtDeckDescription;
+    ImageView imgIdentity;
+    Deck mDeck;
 
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
-				// 
-				
-			}
+    // Database
+    DatabaseHelper mDb;
 
-			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
-				mDeck.setName(arg0.toString());
-				mListener.onDeckNameChanged(mDeck, arg0.toString());
-				getActivity().getActionBar().setTitle(arg0.toString());
-			}
-			
-		});
-		txtDeckDescription.addTextChangedListener(new TextWatcher() {
-			
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) { }
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,	int after) { }
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-				mDeck.setNotes(s.toString());
-				//mDb.updateDeck(mDeck);
-			}
-		});
-		
-		return mainView;
-		
-	}
-	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			mListener = (OnDeckChangedListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString() + " must implement OnDeckChangedListener");
-		}
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-	@Override
-	public void onDeckNameChanged(Deck deck, String name) {
-		// 
-		
-	}
+        // Main View
+        mainView = (View) inflater.inflate(R.layout.fragment_deck_info, container, false);
 
-	@Override
-	public void onDeckDeleted(Deck deck) {
-		// 
-		
-	}
+        // Arguments
+        Bundle bundle = getArguments();
+        mDeck = AppManager.getInstance().getDeck(bundle.getLong(DeckActivity.ARGUMENT_DECK_ID));
 
-	@Override
-	public void onDeckCloned(Deck deck) {
-		// 
-		
-	}
+        // GUI
+        imgIdentity = (ImageView) mainView.findViewById(R.id.imgIdentity);
+        txtDeckName = (TextView) mainView.findViewById(R.id.lblLabel);
+        txtDeckDescription = (TextView) mainView.findViewById(R.id.txtDeckDescription);
 
-	@Override
-	public void onDeckCardsChanged() {
-		// 
-		
-	}
+        // Variables
+        mDb = new DatabaseHelper(getActivity());
 
-	@Override
-	public void onDeckIdentityChanged(Card newIdentity) {
-		// Update the deck
-		mDeck.setIdentity(newIdentity);
-		// Update the image
-		if (getActivity() != null)
-			imgIdentity.setImageBitmap(mDeck.getIdentity().getImage(getActivity()));
-		// Save to the database
-		mDb.updateDeck(mDeck);
-	}
+        // Set the info
+        ImageDisplayer.fill(imgIdentity, mDeck.getIdentity(), getActivity());
+        txtDeckName.setText(mDeck.getName());
+        txtDeckDescription.setText(mDeck.getNotes());
 
-	@Override
-	public void onSettingsChanged() {
-		
-	}
-	
+        // Events
+        txtDeckName.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                //
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                mDeck.setName(arg0.toString());
+                mListener.onDeckNameChanged(mDeck, arg0.toString());
+                getActivity().getActionBar().setTitle(arg0.toString());
+            }
+
+        });
+        txtDeckDescription.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mDeck.setNotes(s.toString());
+                //mDb.updateDeck(mDeck);
+            }
+        });
+
+        return mainView;
+
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnDeckChangedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnDeckChangedListener");
+        }
+    }
+
+    @Override
+    public void onDeckNameChanged(Deck deck, String name) {
+        //
+
+    }
+
+    @Override
+    public void onDeckDeleted(Deck deck) {
+        //
+
+    }
+
+    @Override
+    public void onDeckCloned(Deck deck) {
+        //
+
+    }
+
+    @Override
+    public void onDeckCardsChanged() {
+        //
+
+    }
+
+    @Override
+    public void onDeckIdentityChanged(Card newIdentity) {
+        if (!isAdded()) return;
+        // Update the image
+        if (getActivity() != null)
+            imgIdentity.setImageBitmap(mDeck.getIdentity().getImage(getActivity()));
+    }
+
+    @Override
+    public void onSettingsChanged() {
+
+    }
+
 }

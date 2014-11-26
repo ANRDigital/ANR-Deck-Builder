@@ -3,33 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/mnuShareDeck"
-        app:showAsAction="ifRoom"
+        android:showAsAction="never"
         android:icon="@drawable/ic_social_share"
         android:title="@string/menu_share">
 
         <menu>
             <item android:id="@+id/mnuOCTGN"
-                app:showAsAction="ifRoom"
+                android:showAsAction="never"
                 android:title="@string/octgn_file" />
             <item android:id="@+id/mnuPlainText"
-                app:showAsAction="ifRoom"
+                android:showAsAction="never"
                 android:title="@string/plain_text" />
         </menu>
 
     </item>
     
     <item android:id="@+id/mnuChangeIdentity"
-        app:showAsAction="never"
+        android:showAsAction="never"
         android:title="@string/menu_change_identity" />
     <item android:id="@+id/mnuCloneDeck"
-        app:showAsAction="never"
+        android:showAsAction="never"
         android:title="@string/clone_deck"
 		android:icon="@drawable/ic_content_copy" />
     <item android:id="@+id/mnuDeleteDeck"
-        app:showAsAction="never"
+        android:showAsAction="never"
         android:title="@string/delete_deck"
         android:icon="@drawable/ic_content_delete" />
     <item android:id="@+id/mnuViewFullScreen"
-        app:showAsAction="never"
+        android:showAsAction="never"
         android:title="@string/view_fullscreen" />
 </menu>

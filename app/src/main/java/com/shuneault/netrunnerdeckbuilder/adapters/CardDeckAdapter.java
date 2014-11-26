@@ -1,24 +1,19 @@
 package com.shuneault.netrunnerdeckbuilder.adapters;
 
-import com.shuneault.netrunnerdeckbuilder.R;
-import com.shuneault.netrunnerdeckbuilder.game.Deck;
-
-import android.graphics.drawable.TransitionDrawable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Created by sebast on 2014-11-22.
@@ -60,7 +55,7 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
         // Set the values
         viewHolder.txtDeckTitle.setText(deck.getName());
         viewHolder.txtDeckNotes.setText(deck.getNotes());
-        viewHolder.imgDeckIdentity.setImageBitmap(deck.getIdentity().getImage(mViewGroup.getContext()));
+        ImageDisplayer.fill(viewHolder.imgDeckIdentity, deck.getIdentity(), mViewGroup.getContext());
         viewHolder.chkStarred.setChecked(deck.isStarred());
 
     }
@@ -101,6 +96,7 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
 
         public static interface IViewHolderClicks {
             public void onClick(int index);
+
             public void onDeckStarred(int index, boolean isStarred);
         }
     }

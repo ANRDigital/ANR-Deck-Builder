@@ -25,6 +25,8 @@
         </activity>
         <activity
             android:name="com.shuneault.netrunnerdeckbuilder.DeckActivity"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/deck_name" >
         </activity>
         <activity

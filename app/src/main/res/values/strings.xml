@@ -125,10 +125,18 @@
         <item>3</item>
     </string-array>
     <string-array name="arrEmpty" />
+    <string-array name="arrDeckTypes">
+        <item>Corporation</item>
+        <item>Runner</item>
+    </string-array>
 
     <string name="title_activity_import_octgn">Import Deck</string>
     <string name="octgn_file">OCTGN file</string>
     <string name="plain_text">Plain Text</string>
     <string name="title_activity_material_main">MaterialMainActivity</string>
+    <string name="cache">Cache</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="delete_all_images">Delete all images from the cache</string>
+    <string name="message_clear_cache">Are you sure you want to delete all images from the cache? Your decks will NOT be deleted.</string>
 
 </resources>
