@@ -22,6 +22,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
 	private String mName;
 	private Card mIdentity;
 	private String mNotes;
+    private boolean mStarred;
 	private UUID mUUID = UUID.randomUUID();
 	private Long mRowId;
 	private HashMap<Card, Integer> mCards = new HashMap<Card, Integer>();
@@ -61,6 +62,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
 		this.mName = name;
 		this.mNotes = "";
 		this.mIdentity = Identity;
+        this.mStarred = false;
 	}
 	public Deck(String name, String identity_code) {
 		this(name, AppManager.getInstance().getCard(identity_code));
@@ -413,5 +415,12 @@ public class Deck implements Serializable, HeaderListItemInterface {
 		db.saveDeck(newDeck);
 		return newDeck;
 	}
-	
+
+    public boolean isStarred() {
+        return mStarred;
+    }
+
+    public void setStarred(boolean starred) {
+        this.mStarred = starred;
+    }
 }

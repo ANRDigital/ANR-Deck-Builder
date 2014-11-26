@@ -5,4 +5,14 @@
     <color name="background_normal">#0000</color>
     <color name="black_overlay">#66000000</color>
 
+
+
+    <color name="netrunner_blue">#345F82</color>
+    <color name="button_pressed">#DDDDDD</color>
+    <color name="button_hover">#CCCCCC</color>
+
+    <color name="white">#fafafa</color>
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="half_black">#808080</color>
+
 </resources>

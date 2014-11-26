@@ -34,7 +34,8 @@ public class ChooseIdentityActivity extends FragmentActivity {
 	public static final String EXTRA_IDENTITY_CODE = "com.example.netrunnerdeckbuilder.EXTRA_IDENTITY_CODE";
 	
 	private ArrayList<Card> mIdentities;
-	private Button btnChooseIdentity;
+    private Button btnOK;
+    private Button btnCancel;
 	private Spinner spinIdentities;
 	private ViewPager pagerIdentity;
 	private Card mIdentity;
@@ -48,7 +49,8 @@ public class ChooseIdentityActivity extends FragmentActivity {
 		
 		// GUI
 		spinIdentities = (Spinner) findViewById(R.id.spinIdentities);
-		btnChooseIdentity = (Button) findViewById(R.id.btnChooseIdentity);
+        btnOK = (Button) findViewById(R.id.btnOK);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
 		pagerIdentity = (ViewPager) findViewById(R.id.pagerIdentity);
 		
 		// Arguments
@@ -73,16 +75,22 @@ public class ChooseIdentityActivity extends FragmentActivity {
 		mIdentity = mIdentities.get(pagerIdentity.getCurrentItem());
 		
 		// Events
-		btnChooseIdentity.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent data = new Intent();
-				data.putExtra(EXTRA_IDENTITY_CODE, mIdentity.getCode());
-				setResult(RESULT_OK, data);
-				finish();
-			}
-		});
+		btnOK.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent data = new Intent();
+                data.putExtra(EXTRA_IDENTITY_CODE, mIdentity.getCode());
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        });
+        btnCancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 		spinIdentities.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override

@@ -1,18 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-
-import org.json.JSONArray;
-
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,27 +9,28 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
+import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckListAdapter;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.shuneault.netrunnerdeckbuilder.adapters.CardDeckAdapter;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
-import com.shuneault.netrunnerdeckbuilder.fragments.DeckFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.MainActivityFragment;
+import com.shuneault.netrunnerdeckbuilder.fragments.MaterialMainFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
@@ -52,7 +42,19 @@ import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader.CardImages
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
-public class MainActivity extends ActionBarActivity implements OnDeckChangedListener  {
+import org.json.JSONArray;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class MainActivity extends Activity implements OnDeckChangedListener, MaterialMainFragment.OnDeckSelected  {
 
 	// Request Codes for activity launch
 	public static final int REQUEST_NEW_IDENTITY = 1;
@@ -66,46 +68,133 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 	private DatabaseHelper mDb;
 	
 	private ArrayList<Deck> mDecks;
-	private DrawerLayout mDrawerLayout;
-	private ExpandableListView mDrawerList;
-	private ActionBarDrawerToggle mDrawerToggle;
-	private ExpandableDeckListAdapter mDrawerAdapter;
-	private ArrayList<String> mDrawerListHeaders;
-	private HashMap<String, ArrayList<Deck>> mDrawerListDecks;
 	
 	// Load the deck on resume
 	private Deck mDeck;
-	private DeckFragment fragDeck;
-	private MainActivityFragment fragMain;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private CardDeckAdapter mDeckAdapter;
+    private FloatingActionsMenu fabAdd;
+    private FloatingActionButton fabRunner;
+    private FloatingActionButton fabCorp;
+    private FloatingActionButton fabBrowseSets;
+    private RelativeLayout layButtons;
+
+    // Flags
+    private boolean bStarOnly = false;
+    private int mScrollDirection = 0;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-				
-		// GUI
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer);
-		
-		// Display the main fragment
-		if (savedInstanceState == null) {
-			fragMain = new MainActivityFragment();
-			getSupportFragmentManager()
-				.beginTransaction()
-				.replace(R.id.main_content_frame, fragMain)
-				.commit();
-		} else {
-			// Load back the fragDeck
-			fragDeck = (DeckFragment) getSupportFragmentManager().findFragmentByTag("DeckFragment");
-		}
-		
-		// Init some variables
-		mDrawerListHeaders = new ArrayList<String>();
-		mDrawerListDecks = new HashMap<String, ArrayList<Deck>>();
-		mDecks = AppManager.getInstance().getAllDecks();
-		mDb = new DatabaseHelper(this);
-		AppManager.getInstance().initSharedPrefs(this);
-		
+		setContentView(R.layout.activity_material_main);
+
+        // GUI
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        fabAdd = (FloatingActionsMenu) findViewById(R.id.fabAdd);
+        fabRunner = (FloatingActionButton) findViewById(R.id.fabCreateRunner);
+        fabCorp = (FloatingActionButton) findViewById(R.id.fabCreateCorp);
+        fabBrowseSets = (FloatingActionButton) findViewById(R.id.fabBrowseSets);
+        layButtons = (RelativeLayout) findViewById(R.id.layButtons);
+
+        // Some variables
+        mDb = new DatabaseHelper(this);
+        mDecks = AppManager.getInstance().getAllDecks();
+        AppManager.getInstance().initSharedPrefs(this);
+
+        // Initialize the layout manager and adapter
+        mLayoutManager = new LinearLayoutManager(this);
+        mDeckAdapter = new CardDeckAdapter(mDecks, new CardDeckAdapter.ViewHolder.IViewHolderClicks() {
+            @Override
+            public void onClick(int index) {
+                Deck deck = mDecks.get(index);
+                loadDeckFragment(deck);
+            }
+
+            @Override
+            public void onDeckStarred(int index, boolean isStarred) {
+                Deck deck = mDecks.get(index);
+                deck.setStarred(isStarred);
+                mDb.saveDeck(deck);
+                // Sort
+                Collections.sort(mDecks, new Sorter.DeckSorter());
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+        });
+
+        // Initialize the RecyclerView
+        mRecyclerView.setHasFixedSize(false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mDeckAdapter);
+
+        // OnClick
+        fabCorp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ChooseIdentityActivity.class);
+                intent.putExtra(ChooseIdentityActivity.EXTRA_SIDE_CODE, Card.Side.SIDE_CORPORATION);
+                startActivityForResult(intent, REQUEST_NEW_IDENTITY);
+                fabAdd.collapse();
+            }
+        });
+
+        // OnClick
+        fabRunner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ChooseIdentityActivity.class);
+                intent.putExtra(ChooseIdentityActivity.EXTRA_SIDE_CODE, Card.Side.SIDE_RUNNER);
+                startActivityForResult(intent, REQUEST_NEW_IDENTITY);
+                fabAdd.collapse();
+            }
+        });
+
+        fabBrowseSets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get the set names
+                final ArrayList<String> setNames = new ArrayList<String>();
+                for (String setName : AppManager.getInstance().getSetNames()) {
+                    setNames.add(setName + " (" + AppManager.getInstance().getCardsBySetName(setName).size() + ")");
+                }
+                CharSequence[] cs = setNames.toArray(new CharSequence[setNames.size()]);
+                // Display the dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(R.string.view_cards);
+                builder.setItems(cs, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Launch the full screen image viewer activity
+                        Intent intent = new Intent(MainActivity.this, ViewDeckFullscreenActivity.class);
+                        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_SET_NAME, AppManager.getInstance().getSetNames().get(which));
+                        startActivity(intent);
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 && mScrollDirection <= 0) { // Scroll Down
+                    fabAdd.collapse();
+                    layButtons.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_down));
+                    mScrollDirection = dy;
+                } else if (dy < 0 && mScrollDirection >= 0) { // Scroll Up
+                    layButtons.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_up));
+                    mScrollDirection = dy;
+                } else {
+                    // Same direction
+                }
+            }
+        });
+
+        initActionBar();
+
+
+
 		// Load the cards
 		if (AppManager.getInstance().getAllCards().size() == 0) {
 			File f = new File(getFilesDir(), AppManager.FILE_CARDS_JSON);
@@ -117,104 +206,25 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
                 } catch (Exception e) { }
             }
             doLoadCards();
-			
+
 		}
 		
 		// Sort the list
 		Collections.sort(mDecks, new Sorter.DeckSorter());
 		
-		// Load the list
-		mDrawerListHeaders.add(Card.Side.SIDE_CORPORATION);
-		mDrawerListHeaders.add(Card.Side.SIDE_RUNNER);
-		ArrayList<Deck> arrDecksCorp = new ArrayList<Deck>();
-		ArrayList<Deck> arrDecksRunner = new ArrayList<Deck>();
-		for (Deck deck : mDecks) {
-			if (deck.getSide().equals(Card.Side.SIDE_CORPORATION))
-				arrDecksCorp.add(deck);
-			else
-				arrDecksRunner.add(deck);
-		}
-		mDrawerListDecks.put(mDrawerListHeaders.get(0), arrDecksCorp);
-		mDrawerListDecks.put(mDrawerListHeaders.get(1), arrDecksRunner);
-		mDrawerAdapter = new ExpandableDeckListAdapter(this, mDrawerListHeaders, mDrawerListDecks);
-		// Add the home item
-		View vNewCorp = this.getLayoutInflater().inflate(R.layout.list_view_item, null);
-		View vNewRunner = this.getLayoutInflater().inflate(R.layout.list_view_item, null);
-		((TextView) vNewCorp.findViewById(R.id.lblLabel)).setText(R.string.drawer_new_deck_corp);
-		((TextView) vNewRunner.findViewById(R.id.lblLabel)).setText(R.string.drawer_new_deck_runner);
-		mDrawerList.addHeaderView(vNewCorp);
-		mDrawerList.addHeaderView(vNewRunner);
-		mDrawerList.setAdapter(mDrawerAdapter);
-		
-		// List Click listener
-		mDrawerList.setOnChildClickListener(new OnChildClickListener() {
-			
-			@Override
-			public boolean onChildClick(ExpandableListView parent, View v,
-					int groupPosition, int childPosition, long id) {
-				
-				// Load the deck
-				mDeck = mDrawerListDecks.get(mDrawerListHeaders.get(groupPosition)).get(childPosition);
-				loadDeckFragment(mDeck);
-				
-				// Dismiss the drawer
-				mDrawerLayout.closeDrawers();
-				
-				return false;
-			}
-		});
-		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				
-				Intent intent = new Intent(MainActivity.this, ChooseIdentityActivity.class);
-				switch (arg2) {
-				case 0: // New Corp Deck
-					intent.putExtra(ChooseIdentityActivity.EXTRA_SIDE_CODE, Card.Side.SIDE_CORPORATION);
-					break;
-				case 1: // New Runner Deck
-					intent.putExtra(ChooseIdentityActivity.EXTRA_SIDE_CODE, Card.Side.SIDE_RUNNER);
-					break;
-				}
-				startActivityForResult(intent, REQUEST_NEW_IDENTITY);
-				
-				// Dismiss the drawer
-				mDrawerLayout.closeDrawers();
-			}
-			
-		});
-		
-		// Drawer Toggle
-		mDrawerToggle = new ActionBarDrawerToggle(
-				this,
-				mDrawerLayout,
-				R.drawable.ic_drawer,
-				R.string.drawer_open,
-				R.string.drawer_close
-				) {
-			
-			@Override
-			public void onDrawerClosed(View drawerView) {
-				// 
-				super.onDrawerClosed(drawerView);
-			}
-			
-			@Override
-			public void onDrawerOpened(View drawerView) {
-				// 
-				super.onDrawerOpened(drawerView);
-			}
-		};
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		
-		// Load a deck immediately
-		if (getIntent().getLongExtra(EXTRA_DECK_ID, 0) > 0) {
-			loadDeckFragment(AppManager.getInstance().getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0)));
-		}
-		
 	}
+
+    private void initActionBar() {
+        // Set the action bar
+        ActionBar mActionBar = getActionBar();
+        mActionBar.setTitle(R.string.title_activity_main);
+        //mActionBar.setCustomView(R.layout.action_bar_main_activity);
+        //mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
+        mActionBar.setDisplayHomeAsUpEnabled(false);
+        mActionBar.setHomeButtonEnabled(false);
+        mActionBar.setIcon(R.drawable.ic_launcher);
+        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+    }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -234,35 +244,23 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 			mDb.createDeck(mDeck);
 			
 			// Start the new deck activity
-			mDrawerListDecks.get(card.getSideCode()).add(0, mDeck);
 			loadDeckFragment(mDeck);
 			break;
 			
 		case REQUEST_CHANGE_IDENTITY:
 			Card newIdentity = AppManager.getInstance().getCard(data.getStringExtra(ChooseIdentityActivity.EXTRA_IDENTITY_CODE));
-			// Forward the info to the DeckFragment
-			if (fragDeck != null)
-				fragDeck.onDeckIdentityChanged(newIdentity);
-			break;
+            break;
 			
 		case REQUEST_SETTINGS:
-			if (fragDeck != null)
-				fragDeck.onSettingsChanged();
+
 			break;
 		}
-	}
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		
-		// Sync the toggle state after onRestoreInstanceState has occured
-		mDrawerToggle.syncState();
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
+        mRecyclerView.getAdapter().notifyDataSetChanged();
 	}
 	
 	@Override
@@ -283,8 +281,6 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (mDrawerToggle.onOptionsItemSelected(item))
-			return true;
 		
 		switch (item.getItemId()) {
 			case R.id.mnuRefreshCards:
@@ -314,38 +310,23 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 	
 		return super.onOptionsItemSelected(item);
 	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
-	@Override
-	public void onDeckNameChanged(Deck deck, String name) {
-		mDrawerAdapter.notifyDataSetChanged();
-	}
-
 	@Override
 	public void onDeckCardsChanged() {
-		if (fragDeck != null)
-			fragDeck.onDeckCardsChanged();
+
 	}
 
-	@Override
+    @Override
+    public void onDeckNameChanged(Deck deck, String name) {
+
+    }
+
+    @Override
 	public void onDeckDeleted(Deck deck) {
-		getSupportFragmentManager().beginTransaction().remove(fragDeck).commit();
-		getSupportActionBar().removeAllTabs();
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		mDrawerListDecks.get(deck.getSide()).remove(deck);
-		mDrawerAdapter.notifyDataSetChanged();	
-		// Save
 		mDb.deleteDeck(deck);
 	}
 
 	@Override
 	public void onDeckCloned(Deck deck) {
-		mDrawerListDecks.get(deck.getSide()).add(deck);
-		mDrawerAdapter.notifyDataSetChanged();
 		// Load the deck on screen
 		loadDeckFragment(deck);
 	}
@@ -356,54 +337,33 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 
 	@Override
 	public void onDeckIdentityChanged(Card newIdentity) {
-		if (fragDeck != null)
-			fragDeck.onDeckIdentityChanged(newIdentity);
+
 		
 	}
 
 	public void loadDeckFragment(Deck deck, int selectedTab) {
-		// Display the deck fragment
-		Bundle bundle = new Bundle();
-		bundle.putLong(DeckFragment.ARGUMENT_DECK_ID, deck.getRowId());
-		bundle.putInt(DeckFragment.ARGUMENT_SELECTED_TAB, selectedTab);
-		fragDeck = new DeckFragment();
-		fragDeck.setArguments(bundle);
-        if (getSupportFragmentManager().findFragmentByTag("DeckFragment") == null) {
-            getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_content_frame, fragDeck, "DeckFragment")
-                .addToBackStack(null)
-                .commit();
-        } else {
-            getSupportFragmentManager()
-                    .popBackStack();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_content_frame, fragDeck, "DeckFragment")
-                    .addToBackStack(null)
-                    .commit();
-        }
-		
-		// Add the deck to the drawer if necessary
-		if (!mDrawerListDecks.get(deck.getSide()).contains(deck))
-			mDrawerListDecks.get(deck.getSide()).add(deck);
+        // Start the DeckActivity activity
+        Intent intent = new Intent(MainActivity.this, DeckActivity.class);
+        intent.putExtra(DeckActivity.ARGUMENT_DECK_ID, deck.getRowId());
+        intent.putExtra(DeckActivity.ARGUMENT_SELECTED_TAB, selectedTab);
+        startActivity(intent);
 	}
 
 	public void loadDeckFragment(Deck deck) {
 		loadDeckFragment(deck, 0);
 	}
 	
-	public void doLoadCards() {		
+	public void doLoadCards() {
 		// Cards downloaded, load them
 		try {
 			/* Load the card list
-			 * 
+			 *
 			 * - Create the card
 			 * - Add the card to the array
 			 * - Generate the faction list
 			 * - Generate the side list
 			 * - Generate the card set list
-			 * 
+			 *
 			 */
 			JSONArray jsonFile = AppManager.getInstance().getJSONCardsFile(this);
 			CardList arrCards = AppManager.getInstance().getAllCards();
@@ -415,16 +375,16 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 				if (!card.getSetName().equals(Card.SetName.ALTERNATES))
 					arrCards.add(card);
 			}
-			
+
 			// Load the decks
 			doLoadDecks();
-			
+
 		} catch (FileNotFoundException e) {
 			doDownloadCards();
 			return;
 		} catch (Exception e) { e.printStackTrace(); }
 	}
-	
+
 	private void doLoadDecks() {
 		// Load the decks from the DB
 		mDecks.clear();
@@ -462,8 +422,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 								
 								@Override
 								public void onImageDownloaded(Card card, int count, int max) {
-									if (fragMain != null)
-										fragMain.updateInfo();
+
 								}
 								
 								@Override
@@ -477,11 +436,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 					builder.setNegativeButton(android.R.string.no, null);
 					builder.create().show();
 				}
-				
-				// Update the main info screen
-				if (fragMain != null) {
-					fragMain.updateInfo();
-				}
+
 			}
 
 			@Override
@@ -527,5 +482,9 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
         out.close();
     }
 
-	
+
+    @Override
+    public void onDeckSelected(Deck deck) {
+        loadDeckFragment(deck);
+    }
 }

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardCount;
@@ -19,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * SQL
 	 */
 	// Database Version
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 	
 	// Database Name
 	private static final String DATABASE_NAME = "deckBuilder.db";
@@ -37,6 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_DECKS_NAME = "name";
 	private static final String KEY_DECKS_NOTES = "notes";
 	private static final String KEY_DECKS_IDENTITY = "identity_code";
+    private static final String KEY_DECKS_STARRED = "starred";
 	
 	// Deck Cards
 	private static final String KEY_DECK_CARDS_DECK_ID = "deck_id";
@@ -76,6 +78,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			KEY_DECK_CARDS_ADD_REMOVE_CARD_COUNT + " INTEGER NOT NULL," +
 			KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED + " INTEGER NOT NULL" +
 			")";
+    private static final String ALTER_TABLE_DECK_ADD_STARRED = "ALTER TABLE " + TABLE_DECKS + " " +
+            "ADD " + KEY_DECKS_STARRED + " BIT NOT NULL DEFAULT(0)";
 	
 	
 	public DatabaseHelper(Context context) {
@@ -90,6 +94,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_DECK_CARDS);
 		db.execSQL(CREATE_TABLE_DECK_CARDS_ADD);
 		db.execSQL(CREATE_TABLE_DECK_CARDS_REMOVE);
+
+        // Perform all upgrade
+        onUpgrade(db, 1, DATABASE_VERSION);
 	}
 	
 	// Upgrade
@@ -103,6 +110,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			// NO BREAK
 		case 2:
 			// Do some updates
+        case 3:
+            // Add "starred" field for decks
+            db.execSQL(ALTER_TABLE_DECK_ADD_STARRED);
 		}
 	}
 	
@@ -110,9 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	/**
 	 * Create a new deck
 	 * 
-	 * @param	name	the name of the deck
-	 * @param	notes	the notes of the deck
-	 * @param	identity_code	the identity code of the deck
+	 * @param	deck	the deck to create
 	 * @return	rowId or -1 if failed
 	 */
 	public Long createDeck(Deck deck) {
@@ -138,7 +146,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public ArrayList<Deck> getAllDecks(boolean withCards) {
 		ArrayList<Deck> decks = new ArrayList<Deck>();
-		Cursor c = getReadableDatabase().query(TABLE_DECKS, new String[] { KEY_ID, KEY_DECKS_NAME, KEY_DECKS_NOTES, KEY_DECKS_IDENTITY }, null, null, null, null, null);
+		Cursor c = getReadableDatabase().query(TABLE_DECKS, new String[] { KEY_ID, KEY_DECKS_NAME, KEY_DECKS_NOTES, KEY_DECKS_IDENTITY, KEY_DECKS_STARRED }, null, null, null, null, null);
 		
 		// Loop and create objects as we go
 		if (c.moveToFirst()) {
@@ -146,6 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				Deck deck = new Deck(c.getString(c.getColumnIndex(KEY_DECKS_NAME)), c.getString(c.getColumnIndex(KEY_DECKS_IDENTITY)));
 				deck.setNotes(c.getString(c.getColumnIndex(KEY_DECKS_NOTES)));
 				deck.setRowId(c.getLong(c.getColumnIndex(KEY_ID)));
+                deck.setStarred(c.getInt(c.getColumnIndex(KEY_DECKS_STARRED)) > 0);
 				
 				// Add the cards?
 				if (withCards) {
@@ -274,6 +283,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		val.put(KEY_DECKS_IDENTITY, deck.getIdentity().getCode());
 		val.put(KEY_DECKS_NAME, deck.getName());
 		val.put(KEY_DECKS_NOTES, deck.getNotes());
+        val.put(KEY_DECKS_STARRED, deck.isStarred());
 		
 		return getWritableDatabase().update(TABLE_DECKS, val, KEY_ID + "=" + deck.getRowId(), null) > 0;
 	}
@@ -295,6 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		val.put(KEY_DECKS_IDENTITY, deck.getIdentity().getCode());
 		val.put(KEY_DECKS_NAME, deck.getName());
 		val.put(KEY_DECKS_NOTES, deck.getNotes());
+        val.put(KEY_DECKS_STARRED, deck.isStarred());
 		db.update(TABLE_DECKS, val, KEY_ID + "=" + deck.getRowId(), null);
 		
 		// Save the cards

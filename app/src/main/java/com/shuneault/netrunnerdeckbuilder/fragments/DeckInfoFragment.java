@@ -1,9 +1,8 @@
 package com.shuneault.netrunnerdeckbuilder.fragments;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.shuneault.netrunnerdeckbuilder.DeckActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
@@ -43,7 +43,7 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
 		
 		// Arguments
 		Bundle bundle = getArguments();
-		mDeck = AppManager.getInstance().getDeck(bundle.getLong(DeckFragment.ARGUMENT_DECK_ID));
+		mDeck = AppManager.getInstance().getDeck(bundle.getLong(DeckActivity.ARGUMENT_DECK_ID));
 		
 		// GUI
 		imgIdentity = (ImageView) mainView.findViewById(R.id.imgIdentity);
@@ -77,7 +77,7 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
 					int arg3) {
 				mDeck.setName(arg0.toString());
 				mListener.onDeckNameChanged(mDeck, arg0.toString());
-				((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(arg0.toString());
+				getActivity().getActionBar().setTitle(arg0.toString());
 			}
 			
 		});

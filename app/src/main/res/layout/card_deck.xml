@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    card_view:cardCornerRadius="5dp"
+    card_view:cardElevation="2dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_selector">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgDeckIdentity"
+            android:src="@drawable/card_back_corp"
+            android:maxHeight="60dp"
+            android:elevation="20dp"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="txtDeckTitle"
+            android:id="@+id/txtDeckTitle"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imgDeckIdentity"
+            android:layout_toLeftOf="@+id/chkStar"
+            android:layout_toEndOf="@+id/imgDeckIdentity" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="txtDeckNotes"
+            android:id="@+id/txtDeckNotes"
+            android:layout_below="@+id/txtDeckTitle"
+            android:layout_toRightOf="@+id/imgDeckIdentity"
+            android:layout_toEndOf="@+id/imgDeckIdentity" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chkStar"
+            style="?android:attr/starStyle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
