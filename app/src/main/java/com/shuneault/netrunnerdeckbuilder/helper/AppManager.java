@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
+import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
@@ -42,9 +43,15 @@ public class AppManager {
 	// Notifications
 	public static final int NOTIFY_DOWNLOAD_CARDS_ID = 1;
 	public static final int NOTIFY_DOWNLOAD_IMAGES_ID = 2;
+
+    // App Context
+    private Context mContext;
 	
 	// Shared Preferences
 	private SharedPreferences mSharedPrefs;
+
+    // Database
+    private DatabaseHelper mDb;
 	
 	private ArrayList<Deck> mDecks;
 	private CardList mCards;
@@ -59,14 +66,22 @@ public class AppManager {
 			new AppManager();		
 		return mAppManager;
 	}
+
+    public void init(Context context) {
+        // Initialize the application, database, shared preferences, etc.
+        AppManager app = getInstance();
+        mContext = context;
+        mDb = new DatabaseHelper(context);
+        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+    }
 	
 	public SharedPreferences getSharedPrefs() {
 		return mSharedPrefs;
 	}
-	
-	public void initSharedPrefs(Context context) {
-		mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-	}
+
+    public DatabaseHelper getDatabase() {
+        return mDb;
+    }
 	
 	public ArrayList<Deck> getAllDecks() {
 		return mDecks;
@@ -118,6 +133,7 @@ public class AppManager {
 	}
 	
 	public boolean deleteDeck(Deck deck) {
+        mDb.deleteDeck(deck);
 		return mDecks.remove(deck);
 	}
 	

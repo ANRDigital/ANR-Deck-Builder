@@ -8,6 +8,7 @@
 
 
     <color name="netrunner_blue">#345F82</color>
+    <color name="netrunner_blue_light">#AAC6DD</color>
     <color name="button_pressed">#DDDDDD</color>
     <color name="button_hover">#CCCCCC</color>
 

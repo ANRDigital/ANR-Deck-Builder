@@ -200,7 +200,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 		if (mMyCards) return;
 		// Green background for the cards I own
 		if (mDeck.getCardCount(card) > 0) {
-			view.setBackgroundColor(Color.parseColor("#DEFFF0"));
+			view.setBackgroundColor(mContext.getResources().getColor(R.color.netrunner_blue_light));
 		} else {
 			view.setBackgroundColor(Color.TRANSPARENT);
 		}

@@ -72,6 +72,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/lblAmount"
             android:focusable="false"
+            style="@style/MaterialButtonRaised"
             android:text="-" />
 
         <TextView
@@ -89,6 +90,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:focusable="false"
+            style="@style/MaterialButtonRaised"
             android:text="+" />
     
 </RelativeLayout>

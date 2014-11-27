@@ -92,8 +92,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		// Create the required tables
 		db.execSQL(CREATE_TABLE_DECKS);
 		db.execSQL(CREATE_TABLE_DECK_CARDS);
-		db.execSQL(CREATE_TABLE_DECK_CARDS_ADD);
-		db.execSQL(CREATE_TABLE_DECK_CARDS_REMOVE);
 
         // Perform all upgrade
         onUpgrade(db, 1, DATABASE_VERSION);
@@ -255,8 +253,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public boolean updateCardCount(final Deck deck, final Card card, final int count) {
 		SQLiteDatabase db = getWritableDatabase();
-		
-		// Delete the old card count 
+
+		// Delete the old card count
 		db.delete(TABLE_DECK_CARDS,
 				KEY_DECK_CARDS_DECK_ID + "=? AND " + KEY_DECK_CARDS_CODE + "=?",
 				new String[] { deck.getRowId().toString(), card.getCode() }
@@ -301,19 +299,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		SQLiteDatabase db = getWritableDatabase();
 		// Save the deck
-		ContentValues val = new ContentValues();
-		val.put(KEY_DECKS_IDENTITY, deck.getIdentity().getCode());
-		val.put(KEY_DECKS_NAME, deck.getName());
-		val.put(KEY_DECKS_NOTES, deck.getNotes());
-        val.put(KEY_DECKS_STARRED, deck.isStarred());
-		db.update(TABLE_DECKS, val, KEY_ID + "=" + deck.getRowId(), null);
+        updateDeck(deck);
 		
 		// Save the cards
-		clearCards(deck);
+        clearCards(deck);
 		for (Card card : deck.getCards()) {
 			updateCardCount(deck, card, deck.getCardCount(card));
 		}
-		
+
 		// Cards to add
 		clearCardsToAdd(deck);
 		for (CardCount cc : deck.getCardsToAdd()) {
@@ -324,7 +317,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			valAdd.put(KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED, cc.isDone());
 			db.insert(TABLE_DECK_CARDS_ADD, null, valAdd);
 		}
-		
+
 		// Cards to remove
 		clearCardsToRemove(deck);
 		for (CardCount cc : deck.getCardsToRemove()) {

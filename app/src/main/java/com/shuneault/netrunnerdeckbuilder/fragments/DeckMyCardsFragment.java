@@ -199,6 +199,7 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 
 	@Override
 	public void onDeckCardsChanged() {
+        if (!isAdded()) return;
 		// Refresh my cards
 		refreshCardList();
 	}

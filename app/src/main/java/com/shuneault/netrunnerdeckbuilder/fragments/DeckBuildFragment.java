@@ -138,6 +138,7 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
 
 	@Override
 	public void onDeckCardsChanged() {
+        if (!isAdded()) return;
 		Collections.sort(mCardsToAdd, new Sorter.CardCountSorterByName());
 		Collections.sort(mCardsToRemove, new Sorter.CardCountSorterByName());
 		

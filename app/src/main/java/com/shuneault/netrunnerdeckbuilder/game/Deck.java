@@ -37,6 +37,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
 	public static final String JSON_DECK_UUID = "deck_uuid";
 	public static final String JSON_DECK_NAME = "deck_name";
 	public static final String JSON_DECK_NOTES = "deck_notes";
+    public static final String JSON_DECK_STARRED = "deck_starred";
 	public static final String JSON_DECK_IDENTITY_CODE = "deck_identity_code";
 	public static final String JSON_DECK_CARD_CODE = "card_code";
 	public static final String JSON_DECK_CARD_COUNT = "card_count";
@@ -320,6 +321,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
 			json.putOpt(JSON_DECK_UUID, mUUID.toString());
 			json.putOpt(JSON_DECK_NAME, mName);
 			json.putOpt(JSON_DECK_NOTES, mNotes);
+            json.putOpt(JSON_DECK_STARRED, mStarred);
 			json.putOpt(JSON_DECK_IDENTITY_CODE, mIdentity.getCode());
 			
 			// Cards
@@ -365,6 +367,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
 		deck.setName(json.optString(JSON_DECK_NAME));
 		deck.setIdentity(AppManager.getInstance().getAllCards().getCard(json.optString(JSON_DECK_IDENTITY_CODE)));
 		deck.setNotes(json.optString(JSON_DECK_NOTES));
+        deck.setStarred(json.optBoolean(JSON_DECK_STARRED));
 		
 		// Get the cards
 		try {

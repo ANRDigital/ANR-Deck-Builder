@@ -136,13 +136,10 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
 
 	@Override
 	public void onDeckIdentityChanged(Card newIdentity) {
-		// Update the deck
-		mDeck.setIdentity(newIdentity);
+        if (!isAdded()) return;
 		// Update the image
 		if (getActivity() != null)
 			imgIdentity.setImageBitmap(mDeck.getIdentity().getImage(getActivity()));
-		// Save to the database
-		mDb.updateDeck(mDeck);
 	}
 
 	@Override

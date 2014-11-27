@@ -58,7 +58,6 @@ public class MainActivity extends Activity implements OnDeckChangedListener, Mat
 
 	// Request Codes for activity launch
 	public static final int REQUEST_NEW_IDENTITY = 1;
-	public static final int REQUEST_CHANGE_IDENTITY = 2;
 	public static final int REQUEST_SETTINGS = 3;
 	
 	// EXTRAS
@@ -99,9 +98,9 @@ public class MainActivity extends Activity implements OnDeckChangedListener, Mat
         layButtons = (RelativeLayout) findViewById(R.id.layButtons);
 
         // Some variables
-        mDb = new DatabaseHelper(this);
+        AppManager.getInstance().init(this);
+        mDb = AppManager.getInstance().getDatabase();
         mDecks = AppManager.getInstance().getAllDecks();
-        AppManager.getInstance().initSharedPrefs(this);
 
         // Initialize the layout manager and adapter
         mLayoutManager = new LinearLayoutManager(this);
@@ -116,7 +115,7 @@ public class MainActivity extends Activity implements OnDeckChangedListener, Mat
             public void onDeckStarred(int index, boolean isStarred) {
                 Deck deck = mDecks.get(index);
                 deck.setStarred(isStarred);
-                mDb.saveDeck(deck);
+                mDb.updateDeck(deck);
                 // Sort
                 Collections.sort(mDecks, new Sorter.DeckSorter());
                 mRecyclerView.getAdapter().notifyDataSetChanged();
@@ -218,10 +217,6 @@ public class MainActivity extends Activity implements OnDeckChangedListener, Mat
         // Set the action bar
         ActionBar mActionBar = getActionBar();
         mActionBar.setTitle(R.string.title_activity_main);
-        //mActionBar.setCustomView(R.layout.action_bar_main_activity);
-        //mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
-        mActionBar.setDisplayHomeAsUpEnabled(false);
-        mActionBar.setHomeButtonEnabled(false);
         mActionBar.setIcon(R.drawable.ic_launcher);
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
     }
@@ -246,10 +241,6 @@ public class MainActivity extends Activity implements OnDeckChangedListener, Mat
 			// Start the new deck activity
 			loadDeckFragment(mDeck);
 			break;
-			
-		case REQUEST_CHANGE_IDENTITY:
-			Card newIdentity = AppManager.getInstance().getCard(data.getStringExtra(ChooseIdentityActivity.EXTRA_IDENTITY_CODE));
-            break;
 			
 		case REQUEST_SETTINGS:
 
