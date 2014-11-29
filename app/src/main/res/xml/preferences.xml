@@ -38,6 +38,11 @@
             android:defaultValue="true"
             android:title="@string/tap_to_close_card_preview" />
     </PreferenceCategory>
-    
+
+    <PreferenceCategory android:title="@string/cache">
+        <Preference android:key="pref_ClearCache"
+            android:title="@string/clear_cache"
+            android:summary="@string/delete_all_images" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

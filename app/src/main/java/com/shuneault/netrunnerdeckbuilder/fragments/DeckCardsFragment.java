@@ -1,13 +1,9 @@
 package com.shuneault.netrunnerdeckbuilder.fragments;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,53 +25,57 @@ import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
 public class DeckCardsFragment extends Fragment implements OnDeckChangedListener {
-	
-	// Saved Instance
-	private static final String SAVED_SELECTED_CARD_CODE = "CARD_CODE";
-	
-	private OnDeckChangedListener mListener;
-	
-	private Deck mDeck;
 
-	private Card currentCard;
-	private View mainView;
-	private ExpandableListView lstDeckCards;
-	private ExpandableDeckCardListAdapter mDeckCardsAdapter;
-	
-	// Database
-	DatabaseHelper mDb;
-	
-	private ArrayList<String> mListHeaders;
-	private HashMap<String, ArrayList<Card>> mListCards;
+    // Saved Instance
+    private static final String SAVED_SELECTED_CARD_CODE = "CARD_CODE";
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// 
-		setHasOptionsMenu(true);
-		
-		// Inflate
-		mainView = inflater.inflate(R.layout.fragment_deck_cards, container, false);
-		
-		// Get the arguments
-		mDeck = AppManager.getInstance().getDeck(getArguments().getLong(DeckActivity.ARGUMENT_DECK_ID));
-		
-		// The GUI items
-		lstDeckCards = (ExpandableListView) mainView.findViewById(R.id.lstDeckCards);
-		
-		// Database
-		mDb = new DatabaseHelper(getActivity());
+    private OnDeckChangedListener mListener;
 
-		// Set the list view
-		setListView();
-		
-		return mainView;
+    private Deck mDeck;
 
-	}
-	
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    private Card currentCard;
+    private View mainView;
+    private ExpandableListView lstDeckCards;
+    private ExpandableDeckCardListAdapter mDeckCardsAdapter;
+
+    // Database
+    DatabaseHelper mDb;
+
+    private ArrayList<String> mListHeaders;
+    private HashMap<String, ArrayList<Card>> mListCards;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        //
+        setHasOptionsMenu(true);
+
+        // Inflate
+        mainView = inflater.inflate(R.layout.fragment_deck_cards, container, false);
+
+        // Get the arguments
+        mDeck = AppManager.getInstance().getDeck(getArguments().getLong(DeckActivity.ARGUMENT_DECK_ID));
+
+        // The GUI items
+        lstDeckCards = (ExpandableListView) mainView.findViewById(R.id.lstDeckCards);
+
+        // Database
+        mDb = new DatabaseHelper(getActivity());
+
+        // Set the list view
+        setListView();
+
+        return mainView;
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 //		// Do not inflate if already there
 //		if (menu.findItem(R.id.mnuSearch) == null)
 //			inflater.inflate(R.menu.deck_cards, menu);
@@ -111,147 +111,146 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 //				return true;
 //			}
 //		});
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// 
-		switch (item.getItemId()) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-		
-	}
-	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			mListener = (OnDeckChangedListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString() + " must implement OnDeckChangedListener");
-		}
-	}
-	
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		
-		// Remember the selected card
-		if (currentCard != null)
-			outState.putString(SAVED_SELECTED_CARD_CODE, currentCard.getCode());
-	}
-	
-	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //
+        switch (item.getItemId()) {
 
-	private void sortListCards() {
-		// Sort by faction,
-		// My cards must be sorted by type
-		String strMyCards = getResources().getString(R.string.my_cards);
-		for (String strCat : mListHeaders) {
-			if (mListCards.get(strCat) == null) continue;
-			if (strCat.equals(strMyCards))
-				Collections.sort(mListCards.get(strCat), new Sorter.CardSorterByCardType());		
-			else
-				//Collections.sort(mListCards.get(strCat), new Sorter.CardSorterByFaction());
-				Collections.sort(mListCards.get(strCat), new Sorter.CardSorterByFactionWithMineFirst(mDeck.getIdentity()));
-		}
-		
-	}
-	
-	private void setListView() {
-		// Get the headers
-		mListHeaders = AppManager.getInstance().getAllCards().getCardType(mDeck.getIdentity().getSide());
-		mListHeaders.remove(mDeck.getIdentity().getType()); // Remove the Identity category
-		Collections.sort(mListHeaders);
-		
-		// Get the cards
-		mListCards = new HashMap<String, ArrayList<Card>>();
-		for (Card theCard : AppManager.getInstance().getCardsFromDataPacksToDisplay()) {
-			// Only add the cards that are on my side
-			boolean isSameSide = theCard.getSide().equals(mDeck.getIdentity().getSide());
-			// Do not add the identities
-			boolean isIdentity = theCard.getTypeCode().equals(Card.Type.IDENTITY);
-			// Only display agendas that belong to neutral or my faction
-			boolean isGoodAgenda = !theCard.getTypeCode().equals(Card.Type.AGENDA) || theCard.getFaction().equals(mDeck.getIdentity().getFaction()) || theCard.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL);
-			// Cannot add Jinteki card for "Custom Biotics: Engineered for Success" Identity
-			boolean isJintekiOK =  !theCard.getFactionCode().equals(Card.Faction.FACTION_JINTEKI) || !mDeck.getIdentity().getCode().equals(Card.SpecialCards.CARD_CUSTOM_BIOTICS_ENGINEERED_FOR_SUCCESS);
-			if (isSameSide && !isIdentity && isGoodAgenda && isJintekiOK) {
-				if (mListCards.get(theCard.getType()) == null)
-					mListCards.put(theCard.getType(), new ArrayList<Card>());
-				mListCards.get(theCard.getType()).add(theCard);
-			}
-		}
-		
-		// Sort the cards
-		sortListCards();
-		
-		// Set the adapter
-		mDeckCardsAdapter = new ExpandableDeckCardListAdapter(getActivity(), mListHeaders, mListCards, mDeck, new OnButtonClickListener() {
-			
-			@Override
-			public void onPlusClick(Card card) {
-				mListener.onDeckCardsChanged();
-			}
-			
-			@Override
-			public void onMinusClick(Card card) {
-				mListener.onDeckCardsChanged();
-			}
-		});
-		lstDeckCards.setAdapter(mDeckCardsAdapter);
-		lstDeckCards.setOnChildClickListener(new OnChildClickListener() {
-			
-			@Override
-			public boolean onChildClick(ExpandableListView parent, View v,
-					int groupPosition, int childPosition, long id) {
-				// View the card
-				currentCard = (Card) mDeckCardsAdapter.getChild(groupPosition, childPosition);
-				Intent intent = new Intent(getActivity(), ViewDeckFullscreenActivity.class);
-				intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARD_CODE, currentCard.getCode());
-				startActivity(intent);
-				return false;
-			}
-		});
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		// Refresh the cards adapter as the changed preferences may have changed
-		//setListView();
-	}
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
-	@Override
-	public void onDeckNameChanged(Deck deck, String name) {
-	}
+    }
 
-	@Override
-	public void onDeckDeleted(Deck deck) {
-	}
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnDeckChangedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnDeckChangedListener");
+        }
+    }
 
-	@Override
-	public void onDeckCloned(Deck deck) {		
-	}
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-	@Override
-	public void onDeckCardsChanged() {
+        // Remember the selected card
+        if (currentCard != null)
+            outState.putString(SAVED_SELECTED_CARD_CODE, currentCard.getCode());
+    }
 
-	}
 
-	@Override
-	public void onDeckIdentityChanged(Card newIdentity) {
-		if (!isAdded()) return;
-		setListView();
-	}
+    private void sortListCards() {
+        // Sort by faction,
+        // My cards must be sorted by type
+        String strMyCards = getResources().getString(R.string.my_cards);
+        for (String strCat : mListHeaders) {
+            if (mListCards.get(strCat) == null) continue;
+            if (strCat.equals(strMyCards))
+                Collections.sort(mListCards.get(strCat), new Sorter.CardSorterByCardType());
+            else
+                //Collections.sort(mListCards.get(strCat), new Sorter.CardSorterByFaction());
+                Collections.sort(mListCards.get(strCat), new Sorter.CardSorterByFactionWithMineFirst(mDeck.getIdentity()));
+        }
 
-	@Override
-	public void onSettingsChanged() {
-		// Refresh the cards
-		if (!isAdded()) return;
-		setListView();
-	}
-	
+    }
+
+    private void setListView() {
+        // Get the headers
+        mListHeaders = AppManager.getInstance().getAllCards().getCardType(mDeck.getIdentity().getSide());
+        mListHeaders.remove(mDeck.getIdentity().getType()); // Remove the Identity category
+        Collections.sort(mListHeaders);
+
+        // Get the cards
+        mListCards = new HashMap<String, ArrayList<Card>>();
+        for (Card theCard : AppManager.getInstance().getCardsFromDataPacksToDisplay()) {
+            // Only add the cards that are on my side
+            boolean isSameSide = theCard.getSide().equals(mDeck.getIdentity().getSide());
+            // Do not add the identities
+            boolean isIdentity = theCard.getTypeCode().equals(Card.Type.IDENTITY);
+            // Only display agendas that belong to neutral or my faction
+            boolean isGoodAgenda = !theCard.getTypeCode().equals(Card.Type.AGENDA) || theCard.getFaction().equals(mDeck.getIdentity().getFaction()) || theCard.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL);
+            // Cannot add Jinteki card for "Custom Biotics: Engineered for Success" Identity
+            boolean isJintekiOK = !theCard.getFactionCode().equals(Card.Faction.FACTION_JINTEKI) || !mDeck.getIdentity().getCode().equals(Card.SpecialCards.CARD_CUSTOM_BIOTICS_ENGINEERED_FOR_SUCCESS);
+            if (isSameSide && !isIdentity && isGoodAgenda && isJintekiOK) {
+                if (mListCards.get(theCard.getType()) == null)
+                    mListCards.put(theCard.getType(), new ArrayList<Card>());
+                mListCards.get(theCard.getType()).add(theCard);
+            }
+        }
+
+        // Sort the cards
+        sortListCards();
+
+        // Set the adapter
+        mDeckCardsAdapter = new ExpandableDeckCardListAdapter(getActivity(), mListHeaders, mListCards, mDeck, new OnButtonClickListener() {
+
+            @Override
+            public void onPlusClick(Card card) {
+                mListener.onDeckCardsChanged();
+            }
+
+            @Override
+            public void onMinusClick(Card card) {
+                mListener.onDeckCardsChanged();
+            }
+        });
+        lstDeckCards.setAdapter(mDeckCardsAdapter);
+        lstDeckCards.setOnChildClickListener(new OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                // View the card
+                currentCard = (Card) mDeckCardsAdapter.getChild(groupPosition, childPosition);
+                Intent intent = new Intent(getActivity(), ViewDeckFullscreenActivity.class);
+                intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARD_CODE, currentCard.getCode());
+                startActivity(intent);
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Refresh the cards adapter as the changed preferences may have changed
+        //setListView();
+    }
+
+    @Override
+    public void onDeckNameChanged(Deck deck, String name) {
+    }
+
+    @Override
+    public void onDeckDeleted(Deck deck) {
+    }
+
+    @Override
+    public void onDeckCloned(Deck deck) {
+    }
+
+    @Override
+    public void onDeckCardsChanged() {
+
+    }
+
+    @Override
+    public void onDeckIdentityChanged(Card newIdentity) {
+        if (!isAdded()) return;
+        setListView();
+    }
+
+    @Override
+    public void onSettingsChanged() {
+        // Refresh the cards
+        if (!isAdded()) return;
+        setListView();
+    }
+
 }

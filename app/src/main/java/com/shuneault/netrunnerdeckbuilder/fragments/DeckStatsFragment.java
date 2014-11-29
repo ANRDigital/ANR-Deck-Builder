@@ -9,16 +9,16 @@ import android.view.ViewGroup;
 import com.shuneault.netrunnerdeckbuilder.R;
 
 public class DeckStatsFragment extends Fragment {
-	
-	View mainView;
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
 
-		// The View
-		mainView = inflater.inflate(R.layout.fragment_deck_stats, container, false);
-		
-		return mainView;
-	}
+    View mainView;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        // The View
+        mainView = inflater.inflate(R.layout.fragment_deck_stats, container, false);
+
+        return mainView;
+    }
 }

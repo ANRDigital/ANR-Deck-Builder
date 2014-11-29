@@ -1,15 +1,5 @@
 package com.shuneault.netrunnerdeckbuilder.helper;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -20,52 +10,61 @@ import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.prefs.ListPreferenceMultiSelect;
-import com.shuneault.netrunnerdeckbuilder.prefs.SetNamesPreferenceMultiSelect;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AppManager {
-	
-	private final static AppManager mAppManager = new AppManager();
-	
-	/* File management */
-	public static final String EXT_CARDS_IMAGES = ".png";
-	public static final String FILE_CARDS_JSON = "cards.json";
-	public static final String FILE_DECKS_JSON = "decks.json";
-	public static final String FILE_DECKS_JSON_TEMP = "decks.json.tmp";
-	public static final String FILE_DECKS_JSON_BACKUP = "decks.json.bkp";
-	
-	// Logcat
-	public static final String LOGCAT = "com.example.netrunnerdeckbuilder.LOGCAT";
-	
-	// Database stuff
-	public static final String DATABASE_NAME = "data";
-	public static final int DATABASE_VERSION = 1;
-	
-	// Notifications
-	public static final int NOTIFY_DOWNLOAD_CARDS_ID = 1;
-	public static final int NOTIFY_DOWNLOAD_IMAGES_ID = 2;
+
+    private final static AppManager mAppManager = new AppManager();
+
+    /* File management */
+    public static final String EXT_CARDS_IMAGES = ".png";
+    public static final String FILE_CARDS_JSON = "cards.json";
+    public static final String FILE_DECKS_JSON = "decks.json";
+    public static final String FILE_DECKS_JSON_TEMP = "decks.json.tmp";
+    public static final String FILE_DECKS_JSON_BACKUP = "decks.json.bkp";
+
+    // Logcat
+    public static final String LOGCAT = "com.example.netrunnerdeckbuilder.LOGCAT";
+
+    // Database stuff
+    public static final String DATABASE_NAME = "data";
+    public static final int DATABASE_VERSION = 1;
+
+    // Notifications
+    public static final int NOTIFY_DOWNLOAD_CARDS_ID = 1;
+    public static final int NOTIFY_DOWNLOAD_IMAGES_ID = 2;
 
     // App Context
     private Context mContext;
-	
-	// Shared Preferences
-	private SharedPreferences mSharedPrefs;
+
+    // Shared Preferences
+    private SharedPreferences mSharedPrefs;
 
     // Database
     private DatabaseHelper mDb;
-	
-	private ArrayList<Deck> mDecks;
-	private CardList mCards;
-	
-	private AppManager() {
-		mDecks = new ArrayList<Deck>();
-		mCards = new CardList();
-	}
-	
-	public static AppManager getInstance() {
-		if (mAppManager == null)
-			new AppManager();		
-		return mAppManager;
-	}
+
+    private ArrayList<Deck> mDecks;
+    private CardList mCards;
+
+    private AppManager() {
+        mDecks = new ArrayList<Deck>();
+        mCards = new CardList();
+    }
+
+    public static AppManager getInstance() {
+        if (mAppManager == null)
+            new AppManager();
+        return mAppManager;
+    }
 
     public void init(Context context) {
         // Initialize the application, database, shared preferences, etc.
@@ -74,132 +73,132 @@ public class AppManager {
         mDb = new DatabaseHelper(context);
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
-	
-	public SharedPreferences getSharedPrefs() {
-		return mSharedPrefs;
-	}
+
+    public SharedPreferences getSharedPrefs() {
+        return mSharedPrefs;
+    }
 
     public DatabaseHelper getDatabase() {
         return mDb;
     }
-	
-	public ArrayList<Deck> getAllDecks() {
-		return mDecks;
-	}
-	
-	public CardList getAllCards() {
-		return mCards;
-	}
-	
-	public CardList getCardsFromDataPacksToDisplay() {
-		// Return all cards if set in the preferences
-		if (mSharedPrefs.getBoolean(SettingsActivity.KEY_PREF_DISPLAY_ALL_DATA_PACKS, true)) {
-			return getAllCards();
-		}
-		
-		// Return only the data packs requested
-		CardList cd = new CardList();
-		ArrayList<String> arrDataPacks = new ArrayList<String>(Arrays.asList(ListPreferenceMultiSelect.parseStoredValue(mSharedPrefs.getString(SettingsActivity.KEY_PREF_DATA_PACKS_TO_DISPLAY, ""))));		
-		for (Card card : this.mCards) {
-			if (arrDataPacks.contains(card.getSetName())) {
-				cd.add(card);
-			}
-		}
-		return cd;
-	}
-	
-	public ArrayList<String> getSetNames() {
-		ArrayList<String> arr = new ArrayList<String>();
-		for (Card card : this.mCards) {
-			if (!arr.contains(card.getSetName())) {
-				arr.add(card.getSetName());
-			}
-		}
-		return arr;
-	}
-	
-	public CardList getCardsBySetName(String setName) {
-		CardList arrList = new CardList();
-		for (Card card : this.mCards) {
-			if (card.getSetName().equals(setName) && !arrList.contains(card)) {
-				arrList.add(card);
-			}
-		}
-		return arrList;
-	}
-	
-	public void addDeck(Deck deck) {
-		mDecks.add(deck);
-	}
-	
-	public boolean deleteDeck(Deck deck) {
+
+    public ArrayList<Deck> getAllDecks() {
+        return mDecks;
+    }
+
+    public CardList getAllCards() {
+        return mCards;
+    }
+
+    public CardList getCardsFromDataPacksToDisplay() {
+        // Return all cards if set in the preferences
+        if (mSharedPrefs.getBoolean(SettingsActivity.KEY_PREF_DISPLAY_ALL_DATA_PACKS, true)) {
+            return getAllCards();
+        }
+
+        // Return only the data packs requested
+        CardList cd = new CardList();
+        ArrayList<String> arrDataPacks = new ArrayList<String>(Arrays.asList(ListPreferenceMultiSelect.parseStoredValue(mSharedPrefs.getString(SettingsActivity.KEY_PREF_DATA_PACKS_TO_DISPLAY, ""))));
+        for (Card card : this.mCards) {
+            if (arrDataPacks.contains(card.getSetName())) {
+                cd.add(card);
+            }
+        }
+        return cd;
+    }
+
+    public ArrayList<String> getSetNames() {
+        ArrayList<String> arr = new ArrayList<String>();
+        for (Card card : this.mCards) {
+            if (!arr.contains(card.getSetName())) {
+                arr.add(card.getSetName());
+            }
+        }
+        return arr;
+    }
+
+    public CardList getCardsBySetName(String setName) {
+        CardList arrList = new CardList();
+        for (Card card : this.mCards) {
+            if (card.getSetName().equals(setName) && !arrList.contains(card)) {
+                arrList.add(card);
+            }
+        }
+        return arrList;
+    }
+
+    public void addDeck(Deck deck) {
+        mDecks.add(deck);
+    }
+
+    public boolean deleteDeck(Deck deck) {
         mDb.deleteDeck(deck);
-		return mDecks.remove(deck);
-	}
-	
-	// Return the requested card
-	public Card getCard(String code) {
-		for (Card theCard : mCards) {
-			if (theCard.getCode().equals(code))
-				return theCard;
-		}
-		return null;
-	}
-	
-	public Deck getDeck(Long rowId) {
-		for (Deck deck : this.mDecks) {
-			if (deck.getRowId() == rowId) {
-				return deck;
-			}
-		}
-		return null;
-	}
-	
-	public int getNumberImagesCached(Context context) {
-		int numImages = 0;
-		CardList cards = AppManager.getInstance().getAllCards();
-		for (Card card : cards) {
-			if (card.isImageFileExists(context))
-				numImages++;
-		}
-		return numImages;
-	}
-	
-	public JSONArray getJSONCardsFile(Context context) throws IOException, JSONException {
-		// Load the file in memory and return a JSON array
-		InputStream in = context.openFileInput(AppManager.FILE_CARDS_JSON);
-		InputStreamReader fs = new InputStreamReader(in);
-		BufferedReader bfs = new BufferedReader(fs);
-		String theLine = null;
-		StringBuilder theStringBuilder = new StringBuilder();
-		// Read the file
-		while ( (theLine = bfs.readLine() ) != null)
-			theStringBuilder.append(theLine);
-		
-		JSONArray jsonFile = new JSONArray(theStringBuilder.toString());
-		bfs.close();
-		fs.close();
-		in.close();
-		return jsonFile;
-	}
-	
-	public JSONArray getJSONDecksFile(Context context) throws IOException, JSONException {
-		// Load the file in memory and return a JSON array
-		InputStream in = context.openFileInput(AppManager.FILE_DECKS_JSON);
-		InputStreamReader fs = new InputStreamReader(in);
-		BufferedReader bfs = new BufferedReader(fs);
-		String theLine = null;
-		StringBuilder theStringBuilder = new StringBuilder();
-		// Read the file
-		while ( (theLine = bfs.readLine() ) != null)
-			theStringBuilder.append(theLine);
-		
-		JSONArray jsonFile = new JSONArray(theStringBuilder.toString());
-		bfs.close();
-		fs.close();
-		in.close();
-		return jsonFile;
-	}
+        return mDecks.remove(deck);
+    }
+
+    // Return the requested card
+    public Card getCard(String code) {
+        for (Card theCard : mCards) {
+            if (theCard.getCode().equals(code))
+                return theCard;
+        }
+        return null;
+    }
+
+    public Deck getDeck(Long rowId) {
+        for (Deck deck : this.mDecks) {
+            if (deck.getRowId() == rowId) {
+                return deck;
+            }
+        }
+        return null;
+    }
+
+    public int getNumberImagesCached(Context context) {
+        int numImages = 0;
+        CardList cards = AppManager.getInstance().getAllCards();
+        for (Card card : cards) {
+            if (card.isImageFileExists(context))
+                numImages++;
+        }
+        return numImages;
+    }
+
+    public JSONArray getJSONCardsFile(Context context) throws IOException, JSONException {
+        // Load the file in memory and return a JSON array
+        InputStream in = context.openFileInput(AppManager.FILE_CARDS_JSON);
+        InputStreamReader fs = new InputStreamReader(in);
+        BufferedReader bfs = new BufferedReader(fs);
+        String theLine = null;
+        StringBuilder theStringBuilder = new StringBuilder();
+        // Read the file
+        while ((theLine = bfs.readLine()) != null)
+            theStringBuilder.append(theLine);
+
+        JSONArray jsonFile = new JSONArray(theStringBuilder.toString());
+        bfs.close();
+        fs.close();
+        in.close();
+        return jsonFile;
+    }
+
+    public JSONArray getJSONDecksFile(Context context) throws IOException, JSONException {
+        // Load the file in memory and return a JSON array
+        InputStream in = context.openFileInput(AppManager.FILE_DECKS_JSON);
+        InputStreamReader fs = new InputStreamReader(in);
+        BufferedReader bfs = new BufferedReader(fs);
+        String theLine = null;
+        StringBuilder theStringBuilder = new StringBuilder();
+        // Read the file
+        while ((theLine = bfs.readLine()) != null)
+            theStringBuilder.append(theLine);
+
+        JSONArray jsonFile = new JSONArray(theStringBuilder.toString());
+        bfs.close();
+        fs.close();
+        in.close();
+        return jsonFile;
+    }
 //	
 //	public  void saveDecksToFile(Context context) {
 //		// Generate a JSON array
