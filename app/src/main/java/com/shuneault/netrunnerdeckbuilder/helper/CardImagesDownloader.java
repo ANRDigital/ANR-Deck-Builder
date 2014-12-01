@@ -17,7 +17,7 @@ import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class CardImagesDownloader extends AsyncTask<Context, Integer, Bitmap> {
+public class CardImagesDownloader extends AsyncTask<Void, Integer, Bitmap> {
 
     private Context mContext;
     private CardImagesDownloaderListener mListener;
@@ -51,14 +51,11 @@ public class CardImagesDownloader extends AsyncTask<Context, Integer, Bitmap> {
     }
 
     @Override
-    protected Bitmap doInBackground(Context... context) {
+    protected Bitmap doInBackground(Void... voids) {
         CardList cardList = (CardList) AppManager.getInstance().getAllCards().clone();
 
         // Call the listener
-        mListener.onBeforeStartTask(context[0], cardList.size());
-
-        // Assign the context
-        mContext = context[0];
+        mListener.onBeforeStartTask(mContext, cardList.size());
 
         // Percentage counter
         int iCount = 0;

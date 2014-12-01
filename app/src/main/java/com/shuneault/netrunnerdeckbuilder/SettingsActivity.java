@@ -13,6 +13,8 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader;
 import com.shuneault.netrunnerdeckbuilder.prefs.SetNamesPreferenceMultiSelect;
 
 import java.io.File;
@@ -26,6 +28,7 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS = "pref_ShowSetNames";
     public static final String KEY_PREF_TAP_TO_CLOSE_CARD_PREVIEW = "pref_TapToCloseCardPreview";
     public static final String KEY_PREF_CLEAR_CACHE = "pref_ClearCache";
+    public static final String KEY_PREF_DOWNLOAD_ALL_IMAGES = "pref_DownloadAllImages";
 
     private String mInitialPacksToDisplay;
 
@@ -33,6 +36,7 @@ public class SettingsActivity extends PreferenceActivity
     Preference prefDataPacks;
     Preference prefAmountOfCoreDecks;
     Preference prefClearCache;
+    Preference prefDownloadAllImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class SettingsActivity extends PreferenceActivity
         prefDataPacks = findPreference(KEY_PREF_DATA_PACKS_TO_DISPLAY);
         prefAmountOfCoreDecks = findPreference(KEY_PREF_AMOUNT_OF_CORE_DECKS);
         prefClearCache = findPreference(KEY_PREF_CLEAR_CACHE);
+        prefDownloadAllImages = findPreference(KEY_PREF_DOWNLOAD_ALL_IMAGES);
 
         // Listeners
         prefDataPacks.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -75,6 +80,26 @@ public class SettingsActivity extends PreferenceActivity
                     }
                 });
                 builder.show();
+                return false;
+            }
+        });
+        prefDownloadAllImages.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                CardImagesDownloader cardDownloader = new CardImagesDownloader(SettingsActivity.this, new CardImagesDownloader.CardImagesDownloaderListener() {
+                    @Override
+                    public void onBeforeStartTask(Context context, int max) {
+                    }
+
+                    @Override
+                    public void onTaskCompleted() {
+                    }
+
+                    @Override
+                    public void onImageDownloaded(Card card, int count, int max) {
+                    }
+                });
+                cardDownloader.execute();
                 return false;
             }
         });

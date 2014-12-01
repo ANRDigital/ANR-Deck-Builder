@@ -206,9 +206,11 @@ public class MainActivity extends Activity implements OnDeckChangedListener {
     private void initActionBar() {
         // Set the action bar
         ActionBar mActionBar = getActionBar();
-        mActionBar.setTitle(R.string.title_activity_main);
-        mActionBar.setIcon(R.drawable.ic_launcher);
-        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        if (mActionBar != null) {
+            mActionBar.setTitle(R.string.title_activity_main);
+            mActionBar.setIcon(R.drawable.ic_launcher);
+            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        }
     }
 
     @Override
@@ -414,7 +416,7 @@ public class MainActivity extends Activity implements OnDeckChangedListener {
 
                                 }
                             });
-                            dnl.execute(MainActivity.this);
+                            dnl.execute();
                         }
                     });
                     builder.setNegativeButton(android.R.string.no, null);

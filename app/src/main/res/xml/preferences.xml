@@ -43,6 +43,8 @@
         <Preference android:key="pref_ClearCache"
             android:title="@string/clear_cache"
             android:summary="@string/delete_all_images" />
+        <Preference android:key="pref_DownloadAllImages"
+            android:title="@string/download_all_images" />
     </PreferenceCategory>
 
 </PreferenceScreen>
