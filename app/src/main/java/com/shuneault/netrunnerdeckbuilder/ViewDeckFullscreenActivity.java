@@ -157,6 +157,8 @@ public class ViewDeckFullscreenActivity extends Activity {
             setTitle("[" + mDeck.getCardCount(card) + "] - " + mDeck.getName());
         } else if (mSetName != null) {
             setTitle(mSetName);
+        } else {
+            setTitle(card.getTitle());
         }
     }
 

@@ -16,4 +16,21 @@
     <color name="white_pressed">#f1f1f1</color>
     <color name="half_black">#808080</color>
 
+
+    <!-- Faction Colors -->
+    <color name="light_anarch">#ECD2BF</color>
+    <color name="dark_anarch">#DE5D30</color>
+    <color name="light_criminal">#C3D8E8</color>
+    <color name="dark_criminal">#3F73AF</color>
+    <color name="light_haasbioroid">#CDBCDA</color>
+    <color name="dark_haasbioroid">#7D6486</color>
+    <color name="light_jinteki">#F1D3C4</color>
+    <color name="dark_jinteki">#C45239</color>
+    <color name="light_nbn">#F5D192</color>
+    <color name="dark_nbn">#C48E35</color>
+    <color name="light_shaper">#C0D6B0</color>
+    <color name="dark_shaper">#6FA146</color>
+    <color name="light_weylandconsortium">#C8D4C4</color>
+    <color name="dark_weylandconsortium">#626A60</color>
+
 </resources>

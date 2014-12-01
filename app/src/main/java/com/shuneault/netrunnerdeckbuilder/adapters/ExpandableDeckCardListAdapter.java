@@ -198,9 +198,14 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
     private void setBackgroundColor(View view, Card card) {
         // Do nothing for my cards
         if (mMyCards) return;
-        // Green background for the cards I own
+        // Colored background for the cards I own
         if (mDeck.getCardCount(card) > 0) {
-            view.setBackgroundColor(mContext.getResources().getColor(R.color.netrunner_blue_light));
+            int theColor = mContext.getResources().getIdentifier("light_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "color", mContext.getPackageName());
+            if (theColor != 0) {
+                view.setBackgroundColor(mContext.getResources().getColor(theColor));
+            } else {
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.netrunner_blue_light));
+            }
         } else {
             view.setBackgroundColor(Color.TRANSPARENT);
         }
