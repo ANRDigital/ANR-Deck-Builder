@@ -8,8 +8,8 @@ android {
         applicationId "com.shuneault.netrunnerdeckbuilder"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 30
-        versionName "2.0"
+        versionCode 31
+        versionName "2.01"
     }
 
     buildTypes {
@@ -26,5 +26,4 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:21.0.+'
 
     compile 'com.getbase:floatingactionbutton:1.1.0'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
 }
