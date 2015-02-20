@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
@@ -44,7 +45,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MainActivity extends Activity implements OnDeckChangedListener {
+public class MainActivity extends ActionBarActivity implements OnDeckChangedListener {
 
     // Request Codes for activity launch
     public static final int REQUEST_NEW_IDENTITY = 1;

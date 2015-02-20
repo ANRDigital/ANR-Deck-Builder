@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+           xmlns:tools="http://schemas.android.com/tools">
+	<style name="Theme.Netrunner" parent="Theme.AppCompat.Light.DarkActionBar">
+		<item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar</item>
+		<item name="actionBarStyle">@style/ActionBar</item>
+		<item name="android:colorPrimary">@color/netrunner_blue</item>
+		<item name="android:colorPrimaryDark">@color/netrunner_blue_dark</item>
+		<item name="android:navigationBarColor">@color/netrunner_blue_dark</item>
+		<item name="android:colorAccent">@color/fab_material_amber_500</item>
+		<item name="android:textColorSecondary">#757575</item>
+
+	</style>
+
+</resources>
