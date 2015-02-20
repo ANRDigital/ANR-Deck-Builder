@@ -16,12 +16,9 @@ import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.shuneault.netrunnerdeckbuilder.adapters.CardDeckAdapter;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
@@ -34,6 +31,7 @@ import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader;
 import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader.CardImagesDownloaderListener;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
+import com.software.shell.fab.ActionButton;
 
 import org.json.JSONArray;
 
@@ -65,9 +63,7 @@ public class MainActivity extends Activity implements OnDeckChangedListener {
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private CardDeckAdapter mDeckAdapter;
-    private FloatingActionButton fabNewDeck;
-    private FloatingActionButton fabBrowseSets;
-    private RelativeLayout layButtons;
+	private ActionButton fabNewDeck;
 
     // Flags
     private boolean bStarOnly = false;
@@ -81,9 +77,7 @@ public class MainActivity extends Activity implements OnDeckChangedListener {
 
         // GUI
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        fabNewDeck = (FloatingActionButton) findViewById(R.id.fabNewDeck);
-        fabBrowseSets = (FloatingActionButton) findViewById(R.id.fabBrowseSets);
-        layButtons = (RelativeLayout) findViewById(R.id.layButtons);
+	    fabNewDeck = (ActionButton) findViewById(R.id.action_button);
 
         // Some variables
         AppManager.getInstance().init(this);
@@ -140,39 +134,14 @@ public class MainActivity extends Activity implements OnDeckChangedListener {
             }
         });
 
-        fabBrowseSets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get the set names
-                final ArrayList<String> setNames = new ArrayList<String>();
-                for (String setName : AppManager.getInstance().getSetNames()) {
-                    setNames.add(setName + " (" + AppManager.getInstance().getCardsBySetName(setName).size() + ")");
-                }
-                CharSequence[] cs = setNames.toArray(new CharSequence[setNames.size()]);
-                // Display the dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle(R.string.view_cards);
-                builder.setItems(cs, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Launch the full screen image viewer activity
-                        Intent intent = new Intent(MainActivity.this, ViewDeckFullscreenActivity.class);
-                        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_SET_NAME, AppManager.getInstance().getSetNames().get(which));
-                        startActivity(intent);
-                    }
-                });
-                builder.show();
-            }
-        });
-
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0 && mScrollDirection <= 0) { // Scroll Down
-                    layButtons.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_down));
+                    fabNewDeck.hide();
                     mScrollDirection = dy;
                 } else if (dy < 0 && mScrollDirection >= 0) { // Scroll Up
-                    layButtons.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_up));
+                    fabNewDeck.show();
                     mScrollDirection = dy;
                 } else {
                     // Same direction
@@ -266,6 +235,27 @@ public class MainActivity extends Activity implements OnDeckChangedListener {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+	        case R.id.mnuViewSet:
+		        // Get the set names
+		        final ArrayList<String> setNames = new ArrayList<String>();
+		        for (String setName : AppManager.getInstance().getSetNames()) {
+			        setNames.add(setName + " (" + AppManager.getInstance().getCardsBySetName(setName).size() + ")");
+		        }
+		        CharSequence[] cs = setNames.toArray(new CharSequence[setNames.size()]);
+		        // Display the dialog
+		        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+		        builder.setTitle(R.string.view_cards);
+		        builder.setItems(cs, new DialogInterface.OnClickListener() {
+			        @Override
+			        public void onClick(DialogInterface dialog, int which) {
+				        // Launch the full screen image viewer activity
+				        Intent intent = new Intent(MainActivity.this, ViewDeckFullscreenActivity.class);
+				        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_SET_NAME, AppManager.getInstance().getSetNames().get(which));
+				        startActivity(intent);
+			        }
+		        });
+		        builder.show();
+		        break;
             case R.id.mnuRefreshCards:
                 doDownloadCards();
                 break;
@@ -283,11 +273,11 @@ public class MainActivity extends Activity implements OnDeckChangedListener {
                 }
                 txt.setMovementMethod(LinkMovementMethod.getInstance());
                 txt.setPadding(25, 25, 25, 25);
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.menu_about);
-                builder.setView(txt);
-                builder.setPositiveButton(R.string.ok, null);
-                builder.show();
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+                builder2.setTitle(R.string.menu_about);
+                builder2.setView(txt);
+                builder2.setPositiveButton(R.string.ok, null);
+                builder2.show();
                 break;
         }
 
