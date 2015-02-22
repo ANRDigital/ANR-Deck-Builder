@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/imgCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/card_back_corp" />
+
+    <TextView
+        android:id="@+id/lblAmount"
+        android:background="@drawable/round_label"
+        android:text="3"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_gravity="bottom|right"
+        android:gravity="center"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+
+</FrameLayout>

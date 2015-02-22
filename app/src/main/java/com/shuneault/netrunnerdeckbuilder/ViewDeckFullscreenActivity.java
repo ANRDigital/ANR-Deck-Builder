@@ -66,6 +66,7 @@ public class ViewDeckFullscreenActivity extends Activity {
     public static final String EXTRA_DECK_ID = "com.example.netrunnerdeckbuilder.EXTRA_DECK_ID";
     public static final String EXTRA_SET_NAME = "com.example.netrunnerdeckbuilder.EXTRA_SET_NAME";
     public static final String EXTRA_CARD_CODE = "com.example.netrunnerdeckbuilder.EXTRA_CARD_CODE";
+    public static final String EXTRA_POSITION = "com.example.netrunnerdeckbuilder.EXTRA_POSITION";
 
     // GUI Elements
     private ViewPager mPager;
@@ -73,8 +74,9 @@ public class ViewDeckFullscreenActivity extends Activity {
     private Deck mDeck = null;
     private String mSetName = null;
     private String mCardCode = null;
+    private int mPosition = 0;
 
-    private ArrayList<Card> mCards = new ArrayList<Card>();
+    private ArrayList<Card> mCards = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,7 @@ public class ViewDeckFullscreenActivity extends Activity {
         mDeck = AppManager.getInstance().getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0));
         mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
         mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
+        mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
 
         // Build the image array
         if (mDeck != null) {
@@ -115,6 +118,7 @@ public class ViewDeckFullscreenActivity extends Activity {
 
         // Set the adapter for the view pager
         mPager.setAdapter(new ImageViewPager());
+        mPager.setCurrentItem(mPosition);
         mPager.setOnPageChangeListener(new OnPageChangeListener() {
 
             @Override

@@ -312,8 +312,8 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
                 return true;
 
             case R.id.mnuViewFullScreen:
-                Intent intentFullScreen = new Intent(this, ViewDeckFullscreenActivity.class);
-                intentFullScreen.putExtra(ViewDeckFullscreenActivity.EXTRA_DECK_ID, mDeck.getRowId());
+                Intent intentFullScreen = new Intent(this, ViewDeckGridActivity.class);
+                intentFullScreen.putExtra(ViewDeckGridActivity.EXTRA_DECK_ID, mDeck.getRowId());
                 startActivity(intentFullScreen);
                 return true;
 

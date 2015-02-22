@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
@@ -74,7 +72,6 @@ public class AppManager {
         mContext = context;
         mDb = new DatabaseHelper(context);
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        ImageLoader.getInstance().init(new ImageLoaderConfiguration.Builder(context).build());
     }
 
     public SharedPreferences getSharedPrefs() {
