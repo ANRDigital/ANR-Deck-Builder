@@ -1,4 +1,4 @@
-# Android Netrunner Deck Builder #
+# Deck Builder for Netrunner #
 * Allows to build decks for both Corporation and Runner
 * Ability to display only the data packs you own - makes cards searching easier
 * Search through the cards collection to find what you need
