@@ -66,6 +66,12 @@ public class AppManager {
         return mAppManager;
     }
 
+    public static AppManager getInstance(Context context) {
+        if (mAppManager == null)
+            new AppManager().init(context);
+        return mAppManager;
+    }
+
     public void init(Context context) {
         // Initialize the application, database, shared preferences, etc.
         AppManager app = getInstance();
