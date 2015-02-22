@@ -144,7 +144,9 @@ public class MainActivity extends Activity implements OnDeckChangedListener {
             @Override
             public void onClick(View v) {
                 // Get the set names
-                final ArrayList<String> setNames = new ArrayList<String>();
+                final ArrayList<String> setNames = new ArrayList<>();
+                // todo: view all cards
+                //setNames.add(getString(R.string.view_all_cards));
                 for (String setName : AppManager.getInstance().getSetNames()) {
                     setNames.add(setName + " (" + AppManager.getInstance().getCardsBySetName(setName).size() + ")");
                 }
@@ -156,8 +158,9 @@ public class MainActivity extends Activity implements OnDeckChangedListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Launch the full screen image viewer activity
-                        Intent intent = new Intent(MainActivity.this, ViewDeckFullscreenActivity.class);
-                        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_SET_NAME, AppManager.getInstance().getSetNames().get(which));
+                        //Intent intent = new Intent(MainActivity.this, ViewDeckFullscreenActivity.class);
+                        Intent intent = new Intent(MainActivity.this, ViewDeckGridActivity.class);
+                        intent.putExtra(ViewDeckGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getSetNames().get(which));
                         startActivity(intent);
                     }
                 });
