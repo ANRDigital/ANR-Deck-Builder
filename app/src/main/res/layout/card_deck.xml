@@ -1,59 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="96dp"
-    card_view:cardCornerRadius="2dp"
-    card_view:cardElevation="2dp"
-    android:layout_margin="8dp" >
+	android:id="@+id/card_view"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:card_view="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="96dp"
+	android:layout_marginTop="2dp"
+	android:layout_marginLeft="8dp"
+	android:layout_marginRight="8dp"
+	android:layout_marginBottom="6dp"
+	card_view:cardCornerRadius="2dp"
+	card_view:cardElevation="2dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/card_selector"
-        android:layout_margin="8dp" >
 
-        <ImageView
-            android:layout_width="56dp"
-            android:layout_height="80dp"
-            android:layout_marginRight="8dp"
-            android:id="@+id/imgDeckIdentity"
-            android:src="@drawable/card_back_corp"
-            android:layout_alignParentLeft="true" />
+	<com.balysv.materialripple.MaterialRippleLayout
+		android:id="@+id/ripple"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		app:mrl_rippleAlpha="0.2"
+		app:mrl_rippleColor="#585858"
+		app:mrl_rippleHover="true"
+		app:mrl_rippleOverlay="false">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="txtDeckTitle"
-            android:id="@+id/txtDeckTitle"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/imgDeckIdentity" />
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_margin="8dp">
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/chkStar"
-            style="?android:attr/starStyle"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true" />
+			<ImageView
+				android:id="@+id/imgDeckIdentity"
+				android:layout_width="56dp"
+				android:layout_height="80dp"
+				android:layout_alignParentLeft="true"
+				android:layout_marginRight="8dp"
+				android:src="@drawable/card_back_corp"/>
 
-	    <TextView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:textAppearance="?android:attr/textAppearanceSmall"
-		    android:text="txtDeckNotes"
-		    android:maxLines="3"
-		    android:ellipsize="end"
-		    android:id="@+id/txtDeckNotes"
-		    android:layout_below="@+id/txtDeckTitle"
-		    android:layout_toRightOf="@+id/imgDeckIdentity"
-		    android:layout_toLeftOf="@+id/chkStar" />
+			<TextView
+				android:id="@+id/txtDeckTitle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentTop="true"
+				android:layout_toRightOf="@+id/imgDeckIdentity"
+				android:ellipsize="end"
+				android:maxLines="1"
+				android:text="txtDeckTitle"
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-    </RelativeLayout>
+			<CheckBox
+				android:id="@+id/chkStar"
+				style="?android:attr/starStyle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:layout_alignParentRight="true"/>
 
+			<TextView
+				android:id="@+id/txtDeckNotes"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/txtDeckTitle"
+				android:layout_toLeftOf="@+id/chkStar"
+				android:layout_toRightOf="@+id/imgDeckIdentity"
+				android:ellipsize="end"
+				android:maxLines="3"
+				android:text="txtDeckNotes"
+				android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+		</RelativeLayout>
+	</com.balysv.materialripple.MaterialRippleLayout>
 </android.support.v7.widget.CardView>

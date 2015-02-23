@@ -94,7 +94,8 @@
 
     <!-- Menu Items -->
     <string name="menu_about">About</string>
-	<string name="menu_new_deck">New Deck</string>
+	<string name="menu_new_corp">Corporation</string>
+	<string name="menu_new_runner">Runner</string>
 	<string name="menu_view_sets">View Card Sets</string>
     <string name="menu_refresh_cards">Update cards list</string>
     <string name="menu_change_identity">Change Identity</string>

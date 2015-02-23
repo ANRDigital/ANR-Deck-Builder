@@ -7,7 +7,7 @@
 		<item name="android:colorPrimary">@color/netrunner_blue</item>
 		<item name="android:colorPrimaryDark">@color/netrunner_blue_dark</item>
 		<item name="android:navigationBarColor">@color/netrunner_blue_dark</item>
-		<item name="android:colorAccent">@color/fab_material_amber_500</item>
+		<item name="android:colorAccent">@color/netrunner_blue_light</item>
 		<item name="android:textColorSecondary">#757575</item>
 
 	</style>

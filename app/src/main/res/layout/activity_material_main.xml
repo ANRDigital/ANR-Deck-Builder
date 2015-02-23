@@ -1,33 +1,49 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+                xmlns:fab="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/recyclerView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:scrollbars="vertical"/>
 
-	<com.software.shell.fab.ActionButton
-		android:id="@+id/action_button"
+	<com.getbase.floatingactionbutton.FloatingActionsMenu
+		android:id="@+id/multiple_actions"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginRight="@dimen/fab_margin"
-		android:layout_marginBottom="@dimen/fab_margin"
-		android:layout_alignParentRight="true"
 		android:layout_alignParentBottom="true"
-		fab:type="DEFAULT"
-		fab:button_color="@color/fab_material_amber_500"
-		fab:button_colorPressed="@color/fab_material_amber_900"
-		fab:image="@drawable/fab_plus_icon"
-		fab:image_size="24dp"
-		fab:shadow_color="#757575"
-		fab:shadow_radius="1.0dp"
-		fab:shadow_xOffset="0.5dp"
-		fab:shadow_yOffset="1.0dp"
-		fab:show_animation="@anim/fab_roll_from_down"
-		fab:hide_animation="@anim/fab_roll_to_down"
-		/>
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
+		android:layout_marginBottom="16dp"
+		android:layout_marginRight="16dp"
+		fab:fab_addButtonColorNormal="@color/purple"
+		fab:fab_addButtonColorPressed="@color/purple_pressed"
+		fab:fab_addButtonPlusIconColor="@color/white"
+		fab:fab_labelStyle="@style/menu_labels_style">
+
+		<com.getbase.floatingactionbutton.AddFloatingActionButton
+			android:id="@+id/action_new_corp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			fab:fab_addButtonPlusIconColor="@color/white"
+			fab:fab_colorNormal="@color/blue"
+			fab:fab_colorPressed="@color/blue_pressed"
+			fab:fab_size="mini"
+			fab:fab_title="@string/menu_new_corp"/>
+
+		<com.getbase.floatingactionbutton.AddFloatingActionButton
+			android:id="@+id/action_new_runner"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			fab:fab_addButtonPlusIconColor="@color/white"
+			fab:fab_colorNormal="@color/red"
+			fab:fab_colorPressed="@color/red_pressed"
+			fab:fab_size="mini"
+			fab:fab_title="@string/menu_new_runner"
+			/>
+
+	</com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </RelativeLayout>
