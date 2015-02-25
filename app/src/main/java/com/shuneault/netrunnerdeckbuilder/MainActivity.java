@@ -16,6 +16,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -80,6 +82,22 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_material_main);
 
+	    // show action overflow regardless of hardware menu key
+	    try
+	    {
+		    ViewConfiguration vConfig = ViewConfiguration.get(this);
+		    Field menuKeyField = ViewConfiguration.class
+				    .getDeclaredField("sHasPermanentMenuKey");
+		    if (menuKeyField != null)
+		    {
+			    menuKeyField.setAccessible(true);
+			    menuKeyField.setBoolean(vConfig, false);
+		    }
+	    }
+	    catch (Exception ex)
+	    {
+		    // Ignore
+	    }
         // GUI
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 	    fabNewCorpDeck = (AddFloatingActionButton) findViewById(R.id.action_new_corp);
