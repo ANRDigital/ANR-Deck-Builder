@@ -5,6 +5,7 @@
     <style name="Theme.Netrunner" parent="Theme.AppCompat.Light.DarkActionBar">
 	    <item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar</item>
 	    <item name="actionBarStyle">@style/ActionBar</item>
+	    <item name="android:windowContentOverlay">@null</item>
     </style>
 
 	<style name="ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">

@@ -1,11 +1,12 @@
 package com.shuneault.netrunnerdeckbuilder.fragments;
 
+
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,11 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.DeckActivity;
-import com.shuneault.netrunnerdeckbuilder.MainActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
@@ -34,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class DeckCardsFragment extends Fragment implements OnDeckChangedListener {
+public class DeckCardsFragment extends Fragment implements OnDeckChangedListener, MenuItemCompat.OnActionExpandListener {
 
     // Saved Instance
     private static final String SAVED_SELECTED_CARD_CODE = "CARD_CODE";
@@ -86,14 +84,15 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 			inflater.inflate(R.menu.deck_cards, menu);
 		MenuItem item = menu.findItem(R.id.mnuSearch);
         SearchView sv = new SearchView(getActivity());
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        item.setShowAsAction(MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
         item.setActionView(sv);
 
         //Applies white color on searchview text
-        int id = sv.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        TextView textView = (TextView) sv.findViewById(id);
-        textView.setTextColor(Color.WHITE);
-        textView.setHintTextColor(Color.WHITE);
+	    // no longer works with Compat library. Needs fixed
+//        int id = sv.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+//        TextView textView = (TextView) sv.findViewById(id);
+//        textView.setTextColor(Color.WHITE);
+//        textView.setHintTextColor(Color.WHITE);
 
 		sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -110,18 +109,7 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
                 return false;
 			}
 		});
-        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                mDeckCardsAdapter.filterData("");
-                return true;
-            }
-        });
+        MenuItemCompat.setOnActionExpandListener(item, this);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -264,4 +252,16 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
         setListView();
     }
 
+	@Override
+	public boolean onMenuItemActionExpand(MenuItem item)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemActionCollapse(MenuItem item)
+	{
+		mDeckCardsAdapter.filterData("");
+		return true;
+	}
 }

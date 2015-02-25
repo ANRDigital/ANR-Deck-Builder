@@ -21,12 +21,13 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v13:21.0.+'
-    compile 'com.android.support:support-v4:21.0.+'
-    compile 'com.android.support:appcompat-v7:21.0.+'
-    compile 'com.android.support:cardview-v7:21.0.+'
-    compile 'com.android.support:recyclerview-v7:21.0.+'
+    compile 'com.android.support:support-v13:21.0.3'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:cardview-v7:21.0.3'
+    compile 'com.android.support:recyclerview-v7:21.0.3'
 
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.balysv:material-ripple:1.0.1'
     compile 'com.getbase:floatingactionbutton:1.8.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'

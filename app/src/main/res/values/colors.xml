@@ -5,9 +5,9 @@
     <color name="background_normal">#0000</color>
     <color name="black_overlay">#66000000</color>
 
-	<color name="netrunner_blue">#607D8B</color>
-	<color name="netrunner_blue_dark">#455A64</color>
-    <color name="netrunner_blue_light">#B0BEC5</color>
+	<color name="netrunner_blue">#345F82</color>
+	<color name="netrunner_blue_dark">#294c68</color>
+    <color name="netrunner_blue_light">#AAC6DD</color>
     <color name="button_pressed">#DDDDDD</color>
     <color name="button_hover">#CCCCCC</color>
 
@@ -15,27 +15,34 @@
     <color name="white_pressed">#f1f1f1</color>
 	<color name="half_black">#808080</color>
 	<color name="black_semi_transparent">#B2000000</color>
-	<color name="purple">#9C27B0</color>
-	<color name="purple_pressed">#BA68C8</color>
-	<color name="blue">#2196F3</color>
-	<color name="blue_pressed">#64B5F6</color>
-	<color name="red">#F44336</color>
-	<color name="red_pressed">#FF5252</color>
+	<color name="fab_color">#FFC107</color>
+	<color name="fab_color_pressed">#FFD54F</color>
+	<color name="fab_new_corp_color">#2196F3</color>
+	<color name="fab_new_corp_color_pressed">#64B5F6</color>
+	<color name="fab_new_runner_color">#F44336</color>
+	<color name="fab_new_runner_color_pressed">#FF5252</color>
 
 	<!-- Faction Colors -->
     <color name="light_anarch">#ECD2BF</color>
-    <color name="dark_anarch">#DE5D30</color>
+	<color name="dark_anarch">#DE5D30</color>
+	<color name="darker_anarch">#b14a26</color>
     <color name="light_criminal">#C3D8E8</color>
-    <color name="dark_criminal">#3F73AF</color>
+	<color name="dark_criminal">#0288D1</color>
+	<color name="darker_criminal">#016ca7</color>
     <color name="light_haasbioroid">#CDBCDA</color>
-    <color name="dark_haasbioroid">#7D6486</color>
+	<color name="dark_haasbioroid">#7D6486</color>
+	<color name="darker_haasbioroid">#64506b</color>
     <color name="light_jinteki">#F1D3C4</color>
-    <color name="dark_jinteki">#C45239</color>
+	<color name="dark_jinteki">#C45239</color>
+	<color name="darker_jinteki">#9c412d</color>
     <color name="light_nbn">#F5D192</color>
-    <color name="dark_nbn">#C48E35</color>
+	<color name="dark_nbn">#C48E35</color>
+	<color name="darker_nbn">#9c712a</color>
     <color name="light_shaper">#C0D6B0</color>
-    <color name="dark_shaper">#6FA146</color>
+	<color name="dark_shaper">#6FA146</color>
+	<color name="darker_shaper">#588038</color>
     <color name="light_weylandconsortium">#C8D4C4</color>
-    <color name="dark_weylandconsortium">#626A60</color>
+	<color name="dark_weylandconsortium">#626A60</color>
+	<color name="darker_weylandconsortium">#4e544c</color>
 
 </resources>

@@ -1,12 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder;
 
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,12 +9,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,12 +34,13 @@ import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 import com.shuneault.netrunnerdeckbuilder.octgn.OCTGN;
+import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class DeckActivity extends Activity implements OnDeckChangedListener {
+public class DeckActivity extends ActionBarActivity implements OnDeckChangedListener {
 
     // Activity Result
     public static final int REQUEST_CHANGE_IDENTITY = 2;
@@ -58,6 +57,7 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
 
     private Deck mDeck;
     private ViewPager mViewPager;
+    private SlidingTabLayout tabs;
     private LinearLayout layoutAgendas;
     private TextView lblInfoInfluence;
     private TextView lblInfoCards;
@@ -89,8 +89,9 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
         lblInfoCards = (TextView) findViewById(R.id.lblInfoCards);
         lblInfoAgenda = (TextView) findViewById(R.id.lblInfoAgenda);
 
-        // ActionBar
-        mActionBar = getActionBar();
+        // ActionBar - set elevation to 0 to remove shadow
+        mActionBar = getSupportActionBar();
+	    mActionBar.setElevation(0);
 
         // Database
         mDb = AppManager.getInstance().getDatabase();
@@ -100,11 +101,11 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
             mDeck = AppManager.getInstance().getDeck(savedInstanceState.getLong(ARGUMENT_DECK_ID));
             mSelectedTab = savedInstanceState.getInt(ARGUMENT_SELECTED_TAB);
             // Restore the fragments instances
-            fragDeckInfo = (DeckInfoFragment) getFragmentManager().getFragment(savedInstanceState, DeckInfoFragment.class.getName());
-            fragDeckMyCards = (DeckMyCardsFragment) getFragmentManager().getFragment(savedInstanceState, DeckMyCardsFragment.class.getName());
-            fragDeckCards = (DeckCardsFragment) getFragmentManager().getFragment(savedInstanceState, DeckCardsFragment.class.getName());
-            fragDeckBuild = (DeckBuildFragment) getFragmentManager().getFragment(savedInstanceState, DeckBuildFragment.class.getName());
-            fragDeckHand = (DeckHandFragment) getFragmentManager().getFragment(savedInstanceState, DeckHandFragment.class.getName());
+            fragDeckInfo = (DeckInfoFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckInfoFragment.class.getName());
+            fragDeckMyCards = (DeckMyCardsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckMyCardsFragment.class.getName());
+            fragDeckCards = (DeckCardsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckCardsFragment.class.getName());
+            fragDeckBuild = (DeckBuildFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckBuildFragment.class.getName());
+            fragDeckHand = (DeckHandFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckHandFragment.class.getName());
         } else {
             mDeck = AppManager.getInstance().getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
             mSelectedTab = getIntent().getExtras().getInt(ARGUMENT_SELECTED_TAB);
@@ -113,11 +114,12 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
         // Change the title
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setTitle(mDeck.getName());
-        if (mDeck.getIdentity().getFactionCode().equals(Card.Faction.FACTION_NEUTRAL)) {
-            mActionBar.setIcon(getResources().getDrawable(R.drawable.ic_launcher));
-        } else {
-            mActionBar.setIcon(mDeck.getIdentity().getFactionImageRes(this));
-        }
+		// app icon doesn't work with support library - needs implemented differently
+//        if (mDeck.getIdentity().getFactionCode().equals(Card.Faction.FACTION_NEUTRAL)) {
+//            mActionBar.setLogo(getResources().getDrawable(R.drawable.ic_launcher));
+//        } else {
+//            mActionBar.setLogo(mDeck.getIdentity().getFactionImageRes(this));
+//        }
 
         // Display the agendas (in the infobar) only if it is a CORP deck
         if (mDeck.getSide().equals(Card.Side.SIDE_CORPORATION)) {
@@ -126,56 +128,19 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
             layoutAgendas.setVisibility(View.GONE);
         }
 
-        // Set the page adapter
-        mViewPager.setAdapter(new DeckTabsPagerAdapter(getFragmentManager()));
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+	    // Set the page adapter
+        mViewPager.setAdapter(new DeckTabsPagerAdapter(getSupportFragmentManager()));
 
-            @Override
-            public void onPageSelected(int arg0) {
-                mActionBar.setSelectedNavigationItem(arg0);
-            }
-
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-                //
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-                //
-
-            }
-        });
-
-        // Add the tabs
-        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-
-            @Override
-            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-            }
-
-            @Override
-            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-                mViewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-            }
-        };
-        // Add the necessary tabs
-        if (mActionBar.getTabCount() > 0)
-            mActionBar.removeAllTabs();
-
-        mActionBar.addTab(mActionBar.newTab().setText(R.string.tab_info).setTabListener(tabListener), (mSelectedTab == mActionBar.getTabCount()));
-        mActionBar.addTab(mActionBar.newTab().setText(R.string.tab_my_cards).setTabListener(tabListener), (mSelectedTab == mActionBar.getTabCount()));
-        mActionBar.addTab(mActionBar.newTab().setText(R.string.tab_cards).setTabListener(tabListener), (mSelectedTab == mActionBar.getTabCount()));
-        mActionBar.addTab(mActionBar.newTab().setText(R.string.tab_build).setTabListener(tabListener), (mSelectedTab == mActionBar.getTabCount()));
-        mActionBar.addTab(mActionBar.newTab().setText(R.string.tab_hand).setTabListener(tabListener), (mSelectedTab == mActionBar.getTabCount()));
+	    // attach tabs to view pager
+	    tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+	    tabs.setViewPager(mViewPager);
+        if (mDeck.getIdentity().getFactionCode().equals(Card.Faction.FACTION_NEUTRAL)) {
+	        tabs.setBackgroundColor(getResources().getColor(R.color.netrunner_blue));
+        } else {
+	        tabs.setBackgroundColor(getResources().getColor(getResources().getIdentifier(
+			        "dark_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "color", this.
+					        getPackageName())));
+        }
 
         // Update the infobar
         updateInfoBar();
@@ -203,7 +168,6 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
         else
             lblInfoCards.setTextAppearance(this, R.style.InfoBarBad);
     }
-
 
     public class DeckTabsPagerAdapter extends FragmentPagerAdapter {
 
@@ -258,8 +222,20 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            //
-            return "Tab " + position;
+	        switch (position)
+	        {
+		        case 0:
+			        return getResources().getString(R.string.tab_info);
+		        case 1:
+			        return getResources().getString(R.string.tab_my_cards);
+		        case 2:
+			        return getResources().getString(R.string.tab_cards);
+		        case 3:
+			        return getResources().getString(R.string.tab_build);
+		        case 4:
+			        return getResources().getString(R.string.tab_hand);
+	        }
+	        return "";
         }
 
     }
@@ -458,7 +434,7 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
             fragDeckCards.onDeckIdentityChanged(newIdentity);
 
         // Change the actionbar icon
-        getActionBar().setIcon(newIdentity.getFactionImageRes(this));
+        getSupportActionBar().setIcon(newIdentity.getFactionImageRes(this));
 
         // Update the infobar
         updateInfoBar();
@@ -506,15 +482,15 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
 
         // Save the fragments instances
         if (fragDeckInfo != null)
-            getFragmentManager().putFragment(outState, DeckInfoFragment.class.getName(), fragDeckInfo);
+            getSupportFragmentManager().putFragment(outState, DeckInfoFragment.class.getName(), fragDeckInfo);
         if (fragDeckMyCards != null)
-            getFragmentManager().putFragment(outState, DeckMyCardsFragment.class.getName(), fragDeckMyCards);
+            getSupportFragmentManager().putFragment(outState, DeckMyCardsFragment.class.getName(), fragDeckMyCards);
         if (fragDeckCards != null)
-            getFragmentManager().putFragment(outState, DeckCardsFragment.class.getName(), fragDeckCards);
+            getSupportFragmentManager().putFragment(outState, DeckCardsFragment.class.getName(), fragDeckCards);
         if (fragDeckBuild != null)
-            getFragmentManager().putFragment(outState, DeckBuildFragment.class.getName(), fragDeckBuild);
+            getSupportFragmentManager().putFragment(outState, DeckBuildFragment.class.getName(), fragDeckBuild);
         if (fragDeckHand != null)
-            getFragmentManager().putFragment(outState, DeckHandFragment.class.getName(), fragDeckHand);
+            getSupportFragmentManager().putFragment(outState, DeckHandFragment.class.getName(), fragDeckHand);
     }
 
 }
