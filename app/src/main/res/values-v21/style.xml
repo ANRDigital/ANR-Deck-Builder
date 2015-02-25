@@ -7,7 +7,7 @@
 		<item name="actionBarStyle">@style/ActionBar</item>
 		<item name="android:colorPrimary">@color/netrunner_blue</item>
 		<item name="android:colorPrimaryDark">@color/netrunner_blue_dark</item>
-		<item name="android:navigationBarColor">@color/netrunner_blue_dark</item>
+		<item name="android:navigationBarColor">@color/netrunner_blue</item>
 		<item name="android:colorAccent">@color/netrunner_blue_light</item>
 		<item name="android:textColorSecondary">#757575</item>
 
@@ -18,7 +18,7 @@
 		<item name="actionBarStyle">@style/ActionBar_anarch</item>
 		<item name="android:colorPrimary">@color/dark_anarch</item>
 		<item name="android:colorPrimaryDark">@color/darker_anarch</item>
-		<item name="android:navigationBarColor">@color/darker_anarch</item>
+		<item name="android:navigationBarColor">@color/dark_anarch</item>
 		<item name="android:colorAccent">@color/light_anarch</item>
 		<item name="android:textColorSecondary">#757575</item>
 
@@ -29,7 +29,7 @@
 		<item name="actionBarStyle">@style/ActionBar_criminal</item>
 		<item name="android:colorPrimary">@color/dark_criminal</item>
 		<item name="android:colorPrimaryDark">@color/darker_criminal</item>
-		<item name="android:navigationBarColor">@color/darker_criminal</item>
+		<item name="android:navigationBarColor">@color/dark_criminal</item>
 		<item name="android:colorAccent">@color/light_criminal</item>
 		<item name="android:textColorSecondary">#757575</item>
 
@@ -40,7 +40,7 @@
 		<item name="actionBarStyle">@style/ActionBar_hb</item>
 		<item name="android:colorPrimary">@color/dark_haasbioroid</item>
 		<item name="android:colorPrimaryDark">@color/darker_haasbioroid</item>
-		<item name="android:navigationBarColor">@color/darker_haasbioroid</item>
+		<item name="android:navigationBarColor">@color/dark_haasbioroid</item>
 		<item name="android:colorAccent">@color/light_haasbioroid</item>
 		<item name="android:textColorSecondary">#757575</item>
 
@@ -51,7 +51,7 @@
 		<item name="actionBarStyle">@style/ActionBar_jinteki</item>
 		<item name="android:colorPrimary">@color/dark_jinteki</item>
 		<item name="android:colorPrimaryDark">@color/darker_jinteki</item>
-		<item name="android:navigationBarColor">@color/darker_jinteki</item>
+		<item name="android:navigationBarColor">@color/dark_jinteki</item>
 		<item name="android:colorAccent">@color/light_jinteki</item>
 		<item name="android:textColorSecondary">#757575</item>
 
@@ -62,7 +62,7 @@
 		<item name="actionBarStyle">@style/ActionBar_nbn</item>
 		<item name="android:colorPrimary">@color/dark_nbn</item>
 		<item name="android:colorPrimaryDark">@color/darker_nbn</item>
-		<item name="android:navigationBarColor">@color/darker_nbn</item>
+		<item name="android:navigationBarColor">@color/dark_nbn</item>
 		<item name="android:colorAccent">@color/light_nbn</item>
 		<item name="android:textColorSecondary">#757575</item>
 
@@ -73,7 +73,7 @@
 		<item name="actionBarStyle">@style/ActionBar_shaper</item>
 		<item name="android:colorPrimary">@color/dark_shaper</item>
 		<item name="android:colorPrimaryDark">@color/darker_shaper</item>
-		<item name="android:navigationBarColor">@color/darker_shaper</item>
+		<item name="android:navigationBarColor">@color/dark_shaper</item>
 		<item name="android:colorAccent">@color/light_shaper</item>
 		<item name="android:textColorSecondary">#757575</item>
 
@@ -84,7 +84,7 @@
 		<item name="actionBarStyle">@style/ActionBar_weyland</item>
 		<item name="android:colorPrimary">@color/dark_weylandconsortium</item>
 		<item name="android:colorPrimaryDark">@color/darker_weylandconsortium</item>
-		<item name="android:navigationBarColor">@color/darker_weylandconsortium</item>
+		<item name="android:navigationBarColor">@color/dark_weylandconsortium</item>
 		<item name="android:colorAccent">@color/light_weylandconsortium</item>
 		<item name="android:textColorSecondary">#757575</item>
 
