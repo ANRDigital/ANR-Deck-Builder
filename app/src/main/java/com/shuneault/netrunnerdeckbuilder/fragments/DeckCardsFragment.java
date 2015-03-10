@@ -3,6 +3,7 @@ package com.shuneault.netrunnerdeckbuilder.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -15,6 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.DeckActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
@@ -28,6 +32,7 @@ import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -88,11 +93,28 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
         item.setActionView(sv);
 
         //Applies white color on searchview text
-	    // no longer works with Compat library. Needs fixed
-//        int id = sv.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-//        TextView textView = (TextView) sv.findViewById(id);
-//        textView.setTextColor(Color.WHITE);
-//        textView.setHintTextColor(Color.WHITE);
+	    SearchView.SearchAutoComplete searchAutoComplete =
+			    (SearchView.SearchAutoComplete) sv.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+	    searchAutoComplete.setHintTextColor(Color.WHITE);
+	    searchAutoComplete.setTextColor(Color.WHITE);
+	    try {
+		    Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+		    mCursorDrawableRes.setAccessible(true);
+		    mCursorDrawableRes.set(searchAutoComplete, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+	    } catch (Exception e) {}
+
+	    // set close button to white x
+	    ImageView searchCloseIcon = (ImageView) sv.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+	    searchCloseIcon.setImageDrawable(getResources().getDrawable(R.drawable.abc_ic_clear_mtrl_alpha));
+
+	    // remove search icon
+	    sv.setIconifiedByDefault(false);
+	    ImageView searchIcon = (ImageView) sv.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
+	    searchIcon.setLayoutParams(new LinearLayout.LayoutParams(0,0));
+
+	    // set underline
+	    View searchPlate = sv.findViewById(android.support.v7.appcompat.R.id.search_plate);
+	    searchPlate.setBackgroundResource(R.drawable.search);
 
 		sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 

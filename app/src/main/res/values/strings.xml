@@ -3,7 +3,7 @@
 
     <!-- Titles -->
     <string name="title_deck_detail">Deck Detail</string>
-    <string name="title_activity_main">Netrunner Deck Builder</string>
+    <string name="title_activity_main">Deck Builder for Netrunner</string>
     <string name="title_activity_deck">DeckActivity</string>
     <string name="title_activity_deck_info_fragment">DeckInfoFragment</string>
     <string name="title_activity_choose_identity">Choose identity</string>

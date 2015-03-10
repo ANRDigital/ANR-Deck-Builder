@@ -1,6 +1,5 @@
 package com.shuneault.netrunnerdeckbuilder;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -213,11 +213,11 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 
     private void initActionBar() {
         // Set the action bar
-        ActionBar mActionBar = getActionBar();
+        ActionBar mActionBar = getSupportActionBar();
         if (mActionBar != null) {
             mActionBar.setTitle(R.string.title_activity_main);
-            mActionBar.setIcon(R.drawable.ic_launcher);
-            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//            mActionBar.setLogo(R.drawable.ic_launcher);
+//            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         }
     }
 
