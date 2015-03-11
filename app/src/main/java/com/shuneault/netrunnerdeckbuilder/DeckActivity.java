@@ -72,9 +72,9 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
     protected void onCreate(Bundle savedInstanceState) {
         // Set the theme
         if (savedInstanceState != null) {
-            mDeck = AppManager.getInstance().getDeck(savedInstanceState.getLong(ARGUMENT_DECK_ID));
+            mDeck = AppManager.getInstance(this).getDeck(savedInstanceState.getLong(ARGUMENT_DECK_ID));
         } else {
-            mDeck = AppManager.getInstance().getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
+            mDeck = AppManager.getInstance(this).getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
         }
         setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
 
@@ -312,8 +312,8 @@ public class DeckActivity extends Activity implements OnDeckChangedListener {
                 return true;
 
             case R.id.mnuViewFullScreen:
-                Intent intentFullScreen = new Intent(this, ViewDeckFullscreenActivity.class);
-                intentFullScreen.putExtra(ViewDeckFullscreenActivity.EXTRA_DECK_ID, mDeck.getRowId());
+                Intent intentFullScreen = new Intent(this, ViewDeckGridActivity.class);
+                intentFullScreen.putExtra(ViewDeckGridActivity.EXTRA_DECK_ID, mDeck.getRowId());
                 startActivity(intentFullScreen);
                 return true;
 

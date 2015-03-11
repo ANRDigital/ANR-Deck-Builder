@@ -1,6 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.adapters.HeaderListItemInterface;
@@ -146,7 +147,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
         return cardList;
     }
 
-    public int getCardCount(Card card) {
+    public Integer getCardCount(Card card) {
         Integer iCount = mCards.get(card);
         if (iCount == null)
             return 0;

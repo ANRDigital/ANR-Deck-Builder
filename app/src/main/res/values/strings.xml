@@ -138,5 +138,7 @@
     <string name="clear_cache">Clear Cache</string>
     <string name="delete_all_images">Delete all images from the cache</string>
     <string name="message_clear_cache">Are you sure you want to delete all images from the cache? Your decks will NOT be deleted.</string>
+    <string name="title_activity_view_deck_grid">ViewDeckGridActivity</string>
+    <string name="view_all_cards"><![CDATA[< ALL CARDS >]]></string>
 
 </resources>

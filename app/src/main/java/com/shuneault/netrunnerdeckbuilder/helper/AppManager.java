@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
@@ -68,13 +66,18 @@ public class AppManager {
         return mAppManager;
     }
 
+    public static AppManager getInstance(Context context) {
+        if (mAppManager == null)
+            new AppManager().init(context);
+        return mAppManager;
+    }
+
     public void init(Context context) {
         // Initialize the application, database, shared preferences, etc.
         AppManager app = getInstance();
         mContext = context;
         mDb = new DatabaseHelper(context);
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        ImageLoader.getInstance().init(new ImageLoaderConfiguration.Builder(context).build());
     }
 
     public SharedPreferences getSharedPrefs() {

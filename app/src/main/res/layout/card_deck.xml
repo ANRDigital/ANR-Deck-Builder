@@ -5,8 +5,9 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    card_view:cardCornerRadius="5dp"
+    card_view:cardCornerRadius="2dp"
     card_view:cardElevation="2dp"
+    card_view:cardUseCompatPadding="true"
     >
 
     <RelativeLayout

@@ -63,4 +63,11 @@
 
     </style>
 
+    <style name="CardHeader">
+        <item name="android:background">@color/netrunner_blue</item>
+        <item name="android:textSize">6pt</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>
