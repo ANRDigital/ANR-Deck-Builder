@@ -17,66 +17,81 @@
      limitations under the License.
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.Netrunner_weylandconsortium" parent="@android:style/Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_netrunner_weyland</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu.Netrunner_weyland</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Netrunner_weyland</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Netrunner_weyland</item>
-        <item name="android:actionDropDownStyle">@style/DropDownNav.Netrunner_weyland</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Netrunner_weyland</item>
-        <item name="android:actionModeBackground">@drawable/cab_background_top_netrunner_weyland</item>
-        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_netrunner_weyland</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Netrunner_weyland</item>
-        
-                <!-- Light.DarkActionBar specific -->
-        <item name="android:actionBarWidgetTheme">@style/Theme.Netrunner_weyland.Widget</item>
+	<style name="Theme.Netrunner_weylandconsortium" parent="@style/Theme.Netrunner">
+		<item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar_weyland</item>
+		<item name="actionBarStyle">@style/ActionBar_weyland</item>
+		<item name="android:actionBarItemBackground">
+			@drawable/selectable_background_netrunner_weyland
+		</item>
+		<item name="android:popupMenuStyle">@style/PopupMenu.Netrunner_weyland</item>
+		<item name="android:dropDownListViewStyle">@style/DropDownListView.Netrunner_weyland</item>
+		<item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Netrunner_weyland</item>
+		<item name="android:actionDropDownStyle">@style/DropDownNav.Netrunner_weyland</item>
+		<!--<item name="android:actionBarStyle">@style/ActionBar.Solid.Netrunner_weyland</item>-->
+		<item name="android:actionModeBackground">@drawable/cab_background_top_netrunner_weyland
+		</item>
+		<item name="android:actionModeSplitBackground">
+			@drawable/cab_background_bottom_netrunner_weyland
+		</item>
+		<item name="android:actionModeCloseButtonStyle">
+			@style/ActionButton.CloseMode.Netrunner_weyland
+		</item>
 
-    </style>
+		<!-- Light.DarkActionBar specific -->
+		<item name="android:actionBarWidgetTheme">@style/Theme.Netrunner_weyland.Widget</item>
 
-    <style name="ActionBar.Solid.Netrunner_weyland" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/ab_solid_netrunner_weyland</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_netrunner_weyland</item>
-        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_netrunner_weyland</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Netrunner_weyland</item>
-    </style>
+	</style>
 
-    <style name="ActionBar.Transparent.Netrunner_weyland" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@drawable/ab_transparent_netrunner_weyland</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Netrunner_weyland</item>
-    </style>
+	<style name="ActionBar_weyland" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+		<item name="android:background" tools:ignore="NewApi">@color/dark_weylandconsortium</item>
+		<item name="background">@color/dark_weylandconsortium</item>
+	</style>
 
-    <style name="PopupMenu.Netrunner_weyland" parent="@android:style/Widget.Holo.ListPopupWindow">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_netrunner_weyland</item>	
-    </style>
+	<style name="ActionBar.Solid.Netrunner_weyland" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+		<item name="android:background">@drawable/ab_solid_netrunner_weyland</item>
+		<item name="android:backgroundStacked">@drawable/ab_stacked_solid_netrunner_weyland</item>
+		<item name="android:backgroundSplit">@drawable/ab_bottom_solid_netrunner_weyland</item>
+		<item name="android:progressBarStyle">@style/ProgressBar.Netrunner_weyland</item>
+	</style>
 
-    <style name="DropDownListView.Netrunner_weyland" parent="@android:style/Widget.Holo.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_netrunner_weyland</item>
-    </style>
+	<style name="ActionBar.Transparent.Netrunner_weyland" parent="@android:style/Widget.Holo.ActionBar">
+		<item name="android:background">@drawable/ab_transparent_netrunner_weyland</item>
+		<item name="android:progressBarStyle">@style/ProgressBar.Netrunner_weyland</item>
+	</style>
 
-    <style name="ActionBarTabStyle.Netrunner_weyland" parent="@android:style/Widget.Holo.ActionBar.TabView">
-        <item name="android:background">@drawable/tab_indicator_ab_netrunner_weyland</item>
-    </style>
+	<style name="PopupMenu.Netrunner_weyland" parent="@android:style/Widget.Holo.ListPopupWindow">
+		<item name="android:popupBackground">@drawable/menu_dropdown_panel_netrunner_weyland</item>
+	</style>
 
-    <style name="DropDownNav.Netrunner_weyland" parent="@android:style/Widget.Holo.Spinner">
-        <item name="android:background">@drawable/spinner_background_ab_netrunner_weyland</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_netrunner_weyland</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_netrunner_weyland</item>
-    </style>
-    
-    <style name="ProgressBar.Netrunner_weyland" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_netrunner_weyland</item>
-    </style>
-    
-    <style name="ActionButton.CloseMode.Netrunner_weyland" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_netrunner_weyland</item>
-    </style>
+	<style name="DropDownListView.Netrunner_weyland" parent="@android:style/Widget.Holo.ListView.DropDown">
+		<item name="android:listSelector">@drawable/selectable_background_netrunner_weyland</item>
+	</style>
 
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Netrunner_weyland.Widget" parent="@android:style/Theme.Holo">
-        <item name="android:popupMenuStyle">@style/PopupMenu.Netrunner_weyland</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Netrunner_weyland</item>
-    </style>
+	<style name="ActionBarTabStyle.Netrunner_weyland" parent="@android:style/Widget.Holo.ActionBar.TabView">
+		<item name="android:background">@drawable/tab_indicator_ab_netrunner_weyland</item>
+	</style>
+
+	<style name="DropDownNav.Netrunner_weyland" parent="@android:style/Widget.Holo.Spinner">
+		<item name="android:background">@drawable/spinner_background_ab_netrunner_weyland</item>
+		<item name="android:popupBackground">@drawable/menu_dropdown_panel_netrunner_weyland</item>
+		<item name="android:dropDownSelector">@drawable/selectable_background_netrunner_weyland
+		</item>
+	</style>
+
+	<style name="ProgressBar.Netrunner_weyland" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+		<item name="android:progressDrawable">@drawable/progress_horizontal_netrunner_weyland</item>
+	</style>
+
+	<style name="ActionButton.CloseMode.Netrunner_weyland" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+		<item name="android:background">@drawable/btn_cab_done_netrunner_weyland</item>
+	</style>
+
+	<!-- this style is only referenced in a Light.DarkActionBar based theme -->
+	<style name="Theme.Netrunner_weyland.Widget" parent="@android:style/Theme.Holo">
+		<item name="android:popupMenuStyle">@style/PopupMenu.Netrunner_weyland</item>
+		<item name="android:dropDownListViewStyle">@style/DropDownListView.Netrunner_weyland</item>
+	</style>
 
 </resources>

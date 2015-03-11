@@ -1,81 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayout1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<LinearLayout
+	android:id="@+id/LinearLayout1"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/LayoutInfoBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#EEEEEE"
-        android:padding="@dimen/info_bar_padding" >
+	<com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout
+		android:id="@+id/tabs"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" >
+	<LinearLayout
+		android:id="@+id/LayoutInfoBar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="#EEEEEE"
+		android:padding="@dimen/info_bar_padding">
 
-            <TextView
-                style="@style/InfoBarBad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/influence_char_3" />
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/lblInfoInfluence"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/info_bar_margin_amount"
-                android:text="TextView" />
-        </LinearLayout>
+			<TextView
+				style="@style/InfoBarBad"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:text="@string/influence_char_3"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp" >
+			<TextView
+				android:id="@+id/lblInfoInfluence"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:layout_marginLeft="@dimen/info_bar_margin_amount"
+				android:text="TextView"/>
+		</LinearLayout>
 
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/icon_deck" />
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_marginLeft="16dp">
 
-            <TextView
-                android:id="@+id/lblInfoCards"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/info_bar_margin_amount"
-                android:text="TextView" />
-        </LinearLayout>
+			<ImageView
+				android:layout_width="32dp"
+				android:layout_height="32dp"
+				android:src="@drawable/icon_deck"/>
 
-        <LinearLayout
-            android:id="@+id/layoutAgendas"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp" >
+			<TextView
+				android:id="@+id/lblInfoCards"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:layout_marginLeft="@dimen/info_bar_margin_amount"
+				android:text="TextView"/>
+		</LinearLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_agenda" />
+		<LinearLayout
+			android:id="@+id/layoutAgendas"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_marginLeft="16dp">
 
-            <TextView
-                android:id="@+id/lblInfoAgenda"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/info_bar_margin_amount"
-                android:text="TextView" />
-        </LinearLayout>
-    </LinearLayout>
-    
+			<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/icon_agenda"/>
+
+			<TextView
+				android:id="@+id/lblInfoAgenda"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:layout_marginLeft="@dimen/info_bar_margin_amount"
+				android:text="TextView"/>
+		</LinearLayout>
+	</LinearLayout>
+
 	<android.support.v4.view.ViewPager
-	    xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:id="@+id/pager"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" />
+		android:id="@+id/pager"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
 
 </LinearLayout>

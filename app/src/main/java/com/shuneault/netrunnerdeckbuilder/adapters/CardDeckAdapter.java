@@ -75,7 +75,8 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
         public ViewHolder(View v, IViewHolderClicks listener) {
             super(v);
             mListener = listener;
-            v.setOnClickListener(this);
+	        // set click listener to ripple view
+            v.findViewById(R.id.ripple).setOnClickListener(this);
             txtDeckTitle = (TextView) v.findViewById(R.id.txtDeckTitle);
             txtDeckNotes = (TextView) v.findViewById(R.id.txtDeckNotes);
             imgDeckIdentity = (ImageView) v.findViewById(R.id.imgDeckIdentity);

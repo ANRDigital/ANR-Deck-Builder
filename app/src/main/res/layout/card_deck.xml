@@ -1,63 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    card_view:cardCornerRadius="2dp"
-    card_view:cardElevation="2dp"
-    card_view:cardUseCompatPadding="true"
-    >
+	android:id="@+id/card_view"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:card_view="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="96dp"
+	android:layout_marginBottom="6dp"
+	android:layout_marginLeft="8dp"
+	android:layout_marginRight="8dp"
+	android:layout_marginTop="6dp"
+	card_view:cardCornerRadius="2dp"
+	card_view:cardElevation="2dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/card_selector">
+	<com.balysv.materialripple.MaterialRippleLayout
+		android:id="@+id/ripple"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		app:mrl_rippleAlpha="0.2"
+		app:mrl_rippleColor="#585858"
+		app:mrl_rippleHover="true"
+		app:mrl_rippleOverlay="false">
 
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_margin="8dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imgDeckIdentity"
-            android:src="@drawable/card_back_corp"
-            android:maxHeight="60dp"
-            android:elevation="20dp"
-            android:layout_marginRight="16dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+			<ImageView
+				android:id="@+id/imgDeckIdentity"
+				android:layout_width="56dp"
+				android:layout_height="80dp"
+				android:layout_alignParentLeft="true"
+				android:layout_marginRight="8dp"
+				android:src="@drawable/card_back_corp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="txtDeckTitle"
-            android:id="@+id/txtDeckTitle"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/imgDeckIdentity"
-            android:layout_toLeftOf="@+id/chkStar"
-            android:layout_toEndOf="@+id/imgDeckIdentity" />
+			<TextView
+				android:id="@+id/txtDeckTitle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentTop="true"
+				android:layout_toRightOf="@+id/imgDeckIdentity"
+				android:ellipsize="end"
+				android:maxLines="1"
+				android:text="txtDeckTitle"
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="txtDeckNotes"
-            android:id="@+id/txtDeckNotes"
-            android:layout_below="@+id/txtDeckTitle"
-            android:layout_toRightOf="@+id/imgDeckIdentity"
-            android:layout_toEndOf="@+id/imgDeckIdentity" />
+			<CheckBox
+				android:id="@+id/chkStar"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:layout_alignParentRight="true"
+				android:button="@drawable/star"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/chkStar"
-            style="?android:attr/starStyle"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+			<TextView
+				android:id="@+id/txtDeckNotes"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/txtDeckTitle"
+				android:layout_toLeftOf="@+id/chkStar"
+				android:layout_toRightOf="@+id/imgDeckIdentity"
+				android:ellipsize="end"
+				android:maxLines="3"
+				android:text="txtDeckNotes"
+				android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-    </RelativeLayout>
-
+		</RelativeLayout>
+	</com.balysv.materialripple.MaterialRippleLayout>
 </android.support.v7.widget.CardView>

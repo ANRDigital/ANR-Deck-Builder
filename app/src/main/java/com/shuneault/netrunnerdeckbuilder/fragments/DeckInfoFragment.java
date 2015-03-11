@@ -1,8 +1,9 @@
 package com.shuneault.netrunnerdeckbuilder.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -77,7 +78,7 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
                                       int arg3) {
                 mDeck.setName(arg0.toString());
                 mListener.onDeckNameChanged(mDeck, arg0.toString());
-                getActivity().getActionBar().setTitle(arg0.toString());
+	            ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(arg0.toString());
             }
 
         });
