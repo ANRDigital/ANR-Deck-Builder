@@ -359,6 +359,11 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                 intentEmailPlain.putExtra(Intent.EXTRA_TEXT, sb.toString() + "\n\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
                 startActivity(Intent.createChooser(intentEmailPlain, getText(R.string.menu_share)));
 
+                return true;
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
