@@ -22,39 +22,11 @@
 	<style name="Theme.Netrunner_anarch" parent="@style/Theme.Netrunner">
 		<item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar_anarch</item>
 		<item name="actionBarStyle">@style/ActionBar_anarch</item>
-				<item name="android:popupMenuStyle">@style/PopupMenu.Netrunner_weyland</item>
-				<item name="android:dropDownListViewStyle">@style/DropDownListView.Netrunner_weyland</item>
-				<item name="android:actionDropDownStyle">@style/DropDownNav.Netrunner_weyland</item>
-
-						<!-- Light.DarkActionBar specific -->
-				<item name="android:actionBarWidgetTheme">@style/Theme.Netrunner_weyland.Widget</item>
-
 	</style>
 
 	<style name="ActionBar_anarch" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
 		<item name="android:background" tools:ignore="NewApi">@color/dark_anarch</item>
 		<item name="background">@color/dark_anarch</item>
-	</style>
-
-	<style name="PopupMenu.Netrunner_anarch" parent="@android:style/Widget.Holo.ListPopupWindow">
-		<item name="android:popupBackground">@drawable/menu_dropdown_panel_netrunner_anarch</item>
-	</style>
-
-	<style name="DropDownListView.Netrunner_anarch" parent="@android:style/Widget.Holo.ListView.DropDown">
-		<item name="android:listSelector">@drawable/selectable_background_netrunner_anarch</item>
-	</style>
-
-	<style name="DropDownNav.Netrunner_anarch" parent="@android:style/Widget.Holo.Spinner">
-		<item name="android:background">@drawable/spinner_background_ab_netrunner_anarch</item>
-		<item name="android:popupBackground">@drawable/menu_dropdown_panel_netrunner_anarch</item>
-		<item name="android:dropDownSelector">@drawable/selectable_background_netrunner_anarch
-		</item>
-	</style>
-
-	<!-- this style is only referenced in a Light.DarkActionBar based theme -->
-	<style name="Theme.Netrunner_anarch.Widget" parent="@android:style/Theme.Holo">
-		<item name="android:popupMenuStyle">@style/PopupMenu.Netrunner_anarch</item>
-		<item name="android:dropDownListViewStyle">@style/DropDownListView.Netrunner_anarch</item>
 	</style>
 
 </resources>
