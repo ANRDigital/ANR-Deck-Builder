@@ -1,10 +1,10 @@
 package com.shuneault.netrunnerdeckbuilder;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class ViewDeckGridActivity extends Activity {
+public class ViewDeckGridActivity extends ActionBarActivity
+{
     // Arguments
     public static final String EXTRA_DECK_ID = "com.example.netrunnerdeckbuilder.EXTRA_DECK_ID";
     public static final String EXTRA_SET_NAME = "com.example.netrunnerdeckbuilder.EXTRA_SET_NAME";
@@ -67,7 +68,7 @@ public class ViewDeckGridActivity extends Activity {
 //            });
         } else if (mDeck != null) {
             mCards = mDeck.getCards();
-            getActionBar().setIcon(mDeck.getIdentity().getFactionImageRes(this));
+            getSupportActionBar().setIcon(mDeck.getIdentity().getFactionImageRes(this));
             Collections.sort(mCards, new Sorter.CardSorterByCardType());
             setTitle(mDeck.getName());
             mGridView.setAdapter(new CardsDeckImageAdapter(this, mDeck, mCards));
