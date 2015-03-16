@@ -151,7 +151,10 @@ public class AppManager {
         return null;
     }
 
-    public Deck getDeck(Long rowId) {
+	// decks with rowId of 128 and higher wouldn't load so
+	// pass in a primitive long instead of Long object due to this
+	// explanation here: http://bexhuff.com/java-autoboxing-wackiness
+    public Deck getDeck(long rowId) {
         for (Deck deck : this.mDecks) {
             if (deck.getRowId() == rowId) {
                 return deck;
