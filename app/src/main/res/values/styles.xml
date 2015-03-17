@@ -70,5 +70,4 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
     </style>
-
 </resources>
