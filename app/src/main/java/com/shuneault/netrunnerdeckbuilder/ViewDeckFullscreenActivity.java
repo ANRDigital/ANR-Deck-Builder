@@ -1,6 +1,5 @@
 package com.shuneault.netrunnerdeckbuilder;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -9,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -32,7 +32,7 @@ import java.util.Collections;
  *
  * @see SystemUiHider
  */
-public class ViewDeckFullscreenActivity extends Activity {
+public class ViewDeckFullscreenActivity extends ActionBarActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -80,6 +80,21 @@ public class ViewDeckFullscreenActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+	    // Get the deck / set name
+	    mDeck = AppManager.getInstance().getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0));
+	    mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
+	    mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
+
+	    // set theme to identity's faction colors
+	    if (mDeck != null)
+	    {
+		    setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
+	    }
+	    else if (mCardCode != null)
+	    {
+		    setTheme(getResources().getIdentifier("Theme.Netrunner_" + AppManager.getInstance().getCard(mCardCode).getFactionCode().replace("-", ""), "style", this.getPackageName()));
+	    }
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fullscreen_view);
@@ -87,16 +102,10 @@ public class ViewDeckFullscreenActivity extends Activity {
         // GUI
         mPager = (ViewPager) findViewById(R.id.pager);
 
-        // Get the deck / set name
-        mDeck = AppManager.getInstance().getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0));
-        mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
-        mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
-        mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
-
         // Build the image array
         if (mDeck != null) {
             mCards = mDeck.getCards();
-            getActionBar().setIcon(mDeck.getIdentity().getFactionImageRes(this));
+            getSupportActionBar().setIcon(mDeck.getIdentity().getFactionImageRes(this));
             Collections.sort(mCards, new CardSorterByCardType());
         } else if (mSetName != null) {
             mCards = AppManager.getInstance().getCardsBySetName(mSetName);

@@ -17,66 +17,16 @@
      limitations under the License.
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.Netrunner_nbn" parent="@android:style/Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_netrunner_nbn</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu.Netrunner_nbn</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Netrunner_nbn</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Netrunner_nbn</item>
-        <item name="android:actionDropDownStyle">@style/DropDownNav.Netrunner_nbn</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Netrunner_nbn</item>
-        <item name="android:actionModeBackground">@drawable/cab_background_top_netrunner_nbn</item>
-        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_netrunner_nbn</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Netrunner_nbn</item>
-        
-                <!-- Light.DarkActionBar specific -->
-        <item name="android:actionBarWidgetTheme">@style/Theme.Netrunner_nbn.Widget</item>
+	<style name="Theme.Netrunner_nbn" parent="@style/Theme.Netrunner">
+		<item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar_nbn</item>
+		<item name="actionBarStyle">@style/ActionBar_nbn</item>
+	</style>
 
-    </style>
-
-    <style name="ActionBar.Solid.Netrunner_nbn" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/ab_solid_netrunner_nbn</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_netrunner_nbn</item>
-        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_netrunner_nbn</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Netrunner_nbn</item>
-    </style>
-
-    <style name="ActionBar.Transparent.Netrunner_nbn" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@drawable/ab_transparent_netrunner_nbn</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Netrunner_nbn</item>
-    </style>
-
-    <style name="PopupMenu.Netrunner_nbn" parent="@android:style/Widget.Holo.ListPopupWindow">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_netrunner_nbn</item>	
-    </style>
-
-    <style name="DropDownListView.Netrunner_nbn" parent="@android:style/Widget.Holo.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_netrunner_nbn</item>
-    </style>
-
-    <style name="ActionBarTabStyle.Netrunner_nbn" parent="@android:style/Widget.Holo.ActionBar.TabView">
-        <item name="android:background">@drawable/tab_indicator_ab_netrunner_nbn</item>
-    </style>
-
-    <style name="DropDownNav.Netrunner_nbn" parent="@android:style/Widget.Holo.Spinner">
-        <item name="android:background">@drawable/spinner_background_ab_netrunner_nbn</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_netrunner_nbn</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_netrunner_nbn</item>
-    </style>
-    
-    <style name="ProgressBar.Netrunner_nbn" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_netrunner_nbn</item>
-    </style>
-    
-    <style name="ActionButton.CloseMode.Netrunner_nbn" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_netrunner_nbn</item>
-    </style>
-
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Netrunner_nbn.Widget" parent="@android:style/Theme.Holo">
-        <item name="android:popupMenuStyle">@style/PopupMenu.Netrunner_nbn</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Netrunner_nbn</item>
-    </style>
+	<style name="ActionBar_nbn" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+		<item name="android:background" tools:ignore="NewApi">@color/dark_nbn</item>
+		<item name="background">@color/dark_nbn</item>
+	</style>
 
 </resources>

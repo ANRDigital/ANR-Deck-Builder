@@ -6,13 +6,5 @@
     <!-- Infobar -->
     <dimen name="info_bar_padding">10dp</dimen>
     <dimen name="info_bar_margin_amount">6dp</dimen>
-    <dimen name="info_bar_margin_group">16dp</dimen>
-    
-    <!-- ListViewHeader -->
-    <dimen name="list_view_header_padding_top">10dp</dimen>
-    
-    <!-- ListViewDeck -->
-    <dimen name="list_view_deck_padding_top">10dp</dimen>
-    <dimen name="list_view_deck_padding_left">10dp</dimen>
 
 </resources>
