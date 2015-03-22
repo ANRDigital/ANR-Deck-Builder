@@ -84,6 +84,7 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
 	    mDeck = AppManager.getInstance().getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0));
 	    mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
 	    mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
+        mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
 
 	    // set theme to identity's faction colors
 	    if (mDeck != null)
@@ -123,7 +124,6 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
 
         // Change the icon and title
         updateTitle(mCards.get(0));
-
 
         // Set the adapter for the view pager
         mPager.setAdapter(new ImageViewPager());
