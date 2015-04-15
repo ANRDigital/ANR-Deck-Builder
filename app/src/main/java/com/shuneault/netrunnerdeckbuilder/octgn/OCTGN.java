@@ -60,8 +60,11 @@ public class OCTGN {
             for (int i = 0; i < nodeCards.getLength(); i++) {
                 Node node = nodeCards.item(i);
                 Card card = AppManager.getInstance().getCard(getCardCodeFromUUID(node.getAttributes().getNamedItem(KEY_ID).getTextContent()));
-                int count = Integer.parseInt(node.getAttributes().getNamedItem(KEY_QTY).getTextContent());
-                deck.setCardCount(card, count);
+                if (card != null) {
+                    // TODO: Tell the user we could not import all cards OR download the cards from the Internet
+                    int count = Integer.parseInt(node.getAttributes().getNamedItem(KEY_QTY).getTextContent());
+                    deck.setCardCount(card, count);
+                }
             }
             deck.clearCardsToAddAndRemove();
 
