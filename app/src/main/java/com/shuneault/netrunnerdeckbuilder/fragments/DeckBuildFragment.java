@@ -33,6 +33,7 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
     private ListView lstCardsToAdd;
     private ListView lstCardsToRemove;
     private Button btnClearAll;
+    private Button btnUnbuild;
 
     private Deck mDeck;
     private ArrayList<CardCount> mCardsToAdd;
@@ -55,6 +56,7 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
         lstCardsToAdd = (ListView) mainView.findViewById(R.id.lstCardsToAdd);
         lstCardsToRemove = (ListView) mainView.findViewById(R.id.lstCardsToRemove);
         btnClearAll = (Button) mainView.findViewById(R.id.btnClearAll);
+        btnUnbuild = (Button) mainView.findViewById(R.id.btnUnbuild);
 
         // Get the card lists
         mDeck = AppManager.getInstance().getDeck(getArguments().getLong(ARGUMENT_DECK_ID));
@@ -111,6 +113,35 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
+            }
+        });
+        btnUnbuild.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ask to make sure we want to "unbuild" the deck
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(getString(R.string.message_unbuild));
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDeck.clearCardsToAddAndRemove();
+                        ArrayList<CardCount> arrCardCount = new ArrayList<CardCount>();
+                        for (Card card : mDeck.getCards()) {
+                            arrCardCount.add(new CardCount(card, mDeck.getCardCount(card)));
+                        }
+                        mDeck.setCardsToAdd(arrCardCount);
+                        mCardsToAddAdapter.notifyDataSetChanged();
+                        mCardsToRemoveAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

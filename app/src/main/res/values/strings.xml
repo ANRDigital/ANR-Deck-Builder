@@ -161,5 +161,7 @@
     <string name="cards_language">Cards language</string>
     <string name="cards_language_summary">Only affects the text (the images are english only)</string>
     <string name="downloading_cards_restart">Download cards... The application will restart automatically.</string>
+    <string name="unbuild">Unbuild</string>
+    <string name="message_unbuild">Are you sure you want to unbuild your deck and regenerate the \"Cards to add\" section?</string>
 
 </resources>
