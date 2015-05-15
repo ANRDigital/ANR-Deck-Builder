@@ -6,6 +6,11 @@
 	    <item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar</item>
 	    <item name="actionBarStyle">@style/ActionBar</item>
 	    <item name="android:windowContentOverlay">@null</item>
+        <item name="android:textAppearance">@style/defaultTextAppearance</item>
+    </style>
+
+    <style name="defaultTextAppearance">
+        <item name="android:textColor">#CCC</item>
     </style>
 
 	<style name="ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
