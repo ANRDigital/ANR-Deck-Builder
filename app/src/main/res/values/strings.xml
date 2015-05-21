@@ -163,5 +163,7 @@
     <string name="downloading_cards_restart">Download cards... The application will restart automatically.</string>
     <string name="unbuild">Unbuild</string>
     <string name="message_unbuild">Are you sure you want to unbuild your deck and regenerate the \"Cards to add\" section?</string>
+    <string name="msg_error_importing_deck">Error importing deck</string>
+    <string name="msg_error_update_card_list">Could not import deck. Please update your card list and try again.</string>
 
 </resources>

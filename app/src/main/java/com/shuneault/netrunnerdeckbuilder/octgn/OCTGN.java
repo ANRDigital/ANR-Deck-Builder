@@ -1,5 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder.octgn;
 
+import android.app.AlertDialog;
 import android.text.Html;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
@@ -64,6 +65,8 @@ public class OCTGN {
                     // TODO: Tell the user we could not import all cards OR download the cards from the Internet
                     int count = Integer.parseInt(node.getAttributes().getNamedItem(KEY_QTY).getTextContent());
                     deck.setCardCount(card, count);
+                } else {
+                    return null;
                 }
             }
             deck.clearCardsToAddAndRemove();
@@ -132,4 +135,6 @@ public class OCTGN {
     private static String getCardCodeFromUUID(String uuid) {
         return uuid.substring(uuid.length() - 5);
     }
+
+
 }
