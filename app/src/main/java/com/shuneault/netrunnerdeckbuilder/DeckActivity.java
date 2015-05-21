@@ -9,13 +9,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -504,8 +503,6 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
             getSupportFragmentManager().putFragment(outState, DeckBuildFragment.class.getName(), fragDeckBuild);
         if (fragDeckHand != null)
             getSupportFragmentManager().putFragment(outState, DeckHandFragment.class.getName(), fragDeckHand);
-
-        Log.i("Log", "Instance Saved");
     }
 
 }
