@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,16 +71,23 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         // Set the theme
         if (savedInstanceState != null) {
             mDeck = AppManager.getInstance(this).getDeck(savedInstanceState.getLong(ARGUMENT_DECK_ID));
         } else {
             mDeck = AppManager.getInstance(this).getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
         }
+
+        // Close activity if the deck is empty
+        // TODO: Bug fix the causing issue causing mDeck to be empty
+        if (mDeck == null) {
+            finish();
+        }
+
+        // Set the theme and layout
         setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
-
-
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_deck);
 
         // GUI
@@ -496,6 +504,8 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
             getSupportFragmentManager().putFragment(outState, DeckBuildFragment.class.getName(), fragDeckBuild);
         if (fragDeckHand != null)
             getSupportFragmentManager().putFragment(outState, DeckHandFragment.class.getName(), fragDeckHand);
+
+        Log.i("Log", "Instance Saved");
     }
 
 }
