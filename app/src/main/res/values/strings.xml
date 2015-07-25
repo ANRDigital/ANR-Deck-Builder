@@ -92,6 +92,11 @@
     <string name="build_cards_to_add">Cards to add</string>
     <string name="build_cards_to_remove">Cards to remove</string>
 
+    <!-- Deck Build -->
+    <string name="stats_bar_chart">Cost &amp; Strength Distribution</string>
+    <string name="stats_cost">Cost</string>
+    <string name="stats_strength">Cost</string>
+
     <!-- Menu Items -->
     <string name="menu_about">About</string>
 	<string name="menu_new_corp">Corporation</string>

@@ -46,4 +46,8 @@
 	<color name="dark_weylandconsortium">#626A60</color>
 	<color name="darker_weylandconsortium">#4e544c</color>
 
+	<!-- Graph Colors -->
+	<color name="graph_bar_cost">#e8c91a</color>
+	<color name="graph_bar_strength">#2ec1d1</color>
+
 </resources>
