@@ -1,14 +1,17 @@
 package com.shuneault.netrunnerdeckbuilder.fragments;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -16,6 +19,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.PercentFormatter;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.shuneault.netrunnerdeckbuilder.DeckActivity;
@@ -88,18 +92,23 @@ public class DeckStatsFragment extends Fragment {
         mBarCostSet = new BarDataSet(new ArrayList<BarEntry>(), getString(R.string.stats_cost));
         mBarCostSet.setColor(getResources().getColor(R.color.stats_graph_bar_cost));
         mBarCostSet.setDrawValues(false);
+        mBarCostSet.setHighLightColor(Color.WHITE);
+        mBarCostSet.setHighLightAlpha(70);
         mBarSets.add(mBarCostSet);
 
         mBarStrengthSet = new BarDataSet(new ArrayList<BarEntry>(), getString(R.string.stats_strength));
         mBarStrengthSet.setColor(getResources().getColor(R.color.stats_graph_bar_strength));
         mBarStrengthSet.setDrawValues(false);
+        mBarStrengthSet.setHighLightColor(Color.WHITE);
+        mBarStrengthSet.setHighLightAlpha(70);
         mBarSets.add(mBarStrengthSet);
 
         mBarChart.getAxisRight().setEnabled(false);
         mBarChart.getAxisLeft().setValueFormatter(new IntegerValueFormatter());
         mBarChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         mBarChart.setDescription("");
-        mBarChart.setTouchEnabled(false);
+        mBarChart.setMarkerView(new BarMarkerView(getActivity()));
+
 
         // Card type pie chart
         mTypeChart = (PieChart) mainView.findViewById(R.id.typeChart);
@@ -196,8 +205,8 @@ public class DeckStatsFragment extends Fragment {
         mBarCostSet.clear();
         mBarStrengthSet.clear();
         for (i = 0; i < barEntries; ++i) {
-            mBarCostSet.addEntry(new BarEntry(barCosts[i], i));
-            mBarStrengthSet.addEntry(new BarEntry(barStrengths[i], i));
+            mBarCostSet.addEntry(new BarEntry(barCosts[i], i, R.string.stats_cost_marker));
+            mBarStrengthSet.addEntry(new BarEntry(barStrengths[i], i, R.string.stats_strength_marker));
         }
 
         mTypeDataSet.clear();
@@ -228,22 +237,31 @@ public class DeckStatsFragment extends Fragment {
     }
 
     private int getTypeCodeColor(String typeCode) {
-        if (typeCode.equals(Card.Type.ICE)
-            || typeCode.equals(Card.Type.PROGRAM))
-            return getResources().getColor(R.color.stats_graph_type_ice_program);
-        else if (typeCode.equals(Card.Type.RESOURCE)
-                || typeCode.equals(Card.Type.ASSET))
-            return getResources().getColor(R.color.stats_graph_type_resource_asset);
-        else if (typeCode.equals(Card.Type.EVENT)
-                || typeCode.equals(Card.Type.OPERATION))
-            return getResources().getColor(R.color.stats_graph_type_event_operation);
-        else if (typeCode.equals(Card.Type.HARDWARE)
-                || typeCode.equals(Card.Type.UPGRADE))
-            return getResources().getColor(R.color.stats_graph_type_hardware_upgrade);
-        else if (typeCode.equals(Card.Type.AGENDA))
-            return getResources().getColor(R.color.stats_graph_type_agenda);
-        else
-            return Color.BLACK;
+        switch (typeCode) {
+
+            case Card.Type.ICE:
+            case Card.Type.PROGRAM:
+                return getResources().getColor(R.color.stats_graph_type_ice_program);
+
+            case Card.Type.RESOURCE:
+            case Card.Type.ASSET:
+                return getResources().getColor(R.color.stats_graph_type_resource_asset);
+
+            case Card.Type.EVENT:
+            case Card.Type.OPERATION:
+                return getResources().getColor(R.color.stats_graph_type_event_operation);
+
+            case Card.Type.HARDWARE:
+            case Card.Type.UPGRADE:
+                return getResources().getColor(R.color.stats_graph_type_hardware_upgrade);
+
+            case Card.Type.AGENDA:
+                return getResources().getColor(R.color.stats_graph_type_agenda);
+
+            default:
+                return Color.BLACK;
+
+        }
     }
 
     private class TypeDataEntry {
@@ -256,6 +274,32 @@ public class DeckStatsFragment extends Fragment {
             cardCount = 0;
             xIndex = index;
             name = typeName;
+        }
+    }
+
+    public class BarMarkerView extends MarkerView {
+
+        TextView mText;
+
+        public BarMarkerView(Context context)
+        {
+            super(context, R.layout.stats_marker_text);
+            mText = (TextView) findViewById(R.id.statsBarChartMarkerText);
+        }
+
+        @Override
+        public void refreshContent(Entry e, Highlight highlight) {
+            mText.setText(String.format(getString((int)e.getData()), (int)e.getVal(), e.getXIndex()));
+        }
+
+        @Override
+        public int getXOffset() {
+            return 0;
+        }
+
+        @Override
+        public int getYOffset() {
+            return 0;
         }
     }
 
