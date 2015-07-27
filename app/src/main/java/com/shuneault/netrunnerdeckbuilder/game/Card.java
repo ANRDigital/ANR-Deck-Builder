@@ -273,6 +273,16 @@ public class Card {
         return imagesrc;
     }
 
+
+    /**
+     * Splits subtype string by " - " into array of subtypes.
+     * @return Array of subtype strings.
+     * If subtype string is empty, array will contain a single empty string.
+     */
+    public String[] getSubtypeArray() {
+        return subtype.split(" - ");
+    }
+
     /**
      * Calculates how many of that card you can add in a deck
      * - Checks how many core decks you have and calculate

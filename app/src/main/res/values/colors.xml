@@ -46,8 +46,13 @@
 	<color name="dark_weylandconsortium">#626A60</color>
 	<color name="darker_weylandconsortium">#4e544c</color>
 
-	<!-- Graph Colors -->
-	<color name="graph_bar_cost">#e8c91a</color>
-	<color name="graph_bar_strength">#2ec1d1</color>
+	<!-- Stats Colors -->
+	<color name="stats_graph_bar_cost">#e8c91a</color>
+	<color name="stats_graph_bar_strength">#2ec1d1</color>
+	<color name="stats_graph_type_ice_program">#e8c91a</color>
+	<color name="stats_graph_type_event_operation">#00d133</color>
+	<color name="stats_graph_type_resource_asset">#2ec1d1</color>
+	<color name="stats_graph_type_hardware_upgrade">#d100c9</color>
+	<color name="stats_graph_type_agenda">#d12c22</color>
 
 </resources>
