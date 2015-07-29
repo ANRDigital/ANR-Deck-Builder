@@ -377,6 +377,24 @@ public class Card {
         return context.getResources().getIdentifier(getFactionImageResName(), "drawable", context.getPackageName());
     }
 
+    /**
+     * Gets ice/icebreaker main subtype.
+     * @return The main subtype of an ice or icebreaker (if detected) card, otherwise an empty string.
+     */
+    public String getIceOrIcebreakerSubtype() {
+        switch (typeCode)
+        {
+            case Type.ICE:
+                return getSubtypeArray()[0];
+            case Type.PROGRAM:
+                String[] subtypes = getSubtypeArray();
+                // FIXME: Can't detect icebreakers on non-english cards.
+                return (subtypes.length > 1 && subtypes[0].equals("Icebreaker")) ? subtypes[1] : "";
+            default:
+                return "";
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         return ((Card) o).getCode().equals(this.getCode());

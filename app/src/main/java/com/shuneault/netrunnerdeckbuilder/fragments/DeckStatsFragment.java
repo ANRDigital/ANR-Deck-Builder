@@ -3,6 +3,7 @@ package com.shuneault.netrunnerdeckbuilder.fragments;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +21,13 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.PercentFormatter;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.shuneault.netrunnerdeckbuilder.DeckActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -31,7 +35,6 @@ import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Deck stats viewer fragment.
@@ -41,6 +44,7 @@ public class DeckStatsFragment extends Fragment {
     private View mainView;
 
     private Deck mDeck;
+    private boolean mTryParseSubtypes;
 
     private BarChart mBarChart;
     private List<String> mBarLabels;
@@ -52,6 +56,10 @@ public class DeckStatsFragment extends Fragment {
     private List<String> mTypeLabels;
     private PieDataSet mTypeDataSet;
 
+    private PieChart mIceSubtypeChart;
+    private List<String> mIceSubtypeLabels;
+    private PieDataSet mIceSubtypeDataSet;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,6 +69,14 @@ public class DeckStatsFragment extends Fragment {
 
         // Fetch the deck
         mDeck = AppManager.getInstance().getDeck(getArguments().getLong(DeckActivity.ARGUMENT_DECK_ID));
+
+        // Check the language to see if we should even bother trying to parse subtypes
+        String lang = PreferenceManager
+                .getDefaultSharedPreferences(getActivity().getApplicationContext())
+                .getString(SettingsActivity.KEY_PREF_LANGUAGE, "en");
+        if (lang != null) {
+            mTryParseSubtypes = lang.equals("en");
+        }
 
         // Set up data for graphs
         setUpGraphs();
@@ -88,26 +104,25 @@ public class DeckStatsFragment extends Fragment {
         mBarLabels = new ArrayList<>();
 
         mBarSets = new ArrayList<>(2);
-
-        mBarCostSet = new BarDataSet(new ArrayList<BarEntry>(), getString(R.string.stats_cost));
-        mBarCostSet.setColor(getResources().getColor(R.color.stats_graph_bar_cost));
-        mBarCostSet.setDrawValues(false);
-        mBarCostSet.setHighLightColor(Color.WHITE);
-        mBarCostSet.setHighLightAlpha(70);
+        mBarCostSet = makeBarDataSet(R.string.stats_cost, R.color.stats_graph_bar_cost);
         mBarSets.add(mBarCostSet);
 
-        mBarStrengthSet = new BarDataSet(new ArrayList<BarEntry>(), getString(R.string.stats_strength));
-        mBarStrengthSet.setColor(getResources().getColor(R.color.stats_graph_bar_strength));
-        mBarStrengthSet.setDrawValues(false);
-        mBarStrengthSet.setHighLightColor(Color.WHITE);
-        mBarStrengthSet.setHighLightAlpha(70);
-        mBarSets.add(mBarStrengthSet);
+        mBarStrengthSet = makeBarDataSet(R.string.stats_strength, R.color.stats_graph_bar_strength);
+        if (mTryParseSubtypes) {
+            mBarSets.add(mBarStrengthSet);
+        }
+        else {
+            // If not showing strength, change bar chart title
+            ((TextView)mainView.findViewById(R.id.barChartTitle))
+                    .setText(getString(R.string.stats_bar_chart_cost_title));
+        }
 
         mBarChart.getAxisRight().setEnabled(false);
         mBarChart.getAxisLeft().setValueFormatter(new IntegerValueFormatter());
         mBarChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         mBarChart.setDescription("");
         mBarChart.setMarkerView(new BarMarkerView(getActivity()));
+        mBarChart.setPinchZoom(false);
 
 
         // Card type pie chart
@@ -118,12 +133,46 @@ public class DeckStatsFragment extends Fragment {
         mTypeDataSet.setValueFormatter(new PercentFormatter());
         mTypeDataSet.setValueTextSize(10);
 
-        mTypeChart.setUsePercentValues(true);
-        mTypeChart.setDescription("");
-        mTypeChart.setDrawHoleEnabled(false);
-        mTypeChart.getLegend().setEnabled(false);
-        mTypeChart.setTouchEnabled(false);
+        setUpPieChart(mTypeChart);
 
+        // Ice/breaker subtype pie chart
+        mIceSubtypeChart = (PieChart) mainView.findViewById(R.id.iceSubtypeChart);
+
+        if (!mTryParseSubtypes) {
+            mainView.findViewById(R.id.iceSubtypeChartSection).setVisibility(View.GONE);
+        }
+
+        String iceType = mDeck.getSide().equals(Card.Side.SIDE_CORPORATION) ? "Ice" : "Icebreaker";
+        ((TextView)mainView.findViewById(R.id.iceSubtypeChartTitle)).setText(
+                String.format(getString(R.string.stats_ice_subtype_chart), iceType));
+
+        mIceSubtypeLabels = new ArrayList<>();
+        mIceSubtypeDataSet = new PieDataSet(new ArrayList<Entry>(), "");
+        mIceSubtypeDataSet.setValueFormatter(new PercentFormatter());
+        mIceSubtypeDataSet.setValueTextSize(10);
+
+        setUpPieChart(mIceSubtypeChart);
+        mIceSubtypeDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+    }
+
+    private BarDataSet makeBarDataSet(int nameRes, int colorRes) {
+        BarDataSet result = new BarDataSet(new ArrayList<BarEntry>(), getString(nameRes));
+        result.setColor(getResources().getColor(colorRes));
+        result.setDrawValues(false);
+        result.setHighLightColor(Color.WHITE);
+        result.setHighLightAlpha(70);
+        return result;
+    }
+
+    private void setUpPieChart(PieChart chart) {
+        chart.setUsePercentValues(true);
+        chart.setDescription("");
+        chart.getLegend().setEnabled(false);
+        chart.setRotationEnabled(false);
+        chart.setHoleRadius(40);
+        chart.setTransparentCircleRadius(45);
+        chart.setOnChartValueSelectedListener(new PieSelectionListener(chart));
     }
 
     /**
@@ -133,16 +182,25 @@ public class DeckStatsFragment extends Fragment {
 
         ArrayList<Card> cards = mDeck.getCards();
         Integer[] cardCosts = new Integer[cards.size()];
-        HashMap<String, TypeDataEntry> typeData = new HashMap<>();
+
+        ArrayList<TypeDataEntry> typeData = new ArrayList<>();
+        HashMap<String, TypeDataEntry> typeDataMap = new HashMap<>();
+
+        ArrayList<TypeDataEntry> iceSubtypeData = new ArrayList<>();
+        HashMap<String, TypeDataEntry> iceSubtypeDataMap = new HashMap<>();
 
         // Calculate bounds, parse costs
         int maxCost = 0;
         int maxStrength = 0;
         int i = 0;
         int nextTypeIndex = 0;
+        int nextIceSubtypeIndex = 0;
 
         mTypeLabels.clear();
+        mIceSubtypeLabels.clear();
         for (Card c : cards) {
+
+            int count = mDeck.getCardCount(c);
 
             // Check cost
             try {
@@ -159,11 +217,29 @@ public class DeckStatsFragment extends Fragment {
             if (c.getStrength() > maxStrength)
                 maxStrength = c.getStrength();
 
-
             // Check type
-            if ( !typeData.keySet().contains(c.getTypeCode()) ) {
-                typeData.put(c.getTypeCode(), new TypeDataEntry(nextTypeIndex++, c.getType()));
+            if ( !typeDataMap.keySet().contains(c.getTypeCode()) ) {
+                TypeDataEntry type = new TypeDataEntry(nextTypeIndex++, c.getTypeCode());
+                typeData.add(type);
+                typeDataMap.put(c.getTypeCode(), type);
                 mTypeLabels.add(c.getType());
+            }
+
+            // Increment count for this card's type
+            typeDataMap.get(c.getTypeCode()).cardCount += count;
+
+            // Check ice/breaker subtype
+            String iceSubtype = c.getIceOrIcebreakerSubtype();
+            if ( !iceSubtype.equals("")) {
+                if (!iceSubtypeDataMap.keySet().contains(iceSubtype)) {
+                    TypeDataEntry type = new TypeDataEntry(nextIceSubtypeIndex++, iceSubtype);
+                    iceSubtypeData.add(type);
+                    iceSubtypeDataMap.put(iceSubtype, type);
+                    mIceSubtypeLabels.add(iceSubtype);
+                }
+
+                // Increment count for this card's subtype
+                iceSubtypeDataMap.get(iceSubtype).cardCount += count;
             }
 
             ++i;
@@ -195,9 +271,6 @@ public class DeckStatsFragment extends Fragment {
                 || (c.getTypeCode().equals(Card.Type.PROGRAM) && c.getSubtypeArray()[0].equals("Icebreaker")) )
                 barStrengths[c.getStrength()] += count;
 
-            // Increment count for this card's type
-            typeData.get(c.getTypeCode()).cardCount += count;
-
             ++i;
         }
 
@@ -212,27 +285,38 @@ public class DeckStatsFragment extends Fragment {
         mTypeDataSet.clear();
         int[] typeColors = new int[typeData.size()];
         i = 0;
-        for (Map.Entry<String, TypeDataEntry> e : typeData.entrySet())
+        for (TypeDataEntry t : typeData)
         {
-            mTypeDataSet.addEntry(new Entry(e.getValue().cardCount, e.getValue().xIndex));
-            typeColors[i] = getTypeCodeColor(e.getKey());
+            mTypeDataSet.addEntryOrdered(new Entry(t.cardCount, t.xIndex));
+            typeColors[t.xIndex] = getTypeCodeColor(t.code);
             ++i;
         }
         mTypeDataSet.setColors(typeColors);
 
-        // Create/remove chart data
+        mIceSubtypeDataSet.clear();
+        i = 0;
+        for (TypeDataEntry t : iceSubtypeData)
+        {
+            mIceSubtypeDataSet.addEntryOrdered(new Entry(t.cardCount, t.xIndex));
+            ++i;
+        }
+
+        // Set/clear chart data
         if (cards.size() == 0) {
             mBarChart.setData(null);
             mTypeChart.setData(null);
+            mIceSubtypeChart.setData(null);
         } else {
             mBarChart.setData(new BarData(mBarLabels, mBarSets));
             mTypeChart.setData(new PieData(mTypeLabels, mTypeDataSet));
+            mIceSubtypeChart.setData(new PieData(mIceSubtypeLabels, mIceSubtypeDataSet));
         }
 
         mBarChart.getAxisLeft().setAxisMaxValue(mBarCostSet.getYMax());
         mBarChart.fitScreen();
         mBarChart.invalidate();
         mTypeChart.invalidate();
+        mIceSubtypeChart.invalidate();
 
     }
 
@@ -264,16 +348,36 @@ public class DeckStatsFragment extends Fragment {
         }
     }
 
+    private class PieSelectionListener implements OnChartValueSelectedListener {
+
+        PieChart mChart;
+
+        public PieSelectionListener(PieChart chart) {
+            mChart = chart;
+        }
+
+        @Override
+        public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+            mChart.setCenterText((int) e.getVal() + " cards.");
+        }
+
+        @Override
+        public void onNothingSelected() {
+            mChart.setCenterText("");
+        }
+
+    }
+
     private class TypeDataEntry {
 
         public int cardCount;
         public int xIndex;
-        public String name;
+        public String code;
 
-        public TypeDataEntry(int index, String typeName)  {
+        public TypeDataEntry(int index, String typeCode)  {
             cardCount = 0;
             xIndex = index;
-            name = typeName;
+            code = typeCode;
         }
     }
 

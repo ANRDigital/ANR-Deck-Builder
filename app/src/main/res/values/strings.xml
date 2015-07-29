@@ -93,12 +93,14 @@
     <string name="build_cards_to_remove">Cards to remove</string>
 
     <!-- Deck Stats -->
-    <string name="stats_bar_chart">Cost &amp; Strength Distribution</string>
+    <string name="stats_bar_chart_title">Cost &amp; Strength Distribution</string>
+    <string name="stats_bar_chart_cost_title">Cost Distribution</string>
     <string name="stats_cost_marker">%1$d cards with cost %2$d.</string>
     <string name="stats_strength_marker">%1$d cards with strength %2$d.</string>
     <string name="stats_cost">Cost</string>
     <string name="stats_strength">Strength</string>
     <string name="stats_type_chart">Card Types</string>
+    <string name="stats_ice_subtype_chart">%1$s Subtypes</string>
 
     <!-- Menu Items -->
     <string name="menu_about">About</string>
