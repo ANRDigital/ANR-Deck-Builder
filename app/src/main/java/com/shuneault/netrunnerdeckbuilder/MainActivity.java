@@ -288,9 +288,13 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 			        @Override
 			        public void onClick(DialogInterface dialog, int which) {
 				        // Launch the full screen image viewer activity
-				        Intent intent = new Intent(MainActivity.this, ViewDeckFullscreenActivity.class);
-				        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_SET_NAME, AppManager.getInstance().getSetNames().get(which));
-				        startActivity(intent);
+                        Intent intentFullScreen = new Intent(MainActivity.this, ViewDeckGridActivity.class);
+                        intentFullScreen.putExtra(ViewDeckGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getSetNames().get(which));
+                        startActivity(intentFullScreen);
+//
+//				        Intent intent = new Intent(MainActivity.this, ViewDeckFullscreenActivity.class);
+//				        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_SET_NAME, AppManager.getInstance().getSetNames().get(which));
+//				        startActivity(intent);
 			        }
 		        });
 		        builder.show();

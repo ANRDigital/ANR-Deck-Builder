@@ -47,12 +47,25 @@
             </ListView>
         </LinearLayout>
 
-    <Button
-        android:id="@+id/btnClearAll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        style="@style/MaterialButton"
-        android:text="@string/clear_checked" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnUnbuild"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MaterialButton"
+            android:text="@string/unbuild" />
+
+        <Button
+            android:id="@+id/btnClearAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MaterialButton"
+            android:text="@string/clear_checked" />
+    </LinearLayout>
 
 </LinearLayout>

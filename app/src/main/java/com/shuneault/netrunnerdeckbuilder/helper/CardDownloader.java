@@ -2,7 +2,9 @@ package com.shuneault.netrunnerdeckbuilder.helper;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
+import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 
 import org.apache.http.HttpEntity;
@@ -51,7 +53,7 @@ public class CardDownloader extends AsyncTask<Void, Integer, JSONArray> {
         // Download the JSON file
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(NetRunnerBD.URL_GET_ALL_CARDS);
+            HttpGet httpGet = new HttpGet(String.format(NetRunnerBD.URL_GET_ALL_CARDS, AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_LANGUAGE, "en")));
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             InputStream is = entity.getContent();

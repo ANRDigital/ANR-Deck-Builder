@@ -305,6 +305,8 @@ public class Deck implements Serializable, HeaderListItemInterface {
         for (CardCount cc : list) {
             mCardsToAdd.put(cc.getCard(), cc);
         }
+        mArrCardsToAdd.clear();
+        mArrCardsToAdd.addAll(list);
     }
 
     public void setCardsToRemove(ArrayList<CardCount> list) {
@@ -312,6 +314,8 @@ public class Deck implements Serializable, HeaderListItemInterface {
         for (CardCount cc : list) {
             mCardsToRemove.put(cc.getCard(), cc);
         }
+        mArrCardsToRemove.clear();
+        mArrCardsToRemove.addAll(list);
     }
 
     public JSONObject toJSON() {

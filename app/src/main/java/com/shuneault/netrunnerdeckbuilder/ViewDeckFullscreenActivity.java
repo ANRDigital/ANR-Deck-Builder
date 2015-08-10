@@ -9,9 +9,9 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.widget.ActionBarOverlayLayout.LayoutParams;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -80,10 +80,20 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
 	    // Get the deck / set name
-	    mDeck = AppManager.getInstance().getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0));
-	    mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
-	    mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
+        if (savedInstanceState == null) {
+            mDeck = AppManager.getInstance().getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0));
+            mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
+            mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
+            mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
+        } else {
+            mDeck = AppManager.getInstance().getDeck(savedInstanceState.getLong(EXTRA_DECK_ID, 0));
+            mSetName = savedInstanceState.getString(EXTRA_SET_NAME);
+            mCardCode = savedInstanceState.getString(EXTRA_CARD_CODE);
+            mPosition = savedInstanceState.getInt(EXTRA_POSITION);
+        }
 
 	    // set theme to identity's faction colors
 	    if (mDeck != null)
@@ -94,8 +104,6 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
 	    {
 		    setTheme(getResources().getIdentifier("Theme.Netrunner_" + AppManager.getInstance().getCard(mCardCode).getFactionCode().replace("-", ""), "style", this.getPackageName()));
 	    }
-
-        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fullscreen_view);
 
@@ -124,7 +132,6 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
         // Change the icon and title
         updateTitle(mCards.get(0));
 
-
         // Set the adapter for the view pager
         mPager.setAdapter(new ImageViewPager());
         mPager.setCurrentItem(mPosition);
@@ -146,6 +153,15 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(EXTRA_DECK_ID, mDeck.getRowId());
+        outState.putString(EXTRA_SET_NAME, mSetName);
+        outState.putString(EXTRA_CARD_CODE, mCardCode);
+        outState.putInt(EXTRA_POSITION, mPosition);
     }
 
     private void exitIfDeckEmpty() {

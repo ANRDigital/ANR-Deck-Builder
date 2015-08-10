@@ -1,6 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder.externalactivities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -89,7 +90,24 @@ public class ImportOCTGNActivity extends Activity {
 
     }
 
+    private void alertMustUpdateCardList() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.msg_error_importing_deck));
+        builder.setMessage(getString(R.string.msg_error_update_card_list));
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.show();
+    }
+
     private void addImportedDeck(Deck deck) {
+        if (deck == null) {
+            alertMustUpdateCardList();
+            return;
+        }
         // Import the deck with a new name
         deck.setName("[IMP] " + deck.getName());
         // Add the deck

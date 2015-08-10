@@ -1,8 +1,13 @@
 package com.shuneault.netrunnerdeckbuilder;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Application;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -14,8 +19,13 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.CardList;
+import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
+import com.shuneault.netrunnerdeckbuilder.helper.CardDownloader;
 import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader;
 import com.shuneault.netrunnerdeckbuilder.prefs.SetNamesPreferenceMultiSelect;
+
+import org.json.JSONArray;
 
 import java.io.File;
 
@@ -29,6 +39,7 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_TAP_TO_CLOSE_CARD_PREVIEW = "pref_TapToCloseCardPreview";
     public static final String KEY_PREF_CLEAR_CACHE = "pref_ClearCache";
     public static final String KEY_PREF_DOWNLOAD_ALL_IMAGES = "pref_DownloadAllImages";
+    public static final String KEY_PREF_LANGUAGE = "pref_Language";
 
     private String mInitialPacksToDisplay;
 
@@ -37,6 +48,7 @@ public class SettingsActivity extends PreferenceActivity
     Preference prefAmountOfCoreDecks;
     Preference prefClearCache;
     Preference prefDownloadAllImages;
+    Preference prefLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +61,7 @@ public class SettingsActivity extends PreferenceActivity
         prefAmountOfCoreDecks = findPreference(KEY_PREF_AMOUNT_OF_CORE_DECKS);
         prefClearCache = findPreference(KEY_PREF_CLEAR_CACHE);
         prefDownloadAllImages = findPreference(KEY_PREF_DOWNLOAD_ALL_IMAGES);
+        prefLanguage = findPreference(KEY_PREF_LANGUAGE);
 
         // Listeners
         prefDataPacks.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -127,6 +140,52 @@ public class SettingsActivity extends PreferenceActivity
             refreshPrefsSummaries();
         } else if (key.equals(KEY_PREF_AMOUNT_OF_CORE_DECKS)) {
             refreshPrefsSummaries();
+        } else if (key.equals(KEY_PREF_LANGUAGE)) {
+            CardDownloader cd = new CardDownloader(this, new CardDownloader.CardDownloaderListener() {
+
+                ProgressDialog mDialog;
+
+                @Override
+                public void onBeforeStartTask(Context context) {
+                    // Display a progress dialog
+                    mDialog = new ProgressDialog(context);
+                    mDialog.setTitle(getString(R.string.downloading_cards));
+                    mDialog.setIndeterminate(true);
+                    mDialog.setCancelable(false);
+                    mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    mDialog.setMessage(getString(R.string.downloading_cards_restart));
+                    mDialog.show();
+                }
+
+                @Override
+                public void onTaskCompleted() {
+                    // Close the dialog
+                    mDialog.dismiss();
+
+                    Context context = SettingsActivity.this;
+                    Intent mStartActivity = new Intent(context, MainActivity.class);
+                    int mPendingIntentId = 123456;
+                    PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                    AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+                    mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                    System.exit(0);
+                }
+
+                @Override
+                public void onDownloadError() {
+                    // Display the error and cancel the ongoing dialog
+                    mDialog.dismiss();
+
+                    // If zero cards are available, exit the application
+                    if (AppManager.getInstance().getAllCards().size() <= 0) {
+                        Toast.makeText(SettingsActivity.this, R.string.error_downloading_cards_quit, Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(SettingsActivity.this, R.string.error_downloading_cards, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+            cd.execute();
         }
 
     }
@@ -142,6 +201,10 @@ public class SettingsActivity extends PreferenceActivity
 
         // Amount of core decks
         prefAmountOfCoreDecks.setSummary(sharedPreferences.getString(KEY_PREF_AMOUNT_OF_CORE_DECKS, "1"));
+
+
+
+
     }
 
     @Override

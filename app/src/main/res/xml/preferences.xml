@@ -3,6 +3,14 @@
     <PreferenceCategory 
         android:title="@string/data_packs">
 
+        <ListPreference
+            android:key="pref_Language"
+            android:title="@string/cards_language"
+            android:summary="@string/cards_language_summary"
+            android:entries="@array/arrCardsLanguage"
+            android:entryValues="@array/arrCardsLanguageValues"
+            android:defaultValue="en" />
+
 	    <ListPreference
 	        android:key="pref_AmountOfCoreDecks"
 	        android:title="@string/amount_of_core_decks"

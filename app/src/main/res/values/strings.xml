@@ -126,6 +126,22 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string-array name="arrCardsLanguage">
+        <item>English</item>
+        <item>French</item>
+        <item>Deutsch</item>
+        <item>Spanish</item>
+        <item>Polish</item>
+        <item>Italian</item>
+    </string-array>
+    <string-array name="arrCardsLanguageValues">
+        <item>en</item>
+        <item>fr</item>
+        <item>de</item>
+        <item>es</item>
+        <item>pl</item>
+        <item>it</item>
+    </string-array>
     <string-array name="arrEmpty" />
     <string-array name="arrDeckTypes">
         <item>Corporation</item>
@@ -142,5 +158,12 @@
     <string name="message_clear_cache">Are you sure you want to delete all images from the cache? Your decks will NOT be deleted.</string>
     <string name="title_activity_view_deck_grid">ViewDeckGridActivity</string>
     <string name="view_all_cards"><![CDATA[< ALL CARDS >]]></string>
+    <string name="cards_language">Cards language</string>
+    <string name="cards_language_summary">Only affects the text (the images are english only)</string>
+    <string name="downloading_cards_restart">Download cards... The application will restart automatically.</string>
+    <string name="unbuild">Unbuild</string>
+    <string name="message_unbuild">Are you sure you want to unbuild your deck and regenerate the \"Cards to add\" section?</string>
+    <string name="msg_error_importing_deck">Error importing deck</string>
+    <string name="msg_error_update_card_list">Could not import deck. Please update your card list and try again.</string>
 
 </resources>
