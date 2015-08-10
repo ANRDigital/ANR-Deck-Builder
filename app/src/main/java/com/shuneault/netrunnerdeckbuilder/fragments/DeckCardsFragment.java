@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -198,7 +199,9 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
             boolean isGoodAgenda = !theCard.getTypeCode().equals(Card.Type.AGENDA) || theCard.getFaction().equals(mDeck.getIdentity().getFaction()) || theCard.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL);
             // Cannot add Jinteki card for "Custom Biotics: Engineered for Success" Identity
             boolean isJintekiOK = !theCard.getFactionCode().equals(Card.Faction.FACTION_JINTEKI) || !mDeck.getIdentity().getCode().equals(Card.SpecialCards.CARD_CUSTOM_BIOTICS_ENGINEERED_FOR_SUCCESS);
-            if (isSameSide && !isIdentity && isGoodAgenda && isJintekiOK) {
+            // Ignore non-virtual resources if runner is Apex and setting is set
+            boolean isNonVirtualOK = !theCard.getType().contains("Resource") || (theCard.getType().contains("Resource") && theCard.getSubtype().contains("Virtual") && mDeck.getIdentity().getCode().equals(Card.SpecialCards.APEX) && PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("pref_HideNonVirtualApex", true));
+            if (isSameSide && !isIdentity && isGoodAgenda && isJintekiOK && isNonVirtualOK) {
                 if (mListCards.get(theCard.getType()) == null)
                     mListCards.put(theCard.getType(), new ArrayList<Card>());
                 mListCards.get(theCard.getType()).add(theCard);
