@@ -84,7 +84,14 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
         }
 
         // Set the theme and layout
-        setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
+        try
+        {
+            setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
+        }
+        catch (Exception e)
+        {
+            // do nothing, will use default blue theme instead
+        }
 
         // super must be called after setTheme or else notification and navigation bars won't be themed properly
         super.onCreate(savedInstanceState);
