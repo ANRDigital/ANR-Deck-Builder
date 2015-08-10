@@ -200,7 +200,7 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
             // Cannot add Jinteki card for "Custom Biotics: Engineered for Success" Identity
             boolean isJintekiOK = !theCard.getFactionCode().equals(Card.Faction.FACTION_JINTEKI) || !mDeck.getIdentity().getCode().equals(Card.SpecialCards.CARD_CUSTOM_BIOTICS_ENGINEERED_FOR_SUCCESS);
             // Ignore non-virtual resources if runner is Apex and setting is set
-            boolean isNonVirtualOK = !theCard.getType().contains("Resource") || (theCard.getType().contains("Resource") && theCard.getSubtype().contains("Virtual") && mDeck.getIdentity().getCode().equals(Card.SpecialCards.APEX) && PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("pref_HideNonVirtualApex", true));
+            boolean isNonVirtualOK = !theCard.getType().contains("Resource") || theCard.getSubtype().contains("Virtual") || !(mDeck.getIdentity().getCode().equals(Card.SpecialCards.APEX) && PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("pref_HideNonVirtualApex", true));
             if (isSameSide && !isIdentity && isGoodAgenda && isJintekiOK && isNonVirtualOK) {
                 if (mListCards.get(theCard.getType()) == null)
                     mListCards.put(theCard.getType(), new ArrayList<Card>());
