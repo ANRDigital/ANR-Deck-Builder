@@ -91,6 +91,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
         catch (Exception e)
         {
             // do nothing, will use default blue theme instead
+            e.printStackTrace();
         }
 
         // super must be called after setTheme or else notification and navigation bars won't be themed properly
