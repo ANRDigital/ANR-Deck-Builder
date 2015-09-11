@@ -5,6 +5,9 @@
     <color name="background_normal">#0000</color>
     <color name="black_overlay">#66000000</color>
 
+	<color name="value_positive">#006400</color>
+    <color name="value_negative">#FF0000</color>
+
 	<color name="netrunner_blue">#345F82</color>
 	<color name="netrunner_blue_dark">#294c68</color>
     <color name="netrunner_blue_light">#AAC6DD</color>

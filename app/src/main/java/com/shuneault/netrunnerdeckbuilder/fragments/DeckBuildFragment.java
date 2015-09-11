@@ -31,17 +31,14 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
 
     private LinearLayout mainView;
     private ListView lstCardsToAdd;
-    private ListView lstCardsToRemove;
     private Button btnClearAll;
     private Button btnUnbuild;
 
     private Deck mDeck;
     private ArrayList<CardCount> mCardsToAdd;
-    private ArrayList<CardCount> mCardsToRemove;
 
     // Adapters
     private CheckedCardListAdapter mCardsToAddAdapter;
-    private CheckedCardListAdapter mCardsToRemoveAdapter;
 
     public static final String ARGUMENT_DECK_ID = "com.example.netrunnerdeckbuilder.ARGUMENT_DECK_ID";
 
@@ -54,36 +51,21 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
 
         // The GUI
         lstCardsToAdd = (ListView) mainView.findViewById(R.id.lstCardsToAdd);
-        lstCardsToRemove = (ListView) mainView.findViewById(R.id.lstCardsToRemove);
         btnClearAll = (Button) mainView.findViewById(R.id.btnClearAll);
         btnUnbuild = (Button) mainView.findViewById(R.id.btnUnbuild);
 
         // Get the card lists
         mDeck = AppManager.getInstance().getDeck(getArguments().getLong(ARGUMENT_DECK_ID));
         mCardsToAdd = mDeck.getCardsToAdd();
-        mCardsToRemove = mDeck.getCardsToRemove();
         Collections.sort(mCardsToAdd, new Sorter.CardCountSorterByName());
-        Collections.sort(mCardsToRemove, new Sorter.CardCountSorterByName());
 
         // Adapters
         mCardsToAddAdapter = new CheckedCardListAdapter(getActivity(), mCardsToAdd);
-        mCardsToRemoveAdapter = new CheckedCardListAdapter(getActivity(), mCardsToRemove);
 
         // Assign to the lists
         lstCardsToAdd.setAdapter(mCardsToAddAdapter);
-        lstCardsToRemove.setAdapter(mCardsToRemoveAdapter);
 
         // Listeners
-        lstCardsToRemove.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                CheckBox chk = (CheckBox) arg1.findViewById(R.id.chkChecked);
-                chk.setChecked(!chk.isChecked());
-                mCardsToRemove.get(arg2).setDone(chk.isChecked());
-            }
-        });
         lstCardsToAdd.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -107,7 +89,6 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
                     public void onClick(DialogInterface dialog, int which) {
                         mDeck.clearCardsToAddAndRemove(true);
                         mCardsToAddAdapter.notifyDataSetChanged();
-                        mCardsToRemoveAdapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
                 });
@@ -137,7 +118,6 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
                         }
                         mDeck.setCardsToAdd(arrCardCount);
                         mCardsToAddAdapter.notifyDataSetChanged();
-                        mCardsToRemoveAdapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
                 });
@@ -171,10 +151,8 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
     public void onDeckCardsChanged() {
         if (!isAdded()) return;
         Collections.sort(mCardsToAdd, new Sorter.CardCountSorterByName());
-        Collections.sort(mCardsToRemove, new Sorter.CardCountSorterByName());
 
         mCardsToAddAdapter.notifyDataSetChanged();
-        mCardsToRemoveAdapter.notifyDataSetChanged();
 
     }
 

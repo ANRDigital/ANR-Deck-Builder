@@ -2,39 +2,106 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-	android:padding="6dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="16dp"
     android:orientation="horizontal" >
 
     <CheckBox
-        android:id="@+id/chkChecked"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:clickable="false"
-        android:focusable="false" />
+    android:id="@+id/chkChecked"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:clickable="false"
+    android:focusable="false" />
 
     <ImageView
-        android:id="@+id/imgFaction"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/jinteki" />
+        android:id="@+id/imgImage"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="5dp"
+        android:scaleType="fitCenter"
+        android:src="@raw/image" />
 
-    <TextView
-        android:id="@+id/lblCardName"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:text="TextView" />
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/lblCardName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lblSetAndNumber"
+                android:text="01234 SetName"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/lblCardCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="3" />
-    
+        android:id="@+id/lblCardCount"
+        android:layout_gravity="center_vertical|end"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="3"
+        />
+
 </LinearLayout>
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+	<!--android:padding="6dp"-->
+    <!--android:orientation="horizontal" >-->
+
+    <!--<CheckBox-->
+        <!--android:id="@+id/chkChecked"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:clickable="false"-->
+        <!--android:focusable="false" />-->
+
+    <!--<ImageView-->
+        <!--android:id="@+id/imgFaction"-->
+        <!--android:layout_width="20dp"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:src="@drawable/jinteki" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/lblCardName"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:text="TextView" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/lblCardCount"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="3" />-->
+    <!-- -->
+<!--</LinearLayout>-->
