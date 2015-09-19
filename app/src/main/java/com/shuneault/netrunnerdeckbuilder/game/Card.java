@@ -273,6 +273,16 @@ public class Card {
         return imagesrc;
     }
 
+
+    /**
+     * Splits subtype string by " - " into array of subtypes.
+     * @return Array of subtype strings.
+     * If subtype string is empty, array will contain a single empty string.
+     */
+    public String[] getSubtypeArray() {
+        return subtype.split(" - ");
+    }
+
     /**
      * Calculates how many of that card you can add in a deck
      * - Checks how many core decks you have and calculate
@@ -365,6 +375,24 @@ public class Card {
     public int getFactionImageRes(Context context) {
         if (getFactionCode().equals(Faction.FACTION_NEUTRAL)) return R.drawable.neutral;
         return context.getResources().getIdentifier(getFactionImageResName(), "drawable", context.getPackageName());
+    }
+
+    /**
+     * Gets ice/icebreaker main subtype.
+     * @return The main subtype of an ice or icebreaker (if detected) card, otherwise an empty string.
+     */
+    public String getIceOrIcebreakerSubtype() {
+        switch (typeCode)
+        {
+            case Type.ICE:
+                return getSubtypeArray()[0];
+            case Type.PROGRAM:
+                String[] subtypes = getSubtypeArray();
+                // FIXME: Can't detect icebreakers on non-english cards.
+                return (subtypes.length > 1 && subtypes[0].equals("Icebreaker")) ? subtypes[1] : "";
+            default:
+                return "";
+        }
     }
 
     @Override
