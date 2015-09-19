@@ -2,7 +2,6 @@ package com.shuneault.netrunnerdeckbuilder.helper;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;

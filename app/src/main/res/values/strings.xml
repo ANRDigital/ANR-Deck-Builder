@@ -48,6 +48,7 @@
     <string name="search_hint">Search cards...</string>
     <string name="amount_of_core_decks">Amount of core decks</string>
     <string name="data_packs">Data Packs</string>
+    <string name="hide_non_virtual_apex">Hide Non-Virtual Resources for Apex</string>
     <string name="gui">Interface</string>
     <string name="display_set_names_with_cards">Display set names with cards</string>
     <string name="new_hand">New Hand</string>
@@ -175,5 +176,6 @@
     <string name="message_unbuild">Are you sure you want to unbuild your deck and regenerate the \"Cards to add\" section?</string>
     <string name="msg_error_importing_deck">Error importing deck</string>
     <string name="msg_error_update_card_list">Could not import deck. Please update your card list and try again.</string>
+    <string name="modifications_to_deck">Modifications to deck</string>
 
 </resources>

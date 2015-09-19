@@ -1,6 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,10 @@ public class CheckedCardListAdapter extends ArrayAdapter<CardCount> {
 
     private static class ViewHolderItem {
         CheckBox chkChecked;
-        ImageView imgFaction;
+        ImageView imgImage;
         TextView lblCardName;
         TextView lblCardCount;
+        TextView lblSetAndNumber;
     }
 
     private Context mContext;
@@ -47,9 +49,10 @@ public class CheckedCardListAdapter extends ArrayAdapter<CardCount> {
             // Setup the holder
             viewHolder = new ViewHolderItem();
             viewHolder.chkChecked = (CheckBox) convertView.findViewById(R.id.chkChecked);
-            viewHolder.imgFaction = (ImageView) convertView.findViewById(R.id.imgFaction);
+            viewHolder.imgImage = (ImageView) convertView.findViewById(R.id.imgImage);
             viewHolder.lblCardName = (TextView) convertView.findViewById(R.id.lblCardName);
             viewHolder.lblCardCount = (TextView) convertView.findViewById(R.id.lblCardCount);
+            viewHolder.lblSetAndNumber = (TextView) convertView.findViewById(R.id.lblSetAndNumber);
 
             // Store the view holder in the view
             convertView.setTag(viewHolder);
@@ -61,9 +64,16 @@ public class CheckedCardListAdapter extends ArrayAdapter<CardCount> {
         if (cardCount != null) {
             viewHolder.chkChecked.setChecked(cardCount.isDone());
             //viewHolder.imgFaction.setImageResource(mContext.getResources().getIdentifier(cardCount.getCard().getFactionImageResName(), "drawable", mContext.getPackageName()));
-            viewHolder.imgFaction.setImageResource(cardCount.getCard().getFactionImageRes(mContext));
+            viewHolder.imgImage.setImageBitmap(cardCount.getCard().getImage(getContext()));
             viewHolder.lblCardName.setText(cardCount.getCard().getTitle());
-            viewHolder.lblCardCount.setText(String.valueOf(cardCount.getCount()));
+            if (cardCount.getCount() > 0) {
+                viewHolder.lblCardCount.setTextColor(ContextCompat.getColor(getContext(), R.color.value_positive));
+                viewHolder.lblCardCount.setText(String.valueOf("+" + cardCount.getCount()));
+            } else {
+                viewHolder.lblCardCount.setTextColor(ContextCompat.getColor(getContext(), R.color.value_negative));
+                viewHolder.lblCardCount.setText(String.valueOf(cardCount.getCount()));
+            }
+            viewHolder.lblSetAndNumber.setText(cardCount.getCard().getCode() + " - " + cardCount.getCard().getSetName());
         } else {
             return null;
         }

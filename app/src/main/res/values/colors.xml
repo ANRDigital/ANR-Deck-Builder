@@ -5,6 +5,9 @@
     <color name="background_normal">#0000</color>
     <color name="black_overlay">#66000000</color>
 
+	<color name="value_positive">#006400</color>
+    <color name="value_negative">#FF0000</color>
+
 	<color name="netrunner_blue">#345F82</color>
 	<color name="netrunner_blue_dark">#294c68</color>
     <color name="netrunner_blue_light">#AAC6DD</color>
@@ -24,10 +27,19 @@
 	<color name="fab_new_runner_color_pressed">#FF5252</color>
 
 	<!-- Faction Colors -->
-    <color name="light_anarch">#ECD2BF</color>
+	<color name="light_adam">#c6c475</color>
+	<color name="dark_adam">#a7a340</color>
+	<color name="darker_adam">#7b7832</color>
+	<color name="light_apex">#db869e</color>
+	<color name="dark_apex">#910b32</color>
+	<color name="darker_apex">#5e0c23</color>
+	<color name="light_sunnylebeau">#B4B4B4</color>
+	<color name="dark_sunnylebeau">#7E7E7E</color>
+	<color name="darker_sunnylebeau">#575757</color>
+	<color name="light_anarch">#ECD2BF</color>
 	<color name="dark_anarch">#DE5D30</color>
 	<color name="darker_anarch">#b14a26</color>
-    <color name="light_criminal">#C3D8E8</color>
+	<color name="light_criminal">#C3D8E8</color>
 	<color name="dark_criminal">#0288D1</color>
 	<color name="darker_criminal">#016ca7</color>
     <color name="light_haasbioroid">#CDBCDA</color>
@@ -39,7 +51,7 @@
     <color name="light_nbn">#F5D192</color>
 	<color name="dark_nbn">#C48E35</color>
 	<color name="darker_nbn">#9c712a</color>
-    <color name="light_shaper">#C0D6B0</color>
+	<color name="light_shaper">#C0D6B0</color>
 	<color name="dark_shaper">#6FA146</color>
 	<color name="darker_shaper">#588038</color>
     <color name="light_weylandconsortium">#C8D4C4</color>

@@ -439,6 +439,7 @@ public class Card {
         public static final String CARD_THE_PROCESSOR = "03029";
         public static final String CARD_ANDROMEDA = "02083";
         public static final String CARD_CUSTOM_BIOTICS_ENGINEERED_FOR_SUCCESS = "03002";
+        public static final String APEX = "09029";
     }
 
 

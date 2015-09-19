@@ -118,13 +118,13 @@ public class Deck implements Serializable, HeaderListItemInterface {
         // Add or remove the card count
         int iCountToAdd = (mCardsToAdd.get(card) == null ? 0 : mCardsToAdd.get(card).getCount());
         int iCountToRemove = (mCardsToRemove.get(card) == null ? 0 : mCardsToRemove.get(card).getCount());
-        int iCountOriginal = (mCards.get(card) == null ? 0 : mCards.get(card)) + -iCountToAdd + iCountToRemove;
+        int iCountOriginal = (mCards.get(card) == null ? 0 : mCards.get(card)) + -iCountToAdd - iCountToRemove;
         mCardsToAdd.remove(card);
         mCardsToRemove.remove(card);
         if (iCountOriginal != count) {
             // Add or remove
             if (iCountOriginal > count) // We removed some cards
-                mCardsToRemove.put(card, new CardCount(card, iCountOriginal - count));
+                mCardsToRemove.put(card, new CardCount(card, count - iCountOriginal));
             else
                 mCardsToAdd.put(card, new CardCount(card, count - iCountOriginal));
         }
@@ -169,6 +169,8 @@ public class Deck implements Serializable, HeaderListItemInterface {
         mArrCardsToAdd.clear();
         for (Card card : mCardsToAdd.keySet())
             mArrCardsToAdd.add(mCardsToAdd.get(card));
+        for (Card card : mCardsToRemove.keySet())
+            mArrCardsToAdd.add(mCardsToRemove.get(card));
         return mArrCardsToAdd;
     }
 
