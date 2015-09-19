@@ -49,6 +49,7 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 
     private Card currentCard;
     private View mainView;
+    // TODO: Change to ExpandableStickyListAdapter https://github.com/emilsjolander/StickyListHeaders
     private ExpandableListView lstDeckCards;
     private ExpandableDeckCardListAdapter mDeckCardsAdapter;
 
