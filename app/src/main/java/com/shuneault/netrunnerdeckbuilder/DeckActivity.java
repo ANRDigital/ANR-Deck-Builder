@@ -28,6 +28,7 @@ import com.shuneault.netrunnerdeckbuilder.fragments.DeckCardsFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckHandFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckInfoFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckMyCardsFragment;
+import com.shuneault.netrunnerdeckbuilder.fragments.DeckStatsFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -53,6 +54,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
     private DeckBuildFragment fragDeckBuild;
     private DeckCardsFragment fragDeckCards;
     private DeckMyCardsFragment fragDeckMyCards;
+    private DeckStatsFragment fragDeckStats;
     private DeckHandFragment fragDeckHand;
 
     private Deck mDeck;
@@ -112,6 +114,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
             fragDeckMyCards = (DeckMyCardsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckMyCardsFragment.class.getName());
             fragDeckCards = (DeckCardsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckCardsFragment.class.getName());
             fragDeckBuild = (DeckBuildFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckBuildFragment.class.getName());
+            fragDeckStats = (DeckStatsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckStatsFragment.class.getName());
             fragDeckHand = (DeckHandFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckHandFragment.class.getName());
         } else {
             mDeck = AppManager.getInstance().getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
@@ -211,6 +214,12 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                     fragDeckBuild.setArguments(bundle);
                     return fragDeckBuild;
                 case 4:
+                    fragDeckStats = new DeckStatsFragment();
+                    bundle = new Bundle();
+                    bundle.putLong(ARGUMENT_DECK_ID, mDeck.getRowId());
+                    fragDeckStats.setArguments(bundle);
+                    return fragDeckStats;
+                case 5:
                     fragDeckHand = new DeckHandFragment();
                     bundle = new Bundle();
                     bundle.putLong(DeckHandFragment.ARGUMENT_DECK_ID, mDeck.getRowId());
@@ -224,7 +233,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
         @Override
         public int getCount() {
             //
-            return 5;
+            return 6;
         }
 
         @Override
@@ -239,7 +248,9 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
 			        return getResources().getString(R.string.tab_cards);
 		        case 3:
 			        return getResources().getString(R.string.tab_build);
-		        case 4:
+                case 4:
+                    return getResources().getString(R.string.tab_stats);
+		        case 5:
 			        return getResources().getString(R.string.tab_hand);
 	        }
 	        return "";
@@ -424,6 +435,8 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
             fragDeckMyCards.onDeckCardsChanged();
         if (fragDeckCards != null)
             fragDeckCards.onDeckCardsChanged();
+        if (fragDeckStats != null)
+            fragDeckStats.onDeckCardsChanged();
 
         // Update the infobar
         updateInfoBar();
@@ -501,6 +514,8 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
             getSupportFragmentManager().putFragment(outState, DeckCardsFragment.class.getName(), fragDeckCards);
         if (fragDeckBuild != null)
             getSupportFragmentManager().putFragment(outState, DeckBuildFragment.class.getName(), fragDeckBuild);
+        if (fragDeckStats != null)
+            getSupportFragmentManager().putFragment(outState, DeckStatsFragment.class.getName(), fragDeckStats);
         if (fragDeckHand != null)
             getSupportFragmentManager().putFragment(outState, DeckHandFragment.class.getName(), fragDeckHand);
     }

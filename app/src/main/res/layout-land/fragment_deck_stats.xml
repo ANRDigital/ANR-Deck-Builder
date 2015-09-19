@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="250dp">
+            android:layout_width="300dp"
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/barChartTitle"
@@ -25,16 +25,17 @@
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barChart"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="250dp">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -43,15 +44,15 @@
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/typeChart"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="fill_parent" />
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/iceSubtypeChartSection">
 
             <TextView
@@ -64,10 +65,11 @@
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/iceSubtypeChart"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="match_parent" />
 
         </LinearLayout>
 
     </LinearLayout>
-</ScrollView>
+
+</HorizontalScrollView>
