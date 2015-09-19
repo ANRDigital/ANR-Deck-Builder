@@ -51,6 +51,7 @@ public class DeckStatsFragment extends Fragment {
     private BarDataSet mBarCostSet;
     private BarDataSet mBarStrengthSet;
     private List<BarDataSet> mBarSets;
+    private BarMarkerView mBarMarkerView;
 
     private PieChart mTypeChart;
     private List<String> mTypeLabels;
@@ -121,8 +122,10 @@ public class DeckStatsFragment extends Fragment {
         mBarChart.getAxisLeft().setValueFormatter(new IntegerValueFormatter());
         mBarChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         mBarChart.setDescription("");
-        mBarChart.setMarkerView(new BarMarkerView(getActivity()));
+        mBarMarkerView = new BarMarkerView(getActivity());
+        mBarChart.setMarkerView(mBarMarkerView);
         mBarChart.setPinchZoom(false);
+        mBarChart.setDoubleTapToZoomEnabled(false);
 
 
         // Card type pie chart
@@ -281,6 +284,7 @@ public class DeckStatsFragment extends Fragment {
             mBarCostSet.addEntry(new BarEntry(barCosts[i], i, R.string.stats_cost_marker));
             mBarStrengthSet.addEntry(new BarEntry(barStrengths[i], i, R.string.stats_strength_marker));
         }
+        mBarMarkerView.setDataSetSize(barEntries);
 
         mTypeDataSet.clear();
         int[] typeColors = new int[typeData.size()];
@@ -303,12 +307,16 @@ public class DeckStatsFragment extends Fragment {
 
         // Set/clear chart data
         if (cards.size() == 0) {
-            mBarChart.setData(null);
-            mTypeChart.setData(null);
-            mIceSubtypeChart.setData(null);
+            mBarChart.clear();
+            mTypeChart.clear();
         } else {
             mBarChart.setData(new BarData(mBarLabels, mBarSets));
             mTypeChart.setData(new PieData(mTypeLabels, mTypeDataSet));
+        }
+
+        if (iceSubtypeData.size() == 0) {
+            mIceSubtypeChart.clear();
+        } else {
             mIceSubtypeChart.setData(new PieData(mIceSubtypeLabels, mIceSubtypeDataSet));
         }
 
@@ -383,6 +391,8 @@ public class DeckStatsFragment extends Fragment {
 
     public class BarMarkerView extends MarkerView {
 
+        int mDataSetSize = 1;
+        int mDataIndex;
         TextView mText;
 
         public BarMarkerView(Context context)
@@ -391,14 +401,19 @@ public class DeckStatsFragment extends Fragment {
             mText = (TextView) findViewById(R.id.statsBarChartMarkerText);
         }
 
+        public void setDataSetSize(int size) {
+            mDataSetSize = Math.max(1, size - 1);
+        }
+
         @Override
         public void refreshContent(Entry e, Highlight highlight) {
             mText.setText(String.format(getString((int)e.getData()), (int)e.getVal(), e.getXIndex()));
+            mDataIndex = e.getXIndex();
         }
 
         @Override
         public int getXOffset() {
-            return 0;
+            return Math.round(-getWidth() * (mDataIndex / (float)mDataSetSize));
         }
 
         @Override

@@ -65,7 +65,7 @@
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/iceSubtypeChart"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
