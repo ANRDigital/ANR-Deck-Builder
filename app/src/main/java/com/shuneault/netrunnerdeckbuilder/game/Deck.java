@@ -1,9 +1,13 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.media.audiofx.BassBoost;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.HeaderListItemInterface;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -228,7 +232,15 @@ public class Deck implements Serializable, HeaderListItemInterface {
     }
 
     public int getInfluenceLimit() {
-        return mIdentity.getInfluenceLimit();
+        int influenceLimit = mIdentity.getInfluenceLimit();
+        if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_USE_MOST_WANTED_LIST, false)) {
+            for (Card card : this.getCards()) {
+                if (card.isMostWanted()) {
+                    influenceLimit = Math.max(influenceLimit - getCardCount(card), 1); // Do not go below 1 as per rules
+                }
+            }
+        }
+        return influenceLimit;
     }
 
     public int getDeckAgenda() {

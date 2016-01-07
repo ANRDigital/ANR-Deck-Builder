@@ -40,6 +40,7 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_CLEAR_CACHE = "pref_ClearCache";
     public static final String KEY_PREF_DOWNLOAD_ALL_IMAGES = "pref_DownloadAllImages";
     public static final String KEY_PREF_LANGUAGE = "pref_Language";
+    public static final String KEY_PREF_USE_MOST_WANTED_LIST = "pref_MostWantedList";
 
     private String mInitialPacksToDisplay;
 

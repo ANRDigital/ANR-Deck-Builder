@@ -177,5 +177,8 @@
     <string name="msg_error_importing_deck">Error importing deck</string>
     <string name="msg_error_update_card_list">Could not import deck. Please update your card list and try again.</string>
     <string name="modifications_to_deck">Modifications to deck</string>
+    <string name="rules">Rules</string>
+    <string name="use_most_wanted_list">Use Most Wanted List</string>
+    <string name="use_most_wanted_list_summary">Reduces the Identity\'s influence limit for when specific cards are included in the deck</string>
 
 </resources>

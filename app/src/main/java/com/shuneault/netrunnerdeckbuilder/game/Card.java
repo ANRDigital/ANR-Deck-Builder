@@ -20,8 +20,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class Card {
 
@@ -197,10 +200,11 @@ public class Card {
     }
 
     public int getInfluenceLimit() {
-        if (influenceLimit.equals(""))
+        if (influenceLimit.equals("")) {
             return 0;
-        else
+        } else {
             return Integer.parseInt(influenceLimit);
+        }
     }
 
     public int getMinimumDeckSize() {
@@ -375,6 +379,24 @@ public class Card {
     public int getFactionImageRes(Context context) {
         if (getFactionCode().equals(Faction.FACTION_NEUTRAL)) return R.drawable.neutral;
         return context.getResources().getIdentifier(getFactionImageResName(), "drawable", context.getPackageName());
+    }
+
+    public boolean isMostWanted() {
+        String[] arrList = {
+                "03038",    // Clone Chip
+                "01024",    // Desperado
+                "04029",    // Prepaid VoicePAD
+                "06099",    // Cerberus "Lady" H1
+                "01014",    // Yog.0
+                "01012",    // Parasite
+                "01081",    // AstroScript Pilot Program
+                "04119",    // NAPD Contract
+                "01092",    // SanSan City Grid
+                "02110",    // Eli 1.0
+                "06061",    // Architect
+        };
+        ArrayList<String> arrMostWanted = new ArrayList<>(Arrays.asList(arrList));
+        return arrMostWanted.contains(this.getCode());
     }
 
     /**
