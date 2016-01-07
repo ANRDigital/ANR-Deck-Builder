@@ -10,24 +10,30 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
+import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.CardDownloader;
 import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader;
+import com.shuneault.netrunnerdeckbuilder.octgn.OCTGN;
 import com.shuneault.netrunnerdeckbuilder.prefs.SetNamesPreferenceMultiSelect;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
 
 public class SettingsActivity extends PreferenceActivity
         implements OnSharedPreferenceChangeListener {
@@ -41,6 +47,8 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_DOWNLOAD_ALL_IMAGES = "pref_DownloadAllImages";
     public static final String KEY_PREF_LANGUAGE = "pref_Language";
     public static final String KEY_PREF_USE_MOST_WANTED_LIST = "pref_MostWantedList";
+    public static final String KEY_PREF_EXPORT_ALL_DECKS = "pref_ExportAllDecks";
+    public static final String KEY_PREF_IMPORT_ALL_DECKS = "pref_ImportDecks";
 
     private String mInitialPacksToDisplay;
 
@@ -50,6 +58,8 @@ public class SettingsActivity extends PreferenceActivity
     Preference prefClearCache;
     Preference prefDownloadAllImages;
     Preference prefLanguage;
+    Preference prefExportDecks;
+    Preference prefImportDecks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +73,8 @@ public class SettingsActivity extends PreferenceActivity
         prefClearCache = findPreference(KEY_PREF_CLEAR_CACHE);
         prefDownloadAllImages = findPreference(KEY_PREF_DOWNLOAD_ALL_IMAGES);
         prefLanguage = findPreference(KEY_PREF_LANGUAGE);
+        prefExportDecks = findPreference(KEY_PREF_EXPORT_ALL_DECKS);
+        prefImportDecks = findPreference(KEY_PREF_IMPORT_ALL_DECKS);
 
         // Listeners
         prefDataPacks.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -114,6 +126,44 @@ public class SettingsActivity extends PreferenceActivity
                     }
                 });
                 cardDownloader.execute();
+                return false;
+            }
+        });
+        prefExportDecks.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                JSONArray jsonArray = new JSONArray();
+                for (Deck deck : AppManager.getInstance().getAllDecks()) {
+                    JSONObject jsonDeck = deck.toJSON();
+                    jsonArray.put(jsonDeck);
+                }
+                String filename = "netrunner_decks.json";
+                // Save the file as OCTGN format
+                try {
+                    FileOutputStream fileOut = openFileOutput(filename, Context.MODE_WORLD_READABLE);
+                    fileOut.write(jsonArray.toString().getBytes());
+                    fileOut.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Log.i("LOGCAT", String.valueOf(getFileStreamPath(filename)));
+
+                // Create the send intent
+                Intent intentEmail = new Intent(Intent.ACTION_SEND);
+                intentEmail.setType("text/plain");
+                intentEmail.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - All decks");
+                intentEmail.putExtra(Intent.EXTRA_TEXT, "\r\n\r\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
+                intentEmail.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(getFileStreamPath(filename)));
+                startActivityForResult(Intent.createChooser(intentEmail, getText(R.string.menu_share)), 0);
+
+                return false;
+            }
+        });
+        prefImportDecks.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                // TODO: Import decks
                 return false;
             }
         });

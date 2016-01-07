@@ -180,5 +180,7 @@
     <string name="rules">Rules</string>
     <string name="use_most_wanted_list">Use Most Wanted List</string>
     <string name="use_most_wanted_list_summary">Reduces the Identity\'s influence limit for when specific cards are included in the deck</string>
+    <string name="export_all_decks">Export all decks</string>
+    <string name="import_decks_from_file">Import decks from file</string>
 
 </resources>
