@@ -90,6 +90,9 @@
             android:name=".ViewDeckGridActivity"
             android:label="@string/title_activity_view_deck_grid" >
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="def5ac393f5d9aa7c798e837ca9fbec2343448a9" />
     </application>
 
 </manifest>

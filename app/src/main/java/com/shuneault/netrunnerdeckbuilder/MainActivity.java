@@ -22,6 +22,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.shuneault.netrunnerdeckbuilder.adapters.CardDeckAdapter;
@@ -37,6 +39,7 @@ import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader.CardImages
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
+import io.fabric.sdk.android.Fabric;
 import org.json.JSONArray;
 
 import java.io.File;
@@ -80,6 +83,9 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!BuildConfig.DEBUG) {
+            Fabric.with(this, new Answers(), new Crashlytics());
+        }
         setContentView(R.layout.activity_material_main);
 
 	    // show action overflow regardless of hardware menu key
