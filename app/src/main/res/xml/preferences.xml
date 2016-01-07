@@ -11,13 +11,6 @@
             android:entryValues="@array/arrCardsLanguageValues"
             android:defaultValue="en" />
 
-	    <ListPreference
-	        android:key="pref_AmountOfCoreDecks"
-	        android:title="@string/amount_of_core_decks"
-	        android:entryValues="@array/arrAmountOfCoreDecks"
-	        android:defaultValue="3"
-	        android:entries="@array/arrAmountOfCoreDecks"/>
-
         <CheckBoxPreference
             android:key="pref_DataPacksShowAll"
             android:disableDependentsState="true"
@@ -31,6 +24,14 @@
 	        android:defaultValue="Core Set"
 	        android:entries="@array/arr"
 	        android:entryValues="@array/arr" />
+
+        <ListPreference
+            android:key="pref_AmountOfCoreDecks"
+            android:title="@string/amount_of_core_decks"
+            android:dependency="pref_DataPacksShowAll"
+            android:entryValues="@array/arrAmountOfCoreDecks"
+            android:defaultValue="3"
+            android:entries="@array/arrAmountOfCoreDecks"/>
 
         <CheckBoxPreference
             android:key="pref_HideNonVirtualApex"
