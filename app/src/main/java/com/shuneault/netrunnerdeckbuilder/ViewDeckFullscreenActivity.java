@@ -158,7 +158,8 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong(EXTRA_DECK_ID, mDeck.getRowId());
+        if (mDeck != null)
+            outState.putLong(EXTRA_DECK_ID, mDeck.getRowId());
         outState.putString(EXTRA_SET_NAME, mSetName);
         outState.putString(EXTRA_CARD_CODE, mCardCode);
         outState.putInt(EXTRA_POSITION, mPosition);
