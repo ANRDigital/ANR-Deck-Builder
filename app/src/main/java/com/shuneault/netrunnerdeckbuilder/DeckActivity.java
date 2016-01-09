@@ -110,14 +110,16 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
 
         // ActionBar - set elevation to 0 to remove shadow
         mActionBar = getSupportActionBar();
-	    mActionBar.setElevation(0);
+        if (mActionBar != null) {
+            mActionBar.setElevation(0);
+        }
 
         // Database
         mDb = AppManager.getInstance().getDatabase();
 
         // Get the params
         if (savedInstanceState != null) {
-            mDeck = AppManager.getInstance().getDeck(savedInstanceState.getLong(ARGUMENT_DECK_ID));
+//            mDeck = AppManager.getInstance().getDeck(savedInstanceState.getLong(ARGUMENT_DECK_ID));
             mSelectedTab = savedInstanceState.getInt(ARGUMENT_SELECTED_TAB);
             // Restore the fragments instances
             fragDeckInfo = (DeckInfoFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckInfoFragment.class.getName());
@@ -127,7 +129,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
             fragDeckStats = (DeckStatsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckStatsFragment.class.getName());
             fragDeckHand = (DeckHandFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckHandFragment.class.getName());
         } else {
-            mDeck = AppManager.getInstance().getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
+//            mDeck = AppManager.getInstance().getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
             mSelectedTab = getIntent().getExtras().getInt(ARGUMENT_SELECTED_TAB);
         }
 
@@ -511,7 +513,6 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putLong(ARGUMENT_DECK_ID, mDeck.getRowId());
         outState.putInt(ARGUMENT_SELECTED_TAB, mSelectedTab);
 
@@ -528,6 +529,8 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
             getSupportFragmentManager().putFragment(outState, DeckStatsFragment.class.getName(), fragDeckStats);
         if (fragDeckHand != null)
             getSupportFragmentManager().putFragment(outState, DeckHandFragment.class.getName(), fragDeckHand);
+
+        super.onSaveInstanceState(outState);
     }
 
 }
