@@ -55,7 +55,6 @@ public class SettingsActivity extends PreferenceActivity
     Preference prefDownloadAllImages;
     Preference prefLanguage;
     Preference prefExportDecks;
-    Preference prefImportDecks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,13 +151,6 @@ public class SettingsActivity extends PreferenceActivity
                 intentEmail.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(getFileStreamPath(filename)));
                 startActivityForResult(Intent.createChooser(intentEmail, getText(R.string.menu_share)), 0);
 
-                return false;
-            }
-        });
-        prefImportDecks.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                // TODO: Import decks
                 return false;
             }
         });

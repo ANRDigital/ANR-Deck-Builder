@@ -67,4 +67,9 @@
             android:title="@string/download_all_images" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="Export">
+        <Preference android:key="pref_ExportAllDecks"
+            android:title="@string/export_all_decks" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
