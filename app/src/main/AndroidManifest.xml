@@ -9,10 +9,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,37 +23,52 @@
             android:name=".DeckActivity"
             android:label="@string/deck_name"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/menu_options" >
-        </activity>
+            android:label="@string/menu_options" />
         <activity
             android:name=".ChooseIdentityActivity"
-            android:label="@string/title_activity_choose_identity" >
-        </activity>
+            android:label="@string/title_activity_choose_identity" />
         <activity
             android:name=".ViewDeckFullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_view_deck_fullscreen" >
+            android:label="@string/title_activity_view_deck_fullscreen" />
+        <activity
+            android:name=".externalactivities.ImportAllDecksActivity"
+            android:label="@string/title_activity_import_octgn">
+
+        <!-- Import json.anrdecks file (gmail, inbox) -->
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <data
+                android:mimeType="application/octet-stream"
+                android:pathPattern=".*\\.anrdecks"
+                android:scheme="content" />
+        </intent-filter>
+
+        <!-- Import json.anrdecks file (gmail, inbox) -->
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <data
+                android:mimeType="application/octet-stream"
+                android:pathPattern=".*\\.anrdecks"
+                android:scheme="file" />
+        </intent-filter>
+
         </activity>
+
         <activity
             android:name=".externalactivities.ImportOCTGNActivity"
-            android:label="@string/title_activity_import_octgn" >
-
-            <!-- File o8d -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*"
-                    android:mimeType="application/octet-stream"
-                    android:pathPattern=".*\\.o8d" />
-            </intent-filter>
+            android:label="@string/title_activity_import_octgn">
 
             <!-- File o8d -->
             <intent-filter>
@@ -88,8 +103,8 @@
         </activity>
         <activity
             android:name=".ViewDeckGridActivity"
-            android:label="@string/title_activity_view_deck_grid" >
-        </activity>
+            android:label="@string/title_activity_view_deck_grid" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="def5ac393f5d9aa7c798e837ca9fbec2343448a9" />

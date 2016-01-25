@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -69,6 +70,8 @@ public class AppManager {
     public static AppManager getInstance(Context context) {
         if (mAppManager == null)
             new AppManager().init(context);
+        else if (mAppManager.mContext == null)
+            mAppManager.init(context);
         return mAppManager;
     }
 
@@ -174,6 +177,8 @@ public class AppManager {
     }
 
     public JSONArray getJSONCardsFile(Context context) throws IOException, JSONException {
+        // Use the embedded context if available
+        if (mContext != null) context = mContext;
         // Load the file in memory and return a JSON array
         InputStream in = context.openFileInput(AppManager.FILE_CARDS_JSON);
         InputStreamReader fs = new InputStreamReader(in);

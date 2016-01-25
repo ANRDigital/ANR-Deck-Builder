@@ -48,7 +48,6 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_LANGUAGE = "pref_Language";
     public static final String KEY_PREF_USE_MOST_WANTED_LIST = "pref_MostWantedList";
     public static final String KEY_PREF_EXPORT_ALL_DECKS = "pref_ExportAllDecks";
-    public static final String KEY_PREF_IMPORT_ALL_DECKS = "pref_ImportDecks";
 
     private String mInitialPacksToDisplay;
 
@@ -74,7 +73,6 @@ public class SettingsActivity extends PreferenceActivity
         prefDownloadAllImages = findPreference(KEY_PREF_DOWNLOAD_ALL_IMAGES);
         prefLanguage = findPreference(KEY_PREF_LANGUAGE);
         prefExportDecks = findPreference(KEY_PREF_EXPORT_ALL_DECKS);
-        prefImportDecks = findPreference(KEY_PREF_IMPORT_ALL_DECKS);
 
         // Listeners
         prefDataPacks.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -137,7 +135,7 @@ public class SettingsActivity extends PreferenceActivity
                     JSONObject jsonDeck = deck.toJSON();
                     jsonArray.put(jsonDeck);
                 }
-                String filename = "netrunner_decks.json";
+                String filename = "netrunner_decks.anrdecks";
                 // Save the file as OCTGN format
                 try {
                     FileOutputStream fileOut = openFileOutput(filename, Context.MODE_WORLD_READABLE);

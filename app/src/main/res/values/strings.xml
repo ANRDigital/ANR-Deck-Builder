@@ -105,9 +105,9 @@
 
     <!-- Menu Items -->
     <string name="menu_about">About</string>
-	<string name="menu_new_corp">Corporation</string>
-	<string name="menu_new_runner">Runner</string>
-	<string name="menu_view_sets">View Card Sets</string>
+    <string name="menu_new_corp">Corporation</string>
+    <string name="menu_new_runner">Runner</string>
+    <string name="menu_view_sets">View Card Sets</string>
     <string name="menu_refresh_cards">Update cards list</string>
     <string name="menu_change_identity">Change Identity</string>
     <string name="menu_search">Search</string>
@@ -182,5 +182,8 @@
     <string name="use_most_wanted_list_summary">Reduces the Identity\'s influence limit for when specific cards are included in the deck</string>
     <string name="export_all_decks">Export all decks</string>
     <string name="import_decks_from_file">Import decks from file</string>
+    <string name="deck_imported_successfully">Deck imported successfully</string>
+    <string name="decks_imported_successfully">Decks imported successfully</string>
+    <string name="title_activity_card_full_screen">CardFullScreenActivity</string>
 
 </resources>

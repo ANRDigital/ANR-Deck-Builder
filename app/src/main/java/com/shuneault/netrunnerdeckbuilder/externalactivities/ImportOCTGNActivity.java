@@ -114,7 +114,7 @@ public class ImportOCTGNActivity extends Activity {
         AppManager.getInstance().addDeck(deck);
         (new DatabaseHelper(this)).createDeck(deck);
         // Toast
-        Toast.makeText(this, "Deck imported successfuly", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.deck_imported_successfully, Toast.LENGTH_SHORT).show();
         // Launch the new deck
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_DECK_ID, deck.getRowId());
