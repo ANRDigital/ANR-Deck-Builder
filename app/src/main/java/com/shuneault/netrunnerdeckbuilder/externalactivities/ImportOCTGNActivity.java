@@ -44,7 +44,7 @@ public class ImportOCTGNActivity extends Activity {
         Intent intent = getIntent();
 
         // Initialize the database
-        mDb = new DatabaseHelper(this);
+        mDb = AppManager.getInstance().getDatabase();
 
         // Load the cards and decks
         if (AppManager.getInstance().getAllCards().size() <= 0) {
@@ -207,7 +207,7 @@ public class ImportOCTGNActivity extends Activity {
 			 * - Generate the card set list
 			 * 
 			 */
-            JSONArray jsonFile = AppManager.getInstance().getJSONCardsFile(this);
+            JSONArray jsonFile = AppManager.getInstance().getJSONCardsFile();
             CardList arrCards = AppManager.getInstance().getAllCards();
             arrCards.clear();
             for (int i = 0; i < jsonFile.length(); i++) {

@@ -111,7 +111,6 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 	    fabMenu = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
 
 	    // Some variables
-        AppManager.getInstance().init(this);
         mDb = AppManager.getInstance().getDatabase();
         mDecks = AppManager.getInstance().getAllDecks();
 
@@ -388,7 +387,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 			 * - Generate the card set list
 			 *
 			 */
-            JSONArray jsonFile = AppManager.getInstance().getJSONCardsFile(this);
+            JSONArray jsonFile = AppManager.getInstance().getJSONCardsFile();
             CardList arrCards = AppManager.getInstance().getAllCards();
             arrCards.clear();
             for (int i = 0; i < jsonFile.length(); i++) {
@@ -400,7 +399,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
             }
 
             // Load the decks
-            doLoadDecks();
+//            doLoadDecks();
 
         } catch (FileNotFoundException e) {
             doDownloadCards();
@@ -430,7 +429,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
                 mDialog.dismiss();
 
                 // Ask if we want to download the images on if almost no images are downloaded
-                if (AppManager.getInstance().getNumberImagesCached(MainActivity.this) < 20) {
+                if (AppManager.getInstance().getNumberImagesCached() < 20) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setMessage(R.string.download_all_images_question_first_launch);
                     builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {

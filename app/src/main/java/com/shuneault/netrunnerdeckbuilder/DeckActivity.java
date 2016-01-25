@@ -72,20 +72,8 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Set the theme
-        if (savedInstanceState != null) {
-            mDeck = AppManager.getInstance(this).getDeck(savedInstanceState.getLong(ARGUMENT_DECK_ID));
-        } else {
-            mDeck = AppManager.getInstance(this).getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
-        }
-
-        // Close activity if the deck is empty
-        // TODO: Bug fix the causing issue causing mDeck to be empty
-        if (mDeck == null) {
-            finish();
-        }
-
         // Set the theme and layout
+        mDeck = AppManager.getInstance().getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
         try
         {
             setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));

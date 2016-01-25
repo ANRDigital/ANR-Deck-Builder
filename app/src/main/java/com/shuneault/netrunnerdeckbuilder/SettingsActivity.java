@@ -2,7 +2,6 @@ package com.shuneault.netrunnerdeckbuilder;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -21,12 +20,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.CardDownloader;
 import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader;
-import com.shuneault.netrunnerdeckbuilder.octgn.OCTGN;
 import com.shuneault.netrunnerdeckbuilder.prefs.SetNamesPreferenceMultiSelect;
 
 import org.json.JSONArray;

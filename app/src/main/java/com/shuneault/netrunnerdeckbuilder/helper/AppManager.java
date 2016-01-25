@@ -1,9 +1,15 @@
 package com.shuneault.netrunnerdeckbuilder.helper;
 
+import android.app.AlertDialog;
+import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
+import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
@@ -15,16 +21,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AppManager {
-
-    private final static AppManager mAppManager = new AppManager();
+/**
+ * Created by sebast on 24/01/16.
+ */
+public class AppManager extends Application {
 
     /* File management */
     public static final String EXT_CARDS_IMAGES = ".png";
@@ -36,55 +43,28 @@ public class AppManager {
     // Logcat
     public static final String LOGCAT = "com.example.netrunnerdeckbuilder.LOGCAT";
 
-    // Database stuff
-    public static final String DATABASE_NAME = "data";
-    public static final int DATABASE_VERSION = 1;
-
-    // Notifications
-    public static final int NOTIFY_DOWNLOAD_CARDS_ID = 1;
-    public static final int NOTIFY_DOWNLOAD_IMAGES_ID = 2;
-
-    // App Context
-    private Context mContext;
-
-    // Shared Preferences
-    private SharedPreferences mSharedPrefs;
-
-    // Database
+    private static AppManager mInstance;
     private DatabaseHelper mDb;
 
-    private ArrayList<Deck> mDecks;
-    private CardList mCards;
+    // Decks
+    private ArrayList<Deck> mDecks = new ArrayList<>();
+    private CardList mCards = new CardList();
 
-    private AppManager() {
-        mDecks = new ArrayList<Deck>();
-        mCards = new CardList();
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mInstance = this;
+        mDb = new DatabaseHelper(this);
+        doLoadCards();
+        mDecks.addAll(mDb.getAllDecks(true));
     }
 
     public static AppManager getInstance() {
-        if (mAppManager == null)
-            new AppManager();
-        return mAppManager;
-    }
-
-    public static AppManager getInstance(Context context) {
-        if (mAppManager == null)
-            new AppManager().init(context);
-        else if (mAppManager.mContext == null)
-            mAppManager.init(context);
-        return mAppManager;
-    }
-
-    public void init(Context context) {
-        // Initialize the application, database, shared preferences, etc.
-        AppManager app = getInstance();
-        mContext = context;
-        mDb = new DatabaseHelper(context);
-        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return mInstance;
     }
 
     public SharedPreferences getSharedPrefs() {
-        return mSharedPrefs;
+        return PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     public DatabaseHelper getDatabase() {
@@ -101,13 +81,13 @@ public class AppManager {
 
     public CardList getCardsFromDataPacksToDisplay() {
         // Return all cards if set in the preferences
-        if (mSharedPrefs.getBoolean(SettingsActivity.KEY_PREF_DISPLAY_ALL_DATA_PACKS, true)) {
+        if (getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_DISPLAY_ALL_DATA_PACKS, true)) {
             return getAllCards();
         }
 
         // Return only the data packs requested
         CardList cd = new CardList();
-        ArrayList<String> arrDataPacks = new ArrayList<String>(Arrays.asList(ListPreferenceMultiSelect.parseStoredValue(mSharedPrefs.getString(SettingsActivity.KEY_PREF_DATA_PACKS_TO_DISPLAY, ""))));
+        ArrayList<String> arrDataPacks = new ArrayList<String>(Arrays.asList(ListPreferenceMultiSelect.parseStoredValue(getSharedPrefs().getString(SettingsActivity.KEY_PREF_DATA_PACKS_TO_DISPLAY, ""))));
         for (Card card : this.mCards) {
             if (arrDataPacks.contains(card.getSetName())) {
                 cd.add(card);
@@ -154,9 +134,9 @@ public class AppManager {
         return null;
     }
 
-	// decks with rowId of 128 and higher wouldn't load so
-	// pass in a primitive long instead of Long object due to this
-	// explanation here: http://bexhuff.com/java-autoboxing-wackiness
+    // decks with rowId of 128 and higher wouldn't load so
+    // pass in a primitive long instead of Long object due to this
+    // explanation here: http://bexhuff.com/java-autoboxing-wackiness
     public Deck getDeck(long rowId) {
         for (Deck deck : this.mDecks) {
             if (deck.getRowId() == rowId) {
@@ -166,21 +146,19 @@ public class AppManager {
         return null;
     }
 
-    public int getNumberImagesCached(Context context) {
+    public int getNumberImagesCached() {
         int numImages = 0;
-        CardList cards = AppManager.getInstance().getAllCards();
+        CardList cards = getAllCards();
         for (Card card : cards) {
-            if (card.isImageFileExists(context))
+            if (card.isImageFileExists(this))
                 numImages++;
         }
         return numImages;
     }
 
-    public JSONArray getJSONCardsFile(Context context) throws IOException, JSONException {
-        // Use the embedded context if available
-        if (mContext != null) context = mContext;
+    public JSONArray getJSONCardsFile() throws IOException, JSONException {
         // Load the file in memory and return a JSON array
-        InputStream in = context.openFileInput(AppManager.FILE_CARDS_JSON);
+        InputStream in = openFileInput(FILE_CARDS_JSON);
         InputStreamReader fs = new InputStreamReader(in);
         BufferedReader bfs = new BufferedReader(fs);
         String theLine = null;
@@ -196,9 +174,9 @@ public class AppManager {
         return jsonFile;
     }
 
-    public JSONArray getJSONDecksFile(Context context) throws IOException, JSONException {
+    public JSONArray getJSONDecksFile() throws IOException, JSONException {
         // Load the file in memory and return a JSON array
-        InputStream in = context.openFileInput(AppManager.FILE_DECKS_JSON);
+        InputStream in = openFileInput(FILE_DECKS_JSON);
         InputStreamReader fs = new InputStreamReader(in);
         BufferedReader bfs = new BufferedReader(fs);
         String theLine = null;
@@ -213,34 +191,115 @@ public class AppManager {
         in.close();
         return jsonFile;
     }
-//	
-//	public  void saveDecksToFile(Context context) {
-//		// Generate a JSON array
-//		JSONArray arrJSON = new JSONArray();
-//		for (Deck deck : mDecks) {
-//			JSONObject json = deck.toJSON();
-//			arrJSON.put(json);
-//		}
-//		
-//		// Write to a temporary file
-//		try {
-//			FileOutputStream out = context.openFileOutput(FILE_DECKS_JSON_TEMP, Context.MODE_PRIVATE);
-//			out.write(arrJSON.toString().getBytes());
-//			out.close();
-//			// No error, overwrite the other file
-//			File fileTemp = context.getFileStreamPath(FILE_DECKS_JSON_TEMP);
-//			File fileOld = context.getFileStreamPath(FILE_DECKS_JSON);
-//			fileOld.renameTo(context.getFileStreamPath(FILE_DECKS_JSON_BACKUP));
-//			fileTemp.renameTo(context.getFileStreamPath(FILE_DECKS_JSON));
-//			
-//		} catch (FileNotFoundException e) {
-//			// 
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// 
-//			e.printStackTrace();
-//		}
-//		
-//	}
+
+    private void doLoadCards() {
+        // Cards downloaded, load them
+        try {
+            /* Load the card list
+			 *
+			 * - Create the card
+			 * - Add the card to the array
+			 * - Generate the faction list
+			 * - Generate the side list
+			 * - Generate the card set list
+			 *
+			 */
+            JSONArray jsonFile = AppManager.getInstance().getJSONCardsFile();
+            CardList arrCards = AppManager.getInstance().getAllCards();
+            arrCards.clear();
+            for (int i = 0; i < jsonFile.length(); i++) {
+                // Create the card and add to the array
+                //		Do not load cards from the Alternates set
+                Card card = new Card(jsonFile.getJSONObject(i));
+                if (!card.getSetName().equals(Card.SetName.ALTERNATES))
+                    arrCards.add(card);
+            }
+
+            // Load the decks
+//            doLoadDecks();
+
+        } catch (FileNotFoundException e) {
+            doDownloadCards();
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void doDownloadCards() {
+        CardDownloader dl = new CardDownloader(this, new CardDownloader.CardDownloaderListener() {
+
+            ProgressDialog mDialog;
+
+            @Override
+            public void onTaskCompleted() {
+                // Load the cards in the app
+                doLoadCards();
+
+                // Close the dialog
+                mDialog.dismiss();
+
+                // Ask if we want to download the images on if almost no images are downloaded
+                if (AppManager.getInstance().getNumberImagesCached() < 20) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AppManager.this);
+                    builder.setMessage(R.string.download_all_images_question_first_launch);
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Download all images
+                            CardImagesDownloader dnl = new CardImagesDownloader(AppManager.this, new CardImagesDownloader.CardImagesDownloaderListener() {
+
+                                @Override
+                                public void onTaskCompleted() {
+
+                                }
+
+                                @Override
+                                public void onImageDownloaded(Card card, int count, int max) {
+
+                                }
+
+                                @Override
+                                public void onBeforeStartTask(Context context, int max) {
+
+                                }
+                            });
+                            dnl.execute();
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.no, null);
+                    builder.create().show();
+                }
+
+            }
+
+            @Override
+            public void onBeforeStartTask(Context context) {
+                // Display a progress dialog
+                mDialog = new ProgressDialog(context);
+                mDialog.setTitle(getResources().getString(R.string.downloading_cards));
+                mDialog.setIndeterminate(true);
+                mDialog.setCancelable(false);
+                mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                mDialog.setMessage(null);
+                mDialog.show();
+            }
+
+            @Override
+            public void onDownloadError() {
+                // Display the error and cancel the ongoing dialog
+                mDialog.dismiss();
+
+                // If zero cards are available, exit the application
+                if (AppManager.getInstance().getAllCards().size() <= 0) {
+                    Toast.makeText(AppManager.this, R.string.error_downloading_cards_quit, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(AppManager.this, R.string.error_downloading_cards, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        dl.execute();
+    }
 
 }

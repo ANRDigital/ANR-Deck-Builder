@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.MainActivity;
@@ -18,15 +17,11 @@ import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MulticastSocket;
 
 /**
  * Created by sebast on 11/01/16.
@@ -44,8 +39,8 @@ public class ImportAllDecksActivity extends Activity {
         Intent intent = getIntent();
 
         // Initialize the database + AppManager
-        mDb = new DatabaseHelper(this);
-        mApp = AppManager.getInstance(this);
+        mApp = AppManager.getInstance();
+        mDb = mApp.getDatabase();
 
         // Ask for a new deck name
         ProgressDialog pDialog = new ProgressDialog(this);
@@ -82,7 +77,7 @@ public class ImportAllDecksActivity extends Activity {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Deck deck = Deck.fromJSON(jsonObject);
                 deck.setName("[IMP] " + deck.getName());
-                AppManager.getInstance(this).addDeck(deck);
+                mApp.addDeck(deck);
                 mDb.createDeck(deck);
             }
 
@@ -121,8 +116,8 @@ public class ImportAllDecksActivity extends Activity {
 			 * - Generate the card set list
 			 *
 			 */
-            JSONArray jsonFile = AppManager.getInstance().getJSONCardsFile(this);
-            CardList arrCards = AppManager.getInstance().getAllCards();
+            JSONArray jsonFile = mApp.getJSONCardsFile();
+            CardList arrCards = mApp.getAllCards();
             arrCards.clear();
             for (int i = 0; i < jsonFile.length(); i++) {
                 // Create the card and add to the array
@@ -144,7 +139,7 @@ public class ImportAllDecksActivity extends Activity {
 
     private void doLoadDecks() {
         // Load the decks from the DB
-        AppManager.getInstance().getAllDecks().clear();
-        AppManager.getInstance().getAllDecks().addAll(mDb.getAllDecks(true));
+        mApp.getAllDecks().clear();
+        mApp.getAllDecks().addAll(mDb.getAllDecks(true));
     }
 }

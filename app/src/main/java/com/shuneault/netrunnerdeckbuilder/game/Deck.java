@@ -1,10 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.media.audiofx.BassBoost;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;

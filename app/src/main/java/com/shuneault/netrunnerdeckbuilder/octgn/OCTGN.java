@@ -1,6 +1,5 @@
 package com.shuneault.netrunnerdeckbuilder.octgn;
 
-import android.app.AlertDialog;
 import android.text.Html;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
