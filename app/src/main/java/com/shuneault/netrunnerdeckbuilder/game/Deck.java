@@ -20,6 +20,8 @@ import java.util.UUID;
 
 public class Deck implements Serializable, HeaderListItemInterface {
 
+    private static final String ReservedChars = "[\\|\\?\\*\\<\\\"\\:\\>\\+\\[\\]\\/\\\\\\']";
+
     private String mName;
     private Card mIdentity;
     private String mNotes;
@@ -73,6 +75,10 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public String getName() {
         return mName;
+    }
+
+    public String getFileSafeName() {
+        return getName().replaceAll(ReservedChars, "_");
     }
 
     public void setName(String name) {

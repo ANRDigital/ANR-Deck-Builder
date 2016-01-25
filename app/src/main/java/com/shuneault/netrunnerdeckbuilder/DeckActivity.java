@@ -320,7 +320,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                 return true;
 
             case R.id.mnuOCTGN:
-                String filename = mDeck.getName() + ".o8d";
+                String filename = mDeck.getFileSafeName() + ".o8d";
                 // Save the file as OCTGN format
                 try {
                     FileOutputStream fileOut = this.openFileOutput(filename, Context.MODE_WORLD_READABLE);
