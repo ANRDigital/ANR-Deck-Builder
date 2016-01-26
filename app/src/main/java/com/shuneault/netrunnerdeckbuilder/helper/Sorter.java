@@ -25,6 +25,9 @@ public final class Sorter {
 
         @Override
         public int compare(Deck lhs, Deck rhs) {
+            if (lhs == null || rhs == null) {
+                return 0;
+            }
             if (lhs.isStarred() != rhs.isStarred()) {
                 return ((Boolean) !lhs.isStarred()).compareTo(!rhs.isStarred());
             } else if (lhs.getIdentity().getFaction().equals(rhs.getIdentity().getFaction())) {

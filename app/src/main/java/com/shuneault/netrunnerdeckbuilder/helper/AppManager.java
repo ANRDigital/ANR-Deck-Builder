@@ -237,7 +237,8 @@ public class AppManager extends Application {
                 doLoadCards();
 
                 // Close the dialog
-                mDialog.dismiss();
+                if (mDialog != null)
+                    mDialog.dismiss();
 
                 // Ask if we want to download the images on if almost no images are downloaded
                 if (AppManager.getInstance().getNumberImagesCached() < 20) {
@@ -276,27 +277,29 @@ public class AppManager extends Application {
 
             @Override
             public void onBeforeStartTask(Context context) {
-                // Display a progress dialog
-                mDialog = new ProgressDialog(context);
-                mDialog.setTitle(getResources().getString(R.string.downloading_cards));
-                mDialog.setIndeterminate(true);
-                mDialog.setCancelable(false);
-                mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                mDialog.setMessage(null);
-                mDialog.show();
+//                // Display a progress dialog
+//                mDialog = new ProgressDialog(context);
+//                mDialog.setTitle(getResources().getString(R.string.downloading_cards));
+//                mDialog.setIndeterminate(true);
+//                mDialog.setCancelable(false);
+//                mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//                mDialog.setMessage(null);
+//                mDialog.show();
+//                Toast.makeText(AppManager.this, R.string.downloading_cards, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onDownloadError() {
                 // Display the error and cancel the ongoing dialog
-                mDialog.dismiss();
-
-                // If zero cards are available, exit the application
-                if (AppManager.getInstance().getAllCards().size() <= 0) {
-                    Toast.makeText(AppManager.this, R.string.error_downloading_cards_quit, Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(AppManager.this, R.string.error_downloading_cards, Toast.LENGTH_LONG).show();
-                }
+//                mDialog.dismiss();
+//                Toast.makeText(AppManager.this, R.string.cards_download_complete, Toast.LENGTH_SHORT).show();
+//
+//                // If zero cards are available, exit the application
+//                if (AppManager.getInstance().getAllCards().size() <= 0) {
+//                    Toast.makeText(AppManager.this, R.string.error_downloading_cards_quit, Toast.LENGTH_LONG).show();
+//                } else {
+//                    Toast.makeText(AppManager.this, R.string.error_downloading_cards, Toast.LENGTH_LONG).show();
+//                }
             }
         });
         dl.execute();
