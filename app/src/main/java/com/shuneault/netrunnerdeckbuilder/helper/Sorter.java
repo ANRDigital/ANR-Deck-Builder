@@ -25,9 +25,25 @@ public final class Sorter {
 
         @Override
         public int compare(Deck lhs, Deck rhs) {
-            if (lhs == null || rhs == null || lhs.getIdentity() == null || rhs.getIdentity() == null) {
+            // One deck is null
+            if (lhs == null && rhs == null) {
                 return 0;
+            } else if (lhs == null) {
+                return -1;
+            } else if (rhs == null) {
+                return 1;
             }
+
+            // Identity is null
+            if (lhs.getIdentity() == null && rhs.getIdentity() == null) {
+                return 0;
+            } else if (lhs.getIdentity() == null) {
+                return -1;
+            } else if (rhs.getIdentity() == null) {
+                return 1;
+            }
+
+            // All is OK
             if (lhs.isStarred() != rhs.isStarred()) {
                 return ((Boolean) !lhs.isStarred()).compareTo(!rhs.isStarred());
             } else if (lhs.getIdentity().getFaction().equals(rhs.getIdentity().getFaction())) {

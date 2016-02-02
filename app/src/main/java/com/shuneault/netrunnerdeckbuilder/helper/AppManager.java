@@ -59,6 +59,8 @@ public class AppManager extends Application {
         mDecks.addAll(mDb.getAllDecks(true));
     }
 
+
+
     public static AppManager getInstance() {
         return mInstance;
     }
@@ -226,7 +228,7 @@ public class AppManager extends Application {
         }
     }
 
-    private void doDownloadCards() {
+    public void doDownloadCards() {
         CardDownloader dl = new CardDownloader(this, new CardDownloader.CardDownloaderListener() {
 
             ProgressDialog mDialog;
@@ -236,42 +238,42 @@ public class AppManager extends Application {
                 // Load the cards in the app
                 doLoadCards();
 
-                // Close the dialog
-                if (mDialog != null)
-                    mDialog.dismiss();
+//                // Close the dialog
+//                if (mDialog != null)
+//                    mDialog.dismiss();
 
                 // Ask if we want to download the images on if almost no images are downloaded
-                if (AppManager.getInstance().getNumberImagesCached() < 20) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(AppManager.this);
-                    builder.setMessage(R.string.download_all_images_question_first_launch);
-                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Download all images
-                            CardImagesDownloader dnl = new CardImagesDownloader(AppManager.this, new CardImagesDownloader.CardImagesDownloaderListener() {
-
-                                @Override
-                                public void onTaskCompleted() {
-
-                                }
-
-                                @Override
-                                public void onImageDownloaded(Card card, int count, int max) {
-
-                                }
-
-                                @Override
-                                public void onBeforeStartTask(Context context, int max) {
-
-                                }
-                            });
-                            dnl.execute();
-                        }
-                    });
-                    builder.setNegativeButton(android.R.string.no, null);
-                    builder.create().show();
-                }
+//                if (AppManager.getInstance().getNumberImagesCached() < 20) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+//                    builder.setMessage(R.string.download_all_images_question_first_launch);
+//                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            // Download all images
+//                            CardImagesDownloader dnl = new CardImagesDownloader(AppManager.this, new CardImagesDownloader.CardImagesDownloaderListener() {
+//
+//                                @Override
+//                                public void onTaskCompleted() {
+//
+//                                }
+//
+//                                @Override
+//                                public void onImageDownloaded(Card card, int count, int max) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onBeforeStartTask(Context context, int max) {
+//
+//                                }
+//                            });
+//                            dnl.execute();
+//                        }
+//                    });
+//                    builder.setNegativeButton(android.R.string.no, null);
+//                    builder.create().show();
+//                }
 
             }
 

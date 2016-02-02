@@ -10,9 +10,11 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,7 +54,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MainActivity extends ActionBarActivity implements OnDeckChangedListener {
+public class MainActivity extends AppCompatActivity implements OnDeckChangedListener {
 
     // Request Codes for activity launch
     public static final int REQUEST_NEW_IDENTITY = 1;
@@ -120,7 +122,8 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
             @Override
             public void onClick(int index) {
                 Deck deck = mDecks.get(index);
-                loadDeckFragment(deck);
+                // Load the deck activity
+                startDeckActivity(deck.getRowId());
             }
 
             @Override
@@ -147,9 +150,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 			    {
 				    fabMenu.collapse();
 			    }
-			    Intent intent = new Intent(MainActivity.this, ChooseIdentityActivity.class);
-			    intent.putExtra(ChooseIdentityActivity.EXTRA_SIDE_CODE, Card.Side.SIDE_CORPORATION);
-			    startActivityForResult(intent, REQUEST_NEW_IDENTITY);
+                startChooseIdentityActivity(Card.Side.SIDE_CORPORATION);
 		    }
 	    });
 	    fabNewRunnerDeck.setOnClickListener(new View.OnClickListener() {
@@ -159,32 +160,28 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 			    {
 				    fabMenu.collapse();
 			    }
-			    Intent intent = new Intent(MainActivity.this, ChooseIdentityActivity.class);
-			    intent.putExtra(ChooseIdentityActivity.EXTRA_SIDE_CODE, Card.Side.SIDE_RUNNER);
-			    startActivityForResult(intent, REQUEST_NEW_IDENTITY);
+                startChooseIdentityActivity(Card.Side.SIDE_RUNNER);
 		    }
 	    });
 
 	    // load show/hide animations for fab
 	    final Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
 	    final Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0 && mScrollDirection <= 0) { // Scroll Down
-	                // collapse fab if expanded when hiding
-	                if (fabMenu.isExpanded())
-	                {
-		                fabMenu.collapse();
-	                }
-	                // hide fab
+                    // collapse fab if expanded when hiding
+                    if (fabMenu.isExpanded()) {
+                        fabMenu.collapse();
+                    }
+                    // hide fab
                     fabMenu.startAnimation(slideDown);
-	                fabMenu.setVisibility(View.INVISIBLE);
+                    fabMenu.setVisibility(View.INVISIBLE);
                     mScrollDirection = dy;
                 } else if (dy < 0 && mScrollDirection >= 0) { // Scroll Up
-	                // show fab
-	                fabMenu.setVisibility(View.VISIBLE);
+                    // show fab
+                    fabMenu.setVisibility(View.VISIBLE);
                     fabMenu.startAnimation(slideUp);
                     mScrollDirection = dy;
                 } else {
@@ -193,37 +190,30 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
             }
         });
 
-        initActionBar();
-
-
-        // Load the cards
-        if (AppManager.getInstance().getAllCards().size() == 0) {
-            File f = new File(getFilesDir(), AppManager.FILE_CARDS_JSON);
-            // Use the local provided copy of the card since NetrunnerDB.com got shut down
-            if (!f.exists()) {
-                InputStream in = getResources().openRawResource(R.raw.cards);
-                try {
-                    copy(in, f);
-                } catch (Exception e) {
-                }
-            }
-            doLoadCards();
-
+        // Action bar
+        ActionBar mActionBar = getSupportActionBar();
+        if (mActionBar != null) {
+            mActionBar.setTitle(R.string.title_activity_main);
         }
+
+//        // Load the cards
+//        APP MANAGER SHOULD TAKE CARE OF THIS
+//        if (AppManager.getInstance().getAllCards().size() == 0) {
+//            File f = new File(getFilesDir(), AppManager.FILE_CARDS_JSON);
+//            // Use the local provided copy of the card since NetrunnerDB.com got shut down
+//            if (!f.exists()) {
+//                InputStream in = getResources().openRawResource(R.raw.cards);
+//                try {
+//                    copy(in, f);
+//                } catch (Exception e) {
+//                }
+//            }
+//            doLoadCards();
+//        }
 
         // Sort the list
         Collections.sort(mDecks, new Sorter.DeckSorter());
 
-    }
-
-    private void initActionBar() {
-        // Set the action bar
-        ActionBar mActionBar = getSupportActionBar();
-        if (mActionBar != null) {
-            mActionBar.setTitle(R.string.title_activity_main);
-//            mActionBar.setLogo(R.drawable.ic_launcher);
-//            mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        }
     }
 
     @Override
@@ -233,7 +223,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
 
         switch (requestCode) {
             case REQUEST_NEW_IDENTITY:
-                // Get the choosen identity
+                // Get the chosen identity
                 Card card = AppManager.getInstance().getAllCards().getCard(data.getStringExtra(ChooseIdentityActivity.EXTRA_IDENTITY_CODE));
 
                 // Create a new deck
@@ -244,7 +234,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
                 mDb.createDeck(mDeck);
 
                 // Start the new deck activity
-                loadDeckFragment(mDeck);
+                startDeckActivity(mDeck.getRowId());
                 break;
 
             case REQUEST_SETTINGS:
@@ -256,20 +246,12 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
     @Override
     protected void onResume() {
         super.onResume();
-        mRecyclerView.getAdapter().notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        // Close the database connection
-        mDb.close();
+        if (mRecyclerView != null)
+            mRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -296,16 +278,13 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
                         Intent intentFullScreen = new Intent(MainActivity.this, ViewDeckGridActivity.class);
                         intentFullScreen.putExtra(ViewDeckGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getSetNames().get(which));
                         startActivity(intentFullScreen);
-//
-//				        Intent intent = new Intent(MainActivity.this, ViewDeckFullscreenActivity.class);
-//				        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_SET_NAME, AppManager.getInstance().getSetNames().get(which));
-//				        startActivity(intent);
 			        }
 		        });
 		        builder.show();
 		        break;
             case R.id.mnuRefreshCards:
-                doDownloadCards();
+                //doDownloadCards();
+                AppManager.getInstance().doDownloadCards();
                 break;
             case R.id.mnuOptions:
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
@@ -332,6 +311,22 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
         return super.onOptionsItemSelected(item);
     }
 
+    private void startChooseIdentityActivity(String side) {
+        if (!side.equals(Card.Side.SIDE_CORPORATION) && !side.equals(Card.Side.SIDE_RUNNER)) return;
+
+        Intent intent = new Intent(MainActivity.this, ChooseIdentityActivity.class);
+        intent.putExtra(ChooseIdentityActivity.EXTRA_SIDE_CODE, side);
+        startActivityForResult(intent, REQUEST_NEW_IDENTITY);
+    }
+
+    private void startDeckActivity(Long rowId) {
+        Intent intent = new Intent(MainActivity.this, DeckActivity.class);
+        intent.putExtra(DeckActivity.ARGUMENT_DECK_ID, rowId);
+        startActivity(intent);
+    }
+
+
+
     @Override
     public void onDeckCardsChanged() {
 
@@ -350,7 +345,7 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
     @Override
     public void onDeckCloned(Deck deck) {
         // Load the deck on screen
-        loadDeckFragment(deck);
+        startDeckActivity(deck.getRowId());
     }
 
     @Override
@@ -361,18 +356,6 @@ public class MainActivity extends ActionBarActivity implements OnDeckChangedList
     public void onDeckIdentityChanged(Card newIdentity) {
 
 
-    }
-
-    public void loadDeckFragment(Deck deck, int selectedTab) {
-        // Start the DeckActivity activity
-        Intent intent = new Intent(MainActivity.this, DeckActivity.class);
-        intent.putExtra(DeckActivity.ARGUMENT_DECK_ID, deck.getRowId());
-        intent.putExtra(DeckActivity.ARGUMENT_SELECTED_TAB, selectedTab);
-        startActivity(intent);
-    }
-
-    public void loadDeckFragment(Deck deck) {
-        loadDeckFragment(deck, 0);
     }
 
     public void doLoadCards() {

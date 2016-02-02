@@ -84,14 +84,14 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
             chkStarred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.onDeckStarred(getPosition(), chkStarred.isChecked());
+                    mListener.onDeckStarred(getAdapterPosition(), chkStarred.isChecked());
                 }
             });
         }
 
         @Override
         public void onClick(View v) {
-            mListener.onClick(getPosition());
+            mListener.onClick(getAdapterPosition());
         }
 
         public static interface IViewHolderClicks {
