@@ -29,6 +29,12 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
         mListener = listener;
     }
 
+    public void setData(ArrayList<Deck> newDeckList) {
+        mDeckList.clear();
+        mDeckList.addAll(newDeckList);
+        notifyDataSetChanged();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
         mViewGroup = viewGroup;
