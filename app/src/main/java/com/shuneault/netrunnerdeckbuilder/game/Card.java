@@ -34,7 +34,7 @@ public class Card {
     public static final String NAME_TYPE = "type";
     public static final String NAME_TYPE_CODE = "type_code";
     public static final String NAME_SUBTYPE = "subtype";
-    public static final String NAME_SYBTYPE_CODE = "subtype_code";
+    public static final String NAME_SUBTYPE_CODE = "subtype_code";
     public static final String NAME_TEXT = "text";
     public static final String NAME_BASELINK = "baselink";
     public static final String NAME_FACTION = "faction";
@@ -66,11 +66,12 @@ public class Card {
     private String type;
     private String typeCode;
     private String subtype;
+    private String subtype_code;
     private String text;
     private String baselink;
     private String faction;
     private String factionCode;
-    private String factionCost;
+    private int factionCost;
     private String flavor;
     private String illustrator;
     private String influenceLimit;
@@ -102,11 +103,12 @@ public class Card {
             this.type = json.optString(NAME_TYPE);
             this.typeCode = json.optString(NAME_TYPE_CODE);
             this.subtype = json.optString(NAME_SUBTYPE);
+            this.subtype_code = json.optString(NAME_SUBTYPE_CODE);
             this.text = json.optString(NAME_TEXT);
             this.baselink = json.optString(NAME_BASELINK);
             this.faction = json.optString(NAME_FACTION);
             this.factionCode = json.optString(NAME_FACTION_CODE);
-            this.factionCost = json.optString(NAME_FACTION_COST);
+            this.factionCost = json.optInt(NAME_FACTION_COST, 0);
             this.flavor = json.optString(NAME_FLAVOR);
             this.illustrator = json.optString(NAME_ILLUSTRATOR);
             this.influenceLimit = json.optString(NAME_INFLUENCE_LIMIT);
@@ -166,6 +168,8 @@ public class Card {
         return subtype;
     }
 
+    public String getSubtypeCode() { return subtype_code; }
+
     public String getText() {
         return text;
     }
@@ -183,11 +187,7 @@ public class Card {
     }
 
     public int getFactionCost() {
-        try {
-            return Integer.parseInt(factionCost);
-        } catch (Exception e) {
-            return 0;
-        }
+        return factionCost;
     }
 
     public String getFlavor() {
@@ -448,6 +448,10 @@ public class Card {
         public static final String PROGRAM = "program";
         public static final String RESOURCE = "resource";
         public static final String UPGRADE = "upgrade";
+    }
+
+    public static class SubTypeCode {
+        public static final String ALLIANCE = "alliance";
     }
 
     public static class SetName {

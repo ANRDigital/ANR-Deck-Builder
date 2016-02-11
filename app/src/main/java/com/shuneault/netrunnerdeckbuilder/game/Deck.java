@@ -1,6 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
@@ -164,7 +165,27 @@ public class Deck implements Serializable, HeaderListItemInterface {
     public int getCardCountByType(String type) {
         int iCount = 0;
         for (Card card : mCards.keySet()) {
-            if (card.getType().equals(type)) {
+            if (card.getTypeCode().contains(type)) {
+                iCount = iCount + getCardCount(card);
+            }
+        }
+        return iCount;
+    }
+
+    public int getCardCountByFaction(String faction) {
+        int iCount = 0;
+        for (Card card : mCards.keySet()) {
+            if (card.getFactionCode().equals(faction)) {
+                iCount = iCount + getCardCount(card);
+            }
+        }
+        return iCount;
+    }
+
+    public int getCardCountBySubTypeAndFaction(String subtype, String faction) {
+        int iCount = 0;
+        for (Card card : mCards.keySet()) {
+            if (card.getSubtypeCode().contains(subtype) && card.getFactionCode().equals(faction)) {
                 iCount = iCount + getCardCount(card);
             }
         }
@@ -222,6 +243,56 @@ public class Deck implements Serializable, HeaderListItemInterface {
         } else {
             for (Card card : getCards()) {
                 if (!mIdentity.getFaction().equals(card.getFaction())) {
+
+                    // Some cards have a different influence based on the text
+                    switch (card.getCode()) {
+                        case "10018":  // Mumba Temple - 0 influence if 15 ice or less in deck
+                            if (getCardCountByType(Card.Type.ICE) <= 15) {
+                                continue;
+                            }
+                            break;
+                        case "10019":  // Museum of History - 0 influence if 50 or more cards in deck
+                            if (getDeckSize() >= 50) {
+                                continue;
+                            }
+                            break;
+                        case "10067":  // Jeeves Model Bioroids - 0 influence if 6 or more non-alliance HB cards in deck
+                            if (getCardCountByFaction(Card.Faction.FACTION_HAAS_BIOROID) - getCardCountBySubTypeAndFaction(Card.SubTypeCode.ALLIANCE, Card.Faction.FACTION_HAAS_BIOROID) >= 6) {
+                                continue;
+                            }
+                            break;
+                        case "10068":  // Raman Rai - 0 influence if 6 or more non-alliance Jinteki cards in deck
+                            if (getCardCountByFaction(Card.Faction.FACTION_JINTEKI) - getCardCountBySubTypeAndFaction(Card.SubTypeCode.ALLIANCE, Card.Faction.FACTION_JINTEKI) >= 6) {
+                                continue;
+                            }
+                            break;
+                        case "10109":  // Ibrahim Salem - 0 influence if 6 or more non-alliance NBN cards in deck
+                            if (getCardCountByFaction(Card.Faction.FACTION_NBN) - getCardCountBySubTypeAndFaction(Card.SubTypeCode.ALLIANCE, Card.Faction.FACTION_NBN) >= 6) {
+                                continue;
+                            }
+                            break;
+                        case "10072":  // Executive search firm - 0 influence if 6 or more non-alliance Weyland cards in deck
+                            if (getCardCountByFaction(Card.Faction.FACTION_WEYLAND_CONSORTIUM) - getCardCountBySubTypeAndFaction(Card.SubTypeCode.ALLIANCE, Card.Faction.FACTION_WEYLAND_CONSORTIUM) >= 6) {
+                                continue;
+                            }
+                            break;
+                        case "10013":  // Heritage Committee - 0 influence if 6 or more non-alliance Jinteki cards in deck
+                            if (getCardCountByFaction(Card.Faction.FACTION_JINTEKI) - getCardCountBySubTypeAndFaction(Card.SubTypeCode.ALLIANCE, Card.Faction.FACTION_JINTEKI) >= 6) {
+                                continue;
+                            }
+                            break;
+                        case "10071":  // Salem's Hospitality - 0 influence if 6 or more non-alliance NBN cards in deck
+                            if (getCardCountByFaction(Card.Faction.FACTION_NBN) - getCardCountBySubTypeAndFaction(Card.SubTypeCode.ALLIANCE, Card.Faction.FACTION_NBN) >= 6) {
+                                continue;
+                            }
+                            break;
+                        case "10076":  // Mumbad Virtual tour - 0 influence if you have 7 or more assets in your deck
+                            if (getCardCountByType(Card.Type.ASSET) >= 7) {
+                                continue;
+                            }
+                            break;
+                    }
+
                     iInfluence = iInfluence + (card.getFactionCost() * getCardCount(card));
                 }
             }
