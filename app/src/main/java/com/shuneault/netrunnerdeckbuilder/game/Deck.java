@@ -103,9 +103,9 @@ public class Deck implements Serializable, HeaderListItemInterface {
     }
 
     public String getSide() {
-        if (mIdentity != null) {
+        try {
             return mIdentity.getSideCode();
-        } else {
+        } catch (Exception e) {
             return "";
         }
     }
