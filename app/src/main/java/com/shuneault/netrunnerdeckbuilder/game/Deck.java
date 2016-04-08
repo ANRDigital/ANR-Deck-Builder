@@ -260,6 +260,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
                                 continue;
                             }
                             break;
+                        case "10029":   // Product Recall       - 0 influence if 6 or more non-alliance HB cards in deck
                         case "10067":  // Jeeves Model Bioroids - 0 influence if 6 or more non-alliance HB cards in deck
                             if (getCardCountByFaction(Card.Faction.FACTION_HAAS_BIOROID) - getCardCountBySubTypeAndFaction(Card.SubTypeCode.ALLIANCE, Card.Faction.FACTION_HAAS_BIOROID) >= 6) {
                                 continue;
@@ -299,6 +300,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
                             if (getCardCount(AppManager.getInstance().getCard("01109")) == 3) {
                                 continue;
                             }
+                            break;
                     }
 
                     iInfluence = iInfluence + (card.getFactionCost() * getCardCount(card));
