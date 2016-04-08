@@ -295,6 +295,10 @@ public class Deck implements Serializable, HeaderListItemInterface {
                                 continue;
                             }
                             break;
+                        case "10038":   // PAD Factory - 0 influence if the deck contains 3 PAD Campains cards in deck
+                            if (getCardCount(AppManager.getInstance().getCard("01109")) == 3) {
+                                continue;
+                            }
                     }
 
                     iInfluence = iInfluence + (card.getFactionCost() * getCardCount(card));
