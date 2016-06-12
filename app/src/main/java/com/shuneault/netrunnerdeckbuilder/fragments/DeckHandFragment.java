@@ -1,15 +1,18 @@
 package com.shuneault.netrunnerdeckbuilder.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.HandCardsListAdapter;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
@@ -89,6 +92,15 @@ public class DeckHandFragment extends Fragment {
                 mAdapter.add(mCards[mAdapter.getCount()]);
                 // Disable the btnDraw if necessary
                 btnDraw.setEnabled(mAdapter.getCount() < mCards.length);
+            }
+        });
+        lstCards.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Card card = (Card) adapterView.getAdapter().getItem(i);
+                Intent intent = new Intent(getActivity(), ViewDeckFullscreenActivity.class);
+                intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARD_CODE, card.getCode());
+                startActivity(intent);
             }
         });
 
