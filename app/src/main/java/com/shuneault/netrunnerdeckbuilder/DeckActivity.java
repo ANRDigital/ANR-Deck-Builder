@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -351,31 +352,26 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                 //      <Count> <Card>...
                 //      <Count> <Card>...
 
-                // Sort the cards
-                ArrayList<Card> theCards = mDeck.getCards();
-                Collections.sort(theCards, new Sorter.CardSorterByCardType());
-
-                StringBuilder sb = new StringBuilder();
-                // Title
-                sb.append(String.format("%s (%s %s)\n", mDeck.getName(), mDeck.getDeckSize(), getResources().getString(R.string.cards)));
-                // Identity
-                sb.append(String.format("%s\n", mDeck.getIdentity().getTitle()));
-                // Cards
-                String lastType = "";
-                for (Card card : theCards) {
-                    if (!card.getType().equals(lastType)) {
-                        lastType = card.getType();
-                        sb.append(String.format("-- %s (%s %s)\n", lastType, mDeck.getCardCountByType(card.getType()), getResources().getString(R.string.cards)));
-                    }
-                    sb.append(String.format("%s %s\n", mDeck.getCardCount(card), card.getTitle()));
-                }
+                String plainText = getPlainTextExport(mDeck.getCards());
 
                 // Create the send intent
                 Intent intentEmailPlain = new Intent(Intent.ACTION_SEND);
                 intentEmailPlain.setType("text/plain");
                 intentEmailPlain.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + mDeck.getName());
-                intentEmailPlain.putExtra(Intent.EXTRA_TEXT, sb.toString() + "\n\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
+                intentEmailPlain.putExtra(Intent.EXTRA_TEXT, plainText+ "\n\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
                 startActivity(Intent.createChooser(intentEmailPlain, getText(R.string.menu_share)));
+
+                return true;
+
+            case R.id.mnuJintekiNet:
+                String jintekiNet = getJintekiNetExport(mDeck.getCards());
+
+                // Create the send intent
+                Intent intentJintekiNetPlain = new Intent(Intent.ACTION_SEND);
+                intentJintekiNetPlain.setType("text/plain");
+                intentJintekiNetPlain.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + mDeck.getName());
+                intentJintekiNetPlain.putExtra(Intent.EXTRA_TEXT, jintekiNet);
+                startActivity(Intent.createChooser(intentJintekiNetPlain, getText(R.string.menu_share)));
 
                 return true;
 
@@ -387,6 +383,37 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    @NonNull
+    private String getJintekiNetExport(ArrayList<Card> cards) {
+        StringBuilder sb = new StringBuilder();
+        for (Card card : cards) {
+            sb.append(String.format("%s %s\n", mDeck.getCardCount(card), card.getTitle()));
+        }
+
+        return sb.toString();
+    }
+
+    @NonNull
+    private String getPlainTextExport(ArrayList<Card> cards) {
+        Collections.sort(cards, new Sorter.CardSorterByCardType());
+
+        StringBuilder sb = new StringBuilder();
+        // Title
+        sb.append(String.format("%s (%s %s)\n", mDeck.getName(), mDeck.getDeckSize(), getResources().getString(R.string.cards)));
+        // Identity
+        sb.append(String.format("%s\n", mDeck.getIdentity().getTitle()));
+        // Cards
+        String lastType = "";
+        for (Card card : cards) {
+            if (!card.getType().equals(lastType)) {
+                lastType = card.getType();
+                sb.append(String.format("-- %s (%s %s)\n", lastType, mDeck.getCardCountByType(card.getType()), getResources().getString(R.string.cards)));
+            }
+            sb.append(String.format("%s %s\n", mDeck.getCardCount(card), card.getTitle()));
+        }
+        return sb.toString();
     }
 
     @Override
