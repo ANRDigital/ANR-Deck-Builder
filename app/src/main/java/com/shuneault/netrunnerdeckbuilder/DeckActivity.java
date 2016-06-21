@@ -35,7 +35,7 @@ import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
-import com.shuneault.netrunnerdeckbuilder.octgn.OCTGN;
+import com.shuneault.netrunnerdeckbuilder.export.OCTGN;
 import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
 import java.io.FileOutputStream;
@@ -323,7 +323,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                 // Save the file as OCTGN format
                 try {
                     FileOutputStream fileOut = this.openFileOutput(filename, Context.MODE_WORLD_READABLE);
-                    fileOut.write(OCTGN.fromDeck(mDeck).getBytes());
+                    fileOut.write(new OCTGN().fromDeck(mDeck).getBytes());
                     fileOut.close();
                 } catch (Exception e) {
                     e.printStackTrace();
