@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -24,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
+import com.shuneault.netrunnerdeckbuilder.export.JintekiNet;
+import com.shuneault.netrunnerdeckbuilder.export.PlainText;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckBuildFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckCardsFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckHandFragment;
@@ -33,14 +34,11 @@ import com.shuneault.netrunnerdeckbuilder.fragments.DeckStatsFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
-import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 import com.shuneault.netrunnerdeckbuilder.octgn.OCTGN;
 import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class DeckActivity extends ActionBarActivity implements OnDeckChangedListener {
 
@@ -352,7 +350,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                 //      <Count> <Card>...
                 //      <Count> <Card>...
 
-                String plainText = getPlainTextExport(mDeck.getCards());
+                String plainText = new PlainText(this).fromDeck(mDeck);
 
                 // Create the send intent
                 Intent intentEmailPlain = new Intent(Intent.ACTION_SEND);
@@ -364,7 +362,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                 return true;
 
             case R.id.mnuJintekiNet:
-                String jintekiNet = getJintekiNetExport(mDeck.getCards());
+                String jintekiNet = new JintekiNet().fromDeck(mDeck);
 
                 // Create the send intent
                 Intent intentJintekiNetPlain = new Intent(Intent.ACTION_SEND);
@@ -383,37 +381,6 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                 return super.onOptionsItemSelected(item);
         }
 
-    }
-
-    @NonNull
-    private String getJintekiNetExport(ArrayList<Card> cards) {
-        StringBuilder sb = new StringBuilder();
-        for (Card card : cards) {
-            sb.append(String.format("%s %s\n", mDeck.getCardCount(card), card.getTitle()));
-        }
-
-        return sb.toString();
-    }
-
-    @NonNull
-    private String getPlainTextExport(ArrayList<Card> cards) {
-        Collections.sort(cards, new Sorter.CardSorterByCardType());
-
-        StringBuilder sb = new StringBuilder();
-        // Title
-        sb.append(String.format("%s (%s %s)\n", mDeck.getName(), mDeck.getDeckSize(), getResources().getString(R.string.cards)));
-        // Identity
-        sb.append(String.format("%s\n", mDeck.getIdentity().getTitle()));
-        // Cards
-        String lastType = "";
-        for (Card card : cards) {
-            if (!card.getType().equals(lastType)) {
-                lastType = card.getType();
-                sb.append(String.format("-- %s (%s %s)\n", lastType, mDeck.getCardCountByType(card.getType()), getResources().getString(R.string.cards)));
-            }
-            sb.append(String.format("%s %s\n", mDeck.getCardCount(card), card.getTitle()));
-        }
-        return sb.toString();
     }
 
     @Override
