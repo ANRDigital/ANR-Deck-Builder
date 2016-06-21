@@ -1,19 +1,25 @@
 package com.shuneault.netrunnerdeckbuilder.octgn;
 
 import android.text.Html;
+import android.util.Log;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -133,6 +139,127 @@ public class OCTGN {
 
     private static String getCardCodeFromUUID(String uuid) {
         return uuid.substring(uuid.length() - 5);
+    }
+
+
+
+    public static ArrayList<Deck> getDecksFromString(String text) {
+        ArrayList<Deck> decks = new ArrayList<>();
+        if (isJsonObject(text)) {
+            decks.add(getDeckFromJsonObject(text));
+        } else if (isJsonArray(text)) {
+            decks.addAll(getDecksFromJsonArray(text));
+        } else if (isXmlObject(text)) {
+            decks.add(getDeckFromXml(text));
+        } else {
+            Log.i("LOG", "Format is UNKNOWN");
+        }
+        return decks;
+    }
+
+    private static ArrayList<Deck> getDecksFromJsonArray(String text) {
+        try {
+            JSONArray jsonArray = new JSONArray(text);
+            ArrayList<Deck> decks = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject json = jsonArray.getJSONObject(i);
+                Deck deck = Deck.fromJSON(json);
+                decks.add(deck);
+            }
+            return decks;
+        } catch (JSONException e) { }
+
+        return null;
+    }
+    private static Deck getDeckFromJsonObject(String text) {
+        try {
+            JSONObject json = new JSONObject(text);
+            Deck deck = Deck.fromJSON(json);
+            return deck;
+        } catch (JSONException e) { }
+
+        return null;
+    }
+    private static Deck getDeckFromXml(String text) {
+        try {
+            // Build the XML document
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(new InputSource(new StringReader(text)));
+            doc.getDocumentElement().normalize();
+            // Get the Identity ID
+            String strIdentityID = XPathFactory.newInstance().newXPath().evaluate(XPATH_IDENTITY_ID, doc);
+            // Get the deck name
+            String strDeckName = XPathFactory.newInstance().newXPath().evaluate(XPATH_DECK_NAME, doc);
+            // Get the deck notes
+            String deckNotes = XPathFactory.newInstance().newXPath().evaluate(XPATH_DECK_NOTES, doc);
+            // Get the card list
+            NodeList nodeCards = (NodeList) XPathFactory.newInstance().newXPath().evaluate(XPATH_CARD_LIST, doc, XPathConstants.NODESET);
+
+            // Build the new deck
+            Deck deck = new Deck(strDeckName, getCardCodeFromUUID(strIdentityID));
+            deck.setNotes(Html.fromHtml(deckNotes).toString());
+            for (int i = 0; i < nodeCards.getLength(); i++) {
+                Node node = nodeCards.item(i);
+                Card card = AppManager.getInstance().getCard(getCardCodeFromUUID(node.getAttributes().getNamedItem(KEY_ID).getTextContent()));
+                if (card != null) {
+                    // TODO: Tell the user we could not import all cards OR download the cards from the Internet
+                    int count = Integer.parseInt(node.getAttributes().getNamedItem(KEY_QTY).getTextContent());
+                    deck.setCardCount(card, count);
+                } else {
+                    return null;
+                }
+            }
+            deck.clearCardsToAddAndRemove();
+
+            // Return the deck
+            return deck;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public static void checkFileType(String text) {
+        if (isJsonObject(text)) {
+            Log.i("LOG", "Format is JSON Object");
+        } else if (isJsonArray(text)) {
+            Log.i("LOG", "Format is JSON Array");
+
+        } else if (isXmlObject(text)) {
+            Log.i("LOG", "Format is XML");
+        } else {
+            Log.i("LOG", "Format is UNKNOWN");
+        }
+    }
+    private static boolean isJsonObject(String text) {
+        try {
+            new JSONObject(text);
+        } catch (JSONException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean isJsonArray(String text) {
+        try {
+            new JSONArray(text);
+        } catch (JSONException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean isXmlObject(String text) {
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            db.parse(new InputSource(new StringReader(text)));
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 
