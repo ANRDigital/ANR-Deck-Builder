@@ -22,14 +22,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--
-                 <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="http" android:host="netrunnerdb.com" android:pathPrefix="/en/deck/copy/" />
-            </intent-filter>
-            -->
         </activity>
         <activity
             android:name="com.shuneault.netrunnerdeckbuilder.SettingsActivity"
@@ -48,49 +40,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_view_deck_fullscreen"
             android:theme="@style/FullscreenTheme" >
-        </activity>
-        <activity
-            android:name="com.shuneault.netrunnerdeckbuilder.externalactivities.ImportOCTGNActivity"
-            android:label="@string/title_activity_import_octgn" >
-                        
-            <!-- File o8d -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-                <data 
-                	android:host="*"
-                	android:pathPattern=".*\\.o8d"
-                	android:mimeType="application/octet-stream" />
-            </intent-filter>
-                        
-            <!-- File o8d -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-                <data 
-                    android:scheme="file"
-                	android:host="*"
-                	android:pathPattern=".*\\.o8d"
-                	android:mimeType="*/*" />
-            </intent-filter>
-                        
-            <!-- o8d from the web -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="http"
-                    android:host="netrunnerdb.com"
-                    android:pathPrefix="/decklist/export/octgn" />
-                <data
-                    android:scheme="http"
-                    android:host="netrunner.meteor.com"
-                    android:pathPrefix="/deckexport/octgn" />
-            </intent-filter>
-            
         </activity>
     </application>
 

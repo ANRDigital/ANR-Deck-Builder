@@ -186,5 +186,6 @@
     <string name="decks_imported_successfully">Decks imported successfully</string>
     <string name="title_activity_card_full_screen">CardFullScreenActivity</string>
     <string name="cards_download_complete">Cards download complete</string>
+    <string name="import_decks">Import Decks</string>
 
 </resources>
