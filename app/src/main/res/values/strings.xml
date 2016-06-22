@@ -112,7 +112,7 @@
     <string name="menu_change_identity">Change Identity</string>
     <string name="menu_search">Search</string>
     <string name="menu_options">Options</string>
-    <string name="menu_share">Share</string>
+    <string name="menu_share">Share/Export</string>
 
     <!-- New Deck Fragment -->
     <string name="choose_your_side">Choose your side</string>
@@ -186,6 +186,7 @@
     <string name="decks_imported_successfully">Decks imported successfully</string>
     <string name="title_activity_card_full_screen">CardFullScreenActivity</string>
     <string name="cards_download_complete">Cards download complete</string>
+    <string name="jintekinet">Jinteki.net</string>
     <string name="import_decks">Import Decks</string>
 
 </resources>

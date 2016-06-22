@@ -11,6 +11,9 @@
             <item android:id="@+id/mnuOCTGN"
                 app:showAsAction="never"
                 android:title="@string/octgn_file" />
+            <item android:id="@+id/mnuJintekiNet"
+                app:showAsAction="never"
+                android:title="@string/jintekinet" />
             <item android:id="@+id/mnuPlainText"
                 app:showAsAction="never"
                 android:title="@string/plain_text" />

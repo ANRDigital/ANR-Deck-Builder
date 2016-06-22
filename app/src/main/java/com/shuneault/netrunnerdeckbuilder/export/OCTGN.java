@@ -1,4 +1,4 @@
-package com.shuneault.netrunnerdeckbuilder.octgn;
+package com.shuneault.netrunnerdeckbuilder.export;
 
 import android.text.Html;
 import android.util.Log;
@@ -31,7 +31,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-public class OCTGN {
+public class OCTGN implements DeckFormatter {
 
     // OCTGN Specific values
     private static final String OCTGN_GAME_ID = "0f38e453-26df-4c04-9d67-6d43de939c77";
@@ -84,7 +84,8 @@ public class OCTGN {
         return null;
     }
 
-    public static String fromDeck(Deck deck) {
+    @Override
+    public String fromDeck(Deck deck) {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();

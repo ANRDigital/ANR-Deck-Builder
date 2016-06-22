@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
+import com.shuneault.netrunnerdeckbuilder.export.JintekiNet;
+import com.shuneault.netrunnerdeckbuilder.export.PlainText;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckBuildFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckCardsFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckHandFragment;
@@ -32,14 +34,11 @@ import com.shuneault.netrunnerdeckbuilder.fragments.DeckStatsFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
-import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
-import com.shuneault.netrunnerdeckbuilder.octgn.OCTGN;
+import com.shuneault.netrunnerdeckbuilder.export.OCTGN;
 import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class DeckActivity extends ActionBarActivity implements OnDeckChangedListener {
 
@@ -324,7 +323,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                 // Save the file as OCTGN format
                 try {
                     FileOutputStream fileOut = this.openFileOutput(filename, Context.MODE_WORLD_READABLE);
-                    fileOut.write(OCTGN.fromDeck(mDeck).getBytes());
+                    fileOut.write(new OCTGN().fromDeck(mDeck).getBytes());
                     fileOut.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -351,31 +350,26 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                 //      <Count> <Card>...
                 //      <Count> <Card>...
 
-                // Sort the cards
-                ArrayList<Card> theCards = mDeck.getCards();
-                Collections.sort(theCards, new Sorter.CardSorterByCardType());
-
-                StringBuilder sb = new StringBuilder();
-                // Title
-                sb.append(String.format("%s (%s %s)\n", mDeck.getName(), mDeck.getDeckSize(), getResources().getString(R.string.cards)));
-                // Identity
-                sb.append(String.format("%s\n", mDeck.getIdentity().getTitle()));
-                // Cards
-                String lastType = "";
-                for (Card card : theCards) {
-                    if (!card.getType().equals(lastType)) {
-                        lastType = card.getType();
-                        sb.append(String.format("-- %s (%s %s)\n", lastType, mDeck.getCardCountByType(card.getType()), getResources().getString(R.string.cards)));
-                    }
-                    sb.append(String.format("%s %s\n", mDeck.getCardCount(card), card.getTitle()));
-                }
+                String plainText = new PlainText(this).fromDeck(mDeck);
 
                 // Create the send intent
                 Intent intentEmailPlain = new Intent(Intent.ACTION_SEND);
                 intentEmailPlain.setType("text/plain");
                 intentEmailPlain.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + mDeck.getName());
-                intentEmailPlain.putExtra(Intent.EXTRA_TEXT, sb.toString() + "\n\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
+                intentEmailPlain.putExtra(Intent.EXTRA_TEXT, plainText+ "\n\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
                 startActivity(Intent.createChooser(intentEmailPlain, getText(R.string.menu_share)));
+
+                return true;
+
+            case R.id.mnuJintekiNet:
+                String jintekiNet = new JintekiNet().fromDeck(mDeck);
+
+                // Create the send intent
+                Intent intentJintekiNetPlain = new Intent(Intent.ACTION_SEND);
+                intentJintekiNetPlain.setType("text/plain");
+                intentJintekiNetPlain.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + mDeck.getName());
+                intentJintekiNetPlain.putExtra(Intent.EXTRA_TEXT, jintekiNet);
+                startActivity(Intent.createChooser(intentJintekiNetPlain, getText(R.string.menu_share)));
 
                 return true;
 
