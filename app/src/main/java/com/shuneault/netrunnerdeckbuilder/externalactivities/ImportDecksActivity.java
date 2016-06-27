@@ -51,7 +51,11 @@ public class ImportDecksActivity extends AppCompatActivity {
                 }
 
                 // Inform how many decks were imported
-                Toast.makeText(this, this.getResources().getQuantityString(R.plurals.deck_imported_successfully, decks.size(), decks.size()), Toast.LENGTH_SHORT).show();
+                String deckList = "";
+                for (Deck deck : decks) {
+                    deckList = deckList + "\n- " + deck.getName();
+                }
+                Toast.makeText(this, this.getResources().getQuantityString(R.plurals.deck_imported_successfully, decks.size(), decks.size(), deckList), Toast.LENGTH_SHORT).show();
 
                 // Open the newly imported deck, if only one was imported
                 if (decks.size() == 1) {
