@@ -174,7 +174,8 @@
     <string name="downloading_cards_restart">Download cards... The application will restart automatically.</string>
     <string name="unbuild">Unbuild</string>
     <string name="message_unbuild">Are you sure you want to unbuild your deck and regenerate the \"Cards to add\" section?</string>
-    <string name="msg_error_importing_deck">Error importing deck</string>
+    <string name="msg_error_importing_deck_title">Import Deck Failed</string>
+    <string name="msg_error_importing_deck">Error importing deck. Valid files are o8d and anrdecks. If the file is valid, try updating your card list and try again.</string>
     <string name="msg_error_update_card_list">Could not import deck. Please update your card list and try again.</string>
     <string name="modifications_to_deck">Modifications to deck</string>
     <string name="rules">Rules</string>
@@ -182,8 +183,13 @@
     <string name="use_most_wanted_list_summary">Reduces the Identity\'s influence limit for when specific cards are included in the deck</string>
     <string name="export_all_decks">Export all decks</string>
     <string name="import_decks_from_file">Import decks from file</string>
-    <string name="deck_imported_successfully">Deck imported successfully</string>
-    <string name="decks_imported_successfully">Decks imported successfully</string>
+
+    <plurals name="deck_imported_successfully">
+        <item quantity="one">%d deck imported successfully</item>
+        <item quantity="other">%d decks imported successfully</item>
+    </plurals>
+    <!--<string name="deck_imported_successfully"></string>-->
+    <!--<string name="decks_imported_successfully"></string>-->
     <string name="title_activity_card_full_screen">CardFullScreenActivity</string>
     <string name="cards_download_complete">Cards download complete</string>
     <string name="jintekinet">Jinteki.net</string>
