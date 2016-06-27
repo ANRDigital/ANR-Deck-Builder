@@ -12,7 +12,7 @@ public class UniversalImporter implements IDeckImporter {
 
     private ArrayList<Deck> mDecks;
 
-    public UniversalImporter(String text) throws Exception {
+    public UniversalImporter(String text) throws DeckFormatNotSupportedException {
         try {
             mDecks = (new JsonImporter(text)).toDecks();
         } catch (Exception ignored) {

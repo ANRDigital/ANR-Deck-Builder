@@ -16,7 +16,7 @@ public class JsonImporter implements IDeckImporter{
 
     private ArrayList<Deck> mDecks;
 
-    public JsonImporter(String text) throws JSONException {
+    public JsonImporter(String text) throws DeckFormatNotSupportedException, JSONException {
         ArrayList<Deck> decks = new ArrayList<>();
         if (isJsonArray(text)) {
             JSONArray jsonArray = new JSONArray(text);
@@ -29,6 +29,8 @@ public class JsonImporter implements IDeckImporter{
             JSONObject json = new JSONObject(text);
             Deck deck = Deck.fromJSON(json);
             decks.add(deck);
+        } else {
+            throw new DeckFormatNotSupportedException("Invalid file format");
         }
         mDecks = decks;
     }
