@@ -225,7 +225,7 @@ public class DeckStatsFragment extends Fragment {
                 TypeDataEntry type = new TypeDataEntry(nextTypeIndex++, c.getTypeCode());
                 typeData.add(type);
                 typeDataMap.put(c.getTypeCode(), type);
-                mTypeLabels.add(c.getType());
+                mTypeLabels.add(c.getTypeCode());
             }
 
             // Increment count for this card's type

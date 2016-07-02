@@ -31,9 +31,9 @@ public class PlainText implements DeckFormatter {
         // Cards
         String lastType = "";
         for (Card card : cards) {
-            if (!card.getType().equals(lastType)) {
-                lastType = card.getType();
-                sb.append(String.format("-- %s (%s %s)\n", lastType, deck.getCardCountByType(card.getType()), context.getString(R.string.cards)));
+            if (!card.getTypeCode().equals(lastType)) {
+                lastType = card.getTypeCode();
+                sb.append(String.format("-- %s (%s %s)\n", lastType, deck.getCardCountByType(card.getTypeCode()), context.getString(R.string.cards)));
             }
             sb.append(String.format("%s %s\n", deck.getCardCount(card), card.getTitle()));
         }

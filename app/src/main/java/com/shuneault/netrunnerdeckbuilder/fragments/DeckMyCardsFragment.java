@@ -121,10 +121,10 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
         for (Card theCard : mDeck.getCards()) {
             // Only add the cards that are on my side
             // Do not add the identities
-            if (!theCard.getTypeCode().equals(Card.Type.IDENTITY) && theCard.getSide().equals(mDeck.getIdentity().getSide())) {
-                if (mListCards.get(theCard.getType()) == null)
-                    mListCards.put(theCard.getType(), new ArrayList<Card>());
-                mListCards.get(theCard.getType()).add(theCard);
+            if (!theCard.getTypeCode().equals(Card.Type.IDENTITY) && theCard.getSideCode().equals(mDeck.getIdentity().getSideCode())) {
+                if (mListCards.get(theCard.getTypeCode()) == null)
+                    mListCards.put(theCard.getTypeCode(), new ArrayList<Card>());
+                mListCards.get(theCard.getTypeCode()).add(theCard);
             }
         }
         sortListCards();
@@ -133,8 +133,8 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 
     private void setListView() {
         // Get the cards
-        mListHeaders = AppManager.getInstance().getAllCards().getCardType(mDeck.getIdentity().getSide());
-        mListHeaders.remove(mDeck.getIdentity().getType()); // Remove the Identity category
+        mListHeaders = AppManager.getInstance().getAllCards().getCardType(mDeck.getIdentity().getSideCode());
+        mListHeaders.remove(mDeck.getIdentity().getTypeCode()); // Remove the Identity category
         Collections.sort(mListHeaders);
 
         // Adapters
@@ -150,7 +150,7 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
             public void onMinusClick(Card card) {
                 // Remove zero cards
                 if (mDeck.getCardCount(card) <= 0) {
-                    mListCards.get(card.getType()).remove(card);
+                    mListCards.get(card.getTypeCode()).remove(card);
                 }
                 // Update the list
                 mListener.onDeckCardsChanged();

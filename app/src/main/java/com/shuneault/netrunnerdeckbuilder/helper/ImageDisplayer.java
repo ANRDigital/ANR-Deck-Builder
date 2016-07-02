@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
@@ -61,6 +62,7 @@ public class ImageDisplayer {
                 out.close();
                 return theImage;
             } catch (Exception e) {
+                Log.e("LOG", "Could not download image: " + card.getImagesrc().toString());
             }
             return null;
         }

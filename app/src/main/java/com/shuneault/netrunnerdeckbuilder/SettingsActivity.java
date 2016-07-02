@@ -21,9 +21,11 @@ import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.CardDownloader;
 import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader;
+import com.shuneault.netrunnerdeckbuilder.helper.StringDownloader;
 import com.shuneault.netrunnerdeckbuilder.prefs.SetNamesPreferenceMultiSelect;
 
 import org.json.JSONArray;
@@ -179,14 +181,13 @@ public class SettingsActivity extends PreferenceActivity
         } else if (key.equals(KEY_PREF_AMOUNT_OF_CORE_DECKS)) {
             refreshPrefsSummaries();
         } else if (key.equals(KEY_PREF_LANGUAGE)) {
-            CardDownloader cd = new CardDownloader(this, new CardDownloader.CardDownloaderListener() {
-
+            StringDownloader sd = new StringDownloader(this, String.format(NetRunnerBD.getAllCardsUrl()), AppManager.FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
                 ProgressDialog mDialog;
 
                 @Override
-                public void onBeforeStartTask(Context context) {
+                public void onBeforeTask() {
                     // Display a progress dialog
-                    mDialog = new ProgressDialog(context);
+                    mDialog = new ProgressDialog(SettingsActivity.this);
                     mDialog.setTitle(getString(R.string.downloading_cards));
                     mDialog.setIndeterminate(true);
                     mDialog.setCancelable(false);
@@ -196,7 +197,7 @@ public class SettingsActivity extends PreferenceActivity
                 }
 
                 @Override
-                public void onTaskCompleted() {
+                public void onTaskComplete(String s) {
                     // Close the dialog
                     mDialog.dismiss();
 
@@ -210,7 +211,7 @@ public class SettingsActivity extends PreferenceActivity
                 }
 
                 @Override
-                public void onDownloadError() {
+                public void onError(Exception e) {
                     // Display the error and cancel the ongoing dialog
                     mDialog.dismiss();
 
@@ -221,9 +222,32 @@ public class SettingsActivity extends PreferenceActivity
                     } else {
                         Toast.makeText(SettingsActivity.this, R.string.error_downloading_cards, Toast.LENGTH_LONG).show();
                     }
+
+                    // Log
+                    Log.e("LOG", e.getMessage());
                 }
             });
-            cd.execute();
+            sd.execute();
+//            CardDownloader cd = new CardDownloader(this, new CardDownloader.CardDownloaderListener() {
+//
+//                ProgressDialog mDialog;
+//
+//                @Override
+//                public void onBeforeStartTask(Context context) {
+//
+//                }
+//
+//                @Override
+//                public void onTaskCompleted() {
+//
+//                }
+//
+//                @Override
+//                public void onDownloadError() {
+//
+//                }
+//            });
+//            cd.execute();
         }
 
     }

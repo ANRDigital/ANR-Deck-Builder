@@ -73,7 +73,7 @@ public class CheckedCardListAdapter extends ArrayAdapter<CardCount> {
                 viewHolder.lblCardCount.setTextColor(ContextCompat.getColor(getContext(), R.color.value_negative));
                 viewHolder.lblCardCount.setText(String.valueOf(cardCount.getCount()));
             }
-            viewHolder.lblSetAndNumber.setText(cardCount.getCard().getCode() + " - " + cardCount.getCard().getSetName());
+            viewHolder.lblSetAndNumber.setText(cardCount.getCard().getCode() + " - " + cardCount.getCard().getSetCode());
         } else {
             return null;
         }

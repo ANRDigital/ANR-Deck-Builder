@@ -126,7 +126,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
             ImageDisplayer.fillSmall(viewHolder.imgImage, card, mContext);
             viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + card.getMaxCardCount());
             // Set names
-            viewHolder.lblSetName.setText(card.getSetName());
+            viewHolder.lblSetName.setText(card.getSetCode());
             if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false)) {
                 viewHolder.lblSetName.setVisibility(View.VISIBLE);
             } else {
@@ -157,7 +157,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
             }
 
             // Influence count
-            if (!mDeck.getIdentity().getFaction().equals(card.getFaction())) {
+            if (!mDeck.getIdentity().getFactionCode().equals(card.getFactionCode())) {
                 char[] chars = new char[card.getFactionCost()];
                 Arrays.fill(chars, mContext.getResources().getString(R.string.influence_char).toCharArray()[0]);
                 String result = new String(chars);
@@ -254,7 +254,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
         if (mMyCards) {
             int iCount = 0;
             for (Card card : mDeck.getCards()) {
-                if (card.getType().equalsIgnoreCase(getGroup(groupPosition).toString()))
+                if (card.getTypeCode().equalsIgnoreCase(getGroup(groupPosition).toString()))
                     iCount = iCount + mDeck.getCardCount(card);
             }
             lblHeader.setText(headerTitle + " (" + iCount + ")");
@@ -298,7 +298,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
                     if (card.getTitle().toLowerCase().contains(query) ||
                             card.getText().toLowerCase().contains(query) ||
                             card.getSubtype().toLowerCase().contains(query) ||
-                            card.getSetName().toLowerCase().contains(query)) {
+                            card.getSetCode().toLowerCase().contains(query)) {
                         // Add the header
                         if (!mArrDataHeader.contains(type)) {
                             mArrDataHeader.add(type);

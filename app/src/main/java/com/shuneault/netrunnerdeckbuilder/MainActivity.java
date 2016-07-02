@@ -31,6 +31,7 @@ import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.fragments.ListDecksFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
@@ -177,8 +178,8 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
 	        case R.id.mnuViewSet:
 		        // Get the set names
 		        final ArrayList<String> setNames = new ArrayList<String>();
-		        for (String setName : AppManager.getInstance().getSetNames()) {
-			        setNames.add(setName + " (" + AppManager.getInstance().getCardsBySetName(setName).size() + ")");
+		        for (Pack pack : AppManager.getInstance().getAllPacks()) {
+			        setNames.add(pack.getName() + " (" + pack.getSize() + ")");
 		        }
 		        CharSequence[] cs = setNames.toArray(new CharSequence[setNames.size()]);
 		        // Display the dialog
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
 			        public void onClick(DialogInterface dialog, int which) {
 				        // Launch the full screen image viewer activity
                         Intent intentFullScreen = new Intent(MainActivity.this, ViewDeckGridActivity.class);
-                        intentFullScreen.putExtra(ViewDeckGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getSetNames().get(which));
+                        intentFullScreen.putExtra(ViewDeckGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getAllPacks().get(which).getCode());
                         startActivity(intentFullScreen);
 			        }
 		        });

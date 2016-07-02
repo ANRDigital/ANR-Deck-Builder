@@ -17,6 +17,7 @@ import android.view.ViewGroup.LayoutParams;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter.CardSorterByCardNumber;
@@ -186,7 +187,12 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
         if (mDeck != null) {
             setTitle("[" + mDeck.getCardCount(card) + "] - " + mDeck.getName());
         } else if (mSetName != null) {
-            setTitle(mSetName);
+            for (Pack pack : AppManager.getInstance().getAllPacks()) {
+                if (pack.getCode().equals(mSetName)) {
+                    setTitle(pack.getName());
+                    break;
+                }
+            }
         } else {
             setTitle(card.getTitle());
         }

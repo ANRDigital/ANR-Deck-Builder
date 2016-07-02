@@ -2,7 +2,10 @@ package com.shuneault.netrunnerdeckbuilder.helper;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.util.StringBuilderPrinter;
 
+import com.nostra13.universalimageloader.utils.IoUtils;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 
@@ -14,15 +17,23 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 
-public class CardDownloader extends AsyncTask<Void, Integer, JSONArray> {
+public class CardDownloader extends AsyncTask<Void, Integer, JSONObject> {
 
     private Context mContext;
     private CardDownloaderListener mListener;
@@ -47,35 +58,43 @@ public class CardDownloader extends AsyncTask<Void, Integer, JSONArray> {
     }
 
     @Override
-    protected JSONArray doInBackground(Void... params) {
+    protected JSONObject doInBackground(Void... params) {
+
+        // Download 2 files:
+        //  - cardsv2.json  -> all cards in JSON format
+        //  - packs.json    -> all packs
 
         // Download the JSON file
         try {
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(String.format(NetRunnerBD.URL_GET_ALL_CARDS, AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_LANGUAGE, "en")));
-            HttpResponse response = httpClient.execute(httpGet);
-            HttpEntity entity = response.getEntity();
-            InputStream is = entity.getContent();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null)
-                sb.append(line);
+            URL urlCards = new URL(NetRunnerBD.getAllCardsUrl());
+            HttpURLConnection connection = (HttpURLConnection) urlCards.openConnection();
+            connection.connect();
+            InputStream in = connection.getInputStream();
+            String contentAsString = readIt(in);
+            return new JSONObject(contentAsString);
 
-            String strResult = sb.toString();
-            is.close();
+//            HttpClient httpClient = new DefaultHttpClient();
+//            HttpGet httpGet = new HttpGet(String.format(NetRunnerBD.URL_GET_ALL_CARDS, AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_LANGUAGE, "en")));
+//            HttpResponse response = httpClient.execute(httpGet);
+//            HttpEntity entity = response.getEntity();
+//            InputStream is = entity.getContent();
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+//            StringBuilder sb = new StringBuilder();
+//            String line = null;
+//            while ((line = reader.readLine()) != null)
+//                sb.append(line);
+//
+//            String strResult = sb.toString();
+//            is.close();
 
-            return new JSONArray(strResult);
-
-        } catch (ClientProtocolException e1) {
-        } catch (IOException e1) {
-        } catch (JSONException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    protected void onPostExecute(JSONArray result) {
+    protected void onPostExecute(JSONObject result) {
         // No file - throw error
         if (result == null) {
             mListener.onDownloadError();
@@ -103,6 +122,17 @@ public class CardDownloader extends AsyncTask<Void, Integer, JSONArray> {
             mListener.onDownloadError();
             //Toast.makeText(MainActivity.this, R.string.error_downloading_cards, Toast.LENGTH_LONG).show();
         }
+    }
+
+    // Reads an InputStream and converts it to a String.
+    private String readIt(InputStream stream) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+        String line;
+        StringBuilder sb = new StringBuilder();
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+        }
+        return sb.toString();
     }
 
 

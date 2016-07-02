@@ -7,6 +7,7 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
+import android.util.Log;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
@@ -27,49 +28,49 @@ import java.util.HashMap;
 
 public class Card {
 
-    public static final String NAME_LAST_MODIFIED = "last-modified";
+//    public static final String NAME_LAST_MODIFIED = "last-modified";
     public static final String NAME_CODE = "code";
     public static final String NAME_COST = "cost";
     public static final String NAME_TITLE = "title";
-    public static final String NAME_TYPE = "type";
+//    public static final String NAME_TYPE = "type";
     public static final String NAME_TYPE_CODE = "type_code";
-    public static final String NAME_SUBTYPE = "subtype";
-    public static final String NAME_SUBTYPE_CODE = "subtype_code";
+    public static final String NAME_SUBTYPE = "keywords";
+//    public static final String NAME_SUBTYPE_CODE = "subtype_code";
     public static final String NAME_TEXT = "text";
-    public static final String NAME_BASELINK = "baselink";
-    public static final String NAME_FACTION = "faction";
+    public static final String NAME_BASELINK = "base_link";
+//    public static final String NAME_FACTION = "faction";
     public static final String NAME_FACTION_CODE = "faction_code";
-    public static final String NAME_FACTION_COST = "factioncost";
+    public static final String NAME_FACTION_COST = "faction_cost";
     public static final String NAME_FLAVOR = "flavor";
     public static final String NAME_ILLUSTRATOR = "illustrator";
-    public static final String NAME_INFLUENCE_LIMIT = "influencelimit";
-    public static final String NAME_MINIMUM_DECK_SIZE = "minimumdecksize";
-    public static final String NAME_NUMBER = "number";
+    public static final String NAME_INFLUENCE_LIMIT = "influence_limit";
+    public static final String NAME_MINIMUM_DECK_SIZE = "minimum_deck_size";
+    public static final String NAME_NUMBER = "position";
     public static final String NAME_QUANTITY = "quantity";
-    public static final String NAME_SET_NAME = "setname";
-    public static final String NAME_SET_CODE = "set_code";
-    public static final String NAME_SIDE = "side";
+//    public static final String NAME_SET_NAME = "setname";
+    public static final String NAME_SET_CODE = "pack_code";
+//    public static final String NAME_SIDE = "side";
     public static final String NAME_SIDE_CODE = "side_code";
     public static final String NAME_UNIQUENESS = "uniqueness";
-    public static final String NAME_URL = "url";
+//    public static final String NAME_URL = "url";
     public static final String NAME_IMAGE_SRC = "imagesrc";
-    public static final String NAME_AGENDA_POINTS = "agendapoints";
-    public static final String NAME_ADVANCEMENT_COST = "advancementcost";
-    public static final String NAME_MEMORY_UNITS = "memoryunits";
-    public static final String NAME_TRASH = "trash";
+    public static final String NAME_AGENDA_POINTS = "agenda_points";
+    public static final String NAME_ADVANCEMENT_COST = "advancement_cost";
+    public static final String NAME_MEMORY_UNITS = "memory_cost";
+    public static final String NAME_TRASH = "trash_cost";
     public static final String NAME_STRENGTH = "strength";
 
-    private Date lastModified;
+//    private Date lastModified;
     private String code;
     private String cost;
     private String title;
-    private String type;
+//    private String type;
     private String typeCode;
     private String subtype;
-    private String subtype_code;
+//    private String subtype_code;
     private String text;
     private String baselink;
-    private String faction;
+//    private String faction;
     private String factionCode;
     private int factionCost;
     private String flavor;
@@ -78,9 +79,9 @@ public class Card {
     private String minimumDeckSize;
     private String number;
     private String quantity;
-    private String setName;
+//    private String setName;
     private String setCode;
-    private String side;
+//    private String side;
     private String sideCode;
     private int agendaPoints;
     private int advancementCost;
@@ -88,25 +89,25 @@ public class Card {
     private int trash;
     private int strength;
     private boolean uniqueness;
-    private URL url;
+//    private URL url;
     private URL imagesrc;
 
     public Card(JSONObject json) {
 
         try {
             //this.lastModified = DateFormat.getDateTimeInstance().parse(json.getString(NAME_LAST_MODIFIED));
-            this.lastModified = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(json.getString(NAME_LAST_MODIFIED));
+//            this.lastModified = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(json.getString(NAME_LAST_MODIFIED));
             //this.lastModified.setTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(json.getString(NAME_LAST_MODIFIED)));
             this.code = json.optString(NAME_CODE);
             this.cost = json.optString(NAME_COST);
             this.title = json.optString(NAME_TITLE);
-            this.type = json.optString(NAME_TYPE);
+//            this.type = json.optString(NAME_TYPE);
             this.typeCode = json.optString(NAME_TYPE_CODE);
             this.subtype = json.optString(NAME_SUBTYPE);
-            this.subtype_code = json.optString(NAME_SUBTYPE_CODE);
+//            this.subtype_code = json.optString(NAME_SUBTYPE_CODE);
             this.text = json.optString(NAME_TEXT);
             this.baselink = json.optString(NAME_BASELINK);
-            this.faction = json.optString(NAME_FACTION);
+//            this.faction = json.optString(NAME_FACTION);
             this.factionCode = json.optString(NAME_FACTION_CODE);
             this.factionCost = json.optInt(NAME_FACTION_COST, 0);
             this.flavor = json.optString(NAME_FLAVOR);
@@ -115,24 +116,18 @@ public class Card {
             this.minimumDeckSize = json.optString(NAME_MINIMUM_DECK_SIZE);
             this.number = json.optString(NAME_NUMBER);
             this.quantity = json.optString(NAME_QUANTITY);
-            this.setName = json.optString(NAME_SET_NAME);
+//            this.setName = json.optString(NAME_SET_NAME);
             this.setCode = json.optString(NAME_SET_CODE);
             this.uniqueness = json.optBoolean(NAME_UNIQUENESS);
-            this.url = new URL(json.optString(NAME_URL));
-            this.imagesrc = new URL(NetRunnerBD.BASE_URL + json.optString(NAME_IMAGE_SRC));
-            this.side = json.optString(NAME_SIDE);
+//            this.url = new URL(json.optString(NAME_URL));
+            this.imagesrc = new URL(json.optString(NAME_IMAGE_SRC));
+//            this.side = json.optString(NAME_SIDE);
             this.sideCode = json.optString(NAME_SIDE_CODE);
             this.agendaPoints = json.optInt(NAME_AGENDA_POINTS, 0);
             this.advancementCost = json.optInt(NAME_ADVANCEMENT_COST, 0);
             this.memoryunits = json.optInt(NAME_MEMORY_UNITS, 0);
             this.trash = json.optInt(NAME_TRASH, 0);
             this.strength = json.optInt(NAME_STRENGTH, 0);
-        } catch (ParseException e) {
-            //
-            e.printStackTrace();
-        } catch (JSONException e) {
-            //
-            e.printStackTrace();
         } catch (MalformedURLException e) {
             //
             e.printStackTrace();
@@ -140,9 +135,9 @@ public class Card {
     }
 
 
-    public Date getLastModified() {
-        return lastModified;
-    }
+//    public Date getLastModified() {
+//        return lastModified;
+//    }
 
     public String getCode() {
         return code;
@@ -156,9 +151,9 @@ public class Card {
         return title;
     }
 
-    public String getType() {
-        return type;
-    }
+//    public String getType() {
+//        return type;
+//    }
 
     public String getTypeCode() {
         return typeCode;
@@ -168,7 +163,7 @@ public class Card {
         return subtype;
     }
 
-    public String getSubtypeCode() { return subtype_code; }
+//    public String getSubtypeCode() { return subtype_code; }
 
     public String getText() {
         return text;
@@ -178,9 +173,9 @@ public class Card {
         return baselink;
     }
 
-    public String getFaction() {
-        return faction;
-    }
+//    public String getFaction() {
+//        return faction;
+//    }
 
     public String getFactionCode() {
         return factionCode;
@@ -227,17 +222,17 @@ public class Card {
             return Integer.parseInt(quantity);
     }
 
-    public String getSetName() {
-        return setName;
-    }
+//    public String getSetName() {
+//        return setName;
+//    }
 
     public String getSetCode() {
         return setCode;
     }
 
-    public String getSide() {
-        return side;
-    }
+//    public String getSide() {
+//        return side;
+//    }
 
     public String getSideCode() {
         return sideCode;
@@ -268,9 +263,9 @@ public class Card {
     }
 
 
-    public URL getUrl() {
-        return url;
-    }
+//    public URL getUrl() {
+//        return url;
+//    }
 
     public URL getImagesrc() {
         return imagesrc;
@@ -294,7 +289,7 @@ public class Card {
      */
     public int getMaxCardCount() {
         try {
-            if (this.setName.equals(SetName.CORE_SET)) {
+            if (this.setCode.equals(SetName.CORE_SET)) {
                 int iAmountCoreDecks = Integer.parseInt(AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_AMOUNT_OF_CORE_DECKS, "3"));
                 return Math.min(iAmountCoreDecks * Integer.parseInt(this.quantity), Deck.MAX_INDIVIDUAL_CARD);
             } else {
@@ -315,18 +310,18 @@ public class Card {
 
     public static SpannableString getFormattedString(Context context, String text) {
         HashMap<String, Integer> map = new HashMap<String, Integer>();
-        map.put("[Agenda]", R.drawable.agenda);
-        map.put("[Click]", R.drawable.click);
-        map.put("[Trash]", R.drawable.trash);
-        map.put("[Credits]", R.drawable.credits);
-        map.put("[Subroutine]", R.drawable.subroutine);
-        map.put("[Memory Unit]", R.drawable.memory_unit);
-        map.put("[Recurring Credits]", R.drawable.credit_recurr);
-        map.put("[Link]", R.drawable.links);
-        map.put("[Fist]", R.drawable.fist);
+        map.put("[agenda]", R.drawable.agenda);
+        map.put("[click]", R.drawable.click);
+        map.put("[trash]", R.drawable.trash);
+        map.put("[credit]", R.drawable.credits);
+        map.put("[subroutine]", R.drawable.subroutine);
+        map.put("[mu]", R.drawable.memory_unit);
+        map.put("[recurring-credit]", R.drawable.credit_recurr);
+        map.put("[link]", R.drawable.links);
+        map.put("[fist]", R.drawable.fist);
 
         // replace all occurences
-        SpannableString span = new SpannableString(Html.fromHtml(text.replace("\r\n", "<br />")));
+        SpannableString span = new SpannableString(Html.fromHtml(text.replace("\n", "<br />")));
         for (String txt : map.keySet()) {
             int index = span.toString().indexOf(txt);
             while (index >= 0) {
@@ -366,7 +361,7 @@ public class Card {
     }
 
     public String getFactionImageResName() {
-        String lowCaseFaction = this.getFaction().toLowerCase();
+        String lowCaseFaction = this.getFactionCode().toLowerCase();
         if (lowCaseFaction.equals(Faction.FACTION_NEUTRAL)) {
             lowCaseFaction = this.getSideCode() + "_" + lowCaseFaction;
         }
@@ -455,9 +450,8 @@ public class Card {
     }
 
     public static class SetName {
-        public static final String ALTERNATES = "Alternates";
-        public static final String CORE_SET = "Core Set";
-        public static final String SPECIAL = "Special";
+//        public static final String ALTERNATES = "Alternates";
+        public static final String CORE_SET = "core";
     }
 
     public static class SpecialCards {

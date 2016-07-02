@@ -62,8 +62,8 @@ public class CardList extends ArrayList<Card> {
             return mFactions;
         mFactions = new ArrayList<String>();
         for (Card theCard : this) {
-            if (!mFactions.contains(theCard.getFaction()))
-                mFactions.add(theCard.getFaction());
+            if (!mFactions.contains(theCard.getFactionCode()))
+                mFactions.add(theCard.getFactionCode());
         }
         return mFactions;
     }
@@ -74,8 +74,8 @@ public class CardList extends ArrayList<Card> {
             return mSide;
         mSide = new ArrayList<String>();
         for (Card theCard : this) {
-            if (!mSide.contains(theCard.getSide()))
-                mSide.add(theCard.getSide());
+            if (!mSide.contains(theCard.getSideCode()))
+                mSide.add(theCard.getSideCode());
         }
         return mSide;
     }
@@ -86,8 +86,8 @@ public class CardList extends ArrayList<Card> {
             return mCardType;
         mCardType = new ArrayList<String>();
         for (Card theCard : this) {
-            if (!mCardType.contains(theCard.getType()))
-                mCardType.add(theCard.getType());
+            if (!mCardType.contains(theCard.getTypeCode()))
+                mCardType.add(theCard.getTypeCode());
         }
         return mCardType;
     }
@@ -95,8 +95,8 @@ public class CardList extends ArrayList<Card> {
     public ArrayList<String> getCardType(String side) {
         mCardType = new ArrayList<String>();
         for (Card theCard : this) {
-            if (theCard.getSide().equals(side) && !mCardType.contains(theCard.getType()))
-                mCardType.add(theCard.getType());
+            if (theCard.getSideCode().equals(side) && !mCardType.contains(theCard.getTypeCode()))
+                mCardType.add(theCard.getTypeCode());
         }
         return mCardType;
     }

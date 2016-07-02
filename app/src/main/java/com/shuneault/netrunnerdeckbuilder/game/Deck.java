@@ -189,7 +189,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
     public int getCardCountBySubTypeAndFaction(String subtype, String faction) {
         int iCount = 0;
         for (Card card : mCards.keySet()) {
-            if (card.getSubtypeCode().contains(subtype) && card.getFactionCode().equals(faction)) {
+            if (card.getSubtype().contains(subtype) && card.getFactionCode().equals(faction)) {
                 iCount = iCount + getCardCount(card);
             }
         }
@@ -235,7 +235,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
         // IDENTITY: The Professor (03029) does count influence diffently
         if (mIdentity.getCode().equals(Card.SpecialCards.CARD_THE_PROCESSOR)) {
             for (Card card : getCards()) {
-                if (!mIdentity.getFaction().equals(card.getFaction())) {
+                if (!mIdentity.getFactionCode().equals(card.getFactionCode())) {
                     if (card.getTypeCode().equals(Card.Type.PROGRAM)) {
                         // First copy of each program does not count toward the influence value
                         iInfluence = iInfluence + (card.getFactionCost() * Math.max(getCardCount(card) - 1, 0));
@@ -246,7 +246,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
             }
         } else {
             for (Card card : getCards()) {
-                if (!mIdentity.getFaction().equals(card.getFaction())) {
+                if (!mIdentity.getFactionCode().equals(card.getFactionCode())) {
 
                     // Some cards have a different influence based on the text
                     switch (card.getCode()) {

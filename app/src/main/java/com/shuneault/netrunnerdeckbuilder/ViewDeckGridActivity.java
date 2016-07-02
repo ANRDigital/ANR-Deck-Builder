@@ -14,6 +14,7 @@ import com.shuneault.netrunnerdeckbuilder.adapters.CardsDeckImageAdapter;
 import com.shuneault.netrunnerdeckbuilder.adapters.CardsImageAdapter;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 
@@ -83,7 +84,12 @@ public class ViewDeckGridActivity extends ActionBarActivity
         } else {
             mCards = AppManager.getInstance().getCardsBySetName(mSetName);
             Collections.sort(mCards, new Sorter.CardSorterByCardNumber());
-            setTitle(mSetName);
+            for (Pack pack : AppManager.getInstance().getAllPacks()) {
+                if (pack.getCode().equals(mSetName)) {
+                    setTitle(pack.getName());
+                    break;
+                }
+            }
             mGridView.setAdapter(new CardsImageAdapter(this, mCards));
             mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
