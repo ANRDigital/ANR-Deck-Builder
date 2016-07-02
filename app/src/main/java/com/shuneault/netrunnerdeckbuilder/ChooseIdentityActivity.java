@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -26,7 +27,7 @@ import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ChooseIdentityActivity extends FragmentActivity {
+public class ChooseIdentityActivity extends AppCompatActivity {
 
     public static final String EXTRA_SIDE_CODE = "com.example.netrunnerdeckbuilder.EXTRA_SIDE_CODE";
     public static final String EXTRA_INITIAL_IDENTITY_CODE = "com.example.netrunnerdeckbuilder.EXTRA_INITIAL_IDENTITY_CODE";
