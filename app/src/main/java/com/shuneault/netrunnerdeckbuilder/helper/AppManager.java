@@ -107,7 +107,7 @@ public class AppManager extends Application {
         CardList cd = new CardList();
         ArrayList<String> arrDataPacks = new ArrayList<String>(Arrays.asList(ListPreferenceMultiSelect.parseStoredValue(getSharedPrefs().getString(SettingsActivity.KEY_PREF_DATA_PACKS_TO_DISPLAY, ""))));
         for (Card card : this.mCards) {
-            if (arrDataPacks.contains(card.getSetCode())) {
+            if (arrDataPacks.contains(card.getSetName())) {
                 cd.add(card);
             }
         }
