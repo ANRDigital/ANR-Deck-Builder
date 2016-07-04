@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.shuneault.netrunnerdeckbuilder.MainActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
@@ -16,6 +17,14 @@ import com.shuneault.netrunnerdeckbuilder.game.CardList;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class CardImagesDownloader extends AsyncTask<Void, Integer, Bitmap> {
 
@@ -75,7 +84,10 @@ public class CardImagesDownloader extends AsyncTask<Void, Integer, Bitmap> {
             }
 
             try {
-                Bitmap theImage = BitmapFactory.decodeStream(theCard.getImagesrc().openConnection().getInputStream());
+                HttpsURLConnection conn = (HttpsURLConnection) theCard.getImagesrc().openConnection();
+                conn.setSSLSocketFactory(getTrustAllSocketFactory().getSocketFactory()); // Trust all SSL certificates
+                conn.connect();
+                Bitmap theImage = BitmapFactory.decodeStream(conn.getInputStream());
                 //FileOutputStream out = mContext.openFileOutput(theCard.getImageFileName(), Context.MODE_PRIVATE);
                 FileOutputStream out = new FileOutputStream(f);
                 theImage.compress(Bitmap.CompressFormat.PNG, 90, out);
@@ -108,5 +120,27 @@ public class CardImagesDownloader extends AsyncTask<Void, Integer, Bitmap> {
 
     }
 
+    private SSLContext getTrustAllSocketFactory() {
+        TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+                }
+        };
+        try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            return sc;
+        } catch (Exception ignored) {}
+        return null;
+    }
 
 }

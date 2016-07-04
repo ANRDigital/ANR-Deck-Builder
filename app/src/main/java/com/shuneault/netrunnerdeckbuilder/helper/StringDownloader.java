@@ -10,10 +10,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * Created by sebast on 02/07/16.
@@ -54,11 +62,12 @@ public class StringDownloader extends AsyncTask<Void, Integer, String> {
     protected String doInBackground(Void... params) {
         try {
             // Open the cconnection
-            HttpURLConnection conn = (HttpURLConnection) this.mUrl.openConnection();
+            HttpsURLConnection conn = (HttpsURLConnection) this.mUrl.openConnection();
+            conn.setSSLSocketFactory(getTrustAllSocketFactory().getSocketFactory());
             conn.connect();
 
             // Download if success
-            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            if (conn.getResponseCode() == HttpsURLConnection.HTTP_OK) {
                 String theFile = streamToString(conn.getInputStream());
                 return theFile;
             } else {
@@ -111,5 +120,28 @@ public class StringDownloader extends AsyncTask<Void, Integer, String> {
             sb.append(line);
         }
         return sb.toString();
+    }
+
+    private SSLContext getTrustAllSocketFactory() {
+        TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+                }
+        };
+        try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            return sc;
+        } catch (Exception ignored) {}
+        return null;
     }
 }
