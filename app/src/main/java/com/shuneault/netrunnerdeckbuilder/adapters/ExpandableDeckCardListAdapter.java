@@ -294,16 +294,18 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
             // Do filter
             for (String type : mArrDataHeaderOriginal) {
                 mArrDataChild.put(type, new ArrayList<Card>());
-                for (Card card : mArrDataChildOriginal.get(type)) {
-                    if (card.getTitle().toLowerCase().contains(query) ||
-                            card.getText().toLowerCase().contains(query) ||
-                            card.getSubtype().toLowerCase().contains(query) ||
-                            card.getSetCode().toLowerCase().contains(query)) {
-                        // Add the header
-                        if (!mArrDataHeader.contains(type)) {
-                            mArrDataHeader.add(type);
+                if (mArrDataChildOriginal.get(type) != null) {
+                    for (Card card : mArrDataChildOriginal.get(type)) {
+                        if (card.getTitle().toLowerCase().contains(query) ||
+                                card.getText().toLowerCase().contains(query) ||
+                                card.getSubtype().toLowerCase().contains(query) ||
+                                card.getSetCode().toLowerCase().contains(query)) {
+                            // Add the header
+                            if (!mArrDataHeader.contains(type)) {
+                                mArrDataHeader.add(type);
+                            }
+                            mArrDataChild.get(type).add(card);
                         }
-                        mArrDataChild.get(type).add(card);
                     }
                 }
             }
