@@ -84,6 +84,15 @@ public class AppManager extends Application {
 
     public ArrayList<Pack> getAllPacks() { return mPacks; }
 
+    public Pack getPackByCode(String code) {
+        for (Pack pack : mPacks) {
+            if (pack.getCode().equals(code)) {
+                return pack;
+            }
+        }
+        return null;
+    }
+
     public CardList getAllCards() {
         return mCards;
     }
@@ -107,10 +116,8 @@ public class AppManager extends Application {
 
     public ArrayList<String> getSetNames() {
         ArrayList<String> arr = new ArrayList<String>();
-        for (Card card : this.mCards) {
-            if (!arr.contains(card.getSetCode())) {
-                arr.add(card.getSetCode());
-            }
+        for (Pack pack : mPacks) {
+            arr.add(pack.getName());
         }
         return arr;
     }
@@ -329,25 +336,6 @@ public class AppManager extends Application {
         });
         sdPacks.execute();
 
-//        CardDownloader dl = new CardDownloader(this, new CardDownloader.CardDownloaderListener() {
-//
-//            @Override
-//            public void onTaskCompleted() {
-//                // Load the cards in the app
-//                doLoadCards();
-//
-//
-//            }
-//
-//            @Override
-//            public void onBeforeStartTask(Context context) {
-//            }
-//
-//            @Override
-//            public void onDownloadError() {
-//            }
-//        });
-//        dl.execute();
     }
 
 }

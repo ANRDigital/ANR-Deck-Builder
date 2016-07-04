@@ -222,9 +222,9 @@ public class Card {
             return Integer.parseInt(quantity);
     }
 
-//    public String getSetName() {
-//        return setName;
-//    }
+    public String getSetName() {
+        return AppManager.getInstance().getPackByCode(setCode).getName();
+    }
 
     public String getSetCode() {
         return setCode;
@@ -323,7 +323,7 @@ public class Card {
         // replace all occurences
         SpannableString span = new SpannableString(Html.fromHtml(text.replace("\n", "<br />")));
         for (String txt : map.keySet()) {
-            int index = span.toString().indexOf(txt);
+            int index = span.toString().toLowerCase().indexOf(txt);
             while (index >= 0) {
                 span.setSpan(new ImageSpan(context, map.get(txt), ImageSpan.ALIGN_BOTTOM), index, index + txt.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 index = span.toString().indexOf(txt, index + 1);

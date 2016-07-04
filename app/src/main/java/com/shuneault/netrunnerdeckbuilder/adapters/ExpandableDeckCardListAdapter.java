@@ -126,7 +126,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
             ImageDisplayer.fillSmall(viewHolder.imgImage, card, mContext);
             viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + card.getMaxCardCount());
             // Set names
-            viewHolder.lblSetName.setText(card.getSetCode());
+            viewHolder.lblSetName.setText(card.getSetName());
             if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false)) {
                 viewHolder.lblSetName.setVisibility(View.VISIBLE);
             } else {
@@ -135,23 +135,23 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 
             // Icons
             if (card.getTypeCode().equals(Card.Type.AGENDA)) {
-                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getAdvancementCost() + " [Credits]" + "  " + card.getAgendaPoints() + " [Agenda]"));
+                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getAdvancementCost() + " [credit]" + "  " + card.getAgendaPoints() + " [agenda]"));
             } else if (card.getTypeCode().equals(Card.Type.ASSET)) {
-                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]" + "  " + card.getTrashCost() + " [Trash]"));
+                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [credit]" + "  " + card.getTrashCost() + " [trash]"));
             } else if (card.getTypeCode().equals(Card.Type.EVENT)) {
-                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]"));
+                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [credit]"));
             } else if (card.getTypeCode().equals(Card.Type.HARDWARE)) {
-                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]"));
+                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [credit]"));
             } else if (card.getTypeCode().equals(Card.Type.ICE)) {
-                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]" + "  " + card.getStrength() + "[Fist]"));
+                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [credit]" + "  " + card.getStrength() + "[fist]"));
             } else if (card.getTypeCode().equals(Card.Type.OPERATION)) {
-                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]"));
+                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [credit]"));
             } else if (card.getTypeCode().equals(Card.Type.PROGRAM)) {
-                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]" + "  " + card.getMemoryUnits() + " [Memory Unit]" + "  " + card.getStrength() + "[Fist]"));
+                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [credit]" + "  " + card.getMemoryUnits() + " [mu]" + "  " + card.getStrength() + "[fist]"));
             } else if (card.getTypeCode().equals(Card.Type.RESOURCE)) {
-                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]"));
+                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [credit]"));
             } else if (card.getTypeCode().equals(Card.Type.UPGRADE)) {
-                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [Credits]" + "  " + card.getTrashCost() + " [Trash]"));
+                viewHolder.lblIcons.setText(Card.getFormattedString(mContext, card.getCost() + " [credit]" + "  " + card.getTrashCost() + " [trash]"));
             } else {
                 viewHolder.lblIcons.setText("");
             }

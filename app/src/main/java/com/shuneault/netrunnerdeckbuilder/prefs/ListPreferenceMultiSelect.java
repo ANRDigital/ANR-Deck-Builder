@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 public class ListPreferenceMultiSelect extends ListPreference {
     //Need to make sure the SEPARATOR is unique and weird enough that it doesn't match one of the entries.
     //Not using any fancy symbols because this is interpreted as a regex for splitting strings.
-    public static final String SEPARATOR = "OV=I=XseparatorX=I=VO";
+    private static final String SEPARATOR = "OV=I=XseparatorX=I=VO";
 
     private boolean[] mClickedDialogEntryIndices;
 
