@@ -23,7 +23,6 @@ import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
-import com.shuneault.netrunnerdeckbuilder.helper.CardDownloader;
 import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader;
 import com.shuneault.netrunnerdeckbuilder.helper.StringDownloader;
 import com.shuneault.netrunnerdeckbuilder.prefs.SetNamesPreferenceMultiSelect;
@@ -228,26 +227,6 @@ public class SettingsActivity extends PreferenceActivity
                 }
             });
             sd.execute();
-//            CardDownloader cd = new CardDownloader(this, new CardDownloader.CardDownloaderListener() {
-//
-//                ProgressDialog mDialog;
-//
-//                @Override
-//                public void onBeforeStartTask(Context context) {
-//
-//                }
-//
-//                @Override
-//                public void onTaskCompleted() {
-//
-//                }
-//
-//                @Override
-//                public void onDownloadError() {
-//
-//                }
-//            });
-//            cd.execute();
         }
 
     }
