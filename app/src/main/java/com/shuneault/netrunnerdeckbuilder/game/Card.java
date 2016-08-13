@@ -362,7 +362,7 @@ public class Card {
 
     public String getFactionImageResName() {
         String lowCaseFaction = this.getFactionCode().toLowerCase();
-        if (lowCaseFaction.equals(Faction.FACTION_NEUTRAL)) {
+        if (lowCaseFaction.startsWith(Faction.FACTION_NEUTRAL)) {
             lowCaseFaction = this.getSideCode() + "_" + lowCaseFaction;
         }
         lowCaseFaction = lowCaseFaction.replace("-", "_");
@@ -371,7 +371,7 @@ public class Card {
     }
 
     public int getFactionImageRes(Context context) {
-        if (getFactionCode().equals(Faction.FACTION_NEUTRAL)) return R.drawable.neutral;
+        if (getFactionCode().startsWith(Faction.FACTION_NEUTRAL)) return R.drawable.neutral;
         return context.getResources().getIdentifier(getFactionImageResName(), "drawable", context.getPackageName());
     }
 
@@ -417,7 +417,7 @@ public class Card {
     }
 
     public static class Faction {
-        public static final String FACTION_NEUTRAL = "neutral";
+        public static final String FACTION_NEUTRAL = "neutral-";
         public static final String FACTION_SHAPER = "shaper";
         public static final String FACTION_CRIMINAL = "criminal";
         public static final String FACTION_WEYLAND_CONSORTIUM = "weyland-consortium";

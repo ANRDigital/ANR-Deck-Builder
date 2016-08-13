@@ -114,12 +114,12 @@ public final class Sorter {
 
 
                     // Faction is neutral
-                    if (lhs.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL) && rhs.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL)) {
+                    if (lhs.getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL) && rhs.getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
                         return lhs.getTitle().toLowerCase().compareTo(rhs.getTitle().toLowerCase());
                     } else {
-                        if (lhs.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL)) {
+                        if (lhs.getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
                             return -1;
-                        } else if (rhs.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL)) {
+                        } else if (rhs.getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
                             return 1;
                         } else {
 

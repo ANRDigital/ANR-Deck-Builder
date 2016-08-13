@@ -143,7 +143,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
 	    // attach tabs to view pager
 	    tabs = (SlidingTabLayout) findViewById(R.id.tabs);
 	    tabs.setViewPager(mViewPager);
-        if (mDeck.getIdentity().getFactionCode().equals(Card.Faction.FACTION_NEUTRAL)) {
+        if (mDeck.getIdentity().getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
 	        tabs.setBackgroundColor(getResources().getColor(R.color.netrunner_blue));
         } else {
 	        tabs.setBackgroundColor(getResources().getColor(getResources().getIdentifier(

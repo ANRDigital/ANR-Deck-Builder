@@ -197,7 +197,7 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
             // Do not add the identities
             boolean isIdentity = theCard.getTypeCode().equals(Card.Type.IDENTITY);
             // Only display agendas that belong to neutral or my faction
-            boolean isGoodAgenda = !theCard.getTypeCode().equals(Card.Type.AGENDA) || theCard.getFactionCode().equals(mDeck.getIdentity().getFactionCode()) || theCard.getFactionCode().equals(Card.Faction.FACTION_NEUTRAL);
+            boolean isGoodAgenda = !theCard.getTypeCode().equals(Card.Type.AGENDA) || theCard.getFactionCode().equals(mDeck.getIdentity().getFactionCode()) || theCard.getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL);
             // Cannot add Jinteki card for "Custom Biotics: Engineered for Success" Identity
             boolean isJintekiOK = !theCard.getFactionCode().equals(Card.Faction.FACTION_JINTEKI) || !mDeck.getIdentity().getCode().equals(Card.SpecialCards.CARD_CUSTOM_BIOTICS_ENGINEERED_FOR_SUCCESS);
             // Ignore non-virtual resources if runner is Apex and setting is set
