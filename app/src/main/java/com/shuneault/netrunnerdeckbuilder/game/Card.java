@@ -377,17 +377,23 @@ public class Card {
 
     public boolean isMostWanted() {
         String[] arrList = {
-                "03038",    // Clone Chip
-                "01024",    // Desperado
-                "04029",    // Prepaid VoicePAD
+                // RUNNER
                 "06099",    // Cerberus "Lady" H1
-                "01014",    // Yog.0
+                "03038",    // Clone Chip
+                "06033",    // D4V1D
+                "01024",    // Desperado
+                "08061",    // Faust
                 "01012",    // Parasite
-                "01081",    // AstroScript Pilot Program
+                "04029",    // Prepaid VoicePAD
+                "01016",    // Wyldside
+                "01014",    // Yog.0
+                // CORP
+                "06061",    // Architect
+                "01082",    // Breaking News
+                "02110",    // Eli 1.0
+                "10018",    // Mumba Temple
                 "04119",    // NAPD Contract
                 "01092",    // SanSan City Grid
-                "02110",    // Eli 1.0
-                "06061",    // Architect
         };
         ArrayList<String> arrMostWanted = new ArrayList<>(Arrays.asList(arrList));
         return arrMostWanted.contains(this.getCode());
