@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.R;
@@ -30,6 +33,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Iterator;
 
 /**
@@ -43,8 +47,11 @@ public class AppManager extends Application {
     public static final String FILE_DECKS_JSON = "decks.json";
     public static final String FILE_PACKS_JSON = "packs.json";
 
+    // Shared Prefd
+    public static final String SHARED_PREF_LAST_UPDATE_DATE = "SHARED_PREF_LAST_UPDATE_DATE";
+
     // Logcat
-    public static final String LOGCAT = "com.example.netrunnerdeckbuilder.LOGCAT";
+    public static final String LOGCAT = "LOGCAT";
 
     private static AppManager mInstance;
     private DatabaseHelper mDb;
@@ -62,6 +69,17 @@ public class AppManager extends Application {
         doLoadCards();
         doLoadPacks();
         mDecks.addAll(mDb.getAllDecks(true));
+
+        // Download the card list every week
+        try {
+            Calendar today = Calendar.getInstance();
+            Calendar lastUpdate = Calendar.getInstance();
+            lastUpdate.setTimeInMillis(getSharedPrefs().getLong(SHARED_PREF_LAST_UPDATE_DATE, 0));
+            if (today.getTimeInMillis() - lastUpdate.getTimeInMillis() > (24 * 60 * 60 * 1000 * 7)) {
+                Log.i(LOGCAT, "Weekly download...");
+                doDownloadCards();
+            }
+        } catch (Exception ignored) {}
     }
 
 
@@ -308,6 +326,10 @@ public class AppManager extends Application {
 
             @Override
             public void onTaskComplete(String s) {
+                getSharedPrefs()
+                        .edit()
+                        .putLong(SHARED_PREF_LAST_UPDATE_DATE, Calendar.getInstance().getTimeInMillis())
+                        .apply();
                 doLoadCards();
             }
 
