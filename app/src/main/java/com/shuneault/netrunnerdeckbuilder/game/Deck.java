@@ -318,9 +318,10 @@ public class Deck implements Serializable, HeaderListItemInterface {
         int influenceLimit = mIdentity.getInfluenceLimit();
         if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_USE_MOST_WANTED_LIST, false)) {
             for (Card card : this.getCards()) {
-                if (card.isMostWanted()) {
-                    influenceLimit = Math.max(influenceLimit - getCardCount(card), 1); // Do not go below 1 as per rules
-                }
+                influenceLimit = Math.max(influenceLimit - (getCardCount(card) * card.getMWLInfluence()), 1);
+//                if (card.isMostWanted()) {
+//                    influenceLimit = Math.max(influenceLimit - getCardCount(card), 1); // Do not go below 1 as per rules
+//                }
             }
         }
         return influenceLimit;

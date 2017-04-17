@@ -91,8 +91,13 @@ public class Card {
     private boolean uniqueness;
 //    private URL url;
     private URL imagesrc;
+    private int mostWantedInfluence;
 
     public Card(JSONObject json) {
+        this(json, 0);
+    }
+
+    public Card(JSONObject json, int mostWantedInfluence) {
 
         try {
             //this.lastModified = DateFormat.getDateTimeInstance().parse(json.getString(NAME_LAST_MODIFIED));
@@ -128,6 +133,7 @@ public class Card {
             this.memoryunits = json.optInt(NAME_MEMORY_UNITS, 0);
             this.trash = json.optInt(NAME_TRASH, 0);
             this.strength = json.optInt(NAME_STRENGTH, 0);
+            this.mostWantedInfluence = mostWantedInfluence;
         } catch (MalformedURLException e) {
             //
             e.printStackTrace();
@@ -375,28 +381,12 @@ public class Card {
         return context.getResources().getIdentifier(getFactionImageResName(), "drawable", context.getPackageName());
     }
 
+    public int getMWLInfluence() {
+        return this.mostWantedInfluence;
+    }
+
     public boolean isMostWanted() {
-        String[] arrList = {
-                // RUNNER
-                "06099",    // Cerberus "Lady" H1
-                "03038",    // Clone Chip
-                "06033",    // D4V1D
-                "01024",    // Desperado
-                "08061",    // Faust
-                "01012",    // Parasite
-                "04029",    // Prepaid VoicePAD
-                "01016",    // Wyldside
-                "01014",    // Yog.0
-                // CORP
-                "06061",    // Architect
-                "01082",    // Breaking News
-                "02110",    // Eli 1.0
-                "10018",    // Mumba Temple
-                "04119",    // NAPD Contract
-                "01092",    // SanSan City Grid
-        };
-        ArrayList<String> arrMostWanted = new ArrayList<>(Arrays.asList(arrList));
-        return arrMostWanted.contains(this.getCode());
+        return this.mostWantedInfluence > 0;
     }
 
     /**

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
+import com.shuneault.netrunnerdeckbuilder.fragments.DeckStatsFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
@@ -34,6 +35,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -46,6 +48,7 @@ public class AppManager extends Application {
     public static final String FILE_CARDS_JSON = "cardsv2.json";
     public static final String FILE_DECKS_JSON = "decks.json";
     public static final String FILE_PACKS_JSON = "packs.json";
+    public static final String FILE_MWL_JSON = "mwl.json";
 
     // Shared Prefd
     public static final String SHARED_PREF_LAST_UPDATE_DATE = "SHARED_PREF_LAST_UPDATE_DATE";
@@ -60,6 +63,7 @@ public class AppManager extends Application {
     private ArrayList<Deck> mDecks = new ArrayList<>();
     private CardList mCards = new CardList();
     private ArrayList<Pack> mPacks = new ArrayList<>();
+    private HashMap<String, Integer> mMWLInfluences = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -236,6 +240,29 @@ public class AppManager extends Application {
         return jsonFile;
     }
 
+    private JSONObject getJSON_MWLFile() throws IOException, JSONException {
+        // Load the file in memory and return a JSON array
+        InputStream in;
+        try {
+            in = openFileInput(FILE_MWL_JSON);
+        } catch (FileNotFoundException e) {
+            in = getResources().openRawResource(R.raw.mwl);
+        }
+        InputStreamReader fs = new InputStreamReader(in);
+        BufferedReader bfs = new BufferedReader(fs);
+        String theLine = null;
+        StringBuilder theStringBuilder = new StringBuilder();
+        // Read the file
+        while ((theLine = bfs.readLine()) != null)
+            theStringBuilder.append(theLine);
+
+        JSONObject jsonFile = new JSONObject(theStringBuilder.toString());
+        bfs.close();
+        fs.close();
+        in.close();
+        return jsonFile;
+    }
+
     public JSONArray getJSONDecksFile() throws IOException, JSONException {
         // Load the file in memory and return a JSON array
         InputStream in = openFileInput(FILE_DECKS_JSON);
@@ -282,7 +309,20 @@ public class AppManager extends Application {
 			 * - Generate the card set list
 			 *
 			 */
+            // Most Wanted List
+            JSONObject jsonMWLfile = AppManager.getInstance().getJSON_MWLFile();
+            JSONArray jsonMWLdata = jsonMWLfile.getJSONArray("data");
+            JSONObject jsonMWLcards = jsonMWLdata
+                    .getJSONObject(jsonMWLdata.length()-1)
+                    .getJSONObject("cards");
+            Iterator<String> iterCards = jsonMWLcards.keys();
+            while (iterCards.hasNext()) {
+                String cardCode = iterCards.next();
+                int influenceCount = jsonMWLcards.getInt(cardCode);
+                mMWLInfluences.put(cardCode, influenceCount);
+            }
 
+            // The cards
             JSONObject jsonFile = AppManager.getInstance().getJSONCardsFile();
             JSONArray jsonCards = jsonFile.getJSONArray("data");
             CardList arrCards = AppManager.getInstance().getAllCards();
@@ -300,8 +340,15 @@ public class AppManager extends Application {
                         jsonCard.put(key, jsonLocaleProps.getString(key));
                     }
                 }
-                jsonCard.put(Card.NAME_IMAGE_SRC, jsonFile.getString("imageUrlTemplate").replace("{code}", jsonCard.getString(Card.NAME_CODE)));
-                Card card = new Card(jsonCard);
+                String cardCode = jsonCard.getString(Card.NAME_CODE);
+                jsonCard.put(Card.NAME_IMAGE_SRC, jsonFile.getString("imageUrlTemplate").replace("{code}", cardCode));
+                // New Card
+                Card card;
+                if (mMWLInfluences.containsKey(cardCode)) {
+                    card = new Card(jsonCard, mMWLInfluences.get(cardCode));
+                } else {
+                    card = new Card(jsonCard);
+                }
                 arrCards.add(card);
             }
 
@@ -318,7 +365,9 @@ public class AppManager extends Application {
     }
 
     public void doDownloadCards() {
-        StringDownloader sdCards = new StringDownloader(this, NetRunnerBD.getAllCardsUrl(), AppManager.FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
+        // Most Wanted List
+        StringDownloader sdMWL = new StringDownloader(this, NetRunnerBD.getMWLUrl(), AppManager.FILE_MWL_JSON, new StringDownloader.FileDownloaderListener() {
+
             @Override
             public void onBeforeTask() {
 
@@ -326,11 +375,29 @@ public class AppManager extends Application {
 
             @Override
             public void onTaskComplete(String s) {
-                getSharedPrefs()
-                        .edit()
-                        .putLong(SHARED_PREF_LAST_UPDATE_DATE, Calendar.getInstance().getTimeInMillis())
-                        .apply();
-                doLoadCards();
+
+                // Cards List
+                StringDownloader sdCards = new StringDownloader(AppManager.this, NetRunnerBD.getAllCardsUrl(), AppManager.FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
+                    @Override
+                    public void onBeforeTask() {
+
+                    }
+
+                    @Override
+                    public void onTaskComplete(String s) {
+                        getSharedPrefs()
+                                .edit()
+                                .putLong(SHARED_PREF_LAST_UPDATE_DATE, Calendar.getInstance().getTimeInMillis())
+                                .apply();
+                        doLoadCards();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
+                sdCards.execute();
             }
 
             @Override
@@ -338,7 +405,7 @@ public class AppManager extends Application {
 
             }
         });
-        sdCards.execute();
+        sdMWL.execute();
 
         StringDownloader sdPacks = new StringDownloader(this, NetRunnerBD.getAllPacksUrl(), AppManager.FILE_PACKS_JSON, new StringDownloader.FileDownloaderListener() {
             @Override

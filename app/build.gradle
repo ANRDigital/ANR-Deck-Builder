@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.21.2'
+        classpath 'io.fabric.tools:gradle:1.21.6'
     }
 }
 apply plugin: 'com.android.application'
@@ -16,15 +16,15 @@ repositories {
 
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.shuneault.netrunnerdeckbuilder"
         minSdkVersion 14
-        targetSdkVersion 23
-        versionCode 63
-        versionName "2.99.6"
+        targetSdkVersion 25
+        versionCode 64
+        versionName "2.99.7"
     }
 
     buildTypes {
@@ -38,12 +38,12 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v13:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:cardview-v7:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:support-v13:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:cardview-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     compile 'com.balysv:material-ripple:1.0.1'
     compile 'com.getbase:floatingactionbutton:1.8.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'

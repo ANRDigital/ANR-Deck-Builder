@@ -106,8 +106,8 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 	    } catch (Exception e) {}
 
 	    // set close button to white x
-	    ImageView searchCloseIcon = (ImageView) sv.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-	    searchCloseIcon.setImageDrawable(getResources().getDrawable(R.drawable.abc_ic_clear_mtrl_alpha));
+//	    ImageView searchCloseIcon = (ImageView) sv.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+//	    searchCloseIcon.setImageDrawable(getResources().getDrawable(R.drawable.abc_ic_clear_mtrl_alpha));
 
 	    // remove search icon
 	    sv.setIconifiedByDefault(false);
