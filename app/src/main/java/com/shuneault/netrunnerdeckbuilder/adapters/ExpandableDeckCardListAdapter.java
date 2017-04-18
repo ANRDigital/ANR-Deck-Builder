@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
@@ -157,8 +158,15 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
             }
 
             // Influence count
+            int numInfluence = 0;
             if (!mDeck.getIdentity().getFactionCode().equals(card.getFactionCode())) {
-                char[] chars = new char[card.getFactionCost()];
+                numInfluence += card.getFactionCost();
+            }
+            if (card.isMostWanted() && AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_USE_MOST_WANTED_LIST, false)) {
+                numInfluence += card.getMWLInfluence();
+            }
+            if (numInfluence > 0) {
+                char[] chars = new char[numInfluence];
                 Arrays.fill(chars, mContext.getResources().getString(R.string.influence_char).toCharArray()[0]);
                 String result = new String(chars);
                 viewHolder.lblInfluence.setText(result);

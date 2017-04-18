@@ -194,5 +194,6 @@
     <string name="cards_download_complete">Cards download complete</string>
     <string name="jintekinet">Jinteki.net</string>
     <string name="import_decks">Import Decks</string>
+    <string name="mwl">MWL</string>
 
 </resources>
