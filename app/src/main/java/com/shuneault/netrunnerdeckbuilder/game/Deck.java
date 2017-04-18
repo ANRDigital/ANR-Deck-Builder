@@ -283,6 +283,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
                                 continue;
                             }
                             break;
+                        case "10094":   // Consulting Visit - 0 influence if 6 or more non-alliance Weyland cards in deck
                         case "10072":  // Executive search firm - 0 influence if 6 or more non-alliance Weyland cards in deck
                             if (getCardCountByFaction(Card.Faction.FACTION_WEYLAND_CONSORTIUM) - getCardCountBySubTypeAndFaction(Card.SubTypeCode.ALLIANCE, Card.Faction.FACTION_WEYLAND_CONSORTIUM) >= 6) {
                                 continue;
