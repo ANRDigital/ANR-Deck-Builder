@@ -232,6 +232,13 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public int getDeckInfluence() {
         int iInfluence = 0;
+        // Most Wanted List
+        if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_USE_MOST_WANTED_LIST, false)) {
+            for (Card card : this.getCards()) {
+                iInfluence = iInfluence + (getCardCount(card) * card.getMWLInfluence());
+            }
+        }
+
         // IDENTITY: The Professor (03029) does count influence diffently
         if (mIdentity.getCode().equals(Card.SpecialCards.CARD_THE_PROCESSOR)) {
             for (Card card : getCards()) {
@@ -316,14 +323,6 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public int getInfluenceLimit() {
         int influenceLimit = mIdentity.getInfluenceLimit();
-        if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_USE_MOST_WANTED_LIST, false)) {
-            for (Card card : this.getCards()) {
-                influenceLimit = Math.max(influenceLimit - (getCardCount(card) * card.getMWLInfluence()), 1);
-//                if (card.isMostWanted()) {
-//                    influenceLimit = Math.max(influenceLimit - getCardCount(card), 1); // Do not go below 1 as per rules
-//                }
-            }
-        }
         return influenceLimit;
     }
 
