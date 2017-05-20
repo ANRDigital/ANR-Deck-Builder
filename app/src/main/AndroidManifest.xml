@@ -49,7 +49,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="*/*" />
+                <data android:mimeType="application/octet-stream" android:host="*" android:pathPattern=".*\\.o8d" />
             </intent-filter>
         </activity>
     </application>
