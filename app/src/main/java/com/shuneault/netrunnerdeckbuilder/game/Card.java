@@ -295,7 +295,7 @@ public class Card {
      */
     public int getMaxCardCount() {
         try {
-            if (this.setCode.equals(SetName.CORE_SET)) {
+            if (this.setCode.equals(SetName.CORE_SET) || this.setCode.equals(SetName.REVISED_CORE_SET)) {
                 int iAmountCoreDecks = Integer.parseInt(AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_AMOUNT_OF_CORE_DECKS, "3"));
                 return Math.min(iAmountCoreDecks * Integer.parseInt(this.quantity), Deck.MAX_INDIVIDUAL_CARD);
             } else {
@@ -448,6 +448,7 @@ public class Card {
     public static class SetName {
 //        public static final String ALTERNATES = "Alternates";
         public static final String CORE_SET = "core";
+        public static final String REVISED_CORE_SET = "core2";
     }
 
     public static class SpecialCards {
