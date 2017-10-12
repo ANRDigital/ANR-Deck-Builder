@@ -196,5 +196,6 @@
     <string name="jintekinet">Jinteki.net</string>
     <string name="import_decks">Import Decks</string>
     <string name="mwl">MWL</string>
+    <string name="card_list_updated_successfully">Card list updated successfully</string>
 
 </resources>

@@ -389,6 +389,7 @@ public class AppManager extends Application {
                                 .putLong(SHARED_PREF_LAST_UPDATE_DATE, Calendar.getInstance().getTimeInMillis())
                                 .apply();
                         doLoadCards();
+                        Toast.makeText(getApplicationContext(), R.string.card_list_updated_successfully, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
