@@ -63,7 +63,7 @@ public class AppManager extends Application {
     private ArrayList<Deck> mDecks = new ArrayList<>();
     private CardList mCards = new CardList();
     private ArrayList<Pack> mPacks = new ArrayList<>();
-    private HashMap<String, Integer> mMWLInfluences = new HashMap<>();
+    private HashMap<String, JSONObject> mMWLInfluences = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -313,13 +313,12 @@ public class AppManager extends Application {
             JSONObject jsonMWLfile = AppManager.getInstance().getJSON_MWLFile();
             JSONArray jsonMWLdata = jsonMWLfile.getJSONArray("data");
             JSONObject jsonMWLcards = jsonMWLdata
-                    .getJSONObject(jsonMWLdata.length()-1)
+                    .getJSONObject(2)
                     .getJSONObject("cards");
             Iterator<String> iterCards = jsonMWLcards.keys();
             while (iterCards.hasNext()) {
                 String cardCode = iterCards.next();
-                int influenceCount = jsonMWLcards.getInt(cardCode);
-                mMWLInfluences.put(cardCode, influenceCount);
+                mMWLInfluences.put(cardCode, jsonMWLcards.getJSONObject(cardCode));
             }
 
             // The cards
@@ -345,7 +344,7 @@ public class AppManager extends Application {
                 // New Card
                 Card card;
                 if (mMWLInfluences.containsKey(cardCode)) {
-                    card = new Card(jsonCard, mMWLInfluences.get(cardCode));
+                    card = new Card(jsonCard, mMWLInfluences.get(cardCode).optInt("universal_faction_cost", 0));
                 } else {
                     card = new Card(jsonCard);
                 }
