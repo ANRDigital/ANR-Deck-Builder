@@ -157,7 +157,11 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
 
     private void updateInfoBar() {
         // Update the influence, card count and agendas
-        lblInfoInfluence.setText(mDeck.getDeckInfluence() + "/" + mDeck.getInfluenceLimit());
+        if (mDeck.getInfluenceLimit() == Integer.MAX_VALUE) {
+            lblInfoInfluence.setText(mDeck.getDeckInfluence() + "/" + getResources().getString(R.string.infinite_symbol));
+        } else {
+            lblInfoInfluence.setText(mDeck.getDeckInfluence() + "/" + mDeck.getInfluenceLimit());
+        }
         lblInfoCards.setText(mDeck.getDeckSize() + "/" + mDeck.getMinimumDeckSize());
         lblInfoAgenda.setText(mDeck.getDeckAgenda() + "/(" + mDeck.getDeckAgendaMinimum() + '-' + (mDeck.getDeckAgendaMinimum() + 1) + ')');
 

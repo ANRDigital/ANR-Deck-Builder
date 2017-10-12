@@ -53,6 +53,7 @@
     <string name="display_set_names_with_cards">Display set names with cards</string>
     <string name="new_hand">New Hand</string>
     <string name="draw">Draw</string>
+    <string name="infinite_symbol">∞</string>
 
     <!-- Drawer -->
     <string name="drawer_new_deck_runner">New Runner Deck</string>

@@ -200,10 +200,10 @@ public class Card {
     }
 
     public int getInfluenceLimit() {
-        if (influenceLimit.equals("")) {
-            return 0;
-        } else {
+        try {
             return Integer.parseInt(influenceLimit);
+        } catch (Exception e) {
+            return Integer.MAX_VALUE;
         }
     }
 
