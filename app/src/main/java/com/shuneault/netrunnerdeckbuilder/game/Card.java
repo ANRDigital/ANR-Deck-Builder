@@ -53,6 +53,7 @@ public class Card {
     public static final String NAME_SIDE_CODE = "side_code";
     public static final String NAME_UNIQUENESS = "uniqueness";
 //    public static final String NAME_URL = "url";
+    public static final String NAME_IMAGE_URL_OVERRIDE = "image_url";
     public static final String NAME_IMAGE_SRC = "imagesrc";
     public static final String NAME_AGENDA_POINTS = "agenda_points";
     public static final String NAME_ADVANCEMENT_COST = "advancement_cost";
@@ -125,7 +126,11 @@ public class Card {
             this.setCode = json.optString(NAME_SET_CODE);
             this.uniqueness = json.optBoolean(NAME_UNIQUENESS);
 //            this.url = new URL(json.optString(NAME_URL));
-            this.imagesrc = new URL(json.optString(NAME_IMAGE_SRC));
+            String imageUrl = json.optString(NAME_IMAGE_URL_OVERRIDE);
+            if(imageUrl == null || imageUrl.length() < 1) {
+                imageUrl = json.optString(NAME_IMAGE_SRC);
+            }
+            this.imagesrc = new URL(imageUrl);
 //            this.side = json.optString(NAME_SIDE);
             this.sideCode = json.optString(NAME_SIDE_CODE);
             this.agendaPoints = json.optInt(NAME_AGENDA_POINTS, 0);
