@@ -35,7 +35,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical"
 				android:layout_marginLeft="@dimen/info_bar_margin_amount"
-				android:text="TextView"/>
+				android:text="0/0"/>
 		</LinearLayout>
 
 		<LinearLayout
@@ -54,7 +54,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical"
 				android:layout_marginLeft="@dimen/info_bar_margin_amount"
-				android:text="TextView"/>
+				android:text="0/0" />
 		</LinearLayout>
 
 		<LinearLayout
@@ -75,6 +75,27 @@
 				android:layout_gravity="center_vertical"
 				android:layout_marginLeft="@dimen/info_bar_margin_amount"
 				android:text="TextView"/>
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/layoutLegal"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_marginLeft="16dp">
+
+			<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:src="@drawable/mwl"/>
+
+			<TextView
+				android:id="@+id/lblInfoLegal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:layout_marginLeft="@dimen/info_bar_margin_amount"
+				android:text="✗"/>
 		</LinearLayout>
 	</LinearLayout>
 

@@ -12,6 +12,7 @@ import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.prefs.ListPreferenceMultiSelect;
@@ -56,7 +57,7 @@ public class AppManager extends Application {
     private ArrayList<Deck> mDecks = new ArrayList<>();
     private CardList mCards = new CardList();
     private ArrayList<Pack> mPacks = new ArrayList<>();
-    private HashMap<String, JSONObject> mMWLInfluences = new HashMap<>();
+    private MostWantedList mActiveMWL;
 
     @Override
     public void onCreate() {
@@ -305,15 +306,24 @@ public class AppManager extends Application {
              *
              */
             // Most Wanted List
-            JSONObject jsonMWLfile = AppManager.getInstance().getJSON_MWLFile();
-            JSONArray jsonMWLdata = jsonMWLfile.getJSONArray("data");
-            JSONObject jsonMWLcards = jsonMWLdata
+            // Get mwl data file as for use later
+            JSONObject mJsonMWLfile = AppManager.getInstance().getJSON_MWLFile();
+            JSONArray mMWLData = mJsonMWLfile.getJSONArray("data");
+            for (int i = 0; i < mMWLData.length(); i++) {
+                JSONObject mwlJSON = mMWLData.getJSONObject(i);
+                if (mwlJSON.has("active")){
+                    mActiveMWL = new MostWantedList(mwlJSON);
+                }
+            }
+
+            HashMap<String, JSONObject> mMWLInfluences = new HashMap<>();
+            JSONObject jsonMWLCards = mMWLData
                     .getJSONObject(2)
                     .getJSONObject("cards");
-            Iterator<String> iterCards = jsonMWLcards.keys();
+            Iterator<String> iterCards = jsonMWLCards.keys();
             while (iterCards.hasNext()) {
                 String cardCode = iterCards.next();
-                mMWLInfluences.put(cardCode, jsonMWLcards.getJSONObject(cardCode));
+                mMWLInfluences.put(cardCode, jsonMWLCards.getJSONObject(cardCode));
             }
 
             // The cards
@@ -336,14 +346,13 @@ public class AppManager extends Application {
                 }
                 String cardCode = jsonCard.getString(Card.NAME_CODE);
                 jsonCard.put(Card.NAME_IMAGE_SRC, jsonFile.getString("imageUrlTemplate").replace("{code}", cardCode));
+
                 // New Card
-                Card card;
+                int cardUniversalCost = 0;
                 if (mMWLInfluences.containsKey(cardCode)) {
-                    card = new Card(jsonCard, mMWLInfluences.get(cardCode).optInt("universal_faction_cost", 0));
-                } else {
-                    card = new Card(jsonCard);
+                    cardUniversalCost = mMWLInfluences.get(cardCode).optInt("universal_faction_cost", 0);
                 }
-                arrCards.add(card);
+                arrCards.add(new Card(jsonCard, cardUniversalCost));
             }
 
             // Load the decks
@@ -422,4 +431,8 @@ public class AppManager extends Application {
 
     }
 
+    public DeckValidator getDeckValidator(){
+        // create validator
+        return new DeckValidator(mActiveMWL);
+    }
 }

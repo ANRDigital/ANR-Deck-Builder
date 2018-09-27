@@ -35,6 +35,7 @@ import com.shuneault.netrunnerdeckbuilder.fragments.DeckStatsFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
+import com.shuneault.netrunnerdeckbuilder.helper.DeckValidator;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
@@ -63,6 +64,8 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     private TextView lblInfoInfluence;
     private TextView lblInfoCards;
     private TextView lblInfoAgenda;
+    private TextView lblInfoLegal;
+
     private ActionBar mActionBar;
     private int mSelectedTab = 0;
 
@@ -91,6 +94,8 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         lblInfoInfluence = (TextView) findViewById(R.id.lblInfoInfluence);
         lblInfoCards = (TextView) findViewById(R.id.lblInfoCards);
         lblInfoAgenda = (TextView) findViewById(R.id.lblInfoAgenda);
+        lblInfoLegal = (TextView) findViewById(R.id.lblInfoLegal);
+
 
         // ActionBar - set elevation to 0 to remove shadow
         mActionBar = getSupportActionBar();
@@ -177,6 +182,17 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
             lblInfoCards.setTextAppearance(this, R.style.InfoBarGood);
         else
             lblInfoCards.setTextAppearance(this, R.style.InfoBarBad);
+
+        // check MWL restrictions
+        // this will become an IDeckValidator, format
+        DeckValidator validator = AppManager.getInstance().getDeckValidator();
+        if (validator.Validate(mDeck)) {
+           lblInfoLegal.setTextAppearance(this, R.style.InfoBarGood);
+           lblInfoLegal.setText("✓");
+        } else {
+           lblInfoLegal.setTextAppearance(this, R.style.InfoBarBad);
+           lblInfoLegal.setText("✗");
+        }
     }
 
     public class DeckTabsPagerAdapter extends FragmentPagerAdapter {
