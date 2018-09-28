@@ -53,4 +53,8 @@ public class CardMWL {
     public boolean isRestricted() {
         return isRestricted;
     }
+
+    public boolean isRemoved() {
+        return hasDeckLimit && deckLimit == 0;
+    }
 }

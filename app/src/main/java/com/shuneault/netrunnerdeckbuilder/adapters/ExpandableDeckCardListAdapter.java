@@ -14,7 +14,9 @@ import android.widget.TextView;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.CardMWL;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 
@@ -37,6 +39,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
         TextView lblText;
         TextView lblAmount;
         TextView lblInfluence;
+        TextView lblMostWanted;
         TextView lblSetName;
         Button btnMinus;
         Button btnPlus;
@@ -98,6 +101,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
             viewHolder.btnMinus = (Button) convertView.findViewById(R.id.btnMinus);
             viewHolder.btnPlus = (Button) convertView.findViewById(R.id.btnPlus);
             viewHolder.lblInfluence = (TextView) convertView.findViewById(R.id.lblInfluence);
+            viewHolder.lblMostWanted = (TextView) convertView.findViewById(R.id.lblMostWanted);
             viewHolder.lblSetName = (TextView) convertView.findViewById(R.id.lblSetName);
 
             // Store the ViewHolder
@@ -172,6 +176,21 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
                 viewHolder.lblInfluence.setText(result);
             } else {
                 viewHolder.lblInfluence.setText("");
+            }
+
+            viewHolder.lblMostWanted.setText("");
+            MostWantedList mwl = AppManager.getInstance().getMWL();
+            CardMWL cardMWL = mwl.GetCardMWL(card);
+            if (cardMWL != null){
+                if (cardMWL.isRestricted()){
+                    int unicorn = 0x1F984;
+                    viewHolder.lblMostWanted.setText(new String(Character.toChars(unicorn)));
+                }
+
+                if(cardMWL.isRemoved()){
+                    int noEntry = 0x1F6AB;
+                    viewHolder.lblMostWanted.setText(new String(Character.toChars(noEntry)));
+                }
             }
 
             // Plus and minus buttons

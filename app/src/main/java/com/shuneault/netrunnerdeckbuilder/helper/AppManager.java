@@ -306,7 +306,6 @@ public class AppManager extends Application {
              *
              */
             // Most Wanted List
-            // Get mwl data file as for use later
             JSONObject mJsonMWLfile = AppManager.getInstance().getJSON_MWLFile();
             JSONArray mMWLData = mJsonMWLfile.getJSONArray("data");
             for (int i = 0; i < mMWLData.length(); i++) {
@@ -434,5 +433,10 @@ public class AppManager extends Application {
     public DeckValidator getDeckValidator(){
         // create validator
         return new DeckValidator(mActiveMWL);
+    }
+
+    // return the default (active) mwl
+    public MostWantedList getMWL() {
+        return mActiveMWL;
     }
 }
