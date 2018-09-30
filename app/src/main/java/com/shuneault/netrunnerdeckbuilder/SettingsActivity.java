@@ -92,7 +92,8 @@ public class SettingsActivity extends PreferenceActivity
                 builder.setMessage(getString(R.string.message_clear_cache));
                 builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {                    }
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
                 });
                 builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
@@ -203,8 +204,8 @@ public class SettingsActivity extends PreferenceActivity
                     Context context = SettingsActivity.this;
                     Intent mStartActivity = new Intent(context, MainActivity.class);
                     int mPendingIntentId = 123456;
-                    PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-                    AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+                    PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                    AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                     mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
                     System.exit(0);
                 }
@@ -244,8 +245,6 @@ public class SettingsActivity extends PreferenceActivity
         prefAmountOfCoreDecks.setSummary(sharedPreferences.getString(KEY_PREF_AMOUNT_OF_CORE_DECKS, "1"));
 
 
-
-
     }
 
     @Override
@@ -260,7 +259,8 @@ public class SettingsActivity extends PreferenceActivity
             if (dir != null && dir.isDirectory()) {
                 deleteDir(dir);
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     public static boolean deleteDir(File dir) {

@@ -87,11 +87,11 @@ public final class Sorter {
 
     /**
      * @author sebas_000
-     *         <p/>
-     *         returns the cards in this order:
-     *         1. My Faction (ordered by name)
-     *         2. Neutral faction (ordered by name)
-     *         3. Other faction (ordered by name)
+     * <p/>
+     * returns the cards in this order:
+     * 1. My Faction (ordered by name)
+     * 2. Neutral faction (ordered by name)
+     * 3. Other faction (ordered by name)
      */
     public static final class CardSorterByFactionWithMineFirst implements Comparator<Card> {
         private Card mIdentity;

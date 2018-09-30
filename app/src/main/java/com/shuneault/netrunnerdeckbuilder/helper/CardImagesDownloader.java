@@ -15,13 +15,6 @@ import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.util.CardImageDownloadUtil;
 
 import java.io.File;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 public class CardImagesDownloader extends AsyncTask<Void, Integer, Bitmap> {
 

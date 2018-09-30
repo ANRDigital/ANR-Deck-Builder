@@ -18,9 +18,7 @@ import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 /**
@@ -36,7 +34,9 @@ public class StringDownloader extends AsyncTask<Void, Integer, String> {
 
     public interface FileDownloaderListener {
         void onBeforeTask();
+
         void onTaskComplete(String s);
+
         void onError(Exception e);
     }
 
@@ -126,10 +126,12 @@ public class StringDownloader extends AsyncTask<Void, Integer, String> {
         TrustManager[] trustAllCerts = new TrustManager[]{
                 new X509TrustManager() {
                     @Override
-                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
 
                     @Override
-                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
 
                     @Override
                     public X509Certificate[] getAcceptedIssuers() {
@@ -141,7 +143,8 @@ public class StringDownloader extends AsyncTask<Void, Integer, String> {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, new SecureRandom());
             return sc;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return null;
     }
 }

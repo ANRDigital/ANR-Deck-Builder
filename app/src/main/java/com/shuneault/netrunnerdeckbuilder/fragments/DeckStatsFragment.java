@@ -111,10 +111,9 @@ public class DeckStatsFragment extends Fragment {
         mBarStrengthSet = makeBarDataSet(R.string.stats_strength, R.color.stats_graph_bar_strength);
         if (mTryParseSubtypes) {
             mBarSets.add(mBarStrengthSet);
-        }
-        else {
+        } else {
             // If not showing strength, change bar chart title
-            ((TextView)mainView.findViewById(R.id.barChartTitle))
+            ((TextView) mainView.findViewById(R.id.barChartTitle))
                     .setText(getString(R.string.stats_bar_chart_cost_title));
         }
 
@@ -146,7 +145,7 @@ public class DeckStatsFragment extends Fragment {
         }
 
         String iceType = mDeck.getSide().equals(Card.Side.SIDE_CORPORATION) ? "Ice" : "Icebreaker";
-        ((TextView)mainView.findViewById(R.id.iceSubtypeChartTitle)).setText(
+        ((TextView) mainView.findViewById(R.id.iceSubtypeChartTitle)).setText(
                 String.format(getString(R.string.stats_ice_subtype_chart), iceType));
 
         mIceSubtypeLabels = new ArrayList<>();
@@ -221,7 +220,7 @@ public class DeckStatsFragment extends Fragment {
                 maxStrength = c.getStrength();
 
             // Check type
-            if ( !typeDataMap.keySet().contains(c.getTypeCode()) ) {
+            if (!typeDataMap.keySet().contains(c.getTypeCode())) {
                 TypeDataEntry type = new TypeDataEntry(nextTypeIndex++, c.getTypeCode());
                 typeData.add(type);
                 typeDataMap.put(c.getTypeCode(), type);
@@ -233,7 +232,7 @@ public class DeckStatsFragment extends Fragment {
 
             // Check ice/breaker subtype
             String iceSubtype = c.getIceOrIcebreakerSubtype();
-            if ( !iceSubtype.equals("")) {
+            if (!iceSubtype.equals("")) {
                 if (!iceSubtypeDataMap.keySet().contains(iceSubtype)) {
                     TypeDataEntry type = new TypeDataEntry(nextIceSubtypeIndex++, iceSubtype);
                     iceSubtypeData.add(type);
@@ -256,7 +255,7 @@ public class DeckStatsFragment extends Fragment {
 
         mBarLabels.clear();
         for (i = 0; i < barEntries; ++i) {
-            mBarLabels.add(i+"");
+            mBarLabels.add(i + "");
         }
 
         // Accumulate values
@@ -271,7 +270,7 @@ public class DeckStatsFragment extends Fragment {
 
             // Increment count for this card's strength, if applicable
             if (c.getTypeCode().equals(Card.Type.ICE)
-                || (c.getTypeCode().equals(Card.Type.PROGRAM) && c.getSubtypeArray()[0].equals("Icebreaker")) )
+                    || (c.getTypeCode().equals(Card.Type.PROGRAM) && c.getSubtypeArray()[0].equals("Icebreaker")))
                 barStrengths[c.getStrength()] += count;
 
             ++i;
@@ -289,8 +288,7 @@ public class DeckStatsFragment extends Fragment {
         mTypeDataSet.clear();
         int[] typeColors = new int[typeData.size()];
         i = 0;
-        for (TypeDataEntry t : typeData)
-        {
+        for (TypeDataEntry t : typeData) {
             mTypeDataSet.addEntryOrdered(new Entry(t.cardCount, t.xIndex));
             typeColors[t.xIndex] = getTypeCodeColor(t.code);
             ++i;
@@ -299,8 +297,7 @@ public class DeckStatsFragment extends Fragment {
 
         mIceSubtypeDataSet.clear();
         i = 0;
-        for (TypeDataEntry t : iceSubtypeData)
-        {
+        for (TypeDataEntry t : iceSubtypeData) {
             mIceSubtypeDataSet.addEntryOrdered(new Entry(t.cardCount, t.xIndex));
             ++i;
         }
@@ -382,7 +379,7 @@ public class DeckStatsFragment extends Fragment {
         public int xIndex;
         public String code;
 
-        public TypeDataEntry(int index, String typeCode)  {
+        public TypeDataEntry(int index, String typeCode) {
             cardCount = 0;
             xIndex = index;
             code = typeCode;
@@ -395,8 +392,7 @@ public class DeckStatsFragment extends Fragment {
         int mDataIndex;
         TextView mText;
 
-        public BarMarkerView(Context context)
-        {
+        public BarMarkerView(Context context) {
             super(context, R.layout.stats_marker_text);
             mText = (TextView) findViewById(R.id.statsBarChartMarkerText);
         }
@@ -407,13 +403,13 @@ public class DeckStatsFragment extends Fragment {
 
         @Override
         public void refreshContent(Entry e, Highlight highlight) {
-            mText.setText(String.format(getString((int)e.getData()), (int)e.getVal(), e.getXIndex()));
+            mText.setText(String.format(getString((int) e.getData()), (int) e.getVal(), e.getXIndex()));
             mDataIndex = e.getXIndex();
         }
 
         @Override
         public int getXOffset() {
-            return Math.round(-getWidth() * (mDataIndex / (float)mDataSetSize));
+            return Math.round(-getWidth() * (mDataIndex / (float) mDataSetSize));
         }
 
         @Override

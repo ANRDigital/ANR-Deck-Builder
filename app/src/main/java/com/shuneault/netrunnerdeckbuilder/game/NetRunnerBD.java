@@ -19,5 +19,7 @@ public class NetRunnerBD {
         return URL_GET_ALL_PACKS;
     }
 
-    public static String getMWLUrl() { return URL_GET_MWL; }
+    public static String getMWLUrl() {
+        return URL_GET_MWL;
+    }
 }

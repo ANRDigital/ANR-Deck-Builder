@@ -1,7 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;

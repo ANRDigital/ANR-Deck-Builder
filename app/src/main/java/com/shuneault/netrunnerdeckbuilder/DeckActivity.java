@@ -14,7 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.export.JintekiNet;
+import com.shuneault.netrunnerdeckbuilder.export.OCTGN;
 import com.shuneault.netrunnerdeckbuilder.export.PlainText;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckBuildFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckCardsFragment;
@@ -35,12 +36,11 @@ import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
-import com.shuneault.netrunnerdeckbuilder.export.OCTGN;
 import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
 import java.io.FileOutputStream;
 
-public class DeckActivity extends ActionBarActivity implements OnDeckChangedListener {
+public class DeckActivity extends AppCompatActivity implements OnDeckChangedListener {
 
     // Activity Result
     public static final int REQUEST_CHANGE_IDENTITY = 2;
@@ -73,12 +73,9 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
     protected void onCreate(Bundle savedInstanceState) {
         // Set the theme and layout
         mDeck = AppManager.getInstance().getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
-        try
-        {
+        try {
             setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             // do nothing, will use default blue theme instead
             e.printStackTrace();
         }
@@ -123,7 +120,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
         // Change the title
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setTitle(mDeck.getName());
-		// app icon doesn't work with support library - needs implemented differently
+        // app icon doesn't work with support library - needs implemented differently
 //        if (mDeck.getIdentity().getFactionCode().equals(Card.Faction.FACTION_NEUTRAL)) {
 //            mActionBar.setLogo(getResources().getDrawable(R.drawable.ic_launcher));
 //        } else {
@@ -137,18 +134,18 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
             layoutAgendas.setVisibility(View.GONE);
         }
 
-	    // Set the page adapter
+        // Set the page adapter
         mViewPager.setAdapter(new DeckTabsPagerAdapter(getSupportFragmentManager()));
 
-	    // attach tabs to view pager
-	    tabs = (SlidingTabLayout) findViewById(R.id.tabs);
-	    tabs.setViewPager(mViewPager);
+        // attach tabs to view pager
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        tabs.setViewPager(mViewPager);
         if (mDeck.getIdentity().getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
-	        tabs.setBackgroundColor(getResources().getColor(R.color.netrunner_blue));
+            tabs.setBackgroundColor(getResources().getColor(R.color.netrunner_blue));
         } else {
-	        tabs.setBackgroundColor(getResources().getColor(getResources().getIdentifier(
-			        "dark_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "color", this.
-					        getPackageName())));
+            tabs.setBackgroundColor(getResources().getColor(getResources().getIdentifier(
+                    "dark_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "color", this.
+                            getPackageName())));
         }
 
         // Update the infobar
@@ -241,22 +238,21 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
 
         @Override
         public CharSequence getPageTitle(int position) {
-	        switch (position)
-	        {
-		        case 0:
-			        return getResources().getString(R.string.tab_info);
-		        case 1:
-			        return getResources().getString(R.string.tab_my_cards);
-		        case 2:
-			        return getResources().getString(R.string.tab_cards);
-		        case 3:
-			        return getResources().getString(R.string.tab_build);
+            switch (position) {
+                case 0:
+                    return getResources().getString(R.string.tab_info);
+                case 1:
+                    return getResources().getString(R.string.tab_my_cards);
+                case 2:
+                    return getResources().getString(R.string.tab_cards);
+                case 3:
+                    return getResources().getString(R.string.tab_build);
                 case 4:
                     return getResources().getString(R.string.tab_stats);
-		        case 5:
-			        return getResources().getString(R.string.tab_hand);
-	        }
-	        return "";
+                case 5:
+                    return getResources().getString(R.string.tab_hand);
+            }
+            return "";
         }
 
     }
@@ -360,7 +356,7 @@ public class DeckActivity extends ActionBarActivity implements OnDeckChangedList
                 Intent intentEmailPlain = new Intent(Intent.ACTION_SEND);
                 intentEmailPlain.setType("text/plain");
                 intentEmailPlain.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + mDeck.getName());
-                intentEmailPlain.putExtra(Intent.EXTRA_TEXT, plainText+ "\n\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
+                intentEmailPlain.putExtra(Intent.EXTRA_TEXT, plainText + "\n\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
                 startActivity(Intent.createChooser(intentEmailPlain, getText(R.string.menu_share)));
 
                 return true;

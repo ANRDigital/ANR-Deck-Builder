@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.view.ViewGroup.LayoutParams;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
@@ -33,7 +33,7 @@ import java.util.Collections;
  *
  * @see SystemUiHider
  */
-public class ViewDeckFullscreenActivity extends ActionBarActivity {
+public class ViewDeckFullscreenActivity extends AppCompatActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -83,7 +83,7 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-	    // Get the deck / set name
+        // Get the deck / set name
         if (savedInstanceState == null) {
             mDeck = AppManager.getInstance().getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0));
             mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
@@ -96,15 +96,12 @@ public class ViewDeckFullscreenActivity extends ActionBarActivity {
             mPosition = savedInstanceState.getInt(EXTRA_POSITION);
         }
 
-	    // set theme to identity's faction colors
-	    if (mDeck != null)
-	    {
-		    setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
-	    }
-	    else if (mCardCode != null)
-	    {
-		    setTheme(getResources().getIdentifier("Theme.Netrunner_" + AppManager.getInstance().getCard(mCardCode).getFactionCode().replace("-", ""), "style", this.getPackageName()));
-	    }
+        // set theme to identity's faction colors
+        if (mDeck != null) {
+            setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
+        } else if (mCardCode != null) {
+            setTheme(getResources().getIdentifier("Theme.Netrunner_" + AppManager.getInstance().getCard(mCardCode).getFactionCode().replace("-", ""), "style", this.getPackageName()));
+        }
 
         setContentView(R.layout.activity_fullscreen_view);
 
