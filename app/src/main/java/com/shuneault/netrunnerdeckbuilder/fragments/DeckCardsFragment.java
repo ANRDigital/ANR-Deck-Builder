@@ -86,53 +86,54 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// Do not inflate if already there
-		if (menu.findItem(R.id.mnuSearch) == null)
-			inflater.inflate(R.menu.deck_cards, menu);
-		MenuItem item = menu.findItem(R.id.mnuSearch);
+        // Do not inflate if already there
+        if (menu.findItem(R.id.mnuSearch) == null)
+            inflater.inflate(R.menu.deck_cards, menu);
+        MenuItem item = menu.findItem(R.id.mnuSearch);
         SearchView sv = new SearchView(getActivity());
         item.setShowAsAction(MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
         item.setActionView(sv);
 
         //Applies white color on searchview text
-	    SearchView.SearchAutoComplete searchAutoComplete =
-			    (SearchView.SearchAutoComplete) sv.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-	    searchAutoComplete.setHintTextColor(Color.WHITE);
-	    searchAutoComplete.setTextColor(Color.WHITE);
-	    try {
-		    Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-		    mCursorDrawableRes.setAccessible(true);
-		    mCursorDrawableRes.set(searchAutoComplete, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
-	    } catch (Exception e) {}
+        SearchView.SearchAutoComplete searchAutoComplete =
+                (SearchView.SearchAutoComplete) sv.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchAutoComplete.setHintTextColor(Color.WHITE);
+        searchAutoComplete.setTextColor(Color.WHITE);
+        try {
+            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            mCursorDrawableRes.setAccessible(true);
+            mCursorDrawableRes.set(searchAutoComplete, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+        } catch (Exception e) {
+        }
 
-	    // set close button to white x
+        // set close button to white x
 //	    ImageView searchCloseIcon = (ImageView) sv.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
 //	    searchCloseIcon.setImageDrawable(getResources().getDrawable(R.drawable.abc_ic_clear_mtrl_alpha));
 
-	    // remove search icon
-	    sv.setIconifiedByDefault(false);
-	    ImageView searchIcon = (ImageView) sv.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
-	    searchIcon.setLayoutParams(new LinearLayout.LayoutParams(0,0));
+        // remove search icon
+        sv.setIconifiedByDefault(false);
+        ImageView searchIcon = (ImageView) sv.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
+        searchIcon.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
 
-	    // set underline
-	    View searchPlate = sv.findViewById(android.support.v7.appcompat.R.id.search_plate);
-	    searchPlate.setBackgroundResource(R.drawable.search);
+        // set underline
+        View searchPlate = sv.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        searchPlate.setBackgroundResource(R.drawable.search);
 
-		sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String arg0) {
-				return false;
-			}
+            @Override
+            public boolean onQueryTextSubmit(String arg0) {
+                return false;
+            }
 
-			@Override
-			public boolean onQueryTextChange(String arg0) {
+            @Override
+            public boolean onQueryTextChange(String arg0) {
                 if (mDeckCardsAdapter != null) {
                     mDeckCardsAdapter.filterData(arg0);
                 }
                 return false;
-			}
-		});
+            }
+        });
         MenuItemCompat.setOnActionExpandListener(item, this);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -278,16 +279,14 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
         setListView();
     }
 
-	@Override
-	public boolean onMenuItemActionExpand(MenuItem item)
-	{
-		return true;
-	}
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        return true;
+    }
 
-	@Override
-	public boolean onMenuItemActionCollapse(MenuItem item)
-	{
-		mDeckCardsAdapter.filterData("");
-		return true;
-	}
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        mDeckCardsAdapter.filterData("");
+        return true;
+    }
 }

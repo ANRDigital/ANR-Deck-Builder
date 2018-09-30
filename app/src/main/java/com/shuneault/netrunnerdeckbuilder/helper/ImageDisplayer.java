@@ -8,14 +8,6 @@ import android.widget.ImageView;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.util.CardImageDownloadUtil;
 
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
 public class ImageDisplayer {
 
     private Context mContext;
@@ -60,7 +52,7 @@ public class ImageDisplayer {
 
             try {
                 return CardImageDownloadUtil.downloadCardImage(card, mContext);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 return null;
             }
         }

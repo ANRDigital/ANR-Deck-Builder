@@ -1,26 +1,5 @@
 package com.shuneault.netrunnerdeckbuilder.helper;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
-import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
-import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
-import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.CardList;
-import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.prefs.ListPreferenceMultiSelect;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class AppManagerOld {
 
 //    private final static AppManager mAppManager = new AppManager();

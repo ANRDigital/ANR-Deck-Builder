@@ -15,7 +15,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
 
     // Load the deck on resume
     private Deck mDeck;
-	private FloatingActionButton fabButton;
+    private FloatingActionButton fabButton;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
 
@@ -79,22 +78,18 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
         }
         setContentView(R.layout.activity_material_main);
 
-	    // show action overflow regardless of hardware menu key
-	    try
-	    {
-		    ViewConfiguration vConfig = ViewConfiguration.get(this);
-		    Field menuKeyField = ViewConfiguration.class
-				    .getDeclaredField("sHasPermanentMenuKey");
-		    if (menuKeyField != null)
-		    {
-			    menuKeyField.setAccessible(true);
-			    menuKeyField.setBoolean(vConfig, false);
-		    }
-	    }
-	    catch (Exception ex)
-	    {
-		    // Ignore
-	    }
+        // show action overflow regardless of hardware menu key
+        try {
+            ViewConfiguration vConfig = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class
+                    .getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(vConfig, false);
+            }
+        } catch (Exception ex) {
+            // Ignore
+        }
         // GUI
         fabButton = (FloatingActionButton) findViewById(R.id.fabButton);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -120,9 +115,9 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
             }
         });
 
-	    // load show/hide animations for fab
-	    slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-	    slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+        // load show/hide animations for fab
+        slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+        slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
 
         // Action bar
         ActionBar mActionBar = getSupportActionBar();
@@ -175,27 +170,27 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-	        case R.id.mnuViewSet:
-		        // Get the set names
-		        final ArrayList<String> setNames = new ArrayList<String>();
-		        for (Pack pack : AppManager.getInstance().getAllPacks()) {
-			        setNames.add(pack.getName() + " (" + pack.getSize() + ")");
-		        }
-		        CharSequence[] cs = setNames.toArray(new CharSequence[setNames.size()]);
-		        // Display the dialog
-		        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-		        builder.setTitle(R.string.view_cards);
-		        builder.setItems(cs, new DialogInterface.OnClickListener() {
-			        @Override
-			        public void onClick(DialogInterface dialog, int which) {
-				        // Launch the full screen image viewer activity
+            case R.id.mnuViewSet:
+                // Get the set names
+                final ArrayList<String> setNames = new ArrayList<String>();
+                for (Pack pack : AppManager.getInstance().getAllPacks()) {
+                    setNames.add(pack.getName() + " (" + pack.getSize() + ")");
+                }
+                CharSequence[] cs = setNames.toArray(new CharSequence[setNames.size()]);
+                // Display the dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(R.string.view_cards);
+                builder.setItems(cs, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Launch the full screen image viewer activity
                         Intent intentFullScreen = new Intent(MainActivity.this, ViewDeckGridActivity.class);
                         intentFullScreen.putExtra(ViewDeckGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getAllPacks().get(which).getCode());
                         startActivity(intentFullScreen);
-			        }
-		        });
-		        builder.show();
-		        break;
+                    }
+                });
+                builder.show();
+                break;
             case R.id.mnuRefreshCards:
                 //doDownloadCards();
                 AppManager.getInstance().doDownloadCards();

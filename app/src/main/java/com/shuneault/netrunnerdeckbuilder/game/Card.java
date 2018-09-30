@@ -7,38 +7,31 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
-import android.util.Log;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 
 public class Card {
 
-//    public static final String NAME_LAST_MODIFIED = "last-modified";
+    //    public static final String NAME_LAST_MODIFIED = "last-modified";
     public static final String NAME_CODE = "code";
     public static final String NAME_COST = "cost";
     public static final String NAME_TITLE = "title";
-//    public static final String NAME_TYPE = "type";
+    //    public static final String NAME_TYPE = "type";
     public static final String NAME_TYPE_CODE = "type_code";
     public static final String NAME_SUBTYPE = "keywords";
-//    public static final String NAME_SUBTYPE_CODE = "subtype_code";
+    //    public static final String NAME_SUBTYPE_CODE = "subtype_code";
     public static final String NAME_TEXT = "text";
     public static final String NAME_BASELINK = "base_link";
-//    public static final String NAME_FACTION = "faction";
+    //    public static final String NAME_FACTION = "faction";
     public static final String NAME_FACTION_CODE = "faction_code";
     public static final String NAME_FACTION_COST = "faction_cost";
     public static final String NAME_FLAVOR = "flavor";
@@ -47,12 +40,12 @@ public class Card {
     public static final String NAME_MINIMUM_DECK_SIZE = "minimum_deck_size";
     public static final String NAME_NUMBER = "position";
     public static final String NAME_QUANTITY = "quantity";
-//    public static final String NAME_SET_NAME = "setname";
+    //    public static final String NAME_SET_NAME = "setname";
     public static final String NAME_SET_CODE = "pack_code";
-//    public static final String NAME_SIDE = "side";
+    //    public static final String NAME_SIDE = "side";
     public static final String NAME_SIDE_CODE = "side_code";
     public static final String NAME_UNIQUENESS = "uniqueness";
-//    public static final String NAME_URL = "url";
+    //    public static final String NAME_URL = "url";
     public static final String NAME_IMAGE_URL_OVERRIDE = "image_url";
     public static final String NAME_IMAGE_SRC = "imagesrc";
     public static final String NAME_AGENDA_POINTS = "agenda_points";
@@ -61,17 +54,17 @@ public class Card {
     public static final String NAME_TRASH = "trash_cost";
     public static final String NAME_STRENGTH = "strength";
 
-//    private Date lastModified;
+    //    private Date lastModified;
     private String code;
     private String cost;
     private String title;
-//    private String type;
+    //    private String type;
     private String typeCode;
     private String subtype;
-//    private String subtype_code;
+    //    private String subtype_code;
     private String text;
     private String baselink;
-//    private String faction;
+    //    private String faction;
     private String factionCode;
     private int factionCost;
     private String flavor;
@@ -80,9 +73,9 @@ public class Card {
     private String minimumDeckSize;
     private String number;
     private String quantity;
-//    private String setName;
+    //    private String setName;
     private String setCode;
-//    private String side;
+    //    private String side;
     private String sideCode;
     private int agendaPoints;
     private int advancementCost;
@@ -90,7 +83,7 @@ public class Card {
     private int trash;
     private int strength;
     private boolean uniqueness;
-//    private URL url;
+    //    private URL url;
     private URL imagesrc;
     private int mostWantedInfluence;
 
@@ -127,7 +120,7 @@ public class Card {
             this.uniqueness = json.optBoolean(NAME_UNIQUENESS);
 //            this.url = new URL(json.optString(NAME_URL));
             String imageUrl = json.optString(NAME_IMAGE_URL_OVERRIDE);
-            if(imageUrl == null || imageUrl.length() < 1) {
+            if (imageUrl == null || imageUrl.length() < 1) {
                 imageUrl = json.optString(NAME_IMAGE_SRC);
             }
             this.imagesrc = new URL(imageUrl);
@@ -285,6 +278,7 @@ public class Card {
 
     /**
      * Splits subtype string by " - " into array of subtypes.
+     *
      * @return Array of subtype strings.
      * If subtype string is empty, array will contain a single empty string.
      */
@@ -396,11 +390,11 @@ public class Card {
 
     /**
      * Gets ice/icebreaker main subtype.
+     *
      * @return The main subtype of an ice or icebreaker (if detected) card, otherwise an empty string.
      */
     public String getIceOrIcebreakerSubtype() {
-        switch (typeCode)
-        {
+        switch (typeCode) {
             case Type.ICE:
                 return getSubtypeArray()[0];
             case Type.PROGRAM:
@@ -451,7 +445,7 @@ public class Card {
     }
 
     public static class SetName {
-//        public static final String ALTERNATES = "Alternates";
+        //        public static final String ALTERNATES = "Alternates";
         public static final String CORE_SET = "core";
         public static final String REVISED_CORE_SET = "core2";
     }

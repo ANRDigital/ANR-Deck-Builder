@@ -1,15 +1,14 @@
 package com.shuneault.netrunnerdeckbuilder.util;
 
-import com.shuneault.netrunnerdeckbuilder.game.Card;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.shuneault.netrunnerdeckbuilder.game.Card;
+
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URLConnection;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -25,7 +24,7 @@ public class CardImageDownloadUtil {
     public static Bitmap downloadCardImage(Card card, Context mContext) throws Exception {
         try {
             URLConnection conn = card.getImagesrc().openConnection();
-            if(conn instanceof HttpsURLConnection) {
+            if (conn instanceof HttpsURLConnection) {
                 HttpsURLConnection https = (HttpsURLConnection) conn;
                 https.setSSLSocketFactory(getTrustAllSocketFactory().getSocketFactory());
             }
@@ -45,10 +44,12 @@ public class CardImageDownloadUtil {
         TrustManager[] trustAllCerts = new TrustManager[]{
                 new X509TrustManager() {
                     @Override
-                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
 
                     @Override
-                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
 
                     @Override
                     public X509Certificate[] getAcceptedIssuers() {
@@ -60,7 +61,8 @@ public class CardImageDownloadUtil {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, new SecureRandom());
             return sc;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return null;
     }
 

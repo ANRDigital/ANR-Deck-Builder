@@ -117,7 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Create a new deck
      *
-     * @param    deck    the deck to create
+     * @param deck the deck to create
      * @return rowId or -1 if failed
      */
     public Long createDeck(Deck deck) {

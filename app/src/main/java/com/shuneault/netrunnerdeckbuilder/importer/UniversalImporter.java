@@ -18,7 +18,8 @@ public class UniversalImporter implements IDeckImporter {
         } catch (Exception ignored) {
             try {
                 mDecks = (new XmlImporter(text)).toDecks();
-            } catch (Exception ignored2) {}
+            } catch (Exception ignored2) {
+            }
         }
     }
 

@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by sebast on 22/06/16.
  */
 
-public class JsonImporter implements IDeckImporter{
+public class JsonImporter implements IDeckImporter {
 
     private ArrayList<Deck> mDecks;
 

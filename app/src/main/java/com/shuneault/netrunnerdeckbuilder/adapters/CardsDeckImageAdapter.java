@@ -14,7 +14,6 @@ import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sebast on 21/02/15.

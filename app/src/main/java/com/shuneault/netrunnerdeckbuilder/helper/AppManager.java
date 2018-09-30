@@ -1,21 +1,14 @@
 package com.shuneault.netrunnerdeckbuilder.helper;
 
-import android.app.AlertDialog;
 import android.app.Application;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.text.format.DateFormat;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
-import com.shuneault.netrunnerdeckbuilder.fragments.DeckStatsFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
@@ -83,9 +76,9 @@ public class AppManager extends Application {
                 Log.i(LOGCAT, "Weekly download...");
                 doDownloadCards();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
-
 
 
     public static AppManager getInstance() {
@@ -104,7 +97,9 @@ public class AppManager extends Application {
         return mDecks;
     }
 
-    public ArrayList<Pack> getAllPacks() { return mPacks; }
+    public ArrayList<Pack> getAllPacks() {
+        return mPacks;
+    }
 
     public Pack getPackByCode(String code) {
         for (Pack pack : mPacks) {
@@ -301,14 +296,14 @@ public class AppManager extends Application {
         // Cards downloaded, load them
         try {
             /* Load the card list
-			 *
-			 * - Create the card
-			 * - Add the card to the array
-			 * - Generate the faction list
-			 * - Generate the side list
-			 * - Generate the card set list
-			 *
-			 */
+             *
+             * - Create the card
+             * - Add the card to the array
+             * - Generate the faction list
+             * - Generate the side list
+             * - Generate the card set list
+             *
+             */
             // Most Wanted List
             JSONObject jsonMWLfile = AppManager.getInstance().getJSON_MWLFile();
             JSONArray jsonMWLdata = jsonMWLfile.getJSONArray("data");
