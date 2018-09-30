@@ -2,7 +2,7 @@
   "data": [
     {
       "id": 1,
-      "date_creation": "-001-11-30T00:00:00+00:00",
+      "date_creation": "2018-05-01T15:24:02+00:00",
       "date_update": "2017-10-06T05:09:20+00:00",
       "code": "NAPD_MWL_1.0",
       "name": "NAPD MWL 1.0",
@@ -53,9 +53,6 @@
       "active": false,
       "date_start": "2016-08-01",
       "cards": {
-        "10018": {
-          "global_penalty": 1
-        },
         "01012": {
           "global_penalty": 1
         },
@@ -97,6 +94,9 @@
         },
         "08061": {
           "global_penalty": 1
+        },
+        "10018": {
+          "global_penalty": 1
         }
       }
     },
@@ -109,27 +109,6 @@
       "active": false,
       "date_start": "2017-04-12",
       "cards": {
-        "10018": {
-          "universal_faction_cost": 1
-        },
-        "10050": {
-          "universal_faction_cost": 1
-        },
-        "10053": {
-          "universal_faction_cost": 3
-        },
-        "10055": {
-          "universal_faction_cost": 1
-        },
-        "11022": {
-          "universal_faction_cost": 3
-        },
-        "11026": {
-          "universal_faction_cost": 1
-        },
-        "11101": {
-          "universal_faction_cost": 3
-        },
         "01012": {
           "universal_faction_cost": 1
         },
@@ -168,18 +147,60 @@
         },
         "08103": {
           "universal_faction_cost": 3
+        },
+        "10018": {
+          "universal_faction_cost": 1
+        },
+        "10050": {
+          "universal_faction_cost": 1
+        },
+        "10053": {
+          "universal_faction_cost": 3
+        },
+        "10055": {
+          "universal_faction_cost": 1
+        },
+        "11022": {
+          "universal_faction_cost": 3
+        },
+        "11026": {
+          "universal_faction_cost": 1
+        },
+        "11101": {
+          "universal_faction_cost": 3
         }
       }
     },
     {
       "id": 7,
       "date_creation": "2017-10-06T05:09:19+00:00",
-      "date_update": "2017-10-06T05:17:50+00:00",
+      "date_update": "2018-03-04T12:03:50+00:00",
       "code": "NAPD_MWL_2.0",
       "name": "NAPD MWL 2.0",
-      "active": true,
+      "active": false,
       "date_start": "2017-10-01",
       "cards": {
+        "03035": {
+          "is_restricted": 1
+        },
+        "03038": {
+          "is_restricted": 1
+        },
+        "08061": {
+          "deck_limit": 0
+        },
+        "08067": {
+          "is_restricted": 1
+        },
+        "08086": {
+          "is_restricted": 1
+        },
+        "09026": {
+          "is_restricted": 1
+        },
+        "09053": {
+          "is_restricted": 1
+        },
         "10018": {
           "is_restricted": 1
         },
@@ -239,11 +260,25 @@
         },
         "20052": {
           "is_restricted": 1
-        },
+        }
+      }
+    },
+    {
+      "id": 8,
+      "date_creation": "2018-02-22T07:19:25+00:00",
+      "date_update": "2018-09-17T17:40:29+00:00",
+      "code": "NAPD_MWL_2.1",
+      "name": "NAPD MWL 2.1",
+      "active": false,
+      "date_start": "2018-02-26",
+      "cards": {
         "03035": {
           "is_restricted": 1
         },
         "03038": {
+          "is_restricted": 1
+        },
+        "06010": {
           "is_restricted": 1
         },
         "08061": {
@@ -260,12 +295,221 @@
         },
         "09053": {
           "is_restricted": 1
+        },
+        "10018": {
+          "is_restricted": 1
+        },
+        "10019": {
+          "is_restricted": 1
+        },
+        "10049": {
+          "deck_limit": 0
+        },
+        "10050": {
+          "is_restricted": 1
+        },
+        "10053": {
+          "deck_limit": 0
+        },
+        "10055": {
+          "is_restricted": 1
+        },
+        "11022": {
+          "is_restricted": 1
+        },
+        "11026": {
+          "deck_limit": 0
+        },
+        "11049": {
+          "is_restricted": 1
+        },
+        "11090": {
+          "deck_limit": 0
+        },
+        "11101": {
+          "deck_limit": 0
+        },
+        "11104": {
+          "is_restricted": 1
+        },
+        "11106": {
+          "deck_limit": 0
+        },
+        "11111": {
+          "deck_limit": 0
+        },
+        "12048": {
+          "is_restricted": 1
+        },
+        "12070": {
+          "is_restricted": 1
+        },
+        "12079": {
+          "is_restricted": 1
+        },
+        "12089": {
+          "deck_limit": 0
+        },
+        "12103": {
+          "deck_limit": 0
+        },
+        "13029": {
+          "is_restricted": 1
+        },
+        "13032": {
+          "is_restricted": 1
+        },
+        "13051": {
+          "is_restricted": 1
+        },
+        "20050": {
+          "is_restricted": 1
+        },
+        "20052": {
+          "is_restricted": 1
+        }
+      }
+    },
+    {
+      "id": 9,
+      "date_creation": "2018-08-24T16:27:55+00:00",
+      "date_update": "2018-09-17T17:40:29+00:00",
+      "code": "NAPD_MWL_2.2",
+      "name": "NAPD MWL 2.2",
+      "active": true,
+      "date_start": "2018-09-06",
+      "cards": {
+        "01044": {
+          "is_restricted": 1
+        },
+        "01047": {
+          "is_restricted": 1
+        },
+        "03001": {
+          "deck_limit": 0
+        },
+        "03035": {
+          "is_restricted": 1
+        },
+        "06010": {
+          "is_restricted": 1
+        },
+        "08061": {
+          "deck_limit": 0
+        },
+        "08067": {
+          "is_restricted": 1
+        },
+        "08070": {
+          "deck_limit": 0
+        },
+        "08086": {
+          "is_restricted": 1
+        },
+        "09019": {
+          "deck_limit": 0
+        },
+        "09026": {
+          "is_restricted": 1
+        },
+        "09053": {
+          "is_restricted": 1
+        },
+        "10018": {
+          "is_restricted": 1
+        },
+        "10019": {
+          "deck_limit": 0
+        },
+        "10049": {
+          "deck_limit": 0
+        },
+        "10050": {
+          "is_restricted": 1
+        },
+        "10053": {
+          "deck_limit": 0
+        },
+        "10055": {
+          "is_restricted": 1
+        },
+        "11022": {
+          "is_restricted": 1
+        },
+        "11026": {
+          "deck_limit": 0
+        },
+        "11054": {
+          "is_restricted": 1
+        },
+        "11090": {
+          "deck_limit": 0
+        },
+        "11101": {
+          "deck_limit": 0
+        },
+        "11104": {
+          "deck_limit": 0
+        },
+        "11106": {
+          "deck_limit": 0
+        },
+        "11111": {
+          "is_restricted": 1
+        },
+        "11117": {
+          "is_restricted": 1
+        },
+        "12008": {
+          "is_restricted": 1
+        },
+        "12048": {
+          "is_restricted": 1
+        },
+        "12070": {
+          "is_restricted": 1
+        },
+        "12079": {
+          "is_restricted": 1
+        },
+        "12081": {
+          "deck_limit": 0
+        },
+        "12089": {
+          "deck_limit": 0
+        },
+        "12103": {
+          "deck_limit": 0
+        },
+        "13029": {
+          "is_restricted": 1
+        },
+        "13032": {
+          "deck_limit": 0
+        },
+        "13041": {
+          "is_restricted": 1
+        },
+        "13051": {
+          "is_restricted": 1
+        },
+        "20050": {
+          "is_restricted": 1
+        },
+        "20052": {
+          "is_restricted": 1
+        },
+        "21101": {
+          "deck_limit": 0
+        },
+        "21118": {
+          "is_restricted": 1
         }
       }
     }
   ],
-  "total": 4,
+  "total": 6,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2017-10-06T05:17:50+00:00"
+  "last_updated": "2018-09-17T17:40:29+00:00"
 }
