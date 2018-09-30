@@ -5,10 +5,6 @@ import com.shuneault.netrunnerdeckbuilder.game.CardMWL;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class DeckValidator {
     private final MostWantedList mMostWantedList;
 
@@ -28,7 +24,7 @@ public class DeckValidator {
                 restrictedCount++;
             }
 
-            if (identityMwl.hasDeckLimit() && deck.getIdentity().getQuantity() > identityMwl.getDeckLimit()){
+            if (identityMwl.hasDeckLimit() && deck.getIdentity().getQuantity() > identityMwl.getDeckLimit()) {
                 exceedsDeckLimits = true;
             }
         }
@@ -36,13 +32,13 @@ public class DeckValidator {
         // check the rest of the deck
         for (Card card : deck.getCards()) {
             CardMWL cardMwl = mMostWantedList.GetCardMWL(card);
-            if (cardMwl != null){
-                if (cardMwl.isRestricted()){
+            if (cardMwl != null) {
+                if (cardMwl.isRestricted()) {
                     restrictedCount++;
                 }
 
-                if (cardMwl.hasDeckLimit() && card.getQuantity() > cardMwl.getDeckLimit()){
-                     exceedsDeckLimits = true;
+                if (cardMwl.hasDeckLimit() && card.getQuantity() > cardMwl.getDeckLimit()) {
+                    exceedsDeckLimits = true;
                 }
             }
         }

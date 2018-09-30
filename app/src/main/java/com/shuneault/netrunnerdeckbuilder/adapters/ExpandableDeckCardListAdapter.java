@@ -181,13 +181,13 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
             viewHolder.lblMostWanted.setText("");
             MostWantedList mwl = AppManager.getInstance().getMWL();
             CardMWL cardMWL = mwl.GetCardMWL(card);
-            if (cardMWL != null){
-                if (cardMWL.isRestricted()){
+            if (cardMWL != null) {
+                if (cardMWL.isRestricted()) {
                     int unicorn = 0x1F984;
                     viewHolder.lblMostWanted.setText(new String(Character.toChars(unicorn)));
                 }
 
-                if(cardMWL.isRemoved()){
+                if (cardMWL.isRemoved()) {
                     int noEntry = 0x1F6AB;
                     viewHolder.lblMostWanted.setText(new String(Character.toChars(noEntry)));
                 }

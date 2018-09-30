@@ -11,8 +11,6 @@ public class CardMWL {
     private int deckLimit = -1;
     private boolean isRestricted = false;
 
-    public CardMWL() { }
-
     public CardMWL(JSONObject mwlData) {
         try {
             if (mwlData.has("global_penalty")) {

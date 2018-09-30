@@ -1,11 +1,8 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -16,7 +13,7 @@ public class MostWantedList {
     private boolean active = false;
     private HashMap<String, CardMWL> cards = new HashMap<>();
 
-    public MostWantedList(JSONObject mwlData){
+    public MostWantedList(JSONObject mwlData) {
         try {
             if (mwlData.has("id")) {
                 this.iD = mwlData.getString("id");
@@ -47,8 +44,7 @@ public class MostWantedList {
     public CardMWL GetCardMWL(Card card) {
         if (this.cards.containsKey(card.getCode())) {
             return cards.get(card.getCode());
-        }
-        else {
+        } else {
             return null;
         }
     }

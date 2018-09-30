@@ -187,11 +187,11 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         // this will become an IDeckValidator, format
         DeckValidator validator = AppManager.getInstance().getDeckValidator();
         if (validator.Validate(mDeck)) {
-           lblInfoLegal.setTextAppearance(this, R.style.InfoBarGood);
-           lblInfoLegal.setText("✓");
+            lblInfoLegal.setTextAppearance(this, R.style.InfoBarGood);
+            lblInfoLegal.setText("✓");
         } else {
-           lblInfoLegal.setTextAppearance(this, R.style.InfoBarBad);
-           lblInfoLegal.setText("✗");
+            lblInfoLegal.setTextAppearance(this, R.style.InfoBarBad);
+            lblInfoLegal.setText("✗");
         }
     }
 

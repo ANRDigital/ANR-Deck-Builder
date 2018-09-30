@@ -310,7 +310,7 @@ public class AppManager extends Application {
             JSONArray mMWLData = mJsonMWLfile.getJSONArray("data");
             for (int i = 0; i < mMWLData.length(); i++) {
                 JSONObject mwlJSON = mMWLData.getJSONObject(i);
-                if (mwlJSON.has("active")){
+                if (mwlJSON.has("active")) {
                     mActiveMWL = new MostWantedList(mwlJSON);
                 }
             }
@@ -430,7 +430,7 @@ public class AppManager extends Application {
 
     }
 
-    public DeckValidator getDeckValidator(){
+    public DeckValidator getDeckValidator() {
         // create validator
         return new DeckValidator(mActiveMWL);
     }
