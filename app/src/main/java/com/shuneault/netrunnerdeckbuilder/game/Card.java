@@ -148,7 +148,7 @@ public class Card {
     }
 
     public String getCost() {
-        return cost;
+        return cost.equals("null") ? "X" : cost;
     }
 
     public String getTitle() {
