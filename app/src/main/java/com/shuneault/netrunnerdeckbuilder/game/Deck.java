@@ -547,4 +547,8 @@ public class Deck implements Serializable, HeaderListItemInterface {
     public ArrayList<String> getPackFilter() {
         return packFilter;
     }
+
+    public boolean hasPackFilter() {
+        return packFilter.size() > 0;
+    }
 }

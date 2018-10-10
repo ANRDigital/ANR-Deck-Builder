@@ -63,6 +63,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     private ViewPager mViewPager;
     private SlidingTabLayout tabs;
     private LinearLayout layoutAgendas;
+    private LinearLayout layoutFiltered;
     private TextView lblInfoInfluence;
     private TextView lblInfoCards;
     private TextView lblInfoAgenda;
@@ -95,6 +96,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         // GUI
         mViewPager = (ViewPager) findViewById(R.id.pager);
         layoutAgendas = (LinearLayout) findViewById(R.id.layoutAgendas);
+        layoutFiltered = (LinearLayout) findViewById(R.id.layoutFiltered);
         lblInfoInfluence = (TextView) findViewById(R.id.lblInfoInfluence);
         lblInfoCards = (TextView) findViewById(R.id.lblInfoCards);
         lblInfoAgenda = (TextView) findViewById(R.id.lblInfoAgenda);
@@ -143,6 +145,15 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
             layoutAgendas.setVisibility(View.GONE);
         }
 
+        setPackFilterIconVisibility();
+
+        layoutFiltered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doSetPacks();
+            }
+        });
+
         // Set the page adapter
         mViewPager.setAdapter(new DeckTabsPagerAdapter(getSupportFragmentManager()));
 
@@ -159,6 +170,15 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
         // Update the infobar
         updateInfoBar();
+    }
+
+    private void setPackFilterIconVisibility() {
+        if (mDeck.hasPackFilter())
+        {
+            layoutFiltered.setVisibility(View.VISIBLE);
+        } else {
+            layoutFiltered.setVisibility(View.GONE);
+        }
     }
 
     private void updateInfoBar() {
@@ -425,6 +445,8 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         if (fragDeckCards != null)
             fragDeckCards.onSettingsChanged();
 
+        // update filtered icon
+        setPackFilterIconVisibility();
     }
 
     @Override
