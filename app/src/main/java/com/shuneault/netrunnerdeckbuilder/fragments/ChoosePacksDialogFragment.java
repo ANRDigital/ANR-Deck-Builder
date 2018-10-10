@@ -74,6 +74,17 @@ public class ChoosePacksDialogFragment extends DialogFragment {
                 mListener.onChoosePacksDialogPositiveClick(ChoosePacksDialogFragment.this);
                 }
             })
+            .setNeutralButton(R.string.reset, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    for (int i = 0; i < arrChecks.length; i++) {
+                        arrChecks[i] = false;
+                    }
+                    // Send the positive button event back to the host activity
+
+                    mListener.onChoosePacksDialogPositiveClick(ChoosePacksDialogFragment.this);
+                }
+            })
             .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
