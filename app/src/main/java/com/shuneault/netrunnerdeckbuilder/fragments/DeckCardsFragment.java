@@ -28,6 +28,7 @@ import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter.OnButtonClickListener;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
@@ -48,7 +49,6 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
     private Deck mDeck;
 
     private Card currentCard;
-    private View mainView;
     // TODO: Change to ExpandableStickyListAdapter https://github.com/emilsjolander/StickyListHeaders
     private ExpandableListView lstDeckCards;
     private ExpandableDeckCardListAdapter mDeckCardsAdapter;
@@ -56,7 +56,6 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
     // Database
     DatabaseHelper mDb;
 
-    private ArrayList<String> mListHeaders;
     private HashMap<String, ArrayList<Card>> mListCards;
 
     @Override
@@ -66,7 +65,7 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
         setHasOptionsMenu(true);
 
         // Inflate
-        mainView = inflater.inflate(R.layout.fragment_deck_cards, container, false);
+        View mainView = inflater.inflate(R.layout.fragment_deck_cards, container, false);
 
         // Get the arguments
         mDeck = AppManager.getInstance().getDeck(getArguments().getLong(DeckActivity.ARGUMENT_DECK_ID));
@@ -78,7 +77,7 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
         mDb = new DatabaseHelper(getActivity());
 
         // Set the list view
-        setListView();
+        setListView(mDeck);
 
         return mainView;
 
@@ -169,52 +168,69 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
     }
 
 
-    private void sortListCards() {
+    private void sortListCards(ArrayList<String> headers, HashMap<String, ArrayList<Card>> listCards) {
         // Sort by faction,
         // My cards must be sorted by type
         String strMyCards = getResources().getString(R.string.my_cards);
-        for (String strCat : mListHeaders) {
-            if (mListCards.get(strCat) == null) continue;
+        for (String strCat : headers) {
+            if (listCards.get(strCat) == null) continue;
             if (strCat.equals(strMyCards))
-                Collections.sort(mListCards.get(strCat), new Sorter.CardSorterByCardType());
+                Collections.sort(listCards.get(strCat), new Sorter.CardSorterByCardType());
             else
                 //Collections.sort(mListCards.get(strCat), new Sorter.CardSorterByFaction());
-                Collections.sort(mListCards.get(strCat), new Sorter.CardSorterByFactionWithMineFirst(mDeck.getIdentity()));
+                Collections.sort(listCards.get(strCat), new Sorter.CardSorterByFactionWithMineFirst(mDeck.getIdentity()));
         }
 
     }
 
-    private void setListView() {
+    private void setListView(Deck deck) {
         // Get the headers
-        mListHeaders = AppManager.getInstance().getAllCards().getCardType(mDeck.getIdentity().getSideCode());
-        mListHeaders.remove(mDeck.getIdentity().getTypeCode()); // Remove the Identity category
-        Collections.sort(mListHeaders);
+        String sideCode = deck.getIdentity().getSideCode();
+        AppManager appManager = AppManager.getInstance();
+        ArrayList<String> headers = appManager.getAllCards().getCardType(sideCode);
+        // Remove the Identity category
+        headers.remove(deck.getIdentity().getTypeCode());
+        Collections.sort(headers);
 
         // Get the cards
-        mListCards = new HashMap<String, ArrayList<Card>>();
-        for (Card theCard : AppManager.getInstance().getCardsFromDataPacksToDisplay()) {
+        mListCards = new HashMap<>();
+        CardList cardCollection = appManager.getCardsFromDataPacksToDisplay(mDeck.getPackFilter());
+        for (Card theCard : cardCollection) {
             // Only add the cards that are on my side
-            boolean isSameSide = theCard.getSideCode().equals(mDeck.getIdentity().getSideCode());
+            boolean isSameSide = theCard.getSideCode().equals(sideCode);
+
             // Do not add the identities
-            boolean isIdentity = theCard.getTypeCode().equals(Card.Type.IDENTITY);
+            boolean isIdentity = theCard.isIdentity();
+
             // Only display agendas that belong to neutral or my faction
-            boolean isGoodAgenda = !theCard.getTypeCode().equals(Card.Type.AGENDA) || theCard.getFactionCode().equals(mDeck.getIdentity().getFactionCode()) || theCard.getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL);
+            String deckFaction = deck.getIdentity().getFactionCode();
+            boolean isGoodAgenda = !theCard.isAgenda()
+                    || theCard.getFactionCode().equals(deckFaction)
+                    || theCard.isNeutral();
+
             // Cannot add Jinteki card for "Custom Biotics: Engineered for Success" Identity
-            boolean isJintekiOK = !theCard.getFactionCode().equals(Card.Faction.FACTION_JINTEKI) || !mDeck.getIdentity().getCode().equals(Card.SpecialCards.CARD_CUSTOM_BIOTICS_ENGINEERED_FOR_SUCCESS);
+            boolean isJintekiOK = !theCard.isJinteki() || !deck.getIdentity().getCode().equals(Card.SpecialCards.CARD_CUSTOM_BIOTICS_ENGINEERED_FOR_SUCCESS);
+
             // Ignore non-virtual resources if runner is Apex and setting is set
-            boolean isNonVirtualOK = !theCard.getTypeCode().contains("Resource") || theCard.getSubtype().contains("Virtual") || !(mDeck.getIdentity().getCode().equals(Card.SpecialCards.APEX) && PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("pref_HideNonVirtualApex", true));
+            boolean isNonVirtualOK = !theCard.isResource()
+                    || theCard.isVirtual()
+                    || !(deck.isApex() && PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("pref_HideNonVirtualApex", true));
+
             if (isSameSide && !isIdentity && isGoodAgenda && isJintekiOK && isNonVirtualOK) {
+                // add the type grouping if it doesn't exist
                 if (mListCards.get(theCard.getTypeCode()) == null)
                     mListCards.put(theCard.getTypeCode(), new ArrayList<Card>());
+
+                // add the card to the type group
                 mListCards.get(theCard.getTypeCode()).add(theCard);
             }
         }
 
         // Sort the cards
-        sortListCards();
+        sortListCards(headers, mListCards);
 
         // Set the adapter
-        mDeckCardsAdapter = new ExpandableDeckCardListAdapter(getActivity(), mListHeaders, mListCards, mDeck, new OnButtonClickListener() {
+        mDeckCardsAdapter = new ExpandableDeckCardListAdapter(getActivity(), headers, mListCards, deck, new OnButtonClickListener() {
 
             @Override
             public void onPlusClick(Card card) {
@@ -269,14 +285,14 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
     @Override
     public void onDeckIdentityChanged(Card newIdentity) {
         if (!isAdded()) return;
-        setListView();
+        setListView(mDeck);
     }
 
     @Override
     public void onSettingsChanged() {
         // Refresh the cards
         if (!isAdded()) return;
-        setListView();
+        setListView(mDeck);
     }
 
     @Override

@@ -411,6 +411,30 @@ public class Card {
         return ((Card) o).getCode().equals(this.getCode());
     }
 
+    public boolean isResource() {
+        return getTypeCode().contains("Resource");
+    }
+
+    public boolean isVirtual() {
+        return getSubtype().contains("Virtual");
+    }
+
+    public boolean isNeutral() {
+        return getFactionCode().startsWith(Faction.FACTION_NEUTRAL);
+    }
+
+    public boolean isAgenda() {
+        return getTypeCode().equals(Type.AGENDA);
+    }
+
+    public boolean isIdentity() {
+        return getTypeCode().equals(Type.IDENTITY);
+    }
+
+    public boolean isJinteki() {
+        return getFactionCode().equals(Faction.FACTION_JINTEKI);
+    }
+
     public static class Faction {
         public static final String FACTION_NEUTRAL = "neutral-";
         public static final String FACTION_SHAPER = "shaper";

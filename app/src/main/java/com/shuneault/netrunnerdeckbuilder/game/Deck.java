@@ -29,6 +29,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
     private UUID mUUID = UUID.randomUUID();
     private Long mRowId;
     private HashMap<Card, Integer> mCards = new HashMap<Card, Integer>();
+    private ArrayList<String> packFilter = new ArrayList<>();
 
     // Cards to add and cards to remove for deck building
     private HashMap<Card, CardCount> mCardsToAdd = new HashMap<Card, CardCount>();
@@ -100,6 +101,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
     public void setNotes(String notes) {
         mNotes = notes;
     }
+
 
     public String getSide() {
         try {
@@ -532,5 +534,17 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public void setStarred(boolean starred) {
         this.mStarred = starred;
+    }
+
+    public boolean isApex() {
+        return getIdentity().getCode().equals(Card.SpecialCards.APEX);
+    }
+
+    public void setPackFilter(ArrayList<String> packFilter) {
+        this.packFilter = packFilter;
+    }
+
+    public ArrayList<String> getPackFilter() {
+        return packFilter;
     }
 }

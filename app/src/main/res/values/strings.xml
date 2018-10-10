@@ -22,10 +22,10 @@
     <string name="clear_all">Clear All</string>
     <string name="clear_checked">Clear checked</string>
     <string name="cancel">Cancel</string>
-    <string name="delete_deck">Delete Deck</string>
+    <string name="delete_deck">Delete deck</string>
     <string name="clone_deck">Clone deck</string>
     <string name="copy_of">Copy of %1$s</string>
-    <string name="view_fullscreen">View Fullscreen</string>
+    <string name="view_fullscreen">View fullscreen</string>
     <string name="total_number_of_decks">Total number of decks: </string>
     <string name="number_images_cached">Number of images cached: </string>
     <string name="download_all_images">Download all images</string>
@@ -108,9 +108,9 @@
     <string name="menu_about">About</string>
     <string name="menu_new_corp">Corporation</string>
     <string name="menu_new_runner">Runner</string>
-    <string name="menu_view_sets">View Card Sets</string>
+    <string name="menu_view_sets">View card sets</string>
     <string name="menu_refresh_cards">Update cards list</string>
-    <string name="menu_change_identity">Change Identity</string>
+    <string name="menu_change_identity">Change identity</string>
     <string name="menu_search">Search</string>
     <string name="menu_options">Options</string>
     <string name="menu_share">Share/Export</string>
@@ -197,5 +197,7 @@
     <string name="import_decks">Import Decks</string>
     <string name="mwl">MWL</string>
     <string name="card_list_updated_successfully">Card list updated successfully</string>
+    <string name="set_card_pool">Set card pool</string>
+    <string name="choose_packs">Choose the packs to use</string>
 
 </resources>
