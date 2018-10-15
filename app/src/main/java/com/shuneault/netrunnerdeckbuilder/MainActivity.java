@@ -23,8 +23,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.fragments.ListDecksFragment;
@@ -41,8 +39,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-
-import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity implements OnDeckChangedListener, ListDecksFragment.OnListDecksFragmentListener {
 
@@ -73,9 +69,6 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!BuildConfig.DEBUG) {
-            Fabric.with(this, new Answers(), new Crashlytics());
-        }
         setContentView(R.layout.activity_material_main);
 
         // show action overflow regardless of hardware menu key
