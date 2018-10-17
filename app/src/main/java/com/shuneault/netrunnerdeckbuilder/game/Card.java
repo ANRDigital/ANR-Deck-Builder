@@ -148,7 +148,7 @@ public class Card {
     }
 
     public String getCost() {
-        return cost;
+        return cost.equals("null") ? "X" : cost;
     }
 
     public String getTitle() {
@@ -409,6 +409,30 @@ public class Card {
     @Override
     public boolean equals(Object o) {
         return ((Card) o).getCode().equals(this.getCode());
+    }
+
+    public boolean isResource() {
+        return getTypeCode().contains("Resource");
+    }
+
+    public boolean isVirtual() {
+        return getSubtype().contains("Virtual");
+    }
+
+    public boolean isNeutral() {
+        return getFactionCode().startsWith(Faction.FACTION_NEUTRAL);
+    }
+
+    public boolean isAgenda() {
+        return getTypeCode().equals(Type.AGENDA);
+    }
+
+    public boolean isIdentity() {
+        return getTypeCode().equals(Type.IDENTITY);
+    }
+
+    public boolean isJinteki() {
+        return getFactionCode().equals(Faction.FACTION_JINTEKI);
     }
 
     public static class Faction {

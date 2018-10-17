@@ -12,6 +12,7 @@ import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.prefs.ListPreferenceMultiSelect;
@@ -30,6 +31,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by sebast on 24/01/16.
@@ -56,6 +58,7 @@ public class AppManager extends Application {
     private ArrayList<Deck> mDecks = new ArrayList<>();
     private CardList mCards = new CardList();
     private ArrayList<Pack> mPacks = new ArrayList<>();
+    private MostWantedList mActiveMWL;
     private HashMap<String, JSONObject> mMWLInfluences = new HashMap<>();
 
     @Override
@@ -63,6 +66,7 @@ public class AppManager extends Application {
         super.onCreate();
         mInstance = this;
         mDb = new DatabaseHelper(this);
+        doLoadMWL();
         doLoadCards();
         doLoadPacks();
         mDecks.addAll(mDb.getAllDecks(true));
@@ -75,8 +79,10 @@ public class AppManager extends Application {
             if (today.getTimeInMillis() - lastUpdate.getTimeInMillis() > (24 * 60 * 60 * 1000 * 7)) {
                 Log.i(LOGCAT, "Weekly download...");
                 doDownloadCards();
+                doDownloadMWL();
             }
         } catch (Exception ignored) {
+            //todo: flag a message here?`
         }
     }
 
@@ -121,14 +127,19 @@ public class AppManager extends Application {
         }
 
         // Return only the data packs requested
-        CardList cd = new CardList();
-        ArrayList<String> arrDataPacks = new ArrayList<String>(Arrays.asList(ListPreferenceMultiSelect.parseStoredValue(getSharedPrefs().getString(SettingsActivity.KEY_PREF_DATA_PACKS_TO_DISPLAY, ""))));
-        for (Card card : this.mCards) {
-            if (arrDataPacks.contains(card.getSetName())) {
-                cd.add(card);
-            }
+        String packsPref = getSharedPrefs().getString(SettingsActivity.KEY_PREF_DATA_PACKS_TO_DISPLAY, "");
+        ArrayList<String> packs = new ArrayList<>(Arrays.asList(ListPreferenceMultiSelect.parseStoredValue(packsPref)));
+        return mCards.getPacks(packs);
+    }
+
+
+    public CardList getCardsFromDataPacksToDisplay(ArrayList<String> packs) {
+        if (packs.size() > 0)
+        {
+            return mCards.getPacks(packs);
         }
-        return cd;
+        else
+            return getCardsFromDataPacksToDisplay();
     }
 
     public ArrayList<String> getSetNames() {
@@ -160,11 +171,7 @@ public class AppManager extends Application {
 
     // Return the requested card
     public Card getCard(String code) {
-        for (Card theCard : mCards) {
-            if (theCard.getCode().equals(code))
-                return theCard;
-        }
-        return null;
+        return mCards.getCard(code);
     }
 
     // decks with rowId of 128 and higher wouldn't load so
@@ -304,23 +311,12 @@ public class AppManager extends Application {
              * - Generate the card set list
              *
              */
-            // Most Wanted List
-            JSONObject jsonMWLfile = AppManager.getInstance().getJSON_MWLFile();
-            JSONArray jsonMWLdata = jsonMWLfile.getJSONArray("data");
-            JSONObject jsonMWLcards = jsonMWLdata
-                    .getJSONObject(2)
-                    .getJSONObject("cards");
-            Iterator<String> iterCards = jsonMWLcards.keys();
-            while (iterCards.hasNext()) {
-                String cardCode = iterCards.next();
-                mMWLInfluences.put(cardCode, jsonMWLcards.getJSONObject(cardCode));
-            }
 
             // The cards
             JSONObject jsonFile = AppManager.getInstance().getJSONCardsFile();
             JSONArray jsonCards = jsonFile.getJSONArray("data");
-            CardList arrCards = AppManager.getInstance().getAllCards();
-            arrCards.clear();
+
+            mCards.clear();
             for (int i = 0; i < jsonCards.length(); i++) {
                 // Create the card and add to the array
                 //		Do not load cards from the Alternates set
@@ -336,18 +332,14 @@ public class AppManager extends Application {
                 }
                 String cardCode = jsonCard.getString(Card.NAME_CODE);
                 jsonCard.put(Card.NAME_IMAGE_SRC, jsonFile.getString("imageUrlTemplate").replace("{code}", cardCode));
-                // New Card
-                Card card;
-                if (mMWLInfluences.containsKey(cardCode)) {
-                    card = new Card(jsonCard, mMWLInfluences.get(cardCode).optInt("universal_faction_cost", 0));
-                } else {
-                    card = new Card(jsonCard);
-                }
-                arrCards.add(card);
-            }
 
-            // Load the decks
-//            doLoadDecks();
+                // New Card
+                int cardUniversalCost = 0;
+                if (mMWLInfluences.containsKey(cardCode)) {
+                    cardUniversalCost = mMWLInfluences.get(cardCode).optInt("universal_faction_cost", 0);
+                }
+                mCards.add(new Card(jsonCard, cardUniversalCost));
+            }
 
         } catch (FileNotFoundException e) {
 
@@ -358,7 +350,36 @@ public class AppManager extends Application {
         }
     }
 
-    public void doDownloadCards() {
+    private void doLoadMWL() {
+        try {
+            // Most Wanted List
+            JSONObject mJsonMWLfile = AppManager.getInstance().getJSON_MWLFile();
+            JSONArray mMWLData = mJsonMWLfile.getJSONArray("data");
+            for (int i = 0; i < mMWLData.length(); i++) {
+                JSONObject mwlJSON = mMWLData.getJSONObject(i);
+                if (mwlJSON.has("active")) {
+                    mActiveMWL = new MostWantedList(mwlJSON);
+                }
+            }
+
+            mMWLInfluences.clear();
+            JSONObject jsonMWLCards = mMWLData
+                    .getJSONObject(2)
+                    .getJSONObject("cards");
+            Iterator<String> iterCards = jsonMWLCards.keys();
+            while (iterCards.hasNext()) {
+                String cardCode = iterCards.next();
+                mMWLInfluences.put(cardCode, jsonMWLCards.getJSONObject(cardCode));
+            }
+
+        } catch (FileNotFoundException e) {
+            doDownloadMWL();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void doDownloadMWL(){
         // Most Wanted List
         StringDownloader sdMWL = new StringDownloader(this, NetRunnerBD.getMWLUrl(), AppManager.FILE_MWL_JSON, new StringDownloader.FileDownloaderListener() {
 
@@ -369,30 +390,7 @@ public class AppManager extends Application {
 
             @Override
             public void onTaskComplete(String s) {
-
-                // Cards List
-                StringDownloader sdCards = new StringDownloader(AppManager.this, NetRunnerBD.getAllCardsUrl(), AppManager.FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
-                    @Override
-                    public void onBeforeTask() {
-
-                    }
-
-                    @Override
-                    public void onTaskComplete(String s) {
-                        getSharedPrefs()
-                                .edit()
-                                .putLong(SHARED_PREF_LAST_UPDATE_DATE, Calendar.getInstance().getTimeInMillis())
-                                .apply();
-                        doLoadCards();
-                        Toast.makeText(getApplicationContext(), R.string.card_list_updated_successfully, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-
-                    }
-                });
-                sdCards.execute();
+                doLoadMWL();
             }
 
             @Override
@@ -401,6 +399,33 @@ public class AppManager extends Application {
             }
         });
         sdMWL.execute();
+
+    }
+
+    public void doDownloadCards() {
+        // Cards List
+        StringDownloader sdCards = new StringDownloader(AppManager.this, NetRunnerBD.getAllCardsUrl(), AppManager.FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
+            @Override
+            public void onBeforeTask() {
+
+            }
+
+            @Override
+            public void onTaskComplete(String s) {
+                getSharedPrefs()
+                        .edit()
+                        .putLong(SHARED_PREF_LAST_UPDATE_DATE, Calendar.getInstance().getTimeInMillis())
+                        .apply();
+                doLoadCards();
+                Toast.makeText(getApplicationContext(), R.string.card_list_updated_successfully, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
+        sdCards.execute();
 
         StringDownloader sdPacks = new StringDownloader(this, NetRunnerBD.getAllPacksUrl(), AppManager.FILE_PACKS_JSON, new StringDownloader.FileDownloaderListener() {
             @Override
@@ -420,6 +445,16 @@ public class AppManager extends Application {
         });
         sdPacks.execute();
 
+    }
+
+    public DeckValidator getDeckValidator() {
+        // create validator
+        return new DeckValidator(mActiveMWL);
+    }
+
+    // return the default (active) mwl
+    public MostWantedList getMWL() {
+        return mActiveMWL;
     }
 
 }

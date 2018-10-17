@@ -110,4 +110,14 @@ public class CardList extends ArrayList<Card> {
     }
 
 
+    public CardList getPacks(ArrayList<String> packs) {
+        CardList cd = new CardList();
+
+        for (Card card : this) {
+            if (packs.contains(card.getSetName())) {
+                cd.add(card);
+            }
+        }
+        return cd;
+    }
 }

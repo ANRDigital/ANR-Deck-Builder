@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardCount;
@@ -12,6 +13,8 @@ import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.IllegalFormatCodePointException;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -19,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * SQL
      */
     // Database Version
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     // Database Name
     private static final String DATABASE_NAME = "deckBuilder.db";
@@ -38,6 +41,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_DECKS_NOTES = "notes";
     private static final String KEY_DECKS_IDENTITY = "identity_code";
     private static final String KEY_DECKS_STARRED = "starred";
+    private static final String KEY_DECKS_PACKFILTER = "pack_filter";
+    private static final String PACK_FILTER_SEPARATOR = "~";
 
     // Deck Cards
     private static final String KEY_DECK_CARDS_DECK_ID = "deck_id";
@@ -80,6 +85,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String ALTER_TABLE_DECK_ADD_STARRED = "ALTER TABLE " + TABLE_DECKS + " " +
             "ADD " + KEY_DECKS_STARRED + " BIT NOT NULL DEFAULT(0)";
 
+    private static final String ALTER_TABLE_DECK_ADD_PACKFILTER = "ALTER TABLE " + TABLE_DECKS + " " +
+            "ADD " + KEY_DECKS_PACKFILTER + " TEXT NOT NULL DEFAULT('')";
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -110,6 +118,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             case 3:
                 // Add "starred" field for decks
                 db.execSQL(ALTER_TABLE_DECK_ADD_STARRED);
+            case 4:
+                // add pack filter field for decks
+                db.execSQL(ALTER_TABLE_DECK_ADD_PACKFILTER);
         }
     }
 
@@ -145,7 +156,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Deck> getAllDecks(boolean withCards) {
         ArrayList<Deck> decks = new ArrayList<Deck>();
-        Cursor c = getReadableDatabase().query(TABLE_DECKS, new String[]{KEY_ID, KEY_DECKS_NAME, KEY_DECKS_NOTES, KEY_DECKS_IDENTITY, KEY_DECKS_STARRED}, null, null, null, null, null);
+        Cursor c = getReadableDatabase().query(TABLE_DECKS, new String[]{KEY_ID, KEY_DECKS_NAME, KEY_DECKS_NOTES, KEY_DECKS_IDENTITY, KEY_DECKS_STARRED, KEY_DECKS_PACKFILTER}, null, null, null, null, null);
 
         // Loop and create objects as we go
         if (c.moveToFirst()) {
@@ -154,6 +165,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 deck.setNotes(c.getString(c.getColumnIndex(KEY_DECKS_NOTES)));
                 deck.setRowId(c.getLong(c.getColumnIndex(KEY_ID)));
                 deck.setStarred(c.getInt(c.getColumnIndex(KEY_DECKS_STARRED)) > 0);
+                String packFilterValue = c.getString(c.getColumnIndex(KEY_DECKS_PACKFILTER));
+                if (!packFilterValue.isEmpty()) {
+                    ArrayList<String> pf = new ArrayList<>(Arrays.asList(packFilterValue.split(PACK_FILTER_SEPARATOR)));
+                    deck.setPackFilter(pf);
+                }
 
                 // Add the cards?
                 if (withCards) {
@@ -284,6 +300,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         val.put(KEY_DECKS_NAME, deck.getName());
         val.put(KEY_DECKS_NOTES, deck.getNotes());
         val.put(KEY_DECKS_STARRED, deck.isStarred());
+        val.put(KEY_DECKS_PACKFILTER, TextUtils.join(PACK_FILTER_SEPARATOR, deck.getPackFilter()));
 
         return getWritableDatabase().update(TABLE_DECKS, val, KEY_ID + "=" + deck.getRowId(), null) > 0;
     }

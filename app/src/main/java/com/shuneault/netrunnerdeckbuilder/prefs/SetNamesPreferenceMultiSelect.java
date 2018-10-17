@@ -17,7 +17,7 @@ public class SetNamesPreferenceMultiSelect extends ListPreferenceMultiSelect {
 
     @Override
     public CharSequence[] getEntries() {
-        return AppManager.getInstance().getSetNames().toArray(new CharSequence[AppManager.getInstance().getSetNames().size()]);
+        return AppManager.getInstance().getSetNames().toArray(new CharSequence[0]);
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -26,6 +27,7 @@ import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.export.JintekiNet;
 import com.shuneault.netrunnerdeckbuilder.export.OCTGN;
 import com.shuneault.netrunnerdeckbuilder.export.PlainText;
+import com.shuneault.netrunnerdeckbuilder.fragments.ChoosePacksDialogFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckBuildFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckCardsFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckHandFragment;
@@ -35,12 +37,13 @@ import com.shuneault.netrunnerdeckbuilder.fragments.DeckStatsFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
+import com.shuneault.netrunnerdeckbuilder.helper.DeckValidator;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
 import java.io.FileOutputStream;
 
-public class DeckActivity extends AppCompatActivity implements OnDeckChangedListener {
+public class DeckActivity extends AppCompatActivity implements OnDeckChangedListener, ChoosePacksDialogFragment.ChoosePacksDialogListener {
 
     // Activity Result
     public static final int REQUEST_CHANGE_IDENTITY = 2;
@@ -60,9 +63,12 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     private ViewPager mViewPager;
     private SlidingTabLayout tabs;
     private LinearLayout layoutAgendas;
+    private LinearLayout layoutFiltered;
     private TextView lblInfoInfluence;
     private TextView lblInfoCards;
     private TextView lblInfoAgenda;
+    private TextView lblInfoLegal;
+
     private ActionBar mActionBar;
     private int mSelectedTab = 0;
 
@@ -71,8 +77,10 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AppManager appManager = AppManager.getInstance();
+
         // Set the theme and layout
-        mDeck = AppManager.getInstance().getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
+        mDeck = appManager.getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
         try {
             setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
         } catch (Exception e) {
@@ -88,9 +96,12 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         // GUI
         mViewPager = (ViewPager) findViewById(R.id.pager);
         layoutAgendas = (LinearLayout) findViewById(R.id.layoutAgendas);
+        layoutFiltered = (LinearLayout) findViewById(R.id.layoutFiltered);
         lblInfoInfluence = (TextView) findViewById(R.id.lblInfoInfluence);
         lblInfoCards = (TextView) findViewById(R.id.lblInfoCards);
         lblInfoAgenda = (TextView) findViewById(R.id.lblInfoAgenda);
+        lblInfoLegal = (TextView) findViewById(R.id.lblInfoLegal);
+
 
         // ActionBar - set elevation to 0 to remove shadow
         mActionBar = getSupportActionBar();
@@ -99,7 +110,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         }
 
         // Database
-        mDb = AppManager.getInstance().getDatabase();
+        mDb = appManager.getDatabase();
 
         // Get the params
         if (savedInstanceState != null) {
@@ -134,6 +145,15 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
             layoutAgendas.setVisibility(View.GONE);
         }
 
+        setPackFilterIconVisibility();
+
+        layoutFiltered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doSetPacks();
+            }
+        });
+
         // Set the page adapter
         mViewPager.setAdapter(new DeckTabsPagerAdapter(getSupportFragmentManager()));
 
@@ -150,6 +170,15 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
         // Update the infobar
         updateInfoBar();
+    }
+
+    private void setPackFilterIconVisibility() {
+        if (mDeck.hasPackFilter())
+        {
+            layoutFiltered.setVisibility(View.VISIBLE);
+        } else {
+            layoutFiltered.setVisibility(View.GONE);
+        }
     }
 
     private void updateInfoBar() {
@@ -177,6 +206,17 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
             lblInfoCards.setTextAppearance(this, R.style.InfoBarGood);
         else
             lblInfoCards.setTextAppearance(this, R.style.InfoBarBad);
+
+        // check MWL restrictions
+        // this will become an IDeckValidator, format
+        DeckValidator validator = AppManager.getInstance().getDeckValidator();
+        if (validator.Validate(mDeck)) {
+            lblInfoLegal.setTextAppearance(this, R.style.InfoBarGood);
+            lblInfoLegal.setText("✓");
+        } else {
+            lblInfoLegal.setTextAppearance(this, R.style.InfoBarBad);
+            lblInfoLegal.setText("✗");
+        }
     }
 
     public class DeckTabsPagerAdapter extends FragmentPagerAdapter {
@@ -377,9 +417,40 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 onBackPressed();
                 return true;
 
+            case R.id.mnuSetPacks:
+                doSetPacks();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+    }
+
+    private void doSetPacks() {
+        // display list alert dialog
+        ChoosePacksDialogFragment choosePacksDlg = new ChoosePacksDialogFragment();
+        choosePacksDlg.setPackFilter(mDeck.getPackFilter());
+        choosePacksDlg.show(getSupportFragmentManager(), "choosePacks");
+    }
+
+
+    @Override
+    public void onChoosePacksDialogPositiveClick(DialogFragment dialog) {
+        // save the new setting
+        ChoosePacksDialogFragment frag = (ChoosePacksDialogFragment)dialog;
+        mDeck.setPackFilter(frag.getSelectedValues());
+
+        // update fragments
+        if (fragDeckCards != null)
+            fragDeckCards.onSettingsChanged();
+
+        // update filtered icon
+        setPackFilterIconVisibility();
+    }
+
+    @Override
+    public void onChoosePacksDialogNegativeClick(DialogFragment dialog) {
 
     }
 
