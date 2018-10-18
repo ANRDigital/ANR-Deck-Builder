@@ -202,11 +202,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 do {
                     Card card = AppManager.getInstance().getCard(c.getString(c.getColumnIndex(KEY_DECK_CARDS_CODE)));
-                    // this check to avoid null card entries is a defensive test to prevent startup crash on some devices
-                    if (card != null) {
-                        CardCount cc = new CardCount(card, c.getInt(c.getColumnIndex(KEY_DECK_CARDS_COUNT)));
-                        arrCards.add(cc);
-                    }
+                    CardCount cc = new CardCount(card, c.getInt(c.getColumnIndex(KEY_DECK_CARDS_COUNT)));
+                    arrCards.add(cc);
                 } while (c.moveToNext());
             }
         }
