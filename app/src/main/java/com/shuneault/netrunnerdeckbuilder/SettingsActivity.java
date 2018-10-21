@@ -15,6 +15,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -136,7 +137,7 @@ public class SettingsActivity extends PreferenceActivity
                 String filename = "netrunner_decks.anrdecks";
                 // Save the file as OCTGN format
                 try {
-                    FileOutputStream fileOut = openFileOutput(filename, Context.MODE_WORLD_READABLE);
+                    FileOutputStream fileOut = openFileOutput(filename, Context.MODE_PRIVATE);
                     fileOut.write(jsonArray.toString().getBytes());
                     fileOut.close();
                 } catch (Exception e) {
@@ -150,7 +151,13 @@ public class SettingsActivity extends PreferenceActivity
                 intentEmail.setType("text/plain");
                 intentEmail.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - All decks");
                 intentEmail.putExtra(Intent.EXTRA_TEXT, "\r\n\r\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
-                intentEmail.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(getFileStreamPath(filename)));
+
+                File fileStreamPath = getFileStreamPath(filename);
+                Uri fileUri = FileProvider.getUriForFile(getApplicationContext(),
+                        BuildConfig.APPLICATION_ID,
+                        fileStreamPath);
+
+                intentEmail.putExtra(Intent.EXTRA_STREAM, fileUri);
                 startActivityForResult(Intent.createChooser(intentEmail, getText(R.string.menu_share)), 0);
 
                 return false;

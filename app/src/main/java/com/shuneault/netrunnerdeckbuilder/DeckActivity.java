@@ -382,8 +382,6 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                         BuildConfig.APPLICATION_ID,
                         fileStreamPath);
 
-                //Uri fileUri = Uri.fromFile(getFileStreamPath(filename));
-
                 intentEmail.putExtra(Intent.EXTRA_STREAM, fileUri);
                 startActivity(Intent.createChooser(intentEmail, getText(R.string.menu_share)));
 
