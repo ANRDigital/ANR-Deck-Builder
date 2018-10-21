@@ -21,8 +21,8 @@ android {
         applicationId "com.shuneault.netrunnerdeckbuilder"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 70
-        versionName "3.00.00"
+        versionCode 71
+        versionName "3.1.0"
     }
 
     buildTypes {
