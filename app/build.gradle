@@ -19,7 +19,14 @@ repositories {
 
 android {
     compileSdkVersion 28
-
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'anr digital'
+            keyPassword 'oE3eWqY5YOr3'
+            storeFile file('C:/Users/dan/Dropbox/Apps/anrdigital.keystore')
+            storePassword 'k1jphBHN1d7h'
+        }
+    }
     defaultConfig {
         applicationId "com.shuneault.netrunnerdeckbuilder"
         minSdkVersion 14
@@ -27,14 +34,13 @@ android {
         versionCode 81
         versionName "4.1.0"
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.releaseConfig
         }
     }
-
     useLibrary 'org.apache.http.legacy'
 
     compileOptions {
