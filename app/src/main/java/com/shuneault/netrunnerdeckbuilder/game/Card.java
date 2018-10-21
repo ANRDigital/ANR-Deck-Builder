@@ -412,7 +412,7 @@ public class Card {
     }
 
     public boolean isResource() {
-        return getTypeCode().contains("Resource");
+        return getTypeCode().contains(Type.RESOURCE);
     }
 
     public boolean isVirtual() {

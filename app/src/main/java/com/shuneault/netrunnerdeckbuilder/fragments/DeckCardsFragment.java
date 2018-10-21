@@ -212,9 +212,12 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
             boolean isJintekiOK = !theCard.isJinteki() || !deck.getIdentity().getCode().equals(Card.SpecialCards.CARD_CUSTOM_BIOTICS_ENGINEERED_FOR_SUCCESS);
 
             // Ignore non-virtual resources if runner is Apex and setting is set
-            boolean isNonVirtualOK = !theCard.isResource()
-                    || theCard.isVirtual()
-                    || !(deck.isApex() && PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("pref_HideNonVirtualApex", true));
+            boolean isNonVirtualOK = true;
+            if (theCard.isResource() && !theCard.isVirtual()) {
+                if (deck.isApex() && PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("pref_HideNonVirtualApex", true)){
+                    isNonVirtualOK = false;
+                }
+            }
 
             if (isSameSide && !isIdentity && isGoodAgenda && isJintekiOK && isNonVirtualOK) {
                 // add the type grouping if it doesn't exist
