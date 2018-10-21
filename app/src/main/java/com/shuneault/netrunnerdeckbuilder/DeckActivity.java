@@ -13,6 +13,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +42,7 @@ import com.shuneault.netrunnerdeckbuilder.helper.DeckValidator;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
+import java.io.File;
 import java.io.FileOutputStream;
 
 public class DeckActivity extends AppCompatActivity implements OnDeckChangedListener, ChoosePacksDialogFragment.ChoosePacksDialogListener {
@@ -362,7 +364,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 String filename = mDeck.getFileSafeName() + ".o8d";
                 // Save the file as OCTGN format
                 try {
-                    FileOutputStream fileOut = this.openFileOutput(filename, Context.MODE_WORLD_READABLE);
+                    FileOutputStream fileOut = this.openFileOutput(filename, Context.MODE_PRIVATE);
                     fileOut.write(new OCTGN().fromDeck(mDeck).getBytes());
                     fileOut.close();
                 } catch (Exception e) {
@@ -374,7 +376,15 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 intentEmail.setType("text/plain");
                 intentEmail.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + mDeck.getName());
                 intentEmail.putExtra(Intent.EXTRA_TEXT, "\r\n\r\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
-                intentEmail.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(getFileStreamPath(filename)));
+
+                File fileStreamPath = getFileStreamPath(filename);
+                Uri fileUri = FileProvider.getUriForFile(this,
+                        BuildConfig.APPLICATION_ID,
+                        fileStreamPath);
+
+                //Uri fileUri = Uri.fromFile(getFileStreamPath(filename));
+
+                intentEmail.putExtra(Intent.EXTRA_STREAM, fileUri);
                 startActivity(Intent.createChooser(intentEmail, getText(R.string.menu_share)));
 
                 return true;
