@@ -196,75 +196,6 @@ public class AppManager extends Application {
         return numImages;
     }
 
-    private JSONObject getJSONCardsFile() throws IOException, JSONException {
-        // Load the file in memory and return a JSON array
-        InputStream in;
-        try {
-            in = openFileInput(FILE_CARDS_JSON);
-        } catch (FileNotFoundException e) {
-            in = getResources().openRawResource(R.raw.cardsv2);
-        }
-        InputStreamReader fs = new InputStreamReader(in);
-        BufferedReader bfs = new BufferedReader(fs);
-        String theLine = null;
-        StringBuilder theStringBuilder = new StringBuilder();
-        // Read the file
-        while ((theLine = bfs.readLine()) != null)
-            theStringBuilder.append(theLine);
-
-        JSONObject jsonFile = new JSONObject(theStringBuilder.toString());
-        bfs.close();
-        fs.close();
-        in.close();
-        return jsonFile;
-    }
-
-    private JSONObject getJSONPacksFile() throws IOException, JSONException {
-        // Load the file in memory and return a JSON array
-        InputStream in;
-        try {
-            in = openFileInput(FILE_PACKS_JSON);
-        } catch (FileNotFoundException e) {
-            in = getResources().openRawResource(R.raw.packs);
-        }
-        InputStreamReader fs = new InputStreamReader(in);
-        BufferedReader bfs = new BufferedReader(fs);
-        String theLine = null;
-        StringBuilder theStringBuilder = new StringBuilder();
-        // Read the file
-        while ((theLine = bfs.readLine()) != null)
-            theStringBuilder.append(theLine);
-
-        JSONObject jsonFile = new JSONObject(theStringBuilder.toString());
-        bfs.close();
-        fs.close();
-        in.close();
-        return jsonFile;
-    }
-
-    private JSONObject getJSON_MWLFile() throws IOException, JSONException {
-        // Load the file in memory and return a JSON array
-        InputStream in;
-        try {
-            in = openFileInput(FILE_MWL_JSON);
-        } catch (FileNotFoundException e) {
-            in = getResources().openRawResource(R.raw.mwl);
-        }
-        InputStreamReader fs = new InputStreamReader(in);
-        BufferedReader bfs = new BufferedReader(fs);
-        String theLine = null;
-        StringBuilder theStringBuilder = new StringBuilder();
-        // Read the file
-        while ((theLine = bfs.readLine()) != null)
-            theStringBuilder.append(theLine);
-
-        JSONObject jsonFile = new JSONObject(theStringBuilder.toString());
-        bfs.close();
-        fs.close();
-        in.close();
-        return jsonFile;
-    }
-
     public JSONArray getJSONDecksFile() throws IOException, JSONException {
         // Load the file in memory and return a JSON array
         InputStream in = openFileInput(FILE_DECKS_JSON);
@@ -286,9 +217,9 @@ public class AppManager extends Application {
     private void doLoadPacks() {
         // Packs downloaded, load them
         try {
-            JSONObject jsonFile = AppManager.getInstance().getJSONPacksFile();
+            JSONObject jsonFile = LocalFileHelper.getJSONPacksFile(this, FILE_PACKS_JSON);
             JSONArray jsonPacks = jsonFile.getJSONArray("data");
-            ArrayList<Pack> arrPacks = AppManager.getInstance().getAllPacks();
+            ArrayList<Pack> arrPacks = mPacks;
             arrPacks.clear();
             for (int i = 0; i < jsonPacks.length(); i++) {
                 Pack pack = new Pack(jsonPacks.getJSONObject(i));
@@ -312,8 +243,7 @@ public class AppManager extends Application {
              *
              */
 
-            // The cards
-            JSONObject jsonFile = AppManager.getInstance().getJSONCardsFile();
+            JSONObject jsonFile = LocalFileHelper.getJSONCardsFile(this, FILE_CARDS_JSON);
             JSONArray jsonCards = jsonFile.getJSONArray("data");
 
             mCards.clear();
@@ -323,7 +253,7 @@ public class AppManager extends Application {
                 JSONObject jsonCard = jsonCards.getJSONObject(i);
                 JSONObject jsonLocale = jsonCard.optJSONObject("_locale");
                 if (jsonLocale != null) {
-                    JSONObject jsonLocaleProps = jsonLocale.getJSONObject(AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_LANGUAGE, "en"));
+                    JSONObject jsonLocaleProps = jsonLocale.getJSONObject(this.getSharedPrefs().getString(SettingsActivity.KEY_PREF_LANGUAGE, "en"));
                     Iterator<String> iter = jsonLocaleProps.keys();
                     while (iter.hasNext()) {
                         String key = iter.next();
@@ -353,7 +283,7 @@ public class AppManager extends Application {
     private void doLoadMWL() {
         try {
             // Most Wanted List
-            JSONObject mJsonMWLfile = AppManager.getInstance().getJSON_MWLFile();
+            JSONObject mJsonMWLfile = LocalFileHelper.getJSON_MWLFile(this, FILE_MWL_JSON);
             JSONArray mMWLData = mJsonMWLfile.getJSONArray("data");
             for (int i = 0; i < mMWLData.length(); i++) {
                 JSONObject mwlJSON = mMWLData.getJSONObject(i);
@@ -381,7 +311,7 @@ public class AppManager extends Application {
 
     public void doDownloadMWL(){
         // Most Wanted List
-        StringDownloader sdMWL = new StringDownloader(this, NetRunnerBD.getMWLUrl(), AppManager.FILE_MWL_JSON, new StringDownloader.FileDownloaderListener() {
+        StringDownloader sdMWL = new StringDownloader(this, NetRunnerBD.getMWLUrl(), FILE_MWL_JSON, new StringDownloader.FileDownloaderListener() {
 
             @Override
             public void onBeforeTask() {
@@ -404,7 +334,7 @@ public class AppManager extends Application {
 
     public void doDownloadCards() {
         // Cards List
-        StringDownloader sdCards = new StringDownloader(AppManager.this, NetRunnerBD.getAllCardsUrl(), AppManager.FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
+        StringDownloader sdCards = new StringDownloader(this, NetRunnerBD.getAllCardsUrl(), FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
             @Override
             public void onBeforeTask() {
 
@@ -427,7 +357,7 @@ public class AppManager extends Application {
         });
         sdCards.execute();
 
-        StringDownloader sdPacks = new StringDownloader(this, NetRunnerBD.getAllPacksUrl(), AppManager.FILE_PACKS_JSON, new StringDownloader.FileDownloaderListener() {
+        StringDownloader sdPacks = new StringDownloader(this, NetRunnerBD.getAllPacksUrl(), FILE_PACKS_JSON, new StringDownloader.FileDownloaderListener() {
             @Override
             public void onBeforeTask() {
 

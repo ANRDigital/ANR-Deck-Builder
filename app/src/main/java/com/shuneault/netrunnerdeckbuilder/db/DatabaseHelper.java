@@ -5,16 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardCount;
+import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.IllegalFormatCodePointException;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -174,14 +175,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 // Add the cards?
                 if (withCards) {
                     // Add cards
-                    for (CardCount cc : getDeckCards(deck.getRowId())) {
+                    CardList cardList = AppManager.getInstance().getAllCards();
+
+                    ArrayList<CardCount> cardCounts = getDeckCards(deck.getRowId(), cardList);
+                    for (CardCount cc : cardCounts) {
                         deck.setCardCount(cc.getCard(), cc.getCount());
                     }
                     // Cards to add
-                    deck.setCardsToAdd(getDeckCardsToAdd(deck.getRowId()));
+                    deck.setCardsToAdd(getDeckCardsToAdd(deck.getRowId(), cardList));
 
                     // Cards to remove
-                    deck.setCardsToRemove(getDeckCardsToRemove(deck.getRowId()));
+                    deck.setCardsToRemove(getDeckCardsToRemove(deck.getRowId(), cardList));
                 }
 
                 decks.add(deck);
@@ -190,7 +194,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return decks;
     }
 
-    public ArrayList<CardCount> getDeckCards(Long deckId) {
+    public ArrayList<CardCount> getDeckCards(Long deckId, CardList allCards) {
         ArrayList<CardCount> arrCards = new ArrayList<CardCount>();
         Cursor c = getReadableDatabase().query(true,
                 TABLE_DECK_CARDS,
@@ -201,7 +205,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (c != null) {
             if (c.moveToFirst()) {
                 do {
-                    Card card = AppManager.getInstance().getCard(c.getString(c.getColumnIndex(KEY_DECK_CARDS_CODE)));
+                    Card card = allCards.getCard(c.getString(c.getColumnIndex(KEY_DECK_CARDS_CODE)));
                     CardCount cc = new CardCount(card, c.getInt(c.getColumnIndex(KEY_DECK_CARDS_COUNT)));
                     arrCards.add(cc);
                 } while (c.moveToNext());
@@ -210,42 +214,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return arrCards;
     }
 
-    public ArrayList<CardCount> getDeckCardsToAdd(Long deckId) {
-        ArrayList<CardCount> arrCards = new ArrayList<CardCount>();
+    private ArrayList<CardCount> getDeckCardsToAdd(Long deckId, CardList allCards) {
         Cursor c = getReadableDatabase().query(true,
                 TABLE_DECK_CARDS_ADD,
                 new String[]{KEY_DECK_CARDS_ADD_REMOVE_CARD_CODE, KEY_DECK_CARDS_ADD_REMOVE_CARD_COUNT, KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED},
                 KEY_DECK_CARDS_ADD_REMOVE_DECK_ID + "=?",
                 new String[]{String.valueOf(deckId)},
                 null, null, null, null);
-        if (c != null) {
-            if (c.moveToFirst()) {
-                do {
-                    Card card = AppManager.getInstance().getCard(c.getString(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CODE)));
-                    CardCount cc = new CardCount(card, c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_COUNT)), c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED)) == 1);
-                    arrCards.add(cc);
-                } while (c.moveToNext());
-            }
-        }
-        return arrCards;
+
+        return mapCardCounts(c, allCards);
     }
 
-    public ArrayList<CardCount> getDeckCardsToRemove(Long deckId) {
-        ArrayList<CardCount> arrCards = new ArrayList<CardCount>();
+    private ArrayList<CardCount> getDeckCardsToRemove(Long deckId, CardList allCards) {
         Cursor c = getReadableDatabase().query(true,
                 TABLE_DECK_CARDS_REMOVE,
                 new String[]{KEY_DECK_CARDS_ADD_REMOVE_CARD_CODE, KEY_DECK_CARDS_ADD_REMOVE_CARD_COUNT, KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED},
                 KEY_DECK_CARDS_ADD_REMOVE_DECK_ID + "=?",
                 new String[]{String.valueOf(deckId)},
                 null, null, null, null);
-        if (c != null) {
-            if (c.moveToFirst()) {
-                do {
-                    Card card = AppManager.getInstance().getCard(c.getString(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CODE)));
-                    CardCount cc = new CardCount(card, c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_COUNT)), c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED)) == 1);
-                    arrCards.add(cc);
-                } while (c.moveToNext());
-            }
+
+        return mapCardCounts(c, allCards);
+    }
+
+    @NonNull
+    private ArrayList<CardCount> mapCardCounts(Cursor c, CardList allCards) {
+        ArrayList<CardCount> arrCards = new ArrayList<>();
+        while (c.moveToNext()) {
+            Card card = allCards.getCard(c.getString(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CODE)));
+            CardCount cc = new CardCount(card, c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_COUNT)), c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED)) == 1);
+            arrCards.add(cc);
         }
         return arrCards;
     }
