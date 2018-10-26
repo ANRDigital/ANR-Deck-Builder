@@ -23,7 +23,7 @@ public class CardImageDownloadUtil {
 
     public static Bitmap downloadCardImage(Card card, Context mContext) throws Exception {
         try {
-            URLConnection conn = card.getImagesrc().openConnection();
+            URLConnection conn = card.getImageSrc().openConnection();
             if (conn instanceof HttpsURLConnection) {
                 HttpsURLConnection https = (HttpsURLConnection) conn;
                 https.setSSLSocketFactory(getTrustAllSocketFactory().getSocketFactory());
@@ -35,7 +35,7 @@ public class CardImageDownloadUtil {
             out.close();
             return theImage;
         } catch (Exception e) {
-            Log.e("LOG", "Could not download image: " + card.getImagesrc().toString());
+            Log.e("LOG", "Could not download image: " + card.getImageSrc().toString());
             throw e;
         }
     }

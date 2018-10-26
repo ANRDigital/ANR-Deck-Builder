@@ -10,6 +10,7 @@ import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.CardBuilder;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
@@ -18,20 +19,14 @@ import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.prefs.ListPreferenceMultiSelect;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by sebast on 24/01/16.
@@ -186,34 +181,6 @@ public class AppManager extends Application {
         return null;
     }
 
-    public int getNumberImagesCached() {
-        int numImages = 0;
-        CardList cards = getAllCards();
-        for (Card card : cards) {
-            if (card.isImageFileExists(this))
-                numImages++;
-        }
-        return numImages;
-    }
-
-    public JSONArray getJSONDecksFile() throws IOException, JSONException {
-        // Load the file in memory and return a JSON array
-        InputStream in = openFileInput(FILE_DECKS_JSON);
-        InputStreamReader fs = new InputStreamReader(in);
-        BufferedReader bfs = new BufferedReader(fs);
-        String theLine = null;
-        StringBuilder theStringBuilder = new StringBuilder();
-        // Read the file
-        while ((theLine = bfs.readLine()) != null)
-            theStringBuilder.append(theLine);
-
-        JSONArray jsonFile = new JSONArray(theStringBuilder.toString());
-        bfs.close();
-        fs.close();
-        in.close();
-        return jsonFile;
-    }
-
     private void doLoadPacks() {
         // Packs downloaded, load them
         try {
@@ -244,6 +211,8 @@ public class AppManager extends Application {
              */
 
             JSONObject jsonFile = LocalFileHelper.getJSONCardsFile(this, FILE_CARDS_JSON);
+            String imageUrlTemplate = jsonFile.getString("imageUrlTemplate");
+
             JSONArray jsonCards = jsonFile.getJSONArray("data");
 
             mCards.clear();
@@ -253,22 +222,26 @@ public class AppManager extends Application {
                 JSONObject jsonCard = jsonCards.getJSONObject(i);
                 JSONObject jsonLocale = jsonCard.optJSONObject("_locale");
                 if (jsonLocale != null) {
-                    JSONObject jsonLocaleProps = jsonLocale.getJSONObject(this.getSharedPrefs().getString(SettingsActivity.KEY_PREF_LANGUAGE, "en"));
+                    String lanquagePref = this.getSharedPrefs().getString(SettingsActivity.KEY_PREF_LANGUAGE, "en");
+                    JSONObject jsonLocaleProps = jsonLocale.getJSONObject(lanquagePref);
                     Iterator<String> iter = jsonLocaleProps.keys();
                     while (iter.hasNext()) {
                         String key = iter.next();
                         jsonCard.put(key, jsonLocaleProps.getString(key));
                     }
                 }
-                String cardCode = jsonCard.getString(Card.NAME_CODE);
-                jsonCard.put(Card.NAME_IMAGE_SRC, jsonFile.getString("imageUrlTemplate").replace("{code}", cardCode));
+
+
+                CardBuilder cardBuilder = new CardBuilder(imageUrlTemplate);
+                Card card = cardBuilder.BuildFromJson(jsonCard);
 
                 // New Card
                 int cardUniversalCost = 0;
-                if (mMWLInfluences.containsKey(cardCode)) {
-                    cardUniversalCost = mMWLInfluences.get(cardCode).optInt("universal_faction_cost", 0);
+                if (mMWLInfluences.containsKey(card.getCode())) {
+                    cardUniversalCost = mMWLInfluences.get(card.getCode()).optInt("universal_faction_cost", 0);
                 }
-                mCards.add(new Card(jsonCard, cardUniversalCost));
+                card.setMostWantedInfluence(cardUniversalCost);
+                mCards.add(card);
             }
 
         } catch (FileNotFoundException e) {

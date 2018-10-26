@@ -14,10 +14,10 @@ public class CardList extends ArrayList<Card> {
     private ArrayList<String> mCardType;
 
     /**
-     * @param faction: get specified faction, null to return all
-     * @param side:    get specified side, null to return all
-     * @param type:    get specified type, null to return all
-     * @return
+     * @param factionCode: get specified faction, null to return all
+     * @param sideCode:    get specified side, null to return all
+     * @param typeCode:    get specified type, null to return all
+     * @return CardList containing relevant cards
      */
     private CardList getCards(String factionCode, String sideCode, String typeCode) {
         CardList newList = new CardList();
@@ -106,7 +106,11 @@ public class CardList extends ArrayList<Card> {
             if (theCard.getCode().equals(cardCode))
                 return theCard;
 
-        return null;
+        Card card = new Card(cardCode);
+        card.setTitle("unknown card: " + cardCode);
+        card.setIsUnknown();
+
+        return card;
     }
 
 

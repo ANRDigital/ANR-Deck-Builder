@@ -58,6 +58,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
      *
      */
     private static final long serialVersionUID = 2114649051205735605L;
+    private boolean hasUnknownCards = false;
 
     private Deck() {
         this("", "");
@@ -550,5 +551,9 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public boolean hasPackFilter() {
         return packFilter.size() > 0;
+    }
+
+    public void setHasUnknownCards() {
+        this.hasUnknownCards = true;
     }
 }
