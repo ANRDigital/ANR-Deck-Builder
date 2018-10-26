@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:fab="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
@@ -15,7 +15,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
 
-	<com.getbase.floatingactionbutton.FloatingActionButton
+	<android.support.design.widget.FloatingActionButton
 		android:id="@+id/fabButton"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -24,8 +24,7 @@
 		android:layout_alignParentRight="true"
 		android:layout_marginBottom="16dp"
 		android:layout_marginRight="16dp"
-        fab:fab_colorNormal="@color/fab_color"
-        fab:fab_colorPressed="@color/fab_color_pressed"
-        fab:fab_icon="@drawable/ic_plus"/>
+        app:backgroundTint="@color/fab_color"
+        android:src="@drawable/ic_plus"/>
 
 </RelativeLayout>

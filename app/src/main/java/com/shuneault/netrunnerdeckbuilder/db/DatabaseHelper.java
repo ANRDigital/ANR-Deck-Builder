@@ -181,27 +181,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             for (Deck d : decks) {
                 // Add cards to deck
                 Long deckId = d.getRowId();
-                Cursor c1 = getReadableDatabase().query(true,
+                try (Cursor c1 = getReadableDatabase().query(true,
                         TABLE_DECK_CARDS,
                         new String[]{KEY_DECK_CARDS_CODE, KEY_DECK_CARDS_COUNT},
                         KEY_DECK_CARDS_DECK_ID + "=?",
                         new String[]{String.valueOf(deckId)},
-                        null, null, null, null);
-                try {
+                        null, null, null, null)) {
                     while (c1.moveToNext()) {
                         String cardCode = c1.getString(c1.getColumnIndex(KEY_DECK_CARDS_CODE));
                         Card card = allCards.getCard(cardCode);
-                        if (card.isUnknown())
-                        {
+                        if (card.isUnknown()) {
                             d.setHasUnknownCards();
                         }
                         int count = c1.getInt(c1.getColumnIndex(KEY_DECK_CARDS_COUNT));
 
                         d.setCardCount(card, count);
                     }
-                }
-                finally {
-                    c1.close();
                 }
 
                 // Cards to add / remove

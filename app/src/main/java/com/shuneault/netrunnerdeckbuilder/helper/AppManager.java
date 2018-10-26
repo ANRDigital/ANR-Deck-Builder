@@ -64,21 +64,21 @@ public class AppManager extends Application {
         doLoadMWL();
         doLoadCards();
         doLoadPacks();
-        mDecks.addAll(mDb.getAllDecks(true));
+        mDecks.addAll(mDb.getAllDecks(true, mCards));
 
-        // Download the card list every week
-        try {
-            Calendar today = Calendar.getInstance();
-            Calendar lastUpdate = Calendar.getInstance();
-            lastUpdate.setTimeInMillis(getSharedPrefs().getLong(SHARED_PREF_LAST_UPDATE_DATE, 0));
-            if (today.getTimeInMillis() - lastUpdate.getTimeInMillis() > (24 * 60 * 60 * 1000 * 7)) {
-                Log.i(LOGCAT, "Weekly download...");
-                doDownloadCards();
-                doDownloadMWL();
-            }
-        } catch (Exception ignored) {
-            //todo: flag a message here?`
-        }
+//        // Download the card list every week
+//        try {
+//            Calendar today = Calendar.getInstance();
+//            Calendar lastUpdate = Calendar.getInstance();
+//            lastUpdate.setTimeInMillis(getSharedPrefs().getLong(SHARED_PREF_LAST_UPDATE_DATE, 0));
+//            if (today.getTimeInMillis() - lastUpdate.getTimeInMillis() > (24 * 60 * 60 * 1000 * 7)) {
+//                Log.i(LOGCAT, "Weekly download...");
+//                doDownloadCards();
+//                doDownloadMWL();
+//            }
+//        } catch (Exception ignored) {
+//            //todo: flag a message here?`
+//        }
     }
 
 

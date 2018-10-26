@@ -54,6 +54,7 @@
     <string name="new_hand">New Hand</string>
     <string name="draw">Draw</string>
     <string name="infinite_symbol">∞</string>
+    <string name="has_unknown_cards">Error: has unknown cards!</string>
 
     <!-- Drawer -->
     <string name="drawer_new_deck_runner">New Runner Deck</string>

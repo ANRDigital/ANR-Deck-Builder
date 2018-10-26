@@ -556,4 +556,8 @@ public class Deck implements Serializable, HeaderListItemInterface {
     public void setHasUnknownCards() {
         this.hasUnknownCards = true;
     }
+
+    public boolean hasUnknownCards() {
+        return hasUnknownCards;
+    }
 }

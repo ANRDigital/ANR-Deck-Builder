@@ -1,5 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +20,14 @@ import java.util.ArrayList;
  */
 public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHolder> {
 
+    private final Context context;
     private ArrayList<Deck> mDeckList;
     private ViewHolder.IViewHolderClicks mListener;
     private ViewGroup mViewGroup;
 
-    public CardDeckAdapter(ArrayList<Deck> deckList, ViewHolder.IViewHolderClicks listener) {
+    public CardDeckAdapter(Context context, ArrayList<Deck> deckList, ViewHolder.IViewHolderClicks listener) {
         super();
+        this.context = context;
         mDeckList = deckList;
         mListener = listener;
     }
@@ -59,7 +62,11 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
 
         // Set the values
         viewHolder.txtDeckTitle.setText(deck.getName());
-        viewHolder.txtDeckNotes.setText(deck.getNotes());
+        String deckNotes = deck.getNotes();
+        if(deck.hasUnknownCards()){
+            deckNotes = context.getString(R.string.has_unknown_cards);
+        }
+        viewHolder.txtDeckNotes.setText(deckNotes);
         ImageDisplayer.fill(viewHolder.imgDeckIdentity, deck.getIdentity(), mViewGroup.getContext());
         viewHolder.chkStarred.setChecked(deck.isStarred());
 

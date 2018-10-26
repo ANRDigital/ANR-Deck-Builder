@@ -72,12 +72,13 @@ public class ListDecksFragment extends Fragment {
         // Initialize the layout manager and adapter
         final ArrayList<Deck> mCurrentDecks = getCurrentDecks();
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mDeckAdapter = new CardDeckAdapter(mCurrentDecks, new CardDeckAdapter.ViewHolder.IViewHolderClicks() {
+        mDeckAdapter = new CardDeckAdapter(getContext(), mCurrentDecks, new CardDeckAdapter.ViewHolder.IViewHolderClicks() {
             @Override
             public void onClick(int index) {
                 Deck deck = mCurrentDecks.get(index);
                 // Load the deck activity
-                startDeckActivity(deck.getRowId());
+                if (!deck.hasUnknownCards())
+                    startDeckActivity(deck.getRowId());
             }
 
             @Override
