@@ -12,6 +12,8 @@ import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardBuilder;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
+import com.shuneault.netrunnerdeckbuilder.game.Cycle;
+import com.shuneault.netrunnerdeckbuilder.game.CycleList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
@@ -36,8 +38,8 @@ public class AppManager extends Application {
     /* File management */
     public static final String EXT_CARDS_IMAGES = ".png";
     public static final String FILE_CARDS_JSON = "cardsv2.json";
-    public static final String FILE_DECKS_JSON = "decks.json";
     public static final String FILE_PACKS_JSON = "packs.json";
+    public static final String FILE_CYCLES_JSON = "cycles.json";
     public static final String FILE_MWL_JSON = "mwl.json";
 
     // Shared Prefd
@@ -55,6 +57,7 @@ public class AppManager extends Application {
     private ArrayList<Pack> mPacks = new ArrayList<>();
     private MostWantedList mActiveMWL;
     private HashMap<String, JSONObject> mMWLInfluences = new HashMap<>();
+    private CycleList mCycles = new CycleList();
 
     @Override
     public void onCreate() {
@@ -62,8 +65,9 @@ public class AppManager extends Application {
         mInstance = this;
         mDb = new DatabaseHelper(this);
         doLoadMWL();
-        doLoadCards();
+        doLoadCycles();
         doLoadPacks();
+        doLoadCards();
         mDecks.addAll(mDb.getAllDecks(true, mCards));
 
         // Download the card list every week
@@ -181,16 +185,30 @@ public class AppManager extends Application {
         return null;
     }
 
+    private void doLoadCycles(){
+        try {
+            JSONObject jsonFile = LocalFileHelper.getJSONCyclesFile(this, FILE_CYCLES_JSON);
+            JSONArray jsonCycles = jsonFile.getJSONArray("data");
+            this.mCycles.clear();
+            for (int i = 0; i < jsonCycles.length(); i++) {
+                Cycle cycle = new Cycle(jsonCycles.getJSONObject(i));
+                this.mCycles.add(cycle);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
     private void doLoadPacks() {
         // Packs downloaded, load them
         try {
             JSONObject jsonFile = LocalFileHelper.getJSONPacksFile(this, FILE_PACKS_JSON);
             JSONArray jsonPacks = jsonFile.getJSONArray("data");
-            ArrayList<Pack> arrPacks = mPacks;
-            arrPacks.clear();
+            mPacks.clear();
             for (int i = 0; i < jsonPacks.length(); i++) {
                 Pack pack = new Pack(jsonPacks.getJSONObject(i));
-                arrPacks.add(pack);
+                mPacks.add(pack);
             }
         } catch (Exception e) {
             e.printStackTrace();

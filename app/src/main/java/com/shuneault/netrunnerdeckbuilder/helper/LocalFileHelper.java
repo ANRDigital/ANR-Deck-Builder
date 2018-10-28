@@ -32,6 +32,12 @@ class LocalFileHelper {
         return getLocalJson(context, filename, fallbackResource);
     }
 
+    static JSONObject getJSONCyclesFile(Context context, String filename) throws IOException, JSONException {
+        int fallbackResource = R.raw.cycles;
+        // Load the file in memory and return a JSON array
+        return getLocalJson(context, filename, fallbackResource);
+    }
+
     @NonNull
     private static JSONObject getLocalJson(Context context, String filename, int fallbackResource) throws IOException, JSONException {
         // Load the file in memory and return a JSON array
