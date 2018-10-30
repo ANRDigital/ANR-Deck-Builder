@@ -178,8 +178,8 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Launch the full screen image viewer activity
-                        Intent intentFullScreen = new Intent(MainActivity.this, ViewDeckGridActivity.class);
-                        intentFullScreen.putExtra(ViewDeckGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getAllPacks().get(which).getCode());
+                        Intent intentFullScreen = new Intent(MainActivity.this, ViewCardsAsGridActivity.class);
+                        intentFullScreen.putExtra(ViewCardsAsGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getAllPacks().get(which).getCode());
                         startActivity(intentFullScreen);
                     }
                 });

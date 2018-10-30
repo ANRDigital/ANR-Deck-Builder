@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 public class Deck implements Serializable, HeaderListItemInterface {
@@ -559,5 +560,14 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public boolean hasUnknownCards() {
         return hasUnknownCards;
+    }
+
+    public ArrayList<CardCount> getCardCounts() {
+        ArrayList<CardCount> cardCounts = new ArrayList<>();
+        for (Card card : mCards.keySet()) {
+            Integer count = mCards.get(card);
+            cardCounts.add(new CardCount(card, count));
+        }
+        return cardCounts;
     }
 }
