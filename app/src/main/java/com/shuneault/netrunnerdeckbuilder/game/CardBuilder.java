@@ -25,6 +25,7 @@ public class CardBuilder {
     private static final String NAME_MINIMUM_DECK_SIZE = "minimum_deck_size";
     private static final String NAME_NUMBER = "position";
     private static final String NAME_QUANTITY = "quantity";
+    private static final String NAME_DECK_LIMIT = "deck_limit";
     //    public static final String NAME_SET_NAME = "setname";
     private static final String NAME_SET_CODE = "pack_code";
     //    public static final String NAME_SIDE = "side";
@@ -65,6 +66,7 @@ public class CardBuilder {
             card.setMinimumDeckSize(json.optString(NAME_MINIMUM_DECK_SIZE));
             card.setNumber(json.optString(NAME_NUMBER));
             card.setQuantity(json.optString(NAME_QUANTITY));
+            card.setDeckLimit(json.optInt(NAME_DECK_LIMIT));
             card.setSetCode(json.optString(NAME_SET_CODE));
             card.setUniqueness(json.optBoolean(NAME_UNIQUENESS));
             // does it have an unusual image_src? If not follow standard pattern

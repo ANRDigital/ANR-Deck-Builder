@@ -198,7 +198,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 
                 @Override
                 public void onClick(View v) {
-                    mDeck.setCardCount(card, mDeck.getCardCount(card) - 1);
+                    mDeck.ReduceCard(card);
                     viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + card.getMaxCardCount());
                     setBackgroundColor(view, card);
                     mListener.onMinusClick(card);
@@ -208,7 +208,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 
                 @Override
                 public void onClick(View v) {
-                    mDeck.setCardCount(card, mDeck.getCardCount(card) + 1);
+                    mDeck.AddCard(card);
                     viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + card.getMaxCardCount());
                     setBackgroundColor(view, card);
                     mListener.onPlusClick(card);

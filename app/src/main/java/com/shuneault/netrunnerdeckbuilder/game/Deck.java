@@ -570,4 +570,18 @@ public class Deck implements Serializable, HeaderListItemInterface {
         }
         return cardCounts;
     }
+
+    public boolean isFaction(String factionCode) {
+        return getIdentity().getFactionCode().equals(factionCode);
+    }
+
+    public void ReduceCard(Card card) {
+
+        setCardCount(card, getCardCount(card) - 1);
+    }
+
+    public void AddCard(Card card) {
+
+        setCardCount(card, getCardCount(card) + 1);
+    }
 }

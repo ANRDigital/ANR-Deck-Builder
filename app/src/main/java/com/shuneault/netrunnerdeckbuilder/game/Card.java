@@ -17,6 +17,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class Card {
+    private static final int DEFAULT_QUANTITY = 3;
     //    private Date lastModified;
     private String code;
     private String cost;
@@ -36,6 +37,7 @@ public class Card {
     private String minimumDeckSize;
     private String number;
     private String quantity;
+    private int deckLimit;
     //    private String setName;
     private String setCode;
     //    private String side;
@@ -217,16 +219,24 @@ public class Card {
      */
     public int getMaxCardCount() {
         try {
-            if (this.setCode.equals(SetName.CORE_SET) || this.setCode.equals(SetName.REVISED_CORE_SET)) {
+            int count;
+            if (this.isInCoreSet()) {
                 int iAmountCoreDecks = Integer.parseInt(AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_AMOUNT_OF_CORE_DECKS, "3"));
-                return Math.min(iAmountCoreDecks * Integer.parseInt(this.quantity), Deck.MAX_INDIVIDUAL_CARD);
+                count =  Math.min(iAmountCoreDecks * Integer.parseInt(this.quantity), DEFAULT_QUANTITY);
             } else {
-                return Integer.parseInt(this.quantity);
+                count =  Integer.parseInt(this.quantity);
             }
+
+            count = Math.min(count, deckLimit);
+            return count;
         } catch (Exception e) {
             e.printStackTrace();
-            return Deck.MAX_INDIVIDUAL_CARD;
+            return DEFAULT_QUANTITY;
         }
+    }
+
+    private boolean isInCoreSet() {
+        return this.setCode.equals(SetName.CORE_SET) || this.setCode.equals(SetName.REVISED_CORE_SET);
     }
 
     /**
@@ -412,6 +422,10 @@ public class Card {
 
     public void setQuantity(String quantity) {
         this.quantity = quantity;
+    }
+
+    public void setDeckLimit(int limit) {
+        this.deckLimit = limit;
     }
 
     public void setSetCode(String setCode) {
