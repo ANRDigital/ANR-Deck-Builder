@@ -201,5 +201,7 @@
     <string name="set_card_pool">Set card pool</string>
     <string name="choose_packs">Choose the packs to use</string>
     <string name="reset">Reset</string>
+    <string name="title_browse_cards">Browse cards</string>
+    <string name="action_search">Search</string>
 
 </resources>

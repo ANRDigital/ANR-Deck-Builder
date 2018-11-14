@@ -1,7 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -28,7 +27,6 @@ import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.fragments.ListDecksFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
@@ -38,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnDeckChangedListener, ListDecksFragment.OnListDecksFragmentListener {
 
@@ -160,26 +157,30 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
 
         switch (item.getItemId()) {
             case R.id.mnuViewSet:
-                // Get the set names
-                final ArrayList<String> setNames = new ArrayList<String>();
-                for (Pack pack : AppManager.getInstance().getAllPacks()) {
-                    setNames.add(pack.getName() + " (" + pack.getSize() + ")");
-                }
-                CharSequence[] cs = setNames.toArray(new CharSequence[setNames.size()]);
-                // Display the dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle(R.string.view_cards);
-                builder.setItems(cs, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Launch the full screen image viewer activity
-                        Intent intentFullScreen = new Intent(MainActivity.this, ViewCardsAsGridActivity.class);
-                        intentFullScreen.putExtra(ViewCardsAsGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getAllPacks().get(which).getCode());
-                        startActivity(intentFullScreen);
-                    }
-                });
-                builder.show();
+                Intent browseIntent = new Intent(this, BrowseActivity.class);
+                startActivity(browseIntent);
+
                 break;
+//                // Get the set names
+//                final ArrayList<String> setNames = new ArrayList<String>();
+//                for (Pack pack : AppManager.getInstance().getAllPacks()) {
+//                    setNames.add(pack.getName() + " (" + pack.getSize() + ")");
+//                }
+//                CharSequence[] cs = setNames.toArray(new CharSequence[setNames.size()]);
+//                // Display the dialog
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                builder.setTitle(R.string.view_cards);
+//                builder.setItems(cs, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // Launch the full screen image viewer activity
+//                        Intent intentFullScreen = new Intent(MainActivity.this, ViewCardsAsGridActivity.class);
+//                        intentFullScreen.putExtra(ViewCardsAsGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getAllPacks().get(which).getCode());
+//                        startActivity(intentFullScreen);
+//                    }
+//                });
+//                builder.show();
+//                break;
             case R.id.mnuRefreshCards:
                 //todo: add toast messages
                 AppManager appManager = AppManager.getInstance();

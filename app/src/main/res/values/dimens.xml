@@ -6,5 +6,6 @@
     <!-- Infobar -->
     <dimen name="info_bar_padding">10dp</dimen>
     <dimen name="info_bar_margin_amount">6dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 </resources>

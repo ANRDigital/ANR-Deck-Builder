@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/lblIcons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:text="Icons" />
+
+    <TextView
+        android:id="@+id/lblTitre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/lblIcons"
+        android:text="Title"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lblInfluence"
+        style="@style/InfoBarBad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:layout_toRightOf="@+id/lblTitre"
+        android:text="Influence" />
+
+    <TextView
+        android:id="@+id/lblMostWanted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:layout_toRightOf="@+id/lblInfluence"
+        android:text=" " />
+
+    <ImageView
+        android:id="@+id/imgImage"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/lblIcons"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dp"
+        android:scaleType="fitCenter"
+        android:src="@raw/image" />
+
+    <TextView
+        android:id="@+id/lblText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imgImage"
+        android:layout_marginLeft="8dp"
+        android:layout_toLeftOf="@+id/btnMinus"
+        android:layout_toRightOf="@+id/imgImage"
+        android:text="TextView\nb\nc\nd\ne\nf\ng\ng"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/lblSetName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:paddingRight="4dp"
+        android:text="SetName"
+        android:textSize="12sp" />
+
+</RelativeLayout>
