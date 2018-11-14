@@ -49,11 +49,7 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
     // EXTRAS
     public static final String EXTRA_DECK_ID = "com.shuneault.netrunnerdeckbuilder.EXTRA_DECK_ID";
 
-    // Load the deck on resume
-    private Deck mDeck;
     private FloatingActionButton fabButton;
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
 
     // Flags
     private int mScrollDirection = 0;
@@ -85,8 +81,8 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
         }
         // GUI
         fabButton = (FloatingActionButton) findViewById(R.id.fabButton);
-        mViewPager = (ViewPager) findViewById(R.id.viewPager);
-        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
         // Database
         mDb = AppManager.getInstance().getDatabase();
@@ -94,17 +90,16 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
         // Setup the ViewPager
         mViewPager.setAdapter(new DecksFragmentPager(getSupportFragmentManager()));
         mTabLayout.setupWithViewPager(mViewPager);
-        fabButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (mViewPager.getCurrentItem()) {
-                    case 0:
-                        startChooseIdentityActivity(Card.Side.SIDE_RUNNER);
-                        break;
-                    case 1:
-                        startChooseIdentityActivity(Card.Side.SIDE_CORPORATION);
-                        break;
-                }
+
+        // Set up the FloatingActionButton
+        fabButton.setOnClickListener(v -> {
+            switch (mViewPager.getCurrentItem()) {
+                case 0:
+                    startChooseIdentityActivity(Card.Side.SIDE_RUNNER);
+                    break;
+                case 1:
+                    startChooseIdentityActivity(Card.Side.SIDE_CORPORATION);
+                    break;
             }
         });
 
@@ -132,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
                 Card card = AppManager.getInstance().getCard(identityCardCode);
 
                 // Create a new deck
-                mDeck = new Deck("", card);
+                Deck mDeck = new Deck("", card);
                 AppManager.getInstance().getAllDecks().add(mDeck);
 
                 // Save the new deck in the database

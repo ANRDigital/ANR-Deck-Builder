@@ -14,16 +14,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-class LocalFileHelper {
+public class LocalFileHelper {
+    public static final String FILE_CARDS_JSON = "cardsv2.json";
+
     static JSONObject getJSON_MWLFile(Context context, String filename) throws IOException, JSONException {
         int fallbackResource = R.raw.mwl;
         return getLocalJson(context, filename, fallbackResource);
     }
 
-    static JSONObject getJSONCardsFile(Context context, String filename) throws IOException, JSONException {
+    public static JSONObject getJSONCardsFile(Context context) throws IOException, JSONException {
         int fallbackResource = R.raw.cardsv2;
         // Load the file in memory and return a JSON array
-        return getLocalJson(context, filename, fallbackResource);
+        return getLocalJson(context, FILE_CARDS_JSON, fallbackResource);
     }
 
     static JSONObject getJSONPacksFile(Context context, String filename) throws IOException, JSONException {

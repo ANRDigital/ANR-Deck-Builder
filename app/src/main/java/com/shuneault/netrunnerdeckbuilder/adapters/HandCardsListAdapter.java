@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
+import com.shuneault.netrunnerdeckbuilder.helper.TextFormatter;
 
 import java.util.ArrayList;
 
@@ -56,13 +57,8 @@ public class HandCardsListAdapter extends ArrayAdapter<Card> {
         // Assign the values
         if (card != null) {
             // Title
-            String strUnique = (card.isUniqueness() ? mContext.getString(R.string.influence_char) + " " : "");
-            if (!card.getSubtype().isEmpty()) {
-                viewHolder.lblTitle.setText(strUnique + card.getTitle() + " (" + card.getSubtype() + ")");
-            } else {
-                viewHolder.lblTitle.setText(strUnique + card.getTitle());
-            }
-            viewHolder.lblText.setText(card.getFormattedText(mContext));
+            viewHolder.lblTitle.setText(TextFormatter.FormatCardTitle(card));
+            viewHolder.lblText.setText(TextFormatter.getFormattedString(mContext, card.getText()));
             ImageDisplayer.fillSmall(viewHolder.imgImage, card, mContext);
         }
 

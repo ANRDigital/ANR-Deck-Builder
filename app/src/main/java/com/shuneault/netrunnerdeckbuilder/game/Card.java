@@ -3,18 +3,15 @@ package com.shuneault.netrunnerdeckbuilder.game;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.text.Html;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.ImageSpan;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
+import com.shuneault.netrunnerdeckbuilder.helper.TextFormatter;
 
 import java.io.File;
 import java.net.URL;
-import java.util.HashMap;
 
 public class Card {
     private static final int DEFAULT_QUANTITY = 3;
@@ -30,7 +27,9 @@ public class Card {
     private String baseLink;
     //    private String faction;
     private String factionCode;
+    // factionCost is the out-of-faction influence cost to include in a deck
     private int factionCost;
+
     private String flavor;
     private String illustrator;
     private String influenceLimit;
@@ -243,32 +242,7 @@ public class Card {
      * @return Formatted text with images
      */
     public SpannableString getFormattedText(Context context) {
-        return getFormattedString(context, this.getText());
-    }
-
-    public static SpannableString getFormattedString(Context context, String text) {
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        map.put("[agenda]", R.drawable.agenda);
-        map.put("[click]", R.drawable.click);
-        map.put("[trash]", R.drawable.trash);
-        map.put("[credit]", R.drawable.credits);
-        map.put("[subroutine]", R.drawable.subroutine);
-        map.put("[mu]", R.drawable.memory_unit);
-        map.put("[recurring-credit]", R.drawable.credit_recurr);
-        map.put("[link]", R.drawable.links);
-        map.put("[fist]", R.drawable.fist);
-
-        // replace all occurences
-        SpannableString span = new SpannableString(Html.fromHtml(text.replace("\n", "<br />")));
-        for (String txt : map.keySet()) {
-            int index = span.toString().toLowerCase().indexOf(txt);
-            while (index >= 0) {
-                span.setSpan(new ImageSpan(context, map.get(txt), ImageSpan.ALIGN_BOTTOM), index, index + txt.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                index = span.toString().indexOf(txt, index + 1);
-            }
-        }
-
-        return span;
+        return TextFormatter.getFormattedString(context, getText());
     }
 
     public Bitmap getImage(Context context) {

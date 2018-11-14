@@ -1,6 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CardList extends ArrayList<Card> {
 
@@ -123,5 +124,10 @@ public class CardList extends ArrayList<Card> {
             }
         }
         return cd;
+    }
+
+    public List<Card> getSideCards(String side) {
+        return getCards(null, side, null);
+
     }
 }

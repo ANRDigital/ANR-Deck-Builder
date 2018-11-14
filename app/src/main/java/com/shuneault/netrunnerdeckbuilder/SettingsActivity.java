@@ -34,6 +34,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import static com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper.FILE_CARDS_JSON;
+
 public class SettingsActivity extends PreferenceActivity
         implements OnSharedPreferenceChangeListener {
 
@@ -188,7 +190,7 @@ public class SettingsActivity extends PreferenceActivity
         } else if (key.equals(KEY_PREF_AMOUNT_OF_CORE_DECKS)) {
             refreshPrefsSummaries();
         } else if (key.equals(KEY_PREF_LANGUAGE)) {
-            StringDownloader sd = new StringDownloader(this, String.format(NetRunnerBD.getAllCardsUrl()), AppManager.FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
+            StringDownloader sd = new StringDownloader(this, String.format(NetRunnerBD.getAllCardsUrl()), FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
                 ProgressDialog mDialog;
 
                 @Override

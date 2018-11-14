@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardBuilder;
@@ -35,7 +36,6 @@ public class AppManager extends Application {
 
     /* File management */
     public static final String EXT_CARDS_IMAGES = ".png";
-    public static final String FILE_CARDS_JSON = "cardsv2.json";
     public static final String FILE_DECKS_JSON = "decks.json";
     public static final String FILE_PACKS_JSON = "packs.json";
     public static final String FILE_MWL_JSON = "mwl.json";
@@ -55,6 +55,7 @@ public class AppManager extends Application {
     private ArrayList<Pack> mPacks = new ArrayList<>();
     private MostWantedList mActiveMWL;
     private HashMap<String, JSONObject> mMWLInfluences = new HashMap<>();
+    private CardRepository mCardRepo;
 
     @Override
     public void onCreate() {
@@ -66,6 +67,7 @@ public class AppManager extends Application {
         doLoadPacks();
         mDecks.addAll(mDb.getAllDecks(true, mCards));
 
+        mCardRepo = new CardRepository(this);
         // Download the card list every week
         try {
             Calendar today = Calendar.getInstance();
@@ -210,7 +212,7 @@ public class AppManager extends Application {
              *
              */
 
-            JSONObject jsonFile = LocalFileHelper.getJSONCardsFile(this, FILE_CARDS_JSON);
+            JSONObject jsonFile = LocalFileHelper.getJSONCardsFile(this);
             String imageUrlTemplate = jsonFile.getString("imageUrlTemplate");
 
             JSONArray jsonCards = jsonFile.getJSONArray("data");
@@ -230,7 +232,6 @@ public class AppManager extends Application {
                         jsonCard.put(key, jsonLocaleProps.getString(key));
                     }
                 }
-
 
                 CardBuilder cardBuilder = new CardBuilder(imageUrlTemplate);
                 Card card = cardBuilder.BuildFromJson(jsonCard);
@@ -307,7 +308,8 @@ public class AppManager extends Application {
 
     public void doDownloadCards() {
         // Cards List
-        StringDownloader sdCards = new StringDownloader(this, NetRunnerBD.getAllCardsUrl(), FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
+        StringDownloader sdCards = new StringDownloader(this, NetRunnerBD.getAllCardsUrl(),
+                LocalFileHelper.FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
             @Override
             public void onBeforeTask() {
 
@@ -360,4 +362,7 @@ public class AppManager extends Application {
         return mActiveMWL;
     }
 
+    public CardRepository getCardRepository() {
+        return mCardRepo;
+    }
 }
