@@ -48,11 +48,10 @@ public class ViewCardsAsGridActivity extends AppCompatActivity {
 
         ArrayList<Card> mCards;
         if (mDeck != null) {
-            mCards = mDeck.getCards();
             getSupportActionBar().setIcon(mDeck.getIdentity().getFactionImageRes(this));
-            Collections.sort(mCards, new Sorter.CardSorterByCardType());
             setTitle(mDeck.getName());
             cardCounts = mDeck.getCardCounts();
+            Collections.sort(cardCounts, new Sorter.CardCountSorterByTypeThenName());
         } else {
             mCards = AppManager.getInstance().getCardsBySetName(mSetName);
             Collections.sort(mCards, new Sorter.CardSorterByCardNumber());

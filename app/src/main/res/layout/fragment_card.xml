@@ -71,6 +71,7 @@
         android:id="@+id/lblSetName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/lblText"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:paddingRight="4dp"

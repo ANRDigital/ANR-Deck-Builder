@@ -16,10 +16,12 @@ import java.io.InputStreamReader;
 
 public class LocalFileHelper {
     public static final String FILE_CARDS_JSON = "cardsv2.json";
+    public static final String FILE_PACKS_JSON = "packs.json";
+    public static final String FILE_MWL_JSON = "mwl.json";
 
-    static JSONObject getJSON_MWLFile(Context context, String filename) throws IOException, JSONException {
+    public static JSONObject getJSON_MWLFile(Context context) throws IOException, JSONException {
         int fallbackResource = R.raw.mwl;
-        return getLocalJson(context, filename, fallbackResource);
+        return getLocalJson(context, FILE_MWL_JSON, fallbackResource);
     }
 
     public static JSONObject getJSONCardsFile(Context context) throws IOException, JSONException {
@@ -28,10 +30,10 @@ public class LocalFileHelper {
         return getLocalJson(context, FILE_CARDS_JSON, fallbackResource);
     }
 
-    static JSONObject getJSONPacksFile(Context context, String filename) throws IOException, JSONException {
+    public static JSONObject getJSONPacksFile(Context context) throws IOException, JSONException {
         int fallbackResource = R.raw.packs;
         // Load the file in memory and return a JSON array
-        return getLocalJson(context, filename, fallbackResource);
+        return getLocalJson(context, FILE_PACKS_JSON, fallbackResource);
     }
 
     @NonNull

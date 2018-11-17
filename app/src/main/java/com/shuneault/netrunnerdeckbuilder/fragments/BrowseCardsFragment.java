@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 /**
  * A fragment representing a list of Items.
@@ -31,10 +31,11 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
 
     private OnBrowseCardsClickListener mListener;
 
-    @Inject
     CardRepository cardRepo;
-    private List<Card> mCards;
+    private CardList mCards;
     private BrowseCardRecyclerViewAdapter mAdapter;
+    private ArrayList<String> mPackFilter = new ArrayList<>();
+    private String mSearchText = "";
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -42,13 +43,6 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
      */
     public BrowseCardsFragment() {
         cardRepo = AppManager.getInstance().getCardRepository();
-    }
-
-    public static BrowseCardsFragment newInstance() {
-        BrowseCardsFragment fragment = new BrowseCardsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -69,7 +63,7 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
             // TODO: Customize parameters
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            mCards = cardRepo.GetAllCards();
+            mCards = cardRepo.getCardsFromDataPacksToDisplay(mPackFilter);
 
             mAdapter = new BrowseCardRecyclerViewAdapter(mCards, mListener);
             recyclerView.setAdapter(mAdapter);
@@ -101,10 +95,20 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        mCards.clear();
-        mCards.addAll(cardRepo.searchCards(newText));
-        mAdapter.notifyDataSetChanged();
+        this.mSearchText = newText;
+        updateResults();
         return true;
+    }
+
+    private void updateResults() {
+        mCards.clear();
+        mCards.addAll(cardRepo.searchCards(mSearchText, mPackFilter));
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public void updatePackFilter(ArrayList<String> packFilter) {
+        this.mPackFilter = packFilter;
+        updateResults();
     }
 
     /**

@@ -203,5 +203,6 @@
     <string name="reset">Reset</string>
     <string name="title_browse_cards">Browse cards</string>
     <string name="action_search">Search</string>
+    <string name="action_filter">Filter</string>
 
 </resources>

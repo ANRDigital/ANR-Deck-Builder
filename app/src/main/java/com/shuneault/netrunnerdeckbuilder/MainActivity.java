@@ -184,8 +184,7 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
             case R.id.mnuRefreshCards:
                 //todo: add toast messages
                 AppManager appManager = AppManager.getInstance();
-                appManager.doDownloadCards();
-                appManager.doDownloadMWL();
+                appManager.refreshCards();
                 break;
             case R.id.mnuOptions:
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);

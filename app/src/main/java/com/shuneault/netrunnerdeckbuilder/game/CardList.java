@@ -115,7 +115,7 @@ public class CardList extends ArrayList<Card> {
     }
 
 
-    public CardList getPacks(ArrayList<String> packs) {
+    public CardList getPackCards(ArrayList<String> packs) {
         CardList cd = new CardList();
 
         for (Card card : this) {

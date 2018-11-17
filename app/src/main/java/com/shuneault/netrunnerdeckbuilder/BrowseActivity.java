@@ -1,8 +1,9 @@
 package com.shuneault.netrunnerdeckbuilder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.shuneault.netrunnerdeckbuilder.fragments.BrowseCardsFragment;
+import com.shuneault.netrunnerdeckbuilder.fragments.ChoosePacksDialogFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 
-public class BrowseActivity extends AppCompatActivity implements BrowseCardsFragment.OnBrowseCardsClickListener {
+import java.util.ArrayList;
+
+public class BrowseActivity extends AppCompatActivity implements BrowseCardsFragment.OnBrowseCardsClickListener,ChoosePacksDialogFragment.ChoosePacksDialogListener {
+
+    private ArrayList<String> mPackFilter = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,11 +58,35 @@ public class BrowseActivity extends AppCompatActivity implements BrowseCardsFrag
                 }
         );
 
+        MenuItem filterItem = menu.findItem(R.id.action_filter);
+        filterItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                ChoosePacksDialogFragment choosePacksDlg = new ChoosePacksDialogFragment();
+                choosePacksDlg.setPackFilter(mPackFilter);
+                choosePacksDlg.show(getSupportFragmentManager(), "choosePacks");
+                return false;
+            }
+        });
         return true;
     }
 
     @Override
     public void onCardClicked(Card card) {
         // do nothing for now
+        Intent intent = new Intent(this, ViewDeckFullscreenActivity.class);
+        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARD_CODE, card.getCode());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onChoosePacksDialogPositiveClick(DialogFragment dialog) {
+        // save the new setting
+        ChoosePacksDialogFragment dlg = (ChoosePacksDialogFragment)dialog;
+        mPackFilter = dlg.getSelectedValues();
+
+        // update list
+        BrowseCardsFragment frag = (BrowseCardsFragment) getSupportFragmentManager().findFragmentById(R.id.browse_fragment);
+        frag.updatePackFilter(mPackFilter);
     }
 }
