@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -220,15 +221,7 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
             ImageDisplayer.fill(imgCard, card, ViewDeckFullscreenActivity.this);
             imgCard.setVisibility(View.VISIBLE);
             // Close the activity if the image is clicked
-            imgCard.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View arg0) {
-                    if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_TAP_TO_CLOSE_CARD_PREVIEW, false)) {
-                        ViewDeckFullscreenActivity.this.finish();
-                    }
-                }
-            });
+            imgCard.setOnClickListener(arg0 -> ViewDeckFullscreenActivity.this.finish());
             v.addView(imgCard);
             ((ViewPager) container).addView(v, 0);
             return v;

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.shuneault.netrunnerdeckbuilder.DeckActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
-import com.shuneault.netrunnerdeckbuilder.adapters.CardDeckAdapter;
+import com.shuneault.netrunnerdeckbuilder.adapters.ListDecksAdapter;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -33,10 +33,7 @@ public class ListDecksFragment extends Fragment {
 
     public static final String EXTRA_SIDE = "com.shuneault.netrunnerdeckbuilder.EXTRA_SIDE";
 
-    private View mainView;
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private CardDeckAdapter mDeckAdapter;
     private OnListDecksFragmentListener mListener;
 
     // Database and decks
@@ -57,10 +54,10 @@ public class ListDecksFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.fragment_list_decks, container, false);
+        View mainView = inflater.inflate(R.layout.fragment_list_decks, container, false);
 
         // GUI
-        mRecyclerView = (RecyclerView) mainView.findViewById(R.id.recyclerView);
+        mRecyclerView = mainView.findViewById(R.id.recyclerView);
 
         // Side
         mSide = getArguments().getString(EXTRA_SIDE);
@@ -71,21 +68,20 @@ public class ListDecksFragment extends Fragment {
 
         // Initialize the layout manager and adapter
         final ArrayList<Deck> mCurrentDecks = getCurrentDecks();
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mDeckAdapter = new CardDeckAdapter(mCurrentDecks, new CardDeckAdapter.ViewHolder.IViewHolderClicks() {
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        ListDecksAdapter mDeckAdapter = new ListDecksAdapter(mCurrentDecks, new ListDecksAdapter.DeckViewHolder.IViewHolderClicks() {
             @Override
-            public void onClick(int index) {
-                Deck deck = mCurrentDecks.get(index);
+            public void onDeckClick(Deck deck) {
                 // Load the deck activity
-                startDeckActivity(deck.getRowId());
+                if (!deck.hasUnknownCards())
+                    startDeckActivity(deck.getRowId());
             }
 
             @Override
-            public void onDeckStarred(int index, boolean isStarred) {
-                Deck deck = mCurrentDecks.get(index);
+            public void onDeckStarred(Deck deck, boolean isStarred) {
                 deck.setStarred(isStarred);
                 mDb.updateDeck(deck);
-                // Sort
+                // Sort for new starred order
                 Collections.sort(mCurrentDecks, new Sorter.DeckSorter());
                 mRecyclerView.getAdapter().notifyDataSetChanged();
             }
@@ -137,7 +133,7 @@ public class ListDecksFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((CardDeckAdapter) mRecyclerView.getAdapter()).setData(getCurrentDecks());
+        ((ListDecksAdapter) mRecyclerView.getAdapter()).setData(getCurrentDecks());
     }
 
 }

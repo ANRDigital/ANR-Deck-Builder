@@ -18,8 +18,6 @@ public class ChoosePacksDialogFragment extends DialogFragment {
 
     public interface ChoosePacksDialogListener {
         void onChoosePacksDialogPositiveClick(DialogFragment dialog);
-
-        void onChoosePacksDialogNegativeClick(DialogFragment dialog);
     }
 
     private ChoosePacksDialogListener mListener;
@@ -89,7 +87,7 @@ public class ChoosePacksDialogFragment extends DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
                 // Send the negative button event back to the host activity
-                mListener.onChoosePacksDialogNegativeClick(ChoosePacksDialogFragment.this);
+                // mListener.onChoosePacksDialogNegativeClick(ChoosePacksDialogFragment.this);
                 }
             });
 

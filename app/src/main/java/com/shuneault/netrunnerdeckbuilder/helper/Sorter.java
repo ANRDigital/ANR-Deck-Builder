@@ -73,6 +73,18 @@ public final class Sorter {
 
     }
 
+    public static final class CardCountSorterByTypeThenName implements Comparator<CardCount> {
+
+        @Override
+        public int compare(CardCount lhs, CardCount rhs) {
+            if (lhs.getCard().getTypeCode().equals(rhs.getCard().getTypeCode())) {
+                return lhs.getCard().getTitle().toLowerCase().compareTo(rhs.getCard().getTitle().toLowerCase());
+            } else {
+                return lhs.getCard().getTypeCode().compareTo(rhs.getCard().getTypeCode());
+            }
+        }
+    }
+
     public static final class CardSorterByFaction implements Comparator<Card> {
 
         @Override

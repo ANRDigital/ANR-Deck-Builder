@@ -121,10 +121,12 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
         for (Card theCard : mDeck.getCards()) {
             // Only add the cards that are on my side
             // Do not add the identities
-            if (!theCard.getTypeCode().equals(Card.Type.IDENTITY) && theCard.getSideCode().equals(mDeck.getIdentity().getSideCode())) {
-                if (mListCards.get(theCard.getTypeCode()) == null)
-                    mListCards.put(theCard.getTypeCode(), new ArrayList<Card>());
-                mListCards.get(theCard.getTypeCode()).add(theCard);
+            String typeCode = theCard.getTypeCode();
+            String sideCode = theCard.getSideCode();
+            if (!typeCode.equals(Card.Type.IDENTITY) && sideCode.equals(mDeck.getIdentity().getSideCode())) {
+                if (mListCards.get(typeCode) == null)
+                    mListCards.put(typeCode, new ArrayList<Card>());
+                mListCards.get(typeCode).add(theCard);
             }
         }
         sortListCards();

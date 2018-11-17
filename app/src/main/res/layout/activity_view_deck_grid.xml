@@ -9,7 +9,7 @@
     android:horizontalSpacing="1dp"
     android:verticalSpacing="1dp"
     android:gravity="center"
-    tools:context="com.shuneault.netrunnerdeckbuilder.ViewDeckGridActivity">
+    tools:context="com.shuneault.netrunnerdeckbuilder.ViewCardsAsGridActivity">
 
 
 

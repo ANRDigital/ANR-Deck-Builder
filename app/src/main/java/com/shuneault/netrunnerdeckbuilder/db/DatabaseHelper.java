@@ -5,16 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardCount;
+import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.IllegalFormatCodePointException;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -154,98 +154,88 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return getWritableDatabase().delete(TABLE_DECKS, null, null) > 0;
     }
 
-    public ArrayList<Deck> getAllDecks(boolean withCards) {
-        ArrayList<Deck> decks = new ArrayList<Deck>();
-        Cursor c = getReadableDatabase().query(TABLE_DECKS, new String[]{KEY_ID, KEY_DECKS_NAME, KEY_DECKS_NOTES, KEY_DECKS_IDENTITY, KEY_DECKS_STARRED, KEY_DECKS_PACKFILTER}, null, null, null, null, null);
+    public ArrayList<Deck> getAllDecks(boolean withCards, CardList allCards) {
+        ArrayList<Deck> decks = new ArrayList<>();
+        // read deck list from db
+        Cursor c = getReadableDatabase().query(TABLE_DECKS,
+                new String[]{KEY_ID, KEY_DECKS_NAME, KEY_DECKS_NOTES, KEY_DECKS_IDENTITY, KEY_DECKS_STARRED, KEY_DECKS_PACKFILTER},
+                null, null, null, null, null);
 
-        // Loop and create objects as we go
-        if (c.moveToFirst()) {
-            do {
-                Deck deck = new Deck(c.getString(c.getColumnIndex(KEY_DECKS_NAME)), c.getString(c.getColumnIndex(KEY_DECKS_IDENTITY)));
-                deck.setNotes(c.getString(c.getColumnIndex(KEY_DECKS_NOTES)));
-                deck.setRowId(c.getLong(c.getColumnIndex(KEY_ID)));
-                deck.setStarred(c.getInt(c.getColumnIndex(KEY_DECKS_STARRED)) > 0);
-                String packFilterValue = c.getString(c.getColumnIndex(KEY_DECKS_PACKFILTER));
-                if (!packFilterValue.isEmpty()) {
-                    ArrayList<String> pf = new ArrayList<>(Arrays.asList(packFilterValue.split(PACK_FILTER_SEPARATOR)));
-                    deck.setPackFilter(pf);
-                }
+        // create decks in list
+        while (c.moveToNext()) {
+            Deck deck = new Deck(c.getString(c.getColumnIndex(KEY_DECKS_NAME)), c.getString(c.getColumnIndex(KEY_DECKS_IDENTITY)));
+            deck.setNotes(c.getString(c.getColumnIndex(KEY_DECKS_NOTES)));
+            deck.setRowId(c.getLong(c.getColumnIndex(KEY_ID)));
+            deck.setStarred(c.getInt(c.getColumnIndex(KEY_DECKS_STARRED)) > 0);
+            String packFilterValue = c.getString(c.getColumnIndex(KEY_DECKS_PACKFILTER));
+            if (!packFilterValue.isEmpty()) {
+                ArrayList<String> pf = new ArrayList<>(Arrays.asList(packFilterValue.split(PACK_FILTER_SEPARATOR)));
+                deck.setPackFilter(pf);
+            }
 
-                // Add the cards?
-                if (withCards) {
-                    // Add cards
-                    for (CardCount cc : getDeckCards(deck.getRowId())) {
-                        deck.setCardCount(cc.getCard(), cc.getCount());
+            decks.add(deck);
+        }
+
+        // add cards to decks
+        if (withCards) {
+            for (Deck d : decks) {
+                // Add cards to deck
+                Long deckId = d.getRowId();
+                try (Cursor c1 = getReadableDatabase().query(true,
+                        TABLE_DECK_CARDS,
+                        new String[]{KEY_DECK_CARDS_CODE, KEY_DECK_CARDS_COUNT},
+                        KEY_DECK_CARDS_DECK_ID + "=?",
+                        new String[]{String.valueOf(deckId)},
+                        null, null, null, null)) {
+                    while (c1.moveToNext()) {
+                        String cardCode = c1.getString(c1.getColumnIndex(KEY_DECK_CARDS_CODE));
+                        Card card = allCards.getCard(cardCode);
+                        if (card.isUnknown()) {
+                            d.setHasUnknownCards();
+                        }
+                        int count = c1.getInt(c1.getColumnIndex(KEY_DECK_CARDS_COUNT));
+
+                        d.setCardCount(card, count);
                     }
-                    // Cards to add
-                    deck.setCardsToAdd(getDeckCardsToAdd(deck.getRowId()));
-
-                    // Cards to remove
-                    deck.setCardsToRemove(getDeckCardsToRemove(deck.getRowId()));
                 }
 
-                decks.add(deck);
-            } while (c.moveToNext());
+                // Cards to add / remove
+                d.setCardsToAdd(getDeckCardsToAdd(deckId, allCards));
+                d.setCardsToRemove(getDeckCardsToRemove(deckId, allCards));
+            }
         }
         return decks;
     }
 
-    public ArrayList<CardCount> getDeckCards(Long deckId) {
-        ArrayList<CardCount> arrCards = new ArrayList<CardCount>();
-        Cursor c = getReadableDatabase().query(true,
-                TABLE_DECK_CARDS,
-                new String[]{KEY_DECK_CARDS_CODE, KEY_DECK_CARDS_COUNT},
-                KEY_DECK_CARDS_DECK_ID + "=?",
-                new String[]{String.valueOf(deckId)},
-                null, null, null, null);
-        if (c != null) {
-            if (c.moveToFirst()) {
-                do {
-                    Card card = AppManager.getInstance().getCard(c.getString(c.getColumnIndex(KEY_DECK_CARDS_CODE)));
-                    CardCount cc = new CardCount(card, c.getInt(c.getColumnIndex(KEY_DECK_CARDS_COUNT)));
-                    arrCards.add(cc);
-                } while (c.moveToNext());
-            }
-        }
-        return arrCards;
-    }
-
-    public ArrayList<CardCount> getDeckCardsToAdd(Long deckId) {
-        ArrayList<CardCount> arrCards = new ArrayList<CardCount>();
+    private ArrayList<CardCount> getDeckCardsToAdd(Long deckId, CardList allCards) {
         Cursor c = getReadableDatabase().query(true,
                 TABLE_DECK_CARDS_ADD,
                 new String[]{KEY_DECK_CARDS_ADD_REMOVE_CARD_CODE, KEY_DECK_CARDS_ADD_REMOVE_CARD_COUNT, KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED},
                 KEY_DECK_CARDS_ADD_REMOVE_DECK_ID + "=?",
                 new String[]{String.valueOf(deckId)},
                 null, null, null, null);
-        if (c != null) {
-            if (c.moveToFirst()) {
-                do {
-                    Card card = AppManager.getInstance().getCard(c.getString(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CODE)));
-                    CardCount cc = new CardCount(card, c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_COUNT)), c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED)) == 1);
-                    arrCards.add(cc);
-                } while (c.moveToNext());
-            }
-        }
-        return arrCards;
+
+        return mapCardCounts(c, allCards);
     }
 
-    public ArrayList<CardCount> getDeckCardsToRemove(Long deckId) {
-        ArrayList<CardCount> arrCards = new ArrayList<CardCount>();
+    private ArrayList<CardCount> getDeckCardsToRemove(Long deckId, CardList allCards) {
         Cursor c = getReadableDatabase().query(true,
                 TABLE_DECK_CARDS_REMOVE,
                 new String[]{KEY_DECK_CARDS_ADD_REMOVE_CARD_CODE, KEY_DECK_CARDS_ADD_REMOVE_CARD_COUNT, KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED},
                 KEY_DECK_CARDS_ADD_REMOVE_DECK_ID + "=?",
                 new String[]{String.valueOf(deckId)},
                 null, null, null, null);
-        if (c != null) {
-            if (c.moveToFirst()) {
-                do {
-                    Card card = AppManager.getInstance().getCard(c.getString(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CODE)));
-                    CardCount cc = new CardCount(card, c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_COUNT)), c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED)) == 1);
-                    arrCards.add(cc);
-                } while (c.moveToNext());
-            }
+
+        return mapCardCounts(c, allCards);
+    }
+
+    @NonNull
+    private ArrayList<CardCount> mapCardCounts(Cursor c, CardList allCards) {
+        ArrayList<CardCount> arrCards = new ArrayList<>();
+        while (c.moveToNext()) {
+            Card card = allCards.getCard(c.getString(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CODE)));
+            CardCount cc = new CardCount(card, c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_COUNT)), c.getInt(c.getColumnIndex(KEY_DECK_CARDS_ADD_REMOVE_CARD_CHECKED)) == 1);
+            arrCards.add(cc);
         }
         return arrCards;
     }

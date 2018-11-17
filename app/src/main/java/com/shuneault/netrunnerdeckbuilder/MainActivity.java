@@ -1,11 +1,11 @@
 package com.shuneault.netrunnerdeckbuilder;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,12 +23,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.fragments.ListDecksFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
@@ -38,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnDeckChangedListener, ListDecksFragment.OnListDecksFragmentListener {
 
@@ -49,11 +46,7 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
     // EXTRAS
     public static final String EXTRA_DECK_ID = "com.shuneault.netrunnerdeckbuilder.EXTRA_DECK_ID";
 
-    // Load the deck on resume
-    private Deck mDeck;
     private FloatingActionButton fabButton;
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
 
     // Flags
     private int mScrollDirection = 0;
@@ -85,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
         }
         // GUI
         fabButton = (FloatingActionButton) findViewById(R.id.fabButton);
-        mViewPager = (ViewPager) findViewById(R.id.viewPager);
-        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
         // Database
         mDb = AppManager.getInstance().getDatabase();
@@ -94,17 +87,16 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
         // Setup the ViewPager
         mViewPager.setAdapter(new DecksFragmentPager(getSupportFragmentManager()));
         mTabLayout.setupWithViewPager(mViewPager);
-        fabButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (mViewPager.getCurrentItem()) {
-                    case 0:
-                        startChooseIdentityActivity(Card.Side.SIDE_RUNNER);
-                        break;
-                    case 1:
-                        startChooseIdentityActivity(Card.Side.SIDE_CORPORATION);
-                        break;
-                }
+
+        // Set up the FloatingActionButton
+        fabButton.setOnClickListener(v -> {
+            switch (mViewPager.getCurrentItem()) {
+                case 0:
+                    startChooseIdentityActivity(Card.Side.SIDE_RUNNER);
+                    break;
+                case 1:
+                    startChooseIdentityActivity(Card.Side.SIDE_CORPORATION);
+                    break;
             }
         });
 
@@ -132,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
                 Card card = AppManager.getInstance().getCard(identityCardCode);
 
                 // Create a new deck
-                mDeck = new Deck("", card);
+                Deck mDeck = new Deck("", card);
                 AppManager.getInstance().getAllDecks().add(mDeck);
 
                 // Save the new deck in the database
@@ -165,31 +157,34 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
 
         switch (item.getItemId()) {
             case R.id.mnuViewSet:
-                // Get the set names
-                final ArrayList<String> setNames = new ArrayList<String>();
-                for (Pack pack : AppManager.getInstance().getAllPacks()) {
-                    setNames.add(pack.getName() + " (" + pack.getSize() + ")");
-                }
-                CharSequence[] cs = setNames.toArray(new CharSequence[setNames.size()]);
-                // Display the dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle(R.string.view_cards);
-                builder.setItems(cs, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Launch the full screen image viewer activity
-                        Intent intentFullScreen = new Intent(MainActivity.this, ViewDeckGridActivity.class);
-                        intentFullScreen.putExtra(ViewDeckGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getAllPacks().get(which).getCode());
-                        startActivity(intentFullScreen);
-                    }
-                });
-                builder.show();
+                Intent browseIntent = new Intent(this, BrowseActivity.class);
+                startActivity(browseIntent);
+
                 break;
+//                // Get the set names
+//                final ArrayList<String> setNames = new ArrayList<String>();
+//                for (Pack pack : AppManager.getInstance().getAllPacks()) {
+//                    setNames.add(pack.getName() + " (" + pack.getSize() + ")");
+//                }
+//                CharSequence[] cs = setNames.toArray(new CharSequence[setNames.size()]);
+//                // Display the dialog
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                builder.setTitle(R.string.view_cards);
+//                builder.setItems(cs, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // Launch the full screen image viewer activity
+//                        Intent intentFullScreen = new Intent(MainActivity.this, ViewCardsAsGridActivity.class);
+//                        intentFullScreen.putExtra(ViewCardsAsGridActivity.EXTRA_SET_NAME, AppManager.getInstance().getAllPacks().get(which).getCode());
+//                        startActivity(intentFullScreen);
+//                    }
+//                });
+//                builder.show();
+//                break;
             case R.id.mnuRefreshCards:
                 //todo: add toast messages
                 AppManager appManager = AppManager.getInstance();
-                appManager.doDownloadCards();
-                appManager.doDownloadMWL();
+                appManager.refreshCards();
                 break;
             case R.id.mnuOptions:
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);

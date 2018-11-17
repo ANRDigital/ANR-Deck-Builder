@@ -1,6 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CardList extends ArrayList<Card> {
 
@@ -14,10 +15,10 @@ public class CardList extends ArrayList<Card> {
     private ArrayList<String> mCardType;
 
     /**
-     * @param faction: get specified faction, null to return all
-     * @param side:    get specified side, null to return all
-     * @param type:    get specified type, null to return all
-     * @return
+     * @param factionCode: get specified faction, null to return all
+     * @param sideCode:    get specified side, null to return all
+     * @param typeCode:    get specified type, null to return all
+     * @return CardList containing relevant cards
      */
     private CardList getCards(String factionCode, String sideCode, String typeCode) {
         CardList newList = new CardList();
@@ -106,11 +107,15 @@ public class CardList extends ArrayList<Card> {
             if (theCard.getCode().equals(cardCode))
                 return theCard;
 
-        return null;
+        Card card = new Card(cardCode);
+        card.setTitle("unknown card: " + cardCode);
+        card.setIsUnknown();
+
+        return card;
     }
 
 
-    public CardList getPacks(ArrayList<String> packs) {
+    public CardList getPackCards(ArrayList<String> packs) {
         CardList cd = new CardList();
 
         for (Card card : this) {
@@ -119,5 +124,10 @@ public class CardList extends ArrayList<Card> {
             }
         }
         return cd;
+    }
+
+    public List<Card> getSideCards(String side) {
+        return getCards(null, side, null);
+
     }
 }

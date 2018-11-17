@@ -54,6 +54,7 @@
     <string name="new_hand">New Hand</string>
     <string name="draw">Draw</string>
     <string name="infinite_symbol">∞</string>
+    <string name="has_unknown_cards">Error: has unknown cards!</string>
 
     <!-- Drawer -->
     <string name="drawer_new_deck_runner">New Runner Deck</string>
@@ -200,5 +201,8 @@
     <string name="set_card_pool">Set card pool</string>
     <string name="choose_packs">Choose the packs to use</string>
     <string name="reset">Reset</string>
+    <string name="title_browse_cards">Browse cards</string>
+    <string name="action_search">Search</string>
+    <string name="action_filter">Filter</string>
 
 </resources>

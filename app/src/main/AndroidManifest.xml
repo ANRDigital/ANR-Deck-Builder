@@ -36,7 +36,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_view_deck_fullscreen" />
         <activity
-            android:name=".ViewDeckGridActivity"
+            android:name=".ViewCardsAsGridActivity"
             android:label="@string/title_activity_view_deck_grid" />
 
         <activity android:name=".externalactivities.ImportDecksActivity"
@@ -48,6 +48,7 @@
                 <data android:mimeType="application/octet-stream" android:host="*" android:pathPattern=".*\\.o8d" />
             </intent-filter>
         </activity>
+        <activity android:name=".BrowseActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

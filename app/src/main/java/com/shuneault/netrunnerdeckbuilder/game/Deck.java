@@ -58,6 +58,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
      *
      */
     private static final long serialVersionUID = 2114649051205735605L;
+    private boolean hasUnknownCards = false;
 
     private Deck() {
         this("", "");
@@ -550,5 +551,36 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public boolean hasPackFilter() {
         return packFilter.size() > 0;
+    }
+
+    public void setHasUnknownCards() {
+        this.hasUnknownCards = true;
+    }
+
+    public boolean hasUnknownCards() {
+        return hasUnknownCards;
+    }
+
+    public ArrayList<CardCount> getCardCounts() {
+        ArrayList<CardCount> cardCounts = new ArrayList<>();
+        for (Card card : mCards.keySet()) {
+            Integer count = mCards.get(card);
+            cardCounts.add(new CardCount(card, count));
+        }
+        return cardCounts;
+    }
+
+    public boolean isFaction(String factionCode) {
+        return getIdentity().getFactionCode().equals(factionCode);
+    }
+
+    public void ReduceCard(Card card) {
+
+        setCardCount(card, getCardCount(card) - 1);
+    }
+
+    public void AddCard(Card card) {
+
+        setCardCount(card, getCardCount(card) + 1);
     }
 }
