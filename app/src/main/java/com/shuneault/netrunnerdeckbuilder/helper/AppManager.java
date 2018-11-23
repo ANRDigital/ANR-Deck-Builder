@@ -162,8 +162,4 @@ public class AppManager extends Application {
         return mCardRepo.getActiveMwl();
     }
 
-
-    public void refreshCards() {
-        mCardRepo.refreshCards();
-    }
 }

@@ -128,6 +128,5 @@ public class CardList extends ArrayList<Card> {
 
     public List<Card> getSideCards(String side) {
         return getCards(null, side, null);
-
     }
 }

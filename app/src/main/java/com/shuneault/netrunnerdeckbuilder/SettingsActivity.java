@@ -43,7 +43,6 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_DATA_PACKS_TO_DISPLAY = "pref_DataPacks";
     public static final String KEY_PREF_AMOUNT_OF_CORE_DECKS = "pref_AmountOfCoreDecks";
     public static final String KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS = "pref_ShowSetNames";
-    public static final String KEY_PREF_TAP_TO_CLOSE_CARD_PREVIEW = "pref_TapToCloseCardPreview";
     public static final String KEY_PREF_CLEAR_CACHE = "pref_ClearCache";
     public static final String KEY_PREF_DOWNLOAD_ALL_IMAGES = "pref_DownloadAllImages";
     public static final String KEY_PREF_LANGUAGE = "pref_Language";
@@ -66,17 +65,11 @@ public class SettingsActivity extends PreferenceActivity
         addPreferencesFromResource(R.xml.preferences);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
-        // Preferences
-        prefDataPacks = findPreference(KEY_PREF_DATA_PACKS_TO_DISPLAY);
         prefAmountOfCoreDecks = findPreference(KEY_PREF_AMOUNT_OF_CORE_DECKS);
-        prefClearCache = findPreference(KEY_PREF_CLEAR_CACHE);
-        prefDownloadAllImages = findPreference(KEY_PREF_DOWNLOAD_ALL_IMAGES);
         prefLanguage = findPreference(KEY_PREF_LANGUAGE);
-        prefExportDecks = findPreference(KEY_PREF_EXPORT_ALL_DECKS);
 
-        // Listeners
+        prefDataPacks = findPreference(KEY_PREF_DATA_PACKS_TO_DISPLAY);
         prefDataPacks.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (newValue.toString().isEmpty()) {
@@ -87,83 +80,20 @@ public class SettingsActivity extends PreferenceActivity
                 }
             }
         });
-        prefClearCache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
-                builder.setTitle(R.string.clear_cache);
-                builder.setMessage(getString(R.string.message_clear_cache));
-                builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        deleteCache(SettingsActivity.this);
-                    }
-                });
-                builder.show();
-                return false;
-            }
+        prefClearCache = findPreference(KEY_PREF_CLEAR_CACHE);
+        prefClearCache.setOnPreferenceClickListener(preference -> {
+            doClearCache();
+            return false;
         });
-        prefDownloadAllImages.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                CardImagesDownloader cardDownloader = new CardImagesDownloader(SettingsActivity.this, new CardImagesDownloader.CardImagesDownloaderListener() {
-                    @Override
-                    public void onBeforeStartTask(Context context, int max) {
-                    }
-
-                    @Override
-                    public void onTaskCompleted() {
-                    }
-
-                    @Override
-                    public void onImageDownloaded(Card card, int count, int max) {
-                    }
-                });
-                cardDownloader.execute();
-                return false;
-            }
+        prefDownloadAllImages = findPreference(KEY_PREF_DOWNLOAD_ALL_IMAGES);
+        prefDownloadAllImages.setOnPreferenceClickListener(preference -> {
+            doDownloadAllImages();
+            return false;
         });
-        prefExportDecks.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                JSONArray jsonArray = new JSONArray();
-                for (Deck deck : AppManager.getInstance().getAllDecks()) {
-                    JSONObject jsonDeck = deck.toJSON();
-                    jsonArray.put(jsonDeck);
-                }
-                String filename = "netrunner_decks.anrdecks";
-                // Save the file as OCTGN format
-                try {
-                    FileOutputStream fileOut = openFileOutput(filename, Context.MODE_PRIVATE);
-                    fileOut.write(jsonArray.toString().getBytes());
-                    fileOut.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                Log.i("LOGCAT", String.valueOf(getFileStreamPath(filename)));
-
-                // Create the send intent
-                Intent intentEmail = new Intent(Intent.ACTION_SEND);
-                intentEmail.setType("text/plain");
-                intentEmail.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - All decks");
-                intentEmail.putExtra(Intent.EXTRA_TEXT, "\r\n\r\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
-
-                File fileStreamPath = getFileStreamPath(filename);
-                Uri fileUri = FileProvider.getUriForFile(getApplicationContext(),
-                        BuildConfig.APPLICATION_ID,
-                        fileStreamPath);
-
-                intentEmail.putExtra(Intent.EXTRA_STREAM, fileUri);
-                startActivityForResult(Intent.createChooser(intentEmail, getText(R.string.menu_share)), 0);
-
-                return false;
-            }
+        prefExportDecks = findPreference(KEY_PREF_EXPORT_ALL_DECKS);
+        prefExportDecks.setOnPreferenceClickListener(preference -> {
+            doExportAllDecks();
+            return false;
         });
 
         // Initial preferences
@@ -173,72 +103,145 @@ public class SettingsActivity extends PreferenceActivity
         refreshPrefsSummaries();
     }
 
+    private void doClearCache() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+        builder.setTitle(R.string.clear_cache);
+        builder.setMessage(getString(R.string.message_clear_cache));
+        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteCache(SettingsActivity.this);
+            }
+        });
+        builder.show();
+    }
+
+    private void doDownloadAllImages() {
+        CardImagesDownloader cardDownloader = new CardImagesDownloader(SettingsActivity.this, new CardImagesDownloader.CardImagesDownloaderListener() {
+            @Override
+            public void onBeforeStartTask(Context context, int max) {
+            }
+
+            @Override
+            public void onTaskCompleted() {
+            }
+
+            @Override
+            public void onImageDownloaded(Card card, int count, int max) {
+            }
+        });
+        cardDownloader.execute();
+    }
+
+    private void doExportAllDecks() {
+        JSONArray jsonArray = new JSONArray();
+        for (Deck deck : AppManager.getInstance().getAllDecks()) {
+            JSONObject jsonDeck = deck.toJSON();
+            jsonArray.put(jsonDeck);
+        }
+        String filename = "netrunner_decks.anrdecks";
+        // Save the file as OCTGN format
+        try {
+            FileOutputStream fileOut = openFileOutput(filename, Context.MODE_PRIVATE);
+            fileOut.write(jsonArray.toString().getBytes());
+            fileOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Log.i("LOGCAT", String.valueOf(getFileStreamPath(filename)));
+
+        // Create the send intent
+        Intent intentEmail = new Intent(Intent.ACTION_SEND);
+        intentEmail.setType("text/plain");
+        intentEmail.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - All decks");
+        intentEmail.putExtra(Intent.EXTRA_TEXT, "\r\n\r\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
+
+        File fileStreamPath = getFileStreamPath(filename);
+        Uri fileUri = FileProvider.getUriForFile(getApplicationContext(),
+                BuildConfig.APPLICATION_ID,
+                fileStreamPath);
+
+        intentEmail.putExtra(Intent.EXTRA_STREAM, fileUri);
+        startActivityForResult(Intent.createChooser(intentEmail, getText(R.string.menu_share)), 0);
+    }
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
-
-        if (key.equals(KEY_PREF_DATA_PACKS_TO_DISPLAY)) {
-            // If zero is selected, cancel commit
-            if (SetNamesPreferenceMultiSelect.parseStoredValue(sharedPreferences.getString(key, "")) == null) {
-                sharedPreferences.edit().putString(key, mInitialPacksToDisplay).apply();
-            }
-            // change the summary to display the datapacks to use
-            mInitialPacksToDisplay = sharedPreferences.getString(key, "");
-            refreshPrefsSummaries();
-        } else if (key.equals(KEY_PREF_DISPLAY_ALL_DATA_PACKS)) {
-            refreshPrefsSummaries();
-        } else if (key.equals(KEY_PREF_AMOUNT_OF_CORE_DECKS)) {
-            refreshPrefsSummaries();
-        } else if (key.equals(KEY_PREF_LANGUAGE)) {
-            StringDownloader sd = new StringDownloader(this, String.format(NetRunnerBD.getAllCardsUrl()), FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
-                ProgressDialog mDialog;
-
-                @Override
-                public void onBeforeTask() {
-                    // Display a progress dialog
-                    mDialog = new ProgressDialog(SettingsActivity.this);
-                    mDialog.setTitle(getString(R.string.downloading_cards));
-                    mDialog.setIndeterminate(true);
-                    mDialog.setCancelable(false);
-                    mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    mDialog.setMessage(getString(R.string.downloading_cards_restart));
-                    mDialog.show();
+        switch (key) {
+            case KEY_PREF_DATA_PACKS_TO_DISPLAY:
+                // If zero is selected, cancel commit
+                if (SetNamesPreferenceMultiSelect.parseStoredValue(sharedPreferences.getString(key, "")) == null) {
+                    sharedPreferences.edit().putString(key, mInitialPacksToDisplay).apply();
                 }
-
-                @Override
-                public void onTaskComplete(String s) {
-                    // Close the dialog
-                    mDialog.dismiss();
-
-                    Context context = SettingsActivity.this;
-                    Intent mStartActivity = new Intent(context, MainActivity.class);
-                    int mPendingIntentId = 123456;
-                    PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-                    AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                    mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-                    System.exit(0);
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    // Display the error and cancel the ongoing dialog
-                    mDialog.dismiss();
-
-                    // If zero cards are available, exit the application
-                    if (AppManager.getInstance().getAllCards().size() <= 0) {
-                        Toast.makeText(SettingsActivity.this, R.string.error_downloading_cards_quit, Toast.LENGTH_LONG).show();
-                        finish();
-                    } else {
-                        Toast.makeText(SettingsActivity.this, R.string.error_downloading_cards, Toast.LENGTH_LONG).show();
-                    }
-
-                    // Log
-                    Log.e("LOG", e.getMessage());
-                }
-            });
-            sd.execute();
+                // change the summary to display the datapacks to use
+                mInitialPacksToDisplay = sharedPreferences.getString(key, "");
+                refreshPrefsSummaries();
+                break;
+            case KEY_PREF_DISPLAY_ALL_DATA_PACKS:
+            case KEY_PREF_AMOUNT_OF_CORE_DECKS:
+                refreshPrefsSummaries();
+                break;
+            case KEY_PREF_LANGUAGE:
+                doLanguageChange();
+                break;
         }
+    }
 
+    private void doLanguageChange() {
+        StringDownloader sd = new StringDownloader(this, String.format(NetRunnerBD.getAllCardsUrl()), FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
+            ProgressDialog mDialog;
+
+            @Override
+            public void onBeforeTask() {
+                // Display a progress dialog
+                mDialog = new ProgressDialog(SettingsActivity.this);
+                mDialog.setTitle(getString(R.string.downloading_cards));
+                mDialog.setIndeterminate(true);
+                mDialog.setCancelable(false);
+                mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                mDialog.setMessage(getString(R.string.downloading_cards_restart));
+                mDialog.show();
+            }
+
+            @Override
+            public void onTaskComplete(String s) {
+                // Close the dialog
+                mDialog.dismiss();
+
+                Context context = SettingsActivity.this;
+                Intent mStartActivity = new Intent(context, MainActivity.class);
+                int mPendingIntentId = 123456;
+                PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                System.exit(0);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                // Display the error and cancel the ongoing dialog
+                mDialog.dismiss();
+
+                // If zero cards are available, exit the application
+                if (AppManager.getInstance().getAllCards().size() <= 0) {
+                    Toast.makeText(SettingsActivity.this, R.string.error_downloading_cards_quit, Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    Toast.makeText(SettingsActivity.this, R.string.error_downloading_cards, Toast.LENGTH_LONG).show();
+                }
+
+                // Log
+                Log.e("LOG", e.getMessage());
+            }
+        });
+        sd.execute();
     }
 
     private void refreshPrefsSummaries() {
@@ -252,8 +255,6 @@ public class SettingsActivity extends PreferenceActivity
 
         // Amount of core decks
         prefAmountOfCoreDecks.setSummary(sharedPreferences.getString(KEY_PREF_AMOUNT_OF_CORE_DECKS, "1"));
-
-
     }
 
     @Override
