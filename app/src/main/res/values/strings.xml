@@ -110,6 +110,7 @@
     <string name="menu_new_corp">Corporation</string>
     <string name="menu_new_runner">Runner</string>
     <string name="menu_view_sets">View card sets</string>
+    <string name="menu_browse_cards">Browse cards</string>
     <string name="menu_refresh_cards">Update cards list</string>
     <string name="menu_change_identity">Change identity</string>
     <string name="menu_search">Search</string>
