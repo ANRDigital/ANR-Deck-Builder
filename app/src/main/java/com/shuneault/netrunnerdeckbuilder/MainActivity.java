@@ -184,23 +184,7 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
             case R.id.mnuOptions:
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
                 break;
-            case R.id.mnuAbout:
-                PackageInfo pInfo;
-                TextView txt = new TextView(this);
-                try {
-                    pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                    txt.setText(getString(R.string.about_text, pInfo.versionName));
-                } catch (NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-                txt.setMovementMethod(LinkMovementMethod.getInstance());
-                txt.setPadding(25, 25, 25, 25);
-                AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
-                builder2.setTitle(R.string.menu_about);
-                builder2.setView(txt);
-                builder2.setPositiveButton(R.string.ok, null);
-                builder2.show();
-                break;
+
         }
 
         return super.onOptionsItemSelected(item);

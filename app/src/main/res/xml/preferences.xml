@@ -38,18 +38,11 @@
             android:defaultValue="true"
             android:title="@string/hide_non_virtual_apex" />
 
-    </PreferenceCategory>
-    
-    <PreferenceCategory android:title="@string/gui">
-        <CheckBoxPreference 
+        <CheckBoxPreference
             android:key="pref_ShowSetNames"
             android:defaultValue="false"
             android:title="@string/display_set_names_with_cards" />
         
-        <CheckBoxPreference 
-            android:key="pref_TapToCloseCardPreview"
-            android:defaultValue="true"
-            android:title="@string/tap_to_close_card_preview" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/rules">
@@ -70,6 +63,10 @@
     <PreferenceCategory android:title="Export">
         <Preference android:key="pref_ExportAllDecks"
             android:title="@string/export_all_decks" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Other">
+        <Preference android:key="pref_About"
+            android:title="@string/menu_about" />
     </PreferenceCategory>
 
 </PreferenceScreen>

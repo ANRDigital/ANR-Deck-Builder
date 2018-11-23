@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -17,7 +19,9 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
@@ -48,6 +52,7 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_LANGUAGE = "pref_Language";
     public static final String KEY_PREF_USE_MOST_WANTED_LIST = "pref_MostWantedList";
     public static final String KEY_PREF_EXPORT_ALL_DECKS = "pref_ExportAllDecks";
+    public static final String KEY_PREF_ABOUT = "pref_About";
 
     private String mInitialPacksToDisplay;
 
@@ -58,6 +63,7 @@ public class SettingsActivity extends PreferenceActivity
     Preference prefDownloadAllImages;
     Preference prefLanguage;
     Preference prefExportDecks;
+    Preference prefAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,11 @@ public class SettingsActivity extends PreferenceActivity
 
         prefAmountOfCoreDecks = findPreference(KEY_PREF_AMOUNT_OF_CORE_DECKS);
         prefLanguage = findPreference(KEY_PREF_LANGUAGE);
+        prefAbout = findPreference(KEY_PREF_ABOUT);
+        prefAbout.setOnPreferenceClickListener(preference -> {
+            showAboutDialog();
+            return false;
+        });
 
         prefDataPacks = findPreference(KEY_PREF_DATA_PACKS_TO_DISPLAY);
         prefDataPacks.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -101,6 +112,24 @@ public class SettingsActivity extends PreferenceActivity
 
         // Display the summary for data packs to display
         refreshPrefsSummaries();
+    }
+
+    private void showAboutDialog() {
+        PackageInfo pInfo;
+        TextView txt = new TextView(this);
+        try {
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            txt.setText(getString(R.string.about_text, pInfo.versionName));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        txt.setMovementMethod(LinkMovementMethod.getInstance());
+        txt.setPadding(25, 25, 25, 25);
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+        builder2.setTitle(R.string.menu_about);
+        builder2.setView(txt);
+        builder2.setPositiveButton(R.string.ok, null);
+        builder2.show();
     }
 
     private void doClearCache() {
