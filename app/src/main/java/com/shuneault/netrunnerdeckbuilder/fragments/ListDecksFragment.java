@@ -105,7 +105,7 @@ public class ListDecksFragment extends Fragment {
         // Only the selected tab decks
         final ArrayList<Deck> mCurrentDecks = new ArrayList<>();
         for (Deck deck : mDecks) {
-            if (deck.getSide().equals(mSide)) {
+            if (deck != null && deck.getSide().equals(mSide)) {
                 mCurrentDecks.add(deck);
             }
         }
