@@ -530,6 +530,277 @@
       "position": 1,
       "size": 1,
       "ffg_id": null
+    },
+    {
+      "code": "sc19",
+      "cycle_code": "nisei1",
+      "date_release": "2018-11-16",
+      "name": "System Core 2019",
+      "position": 1,
+      "size": 1,
+      "ffg_id": null,
+      "cards": [
+        {
+          "code": "04041",
+          "quantity": 1
+        },
+        {
+          "code": "06052",
+          "quantity": 1
+        },
+        {
+          "code": "01017",
+          "quantity": 1
+        },
+        {
+          "code": "06095",
+          "quantity": 1
+        },
+        {
+          "code": "02046",
+          "quantity": 1
+        },
+        {
+          "code": "03028",
+          "quantity": 1
+        },
+        {
+          "code": "04102",
+          "quantity": 1
+        },
+        {
+          "code": "04081",
+          "quantity": 1
+        },
+        {
+          "code": "02101",
+          "quantity": 2
+        },
+        {
+          "code": "10001",
+          "quantity": 1
+        },
+        {
+          "code": "20005",
+          "quantity": 1
+        },
+        {
+          "code": "20006",
+          "quantity": 1
+        },
+        {
+          "code": "22004",
+          "quantity": 1
+        },
+        {
+          "code": "01015",
+          "quantity": 1
+        },
+        {
+          "code": "02022",
+          "quantity": 2
+        },
+        {
+          "code": "02063",
+          "quantity": 2
+        },
+        {
+          "code": "02082",
+          "quantity": 1
+        },
+        {
+          "code": "01007",
+          "quantity": 3
+        },
+        {
+          "code": "02062",
+          "quantity": 2
+        },
+        {
+          "code": "20013",
+          "quantity": 3
+        },
+        {
+          "code": "01008",
+          "quantity": 2
+        },
+        {
+          "code": "02003",
+          "quantity": 2
+        },
+        {
+          "code": "06014",
+          "quantity": 2
+        },
+        {
+          "code": "20013",
+          "quantity": 3
+        },
+        {
+          "code": "08023",
+          "quantity": 1
+        },
+        {
+          "code": "20020",
+          "quantity": 2
+        },
+        {
+          "code": "20021",
+          "quantity": 2
+        },
+        {
+          "code": "04004",
+          "quantity": 1
+        },
+        {
+          "code": "20023",
+          "quantity": 2
+        },
+        {
+          "code": "05035",
+          "quantity": 2
+        },
+        {
+          "code": "02084",
+          "quantity": 1
+        },
+        {
+          "code": "13003",
+          "quantity": 1
+        },
+        {
+          "code": "20024",
+          "quantity": 2
+        },
+        {
+          "code": "20026",
+          "quantity": 1
+        },
+        {
+          "code": "22010",
+          "quantity": 2
+        },
+        {
+          "code": "01029",
+          "quantity": 2
+        },
+        {
+          "code": "01031",
+          "quantity": 1
+        },
+        {
+          "code": "13006",
+          "quantity": 3
+        },
+        {
+          "code": "13008",
+          "quantity": 2
+        },
+        {
+          "code": "20028",
+          "quantity": 2
+        },
+        {
+          "code": "20032",
+          "quantity": 2
+        },
+        {
+          "code": "20038",
+          "quantity": 2
+        },
+        {
+          "code": "20040",
+          "quantity": 2
+        },
+        {
+          "code": "20041",
+          "quantity": 1
+        },
+        {
+          "code": "20042",
+          "quantity": 1
+        },
+        {
+          "code": "20043",
+          "quantity": 2
+        },
+        {
+          "code": "20044",
+          "quantity": 2
+        },
+        {
+          "code": "01038",
+          "quantity": 1
+        },
+        {
+          "code": "20037",
+          "quantity": 2
+        },
+        {
+          "code": "02107",
+          "quantity": 1
+        },
+        {
+          "code": "20052",
+          "quantity": 2
+        },
+        {
+          "code": "03051",
+          "quantity": 2
+        },
+        {
+          "code": "03049",
+          "quantity": 2
+        },
+        {
+          "code": "03040",
+          "quantity": 1
+        },
+        {
+          "code": "20048",
+          "quantity": 3
+        },
+        {
+          "code": "02066",
+          "quantity": 1
+        },
+        {
+          "code": "20049",
+          "quantity": 3
+        },
+        {
+          "code": "20051",
+          "quantity": 2
+        },
+        {
+          "code": "03052",
+          "quantity": 2
+        },
+        {
+          "code": "20056",
+          "quantity": 3
+        },
+        {
+          "code": "20059",
+          "quantity": 2
+        },
+        {
+          "code": "06120",
+          "quantity": 2
+        },
+        {
+          "code": "08011",
+          "quantity": 2
+        },
+        {
+          "code": "02091",
+          "quantity": 2
+        },
+        {
+          "code": "20058",
+          "quantity": 2
+        }
+      ]
     }
   ],
   "total": 59,

@@ -51,6 +51,7 @@ public class Card {
     private URL imageSrc;
     private int mostWantedInfluence;
     private boolean isUnknown = false;
+    private String packName;
 
     public Card() {
 
@@ -151,16 +152,12 @@ public class Card {
     }
 
     public String getSetName() {
-        return AppManager.getInstance().getPackByCode(setCode).getName();
+        return this.packName;
     }
 
     public String getSetCode() {
         return setCode;
     }
-
-//    public String getSide() {
-//        return side;
-//    }
 
     public String getSideCode() {
         return sideCode;
@@ -444,6 +441,10 @@ public class Card {
 
     public void setUniqueness(boolean uniqueness) {
         this.uniqueness = uniqueness;
+    }
+
+    public void setPackName(String packName) {
+        this.packName = packName;
     }
 
     public static class Faction {

@@ -115,12 +115,23 @@ public class CardList extends ArrayList<Card> {
     }
 
 
-    public CardList getPackCards(ArrayList<String> packs) {
+    public CardList getPackCards(ArrayList<String> packNames, ArrayList<Pack> packList) {
         CardList cd = new CardList();
 
-        for (Card card : this) {
-            if (packs.contains(card.getSetName())) {
-                cd.add(card);
+        for (Pack p : packList) {
+            // add cards pointing AT the pack
+            for (Card card : this) {
+                if (p.getName().equals(card.getSetName())) {
+                    cd.add(card);
+                }
+            }
+
+            // add cards linked FROM the pack
+            for (CardLink link: p.getCardLinks()){
+                Card c = getCard(link.getCardCode());
+                if(!cd.contains(c)){
+                    cd.add(c);
+                }
             }
         }
         return cd;

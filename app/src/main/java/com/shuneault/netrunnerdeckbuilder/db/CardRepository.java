@@ -38,8 +38,9 @@ public class CardRepository {
         mContext = context;
         try{
             loadMwl();
-            loadCards();
+            // MUST LOAD PACKS BEFORE CARDS
             loadPacks();
+            loadCards();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -76,8 +77,6 @@ public class CardRepository {
     private void loadCards() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         try {
-
-
             //get json file
             JSONObject jsonFile = LocalFileHelper.getJSONCardsFile(mContext);
             String imageUrlTemplate = jsonFile.getString("imageUrlTemplate");
@@ -99,7 +98,7 @@ public class CardRepository {
                     }
                 }
 
-                CardBuilder cardBuilder = new CardBuilder(imageUrlTemplate);
+                CardBuilder cardBuilder = new CardBuilder(imageUrlTemplate, this);
                 Card card = cardBuilder.BuildFromJson(jsonCard);
 
                 int cardUniversalCost = 0;
@@ -244,9 +243,11 @@ public class CardRepository {
     }
 
     public CardList getCardsFromDataPacksToDisplay(ArrayList<String> packFilter) {
+        ArrayList<Pack> packList;
         // deck pack filter?
         if (packFilter.size() > 0) {
-            return mCards.getPackCards(packFilter);
+            packList = getPacksFromFilter(packFilter);
+            return mCards.getPackCards(packFilter, packList);
         } else {
             // Return all cards if set in the preferences
             if (getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_DISPLAY_ALL_DATA_PACKS, true)) {
@@ -256,8 +257,21 @@ public class CardRepository {
             // Return only the data packFilter requested
             String packsPref = getSharedPrefs().getString(SettingsActivity.KEY_PREF_DATA_PACKS_TO_DISPLAY, "");
             ArrayList<String> globalPackFilter = new ArrayList<>(Arrays.asList(ListPreferenceMultiSelect.parseStoredValue(packsPref)));
-            return mCards.getPackCards(globalPackFilter);
+            packList = getPacksFromFilter(globalPackFilter);
+
+            return mCards.getPackCards(globalPackFilter, packList);
         }
+    }
+
+    private ArrayList<Pack> getPacksFromFilter(ArrayList<String> packFilter) {
+        ArrayList<Pack> result = new ArrayList<>();
+        for (Pack pack :
+                mPacks) {
+            if (packFilter.contains(pack.getName())){
+                result.add(pack);
+            }
+        }
+        return result;
     }
 
     public SharedPreferences getSharedPrefs() {

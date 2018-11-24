@@ -1,6 +1,10 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by sebast on 02/07/16.
@@ -20,6 +24,7 @@ public class Pack {
     private String name;
     private int position;
     private int size;
+    private ArrayList<CardLink> cardLinks = new ArrayList<>();
 
     public Pack(JSONObject json) {
         this.code = json.optString(KEY_CODE, "");
@@ -28,6 +33,21 @@ public class Pack {
         this.name = json.optString(KEY_NAME, "");
         this.position = json.optInt(KEY_POSITION, 0);
         this.size = json.optInt(KEY_SIZE, 0);
+        JSONArray cards = json.optJSONArray("cards");
+        if (cards != null) {
+            for (int i = 0; i < cards.length(); i++) {
+                try {
+                    JSONObject card;
+                    card = cards.getJSONObject(i);
+                    String cardCode = card.getString("code");
+                    int quantity = card.getInt("quantity");
+                    CardLink cl = new CardLink(cardCode, quantity);
+                    this.cardLinks.add(cl);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public String getCode() {
@@ -53,4 +73,6 @@ public class Pack {
     public int getSize() {
         return size;
     }
+
+    public ArrayList<CardLink> getCardLinks() {return cardLinks; }
 }

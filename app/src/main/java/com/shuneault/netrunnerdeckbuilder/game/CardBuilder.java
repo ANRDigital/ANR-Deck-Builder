@@ -1,5 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
+
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
@@ -41,10 +43,12 @@ public class CardBuilder {
     private static final String NAME_STRENGTH = "strength";
 
     private String imageUrlTemplate;
+    private CardRepository repo;
 
-    public CardBuilder(String imageUrlTemplate) {
+    public CardBuilder(String imageUrlTemplate, CardRepository repo) {
 
         this.imageUrlTemplate = imageUrlTemplate;
+        this.repo = repo;
     }
 
     public Card BuildFromJson(JSONObject json) {
@@ -67,7 +71,9 @@ public class CardBuilder {
             card.setNumber(json.optString(NAME_NUMBER));
             card.setQuantity(json.optString(NAME_QUANTITY));
             card.setDeckLimit(json.optInt(NAME_DECK_LIMIT));
-            card.setSetCode(json.optString(NAME_SET_CODE));
+            String packCode = json.optString(NAME_SET_CODE);
+            card.setSetCode(packCode);
+            card.setPackName(repo.getPack(packCode).getName());
             card.setUniqueness(json.optBoolean(NAME_UNIQUENESS));
             // does it have an unusual image_src? If not follow standard pattern
             String imageUrl = json.optString(NAME_IMAGE_URL_OVERRIDE);
