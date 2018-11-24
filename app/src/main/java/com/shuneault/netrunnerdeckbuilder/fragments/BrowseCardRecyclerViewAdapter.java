@@ -83,7 +83,7 @@ public class BrowseCardRecyclerViewAdapter extends RecyclerView.Adapter<BrowseCa
             lblTitle.setText(card.getTitle());
             lblInfluence.setText(TextFormatter.GetInfluenceString(context, card.getFactionCost()));
 
-            lblText.setText(TextFormatter.getFormattedString(context, card.getText()));
+            lblText.setText(TextFormatter.FormatCardTitle(card));
             ImageDisplayer.fillSmall(imgImage, card, context);
             lblSetName.setText(card.getSetName());
 
