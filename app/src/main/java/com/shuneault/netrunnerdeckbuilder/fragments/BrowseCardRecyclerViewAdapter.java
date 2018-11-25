@@ -80,10 +80,10 @@ public class BrowseCardRecyclerViewAdapter extends RecyclerView.Adapter<BrowseCa
             this.mItem = card;
             Context context = lblText.getContext();
             lblIcons.setText(TextFormatter.FormatCardIcons(context, card));
-            lblTitle.setText(card.getTitle());
+            lblTitle.setText(TextFormatter.FormatCardTitle(card));
             lblInfluence.setText(TextFormatter.GetInfluenceString(context, card.getFactionCost()));
 
-            lblText.setText(TextFormatter.FormatCardTitle(card));
+            lblText.setText(TextFormatter.getFormattedString(context, card.getText()));
             ImageDisplayer.fillSmall(imgImage, card, context);
             lblSetName.setText(card.getSetName());
 
