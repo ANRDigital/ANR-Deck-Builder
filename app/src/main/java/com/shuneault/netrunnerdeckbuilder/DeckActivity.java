@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.export.JintekiNet;
 import com.shuneault.netrunnerdeckbuilder.export.OCTGN;
@@ -44,6 +45,7 @@ import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 public class DeckActivity extends AppCompatActivity implements OnDeckChangedListener, ChoosePacksDialogFragment.ChoosePacksDialogListener {
 
@@ -175,7 +177,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     }
 
     private void setPackFilterIconVisibility() {
-        if (mDeck.hasPackFilter())
+        if (mDeck.getCardPool().isFiltered())
         {
             layoutFiltered.setVisibility(View.VISIBLE);
         } else {
@@ -438,7 +440,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     private void doSetPacks() {
         // display list alert dialog
         ChoosePacksDialogFragment choosePacksDlg = new ChoosePacksDialogFragment();
-        choosePacksDlg.setPackFilter(mDeck.getPackFilter());
+        choosePacksDlg.setPackFilter(mDeck.getCardPool().getPackFilter());
         choosePacksDlg.show(getSupportFragmentManager(), "choosePacks");
     }
 
@@ -447,7 +449,9 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     public void onChoosePacksDialogPositiveClick(DialogFragment dialog) {
         // save the new setting
         ChoosePacksDialogFragment frag = (ChoosePacksDialogFragment)dialog;
-        mDeck.setPackFilter(frag.getSelectedValues());
+        ArrayList<String> packFilter = frag.getSelectedValues();
+        CardRepository cardRepo = AppManager.getInstance().getCardRepository();
+        mDeck.setCardPool(cardRepo.getCardPool(packFilter));
 
         // update fragments
         if (fragDeckCards != null)

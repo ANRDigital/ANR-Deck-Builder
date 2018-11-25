@@ -10,9 +10,11 @@ import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardBuilder;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
+import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
+import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper;
 import com.shuneault.netrunnerdeckbuilder.helper.StringDownloader;
 import com.shuneault.netrunnerdeckbuilder.prefs.ListPreferenceMultiSelect;
@@ -238,10 +240,6 @@ public class CardRepository {
 
     }
 
-    public CardList getCardsFromDataPacksToDisplay() {
-        return getCardsFromDataPacksToDisplay(new ArrayList<>());
-    }
-
     public CardList getCardsFromDataPacksToDisplay(ArrayList<String> packFilter) {
         ArrayList<Pack> packList;
         // deck pack filter?
@@ -294,5 +292,10 @@ public class CardRepository {
 
     public MostWantedList getActiveMwl() {
         return mActiveMWL;
+    }
+
+    public CardPool getCardPool(ArrayList<String> packFilter) {
+        int coreCount = Integer.parseInt(AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_AMOUNT_OF_CORE_DECKS, "3"));
+        return new CardPool(packFilter, coreCount);
     }
 }

@@ -14,7 +14,6 @@ import java.io.File;
 import java.net.URL;
 
 public class Card {
-    private static final int DEFAULT_QUANTITY = 3;
     //    private Date lastModified;
     private String code;
     private String cost;
@@ -207,33 +206,7 @@ public class Card {
         return subtype.split(" - ");
     }
 
-    /**
-     * Calculates how many of that card you can add in a deck
-     * - Checks how many core decks you have and calculate
-     *
-     * @return How many cards you can use in a deck
-     */
-    public int getMaxCardCount() {
-        try {
-            int count;
-            if (this.isInCoreSet()) {
-                int iAmountCoreDecks = Integer.parseInt(AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_AMOUNT_OF_CORE_DECKS, "3"));
-                count =  Math.min(iAmountCoreDecks * Integer.parseInt(this.quantity), DEFAULT_QUANTITY);
-            } else {
-                count =  Integer.parseInt(this.quantity);
-            }
 
-            count = Math.min(count, deckLimit);
-            return count;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return DEFAULT_QUANTITY;
-        }
-    }
-
-    private boolean isInCoreSet() {
-        return this.setCode.equals(SetName.CORE_SET) || this.setCode.equals(SetName.REVISED_CORE_SET);
-    }
 
     /**
      * @return Formatted text with images
@@ -445,6 +418,10 @@ public class Card {
 
     public void setPackName(String packName) {
         this.packName = packName;
+    }
+
+    public int getDeckLimit() {
+        return deckLimit;
     }
 
     public static class Faction {

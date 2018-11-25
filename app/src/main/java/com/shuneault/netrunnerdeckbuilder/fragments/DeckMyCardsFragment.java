@@ -157,7 +157,7 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
                 // Update the list
                 mListener.onDeckCardsChanged();
             }
-        });
+        }, AppManager.getInstance().getCardRepository());
         lstDeckCards.setAdapter(mDeckCardsAdapter);
         lstDeckCards.setOnChildClickListener(new OnChildClickListener() {
 

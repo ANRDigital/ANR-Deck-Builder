@@ -59,6 +59,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
      */
     private static final long serialVersionUID = 2114649051205735605L;
     private boolean hasUnknownCards = false;
+    private CardPool cardPool;
 
     private Deck() {
         this("", "");
@@ -123,10 +124,11 @@ public class Deck implements Serializable, HeaderListItemInterface {
     }
 
 
-    public void setCardCount(Card card, int count) {
+    public void updateCardCount(Card card, int count) {
         // Count must be between 0 and the maximum allowed by the game
         count = Math.max(0, count);
-        count = Math.min(card.getMaxCardCount(), count);
+
+        count = Math.min(cardPool.getMaxCardCount(card), count);
 
         // Add or remove the card count
         int iCountToAdd = (mCardsToAdd.get(card) == null ? 0 : mCardsToAdd.get(card).getCount());
@@ -146,11 +148,14 @@ public class Deck implements Serializable, HeaderListItemInterface {
         getCardsToAdd();
         getCardsToRemove();
 
+        setCardCount(card, count);
+    }
+
+    public void setCardCount(Card card, int count) {
         // Modify the deck
         mCards.remove(card);
         if (count > 0)
             mCards.put(card, count);
-
     }
 
     public ArrayList<Card> getCards() {
@@ -472,7 +477,8 @@ public class Deck implements Serializable, HeaderListItemInterface {
         Deck deck = new Deck();
         deck.mUUID = UUID.fromString(json.optString(JSON_DECK_UUID, UUID.randomUUID().toString()));
         deck.setName(json.optString(JSON_DECK_NAME));
-        deck.setIdentity(AppManager.getInstance().getAllCards().getCard(json.optString(JSON_DECK_IDENTITY_CODE)));
+        AppManager appManager = AppManager.getInstance();
+        deck.setIdentity(appManager.getAllCards().getCard(json.optString(JSON_DECK_IDENTITY_CODE)));
         deck.setNotes(json.optString(JSON_DECK_NOTES));
         deck.setStarred(json.optBoolean(JSON_DECK_STARRED));
 
@@ -481,7 +487,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
             JSONArray jsonCards = json.getJSONArray(JSON_DECK_CARDS);
             for (int i = 0; i < jsonCards.length(); i++) {
                 JSONObject jsonCard = jsonCards.getJSONObject(i);
-                deck.setCardCount(AppManager.getInstance().getCard(jsonCard.optString(JSON_DECK_CARD_CODE)), jsonCard.optInt(JSON_DECK_CARD_COUNT));
+                deck.setCardCount(appManager.getCard(jsonCard.optString(JSON_DECK_CARD_CODE)), jsonCard.optInt(JSON_DECK_CARD_COUNT));
             }
 
             // By default, when a new card is added to a deck, it is added to the ADD list
@@ -495,7 +501,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
             JSONArray jsonCards = json.getJSONArray(JSON_DECK_CARDS_TO_ADD);
             for (int i = 0; i < jsonCards.length(); i++) {
                 JSONObject jsonCard = jsonCards.getJSONObject(i);
-                Card card = AppManager.getInstance().getCard(jsonCard.optString(JSON_DECK_CARD_CODE));
+                Card card = appManager.getCard(jsonCard.optString(JSON_DECK_CARD_CODE));
                 deck.mCardsToAdd.put(card, new CardCount(card, jsonCard.optInt(JSON_DECK_CARD_COUNT), jsonCard.optBoolean(JSON_DECK_CARDS_DONE)));
             }
         } catch (JSONException e) {
@@ -506,7 +512,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
             JSONArray jsonCards = json.getJSONArray(JSON_DECK_CARDS_TO_REMOVE);
             for (int i = 0; i < jsonCards.length(); i++) {
                 JSONObject jsonCard = jsonCards.getJSONObject(i);
-                Card card = AppManager.getInstance().getCard(jsonCard.optString(JSON_DECK_CARD_CODE));
+                Card card = appManager.getCard(jsonCard.optString(JSON_DECK_CARD_CODE));
                 deck.mCardsToRemove.put(card, new CardCount(card, jsonCard.optInt(JSON_DECK_CARD_COUNT), jsonCard.optBoolean(JSON_DECK_CARDS_DONE)));
             }
         } catch (JSONException e) {
@@ -541,18 +547,6 @@ public class Deck implements Serializable, HeaderListItemInterface {
         return getIdentity().getCode().equals(Card.SpecialCards.APEX);
     }
 
-    public void setPackFilter(ArrayList<String> packFilter) {
-        this.packFilter = packFilter;
-    }
-
-    public ArrayList<String> getPackFilter() {
-        return packFilter;
-    }
-
-    public boolean hasPackFilter() {
-        return packFilter.size() > 0;
-    }
-
     public void setHasUnknownCards() {
         this.hasUnknownCards = true;
     }
@@ -576,11 +570,19 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public void ReduceCard(Card card) {
 
-        setCardCount(card, getCardCount(card) - 1);
+        updateCardCount(card, getCardCount(card) - 1);
     }
 
     public void AddCard(Card card) {
 
-        setCardCount(card, getCardCount(card) + 1);
+        updateCardCount(card, getCardCount(card) + 1);
+    }
+
+    public void setCardPool(CardPool cardPool) {
+        this.cardPool = cardPool;
+    }
+
+    public CardPool getCardPool() {
+        return cardPool;
     }
 }

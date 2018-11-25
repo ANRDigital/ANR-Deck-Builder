@@ -3,31 +3,16 @@ package com.shuneault.netrunnerdeckbuilder.helper;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.shuneault.netrunnerdeckbuilder.R;
-import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.CardBuilder;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
-import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
-import com.shuneault.netrunnerdeckbuilder.prefs.ListPreferenceMultiSelect;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Created by sebast on 24/01/16.
@@ -61,7 +46,7 @@ public class AppManager extends Application {
         mDb = new DatabaseHelper(this);
 
         mCardRepo = new CardRepository(this);
-        mDecks.addAll(mDb.getAllDecks(true, mCardRepo.getAllCards()));
+        mDecks.addAll(mDb.getAllDecks(true, mCardRepo.getAllCards(), mCardRepo));
 
         // Download the card list every week
 //        try {

@@ -194,7 +194,7 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 
         // Get the cards
         mListCards = new HashMap<>();
-        CardList cardCollection = appManager.getCardsFromDataPacksToDisplay(mDeck.getPackFilter());
+        CardList cardCollection = appManager.getCardsFromDataPacksToDisplay(mDeck.getCardPool().getPackFilter());
         for (Card theCard : cardCollection) {
             // Only add the cards that are on my side
             boolean isSameSide = theCard.getSideCode().equals(sideCode);
@@ -233,7 +233,7 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
         sortListCards(headers, mListCards);
 
         // Set the adapter
-        mDeckCardsAdapter = new ExpandableDeckCardListAdapter(getActivity(), headers, mListCards, deck, new OnButtonClickListener() {
+        mDeckCardsAdapter = new ExpandableDeckCardListAdapter(appManager.getCardRepository(), getActivity(), headers, mListCards, deck, new OnButtonClickListener() {
 
             @Override
             public void onPlusClick(Card card) {

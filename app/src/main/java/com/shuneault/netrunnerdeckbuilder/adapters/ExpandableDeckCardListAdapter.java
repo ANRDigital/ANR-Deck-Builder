@@ -2,7 +2,6 @@ package com.shuneault.netrunnerdeckbuilder.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,8 +13,10 @@ import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardMWL;
+import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -23,10 +24,11 @@ import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 import com.shuneault.netrunnerdeckbuilder.helper.TextFormatter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
+
+    private CardRepository mCardRepo;
 
     public interface OnButtonClickListener {
         void onPlusClick(Card card);
@@ -70,7 +72,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
     private boolean mMyCards = false;
     private OnButtonClickListener mListener;
 
-    public ExpandableDeckCardListAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck, OnButtonClickListener listener) {
+    public ExpandableDeckCardListAdapter(CardRepository mCardRepo, Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck, OnButtonClickListener listener) {
+        this.mCardRepo = mCardRepo;
         this.mContext = context;
         this.mArrDataHeader = listDataHeader;
         this.mArrDataChild = listChildData;
@@ -81,8 +84,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ExpandableDeckCardListAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck, boolean isMyCards, OnButtonClickListener listener) {
-        this(context, listDataHeader, listChildData, deck, listener);
+    public ExpandableDeckCardListAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck, boolean isMyCards, OnButtonClickListener listener, CardRepository mCardRepo) {
+        this(mCardRepo, context, listDataHeader, listChildData, deck, listener);
         mMyCards = true;
     }
 
@@ -131,7 +134,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 
             viewHolder.lblText.setText(TextFormatter.getFormattedString(mContext, card.getText()));
 
-            viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + card.getMaxCardCount());
+            final Integer maxCardCount = mDeck.getCardPool().getMaxCardCount(card);
+            viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + maxCardCount);
 
             // Set names
             viewHolder.lblSetName.setText(card.getSetName());
@@ -168,7 +172,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View v) {
                     mDeck.ReduceCard(card);
-                    viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + card.getMaxCardCount());
+                    viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + maxCardCount);
                     setBackgroundColor(view, card);
                     mListener.onMinusClick(card);
                 }
@@ -178,7 +182,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View v) {
                     mDeck.AddCard(card);
-                    viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + card.getMaxCardCount());
+                    viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + maxCardCount);
                     setBackgroundColor(view, card);
                     mListener.onPlusClick(card);
                 }

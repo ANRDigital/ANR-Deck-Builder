@@ -154,7 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return getWritableDatabase().delete(TABLE_DECKS, null, null) > 0;
     }
 
-    public ArrayList<Deck> getAllDecks(boolean withCards, CardList allCards) {
+    public ArrayList<Deck> getAllDecks(boolean withCards, CardList allCards, CardRepository repo) {
         ArrayList<Deck> decks = new ArrayList<>();
         // read deck list from db
         Cursor c = getReadableDatabase().query(TABLE_DECKS,
@@ -170,7 +170,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String packFilterValue = c.getString(c.getColumnIndex(KEY_DECKS_PACKFILTER));
             if (!packFilterValue.isEmpty()) {
                 ArrayList<String> pf = new ArrayList<>(Arrays.asList(packFilterValue.split(PACK_FILTER_SEPARATOR)));
-                deck.setPackFilter(pf);
+                deck.setCardPool(repo.getCardPool(pf));
+            }
+            else
+            {
+                deck.setCardPool(repo.getCardPool(new ArrayList<>()));
             }
 
             decks.add(deck);
@@ -290,7 +294,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         val.put(KEY_DECKS_NAME, deck.getName());
         val.put(KEY_DECKS_NOTES, deck.getNotes());
         val.put(KEY_DECKS_STARRED, deck.isStarred());
-        val.put(KEY_DECKS_PACKFILTER, TextUtils.join(PACK_FILTER_SEPARATOR, deck.getPackFilter()));
+        val.put(KEY_DECKS_PACKFILTER, TextUtils.join(PACK_FILTER_SEPARATOR, deck.getCardPool().getPackFilter()));
 
         return getWritableDatabase().update(TABLE_DECKS, val, KEY_ID + "=" + deck.getRowId(), null) > 0;
     }
