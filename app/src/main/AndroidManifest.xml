@@ -43,16 +43,13 @@
             android:label="@string/import_decks">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
                 <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="application/octet-stream" android:host="*" android:pathPattern=".*\\.o8d" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="file" />
-                <data android:host="*" />
-                <data android:pathPattern=".*\\.o8d" />
+                <data
+                    android:host="*"
+                    android:pathPattern=".*\\.o8d"
+                    android:scheme="content"
+                    android:mimeType="*/*" />
             </intent-filter>
         </activity>
         <activity android:name=".BrowseActivity" />
