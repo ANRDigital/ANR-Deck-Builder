@@ -231,9 +231,6 @@ public class CardRepository {
     }
 
     private ArrayList<Pack> getPacksFromFilter(ArrayList<String> packFilter) {
-        if (packFilter.isEmpty())
-            return mPacks;
-
         ArrayList<Pack> result = new ArrayList<>();
         for (Pack pack :
                 mPacks) {
@@ -264,7 +261,8 @@ public class CardRepository {
     }
 
     public CardPool getGlobalCardPool() {
-        return getCardPool(getPrefs().globalPackFilter);
+        CardRepositoryPreferences prefs = getPrefs();
+        return getCardPool(prefs.displayAllPacksPref ? new ArrayList<>() : prefs.globalPackFilter);
     }
 
     public CardPool getCardPool(ArrayList<String> packFilter) {

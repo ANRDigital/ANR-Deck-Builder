@@ -204,4 +204,9 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
         setListView();
     }
 
+    public void onCardPoolChanged() {
+        if (!isAdded()) return;
+        // Refresh my cards
+        refreshCardList();
+    }
 }

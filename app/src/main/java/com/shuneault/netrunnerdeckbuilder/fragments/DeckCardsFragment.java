@@ -271,4 +271,9 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
         mDeckCardsAdapter.filterData("");
         return true;
     }
+
+    public void onCardPoolChanged() {
+        if (!isAdded()) return;
+        setListView(mDeck);
+    }
 }

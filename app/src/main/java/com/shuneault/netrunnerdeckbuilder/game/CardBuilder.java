@@ -1,7 +1,5 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
-import android.os.Build;
-
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
@@ -44,6 +42,8 @@ public class CardBuilder {
 
     private String imageUrlTemplate;
     private String code;
+    private String setCode;
+    private String quantity = "3";
 
     public CardBuilder(String imageUrlTemplate) {
 
@@ -101,6 +101,13 @@ public class CardBuilder {
     public Card Build() {
         Card c = new Card();
         c.setCode(code);
+        c.setSetCode(setCode);
+        c.setQuantity(quantity);
         return c;
+    }
+
+    public CardBuilder withSetCode(String setCode) {
+        this.setCode = setCode;
+        return this;
     }
 }

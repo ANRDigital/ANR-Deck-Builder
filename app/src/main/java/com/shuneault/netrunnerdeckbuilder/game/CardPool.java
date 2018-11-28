@@ -16,10 +16,11 @@ public class CardPool {
             this.packFilter.add(p.getName());
         }
 
+        ArrayList<Pack> packsToUse = packFilter.isEmpty() ? repo.getPacks() : packFilter;
         mCardLimits = new CardCountList();
         // loop the packFilter
         for (Pack p :
-                packFilter) {
+                packsToUse) {
             // is it a core set?
             int setCount = p.isCoreSet() ? coreCount : 1;
 

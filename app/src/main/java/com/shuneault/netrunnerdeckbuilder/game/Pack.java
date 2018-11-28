@@ -11,6 +11,12 @@ import java.util.ArrayList;
  */
 
 public class Pack {
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public static class SetCode {
         public static final String CORE_SET = "core";
         public static final String REVISED_CORE_SET = "core2";
@@ -31,6 +37,9 @@ public class Pack {
     private int position;
     private int size;
     private ArrayList<CardLink> cardLinks = new ArrayList<>();
+
+    public Pack() {
+    }
 
     public Pack(JSONObject json) {
         this.code = json.optString(KEY_CODE, "");
@@ -58,6 +67,11 @@ public class Pack {
 
     public String getCode() {
         return code;
+    }
+
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getCycleCode() {

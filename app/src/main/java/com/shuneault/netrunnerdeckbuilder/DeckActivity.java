@@ -460,6 +460,8 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
         // update filtered icon
         setPackFilterIconVisibility();
+
+        onCardPoolChanged();
     }
 
     @Override
@@ -494,6 +496,17 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
             fragDeckCards.onDeckCardsChanged();
         if (fragDeckStats != null)
             fragDeckStats.onDeckCardsChanged();
+
+        // Update the infobar
+        updateInfoBar();
+    }
+
+    public void onCardPoolChanged() {
+        // Call the DeckBuildFragment update
+        if (fragDeckMyCards != null)
+            fragDeckMyCards.onCardPoolChanged();
+        if (fragDeckCards != null)
+            fragDeckCards.onCardPoolChanged();
 
         // Update the infobar
         updateInfoBar();
