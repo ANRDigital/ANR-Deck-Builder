@@ -53,6 +53,7 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_USE_MOST_WANTED_LIST = "pref_MostWantedList";
     public static final String KEY_PREF_EXPORT_ALL_DECKS = "pref_ExportAllDecks";
     public static final String KEY_PREF_ABOUT = "pref_About";
+    public static final String DEFAULT_CORE_DECKS = "1";
 
     private String mInitialPacksToDisplay;
 
@@ -259,7 +260,7 @@ public class SettingsActivity extends PreferenceActivity
                 mDialog.dismiss();
 
                 // If zero cards are available, exit the application
-                if (AppManager.getInstance().getAllCards().size() <= 0) {
+                if (AppManager.getInstance().getCardRepository().hasCards()) {
                     Toast.makeText(SettingsActivity.this, R.string.error_downloading_cards_quit, Toast.LENGTH_LONG).show();
                     finish();
                 } else {
@@ -283,7 +284,7 @@ public class SettingsActivity extends PreferenceActivity
         }
 
         // Amount of core decks
-        prefAmountOfCoreDecks.setSummary(sharedPreferences.getString(KEY_PREF_AMOUNT_OF_CORE_DECKS, "1"));
+        prefAmountOfCoreDecks.setSummary(sharedPreferences.getString(KEY_PREF_AMOUNT_OF_CORE_DECKS, DEFAULT_CORE_DECKS));
     }
 
     @Override

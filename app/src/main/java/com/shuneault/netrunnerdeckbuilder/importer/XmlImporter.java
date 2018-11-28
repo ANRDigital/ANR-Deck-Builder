@@ -2,6 +2,7 @@ package com.shuneault.netrunnerdeckbuilder.importer;
 
 import android.text.Html;
 
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -30,10 +31,12 @@ class XmlImporter implements IDeckImporter {
     private static final String XPATH_DECK_NAME = "/deck/section[@name='Identity']/card";
     private static final String XPATH_DECK_NOTES = "/deck/notes";
     private static final String XPATH_CARD_LIST = "/deck/section[@name='R&D / Stack']/card";
+    private final CardRepository repo;
 
     private ArrayList<Deck> mDecks;
 
-    XmlImporter(String text) throws Exception {
+    XmlImporter(String text, CardRepository repo) throws Exception {
+        this.repo = repo;
         ArrayList<Deck> decks = new ArrayList<>();
 
         // Build the XML document
@@ -51,7 +54,9 @@ class XmlImporter implements IDeckImporter {
         NodeList nodeCards = (NodeList) XPathFactory.newInstance().newXPath().evaluate(XPATH_CARD_LIST, doc, XPathConstants.NODESET);
 
         // Build the new deck
-        Deck deck = new Deck(strDeckName, getCardCodeFromUUID(strIdentityID));
+        String identityCode = getCardCodeFromUUID(strIdentityID);
+        Card identityCard = this.repo.getCard(identityCode);
+        Deck deck = new Deck(identityCard, repo.getGlobalCardPool());
         deck.setNotes(Html.fromHtml(deckNotes).toString());
         for (int i = 0; i < nodeCards.getLength(); i++) {
             Node node = nodeCards.item(i);

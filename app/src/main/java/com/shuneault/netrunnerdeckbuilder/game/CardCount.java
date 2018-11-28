@@ -39,4 +39,8 @@ public class CardCount {
     public void setDone(boolean done) {
         mDone = done;
     }
+
+    public void add(int quantity) {
+        this.mCount += quantity;
+    }
 }

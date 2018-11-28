@@ -58,7 +58,8 @@ public class ChooseIdentityActivity extends AppCompatActivity {
         mInitialIdentity = getIntent().getStringExtra(EXTRA_INITIAL_IDENTITY_CODE);
 
         // The identities
-        mIdentities = AppManager.getInstance().getCardsFromDataPacksToDisplay().getIdentities(mSideCode);
+        AppManager appManager = AppManager.getInstance();
+        mIdentities = appManager.getCardRepository().getGlobalCardPool().getIdentities(mSideCode);
         // Quit if no identities
         if (mIdentities.size() == 0) {
             Toast.makeText(this, "No identities in packs", Toast.LENGTH_LONG).show();

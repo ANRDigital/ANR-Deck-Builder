@@ -6,8 +6,8 @@ import android.preference.PreferenceManager;
 
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
+import com.shuneault.netrunnerdeckbuilder.db.JSONDataLoader;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
@@ -45,7 +45,10 @@ public class AppManager extends Application {
         mInstance = this;
         mDb = new DatabaseHelper(this);
 
-        mCardRepo = new CardRepository(this);
+        // setup Card repository
+        ISettingsProvider settingsProvider = new SettingsProvider(this);
+        JSONDataLoader fileLoader = new JSONDataLoader(new LocalFileHelper(this));
+        mCardRepo = new CardRepository(this, settingsProvider, fileLoader);
         mDecks.addAll(mDb.getAllDecks(true, mCardRepo.getAllCards(), mCardRepo));
 
         // Download the card list every week
@@ -62,6 +65,7 @@ public class AppManager extends Application {
 //            //todo: flag a message here?`
 //        }
     }
+
 
 
     public static AppManager getInstance() {
@@ -84,29 +88,8 @@ public class AppManager extends Application {
         return mCardRepo.getPacks();
     }
 
-    public Pack getPackByCode(String code) {
-        return mCardRepo.getPack(code);
-    }
-
-    public CardList getAllCards() {
-        return mCardRepo.getAllCards();
-    }
-
-    public CardList getCardsFromDataPacksToDisplay() {
-        return mCardRepo.getCardsFromDataPacksToDisplay(new ArrayList<>());
-    }
-
-
-    public CardList getCardsFromDataPacksToDisplay(ArrayList<String> packFilter) {
-        return mCardRepo.getCardsFromDataPacksToDisplay(packFilter);
-    }
-
     public ArrayList<String> getSetNames() {
         return mCardRepo.getPackNames();
-    }
-
-    public CardList getCardsBySetName(String setName) {
-        return mCardRepo.getPackCards(setName);
     }
 
     public void addDeck(Deck deck) {
@@ -120,7 +103,7 @@ public class AppManager extends Application {
 
     // Return the requested card
     public Card getCard(String code) {
-        return mCardRepo.getCard(code);
+        return getCardRepository().getCard(code);
     }
 
     // decks with rowId of 128 and higher wouldn't load so

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.shuneault.netrunnerdeckbuilder.DeckActivity;
 import com.shuneault.netrunnerdeckbuilder.MainActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -33,6 +34,7 @@ public class ImportDecksActivity extends AppCompatActivity {
         // Database and App Manager
         mApp = AppManager.getInstance();
         mDb = mApp.getDatabase();
+        CardRepository cardRepository = mApp.getCardRepository();
 
         // Intent
         Intent intent = getIntent();
@@ -44,7 +46,7 @@ public class ImportDecksActivity extends AppCompatActivity {
         try {
             if (theFile != null) {
                 // Get all decks
-                ArrayList<Deck> decks = new UniversalImporter(theFile).toDecks();
+                ArrayList<Deck> decks = new UniversalImporter(theFile, cardRepository).toDecks();
                 for (Deck deck : decks) {
                     mApp.addDeck(deck);
                     mDb.createDeck(deck);

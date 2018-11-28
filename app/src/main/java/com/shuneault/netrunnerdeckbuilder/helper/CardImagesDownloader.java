@@ -51,7 +51,7 @@ public class CardImagesDownloader extends AsyncTask<Void, Integer, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(Void... voids) {
-        CardList cardList = (CardList) AppManager.getInstance().getAllCards().clone();
+        CardList cardList = (CardList) AppManager.getInstance().getCardRepository().getAllCards().clone();
 
         // Call the listener
         mListener.onBeforeStartTask(mContext, cardList.size());
@@ -88,9 +88,10 @@ public class CardImagesDownloader extends AsyncTask<Void, Integer, Bitmap> {
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-        mListener.onImageDownloaded(mCardDownloaded, values[0], AppManager.getInstance().getAllCards().size());
-        mNotifBuilder.setContentText(String.format(mContext.getResources().getString(R.string.downloading_images_amount), values[0], AppManager.getInstance().getAllCards().size()));
-        mNotifBuilder.setProgress(AppManager.getInstance().getAllCards().size(), values[0], false);
+        CardList allCards = AppManager.getInstance().getCardRepository().getAllCards();
+        mListener.onImageDownloaded(mCardDownloaded, values[0], allCards.size());
+        mNotifBuilder.setContentText(String.format(mContext.getResources().getString(R.string.downloading_images_amount), values[0], allCards.size()));
+        mNotifBuilder.setProgress(allCards.size(), values[0], false);
         mNotifManager.notify(NOTIFICATION_DOWNLOAD_IMAGES, mNotifBuilder.build());
     }
 

@@ -115,13 +115,13 @@ public class CardList extends ArrayList<Card> {
     }
 
 
-    public CardList getPackCards(ArrayList<String> packNames, ArrayList<Pack> packList) {
+    public CardList getPackCards(ArrayList<Pack> packList) {
         CardList cd = new CardList();
 
         for (Pack p : packList) {
             // add cards pointing AT the pack
             for (Card card : this) {
-                if (p.getName().equals(card.getSetName())) {
+                if (p.getCode().equals(card.getCode())) {
                     cd.add(card);
                 }
             }
@@ -137,7 +137,8 @@ public class CardList extends ArrayList<Card> {
         return cd;
     }
 
-    public List<Card> getSideCards(String side) {
-        return getCards(null, side, null);
+    public void addExtras(ArrayList<Card> cards) {
+        this.removeAll(cards);
+        this.addAll(cards);
     }
 }

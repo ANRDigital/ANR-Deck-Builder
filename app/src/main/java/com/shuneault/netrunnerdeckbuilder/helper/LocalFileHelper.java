@@ -18,26 +18,31 @@ public class LocalFileHelper {
     public static final String FILE_CARDS_JSON = "cardsv2.json";
     public static final String FILE_PACKS_JSON = "packs.json";
     public static final String FILE_MWL_JSON = "mwl.json";
+    private Context context;
 
-    public static JSONObject getJSON_MWLFile(Context context) throws IOException, JSONException {
+    public LocalFileHelper(Context context) {
+        this.context = context;
+    }
+
+    public JSONObject getJSON_MWLFile() throws IOException, JSONException {
         int fallbackResource = R.raw.mwl;
         return getLocalJson(context, FILE_MWL_JSON, fallbackResource);
     }
 
-    public static JSONObject getJSONCardsFile(Context context) throws IOException, JSONException {
+    public JSONObject getJSONCardsFile() throws IOException, JSONException {
         int fallbackResource = R.raw.cardsv2;
         // Load the file in memory and return a JSON array
         return getLocalJson(context, FILE_CARDS_JSON, fallbackResource);
     }
 
-    public static JSONObject getJSONPacksFile(Context context) throws IOException, JSONException {
+    public JSONObject getJSONPacksFile() throws IOException, JSONException {
         int fallbackResource = R.raw.packs;
         // Load the file in memory and return a JSON array
         return getLocalJson(context, FILE_PACKS_JSON, fallbackResource);
     }
 
     @NonNull
-    private static JSONObject getLocalJson(Context context, String filename, int fallbackResource) throws IOException, JSONException {
+    private JSONObject getLocalJson(Context context, String filename, int fallbackResource) throws IOException, JSONException {
         // Load the file in memory and return a JSON array
         InputStream in;
         try {
@@ -49,7 +54,7 @@ public class LocalFileHelper {
     }
 
     @NonNull
-    private static JSONObject getJsonObject(InputStream in) throws IOException, JSONException {
+    private JSONObject getJsonObject(InputStream in) throws IOException, JSONException {
         InputStreamReader fs = new InputStreamReader(in);
         BufferedReader bfs = new BufferedReader(fs);
         String theLine = null;

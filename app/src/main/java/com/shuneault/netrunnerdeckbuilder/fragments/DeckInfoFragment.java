@@ -69,7 +69,6 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
             @Override
             public void beforeTextChanged(CharSequence arg0, int arg1,
                                           int arg2, int arg3) {
-                //
 
             }
 
@@ -77,7 +76,6 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
             public void onTextChanged(CharSequence arg0, int arg1, int arg2,
                                       int arg3) {
                 mDeck.setName(arg0.toString());
-                mListener.onDeckNameChanged(mDeck, arg0.toString());
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(arg0.toString());
             }
 
@@ -114,24 +112,6 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
     }
 
     @Override
-    public void onDeckNameChanged(Deck deck, String name) {
-        //
-
-    }
-
-    @Override
-    public void onDeckDeleted(Deck deck) {
-        //
-
-    }
-
-    @Override
-    public void onDeckCloned(Deck deck) {
-        //
-
-    }
-
-    @Override
     public void onDeckCardsChanged() {
         //
 
@@ -143,11 +123,6 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
         // Update the image
         if (getActivity() != null)
             imgIdentity.setImageBitmap(mDeck.getIdentity().getImage(getActivity()));
-    }
-
-    @Override
-    public void onSettingsChanged() {
-
     }
 
 }

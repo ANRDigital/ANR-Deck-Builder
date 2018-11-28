@@ -11,6 +11,12 @@ import java.util.ArrayList;
  */
 
 public class Pack {
+    public static class SetCode {
+        public static final String CORE_SET = "core";
+        public static final String REVISED_CORE_SET = "core2";
+        public static final String SYSTEM_CORE_2019 = "sc19";
+    }
+
     public static final String KEY_CODE = "code";
     public static final String KEY_CYCLE_CODE = "cycle_code";
     public static final String KEY_DATE_RELEASE = "date_release";
@@ -75,4 +81,10 @@ public class Pack {
     }
 
     public ArrayList<CardLink> getCardLinks() {return cardLinks; }
+
+    boolean isCoreSet() {
+        return code.equals(SetCode.CORE_SET)
+                || code.equals(SetCode.REVISED_CORE_SET)
+                || code.equals(SetCode.SYSTEM_CORE_2019);
+    }
 }

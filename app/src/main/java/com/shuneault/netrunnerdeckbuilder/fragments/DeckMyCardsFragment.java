@@ -19,6 +19,7 @@ import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter.OnButtonClickListener;
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
@@ -135,8 +136,9 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
 
     private void setListView() {
         // Get the cards
-        mListHeaders = AppManager.getInstance().getAllCards().getCardType(mDeck.getIdentity().getSideCode());
-        mListHeaders.remove(mDeck.getIdentity().getTypeCode()); // Remove the Identity category
+        String sideCode = mDeck.getSide();
+        CardRepository cardRepository = AppManager.getInstance().getCardRepository();
+        mListHeaders = cardRepository.getCardTypes(sideCode, false);
         Collections.sort(mListHeaders);
 
         // Adapters
@@ -157,7 +159,7 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
                 // Update the list
                 mListener.onDeckCardsChanged();
             }
-        }, AppManager.getInstance().getCardRepository());
+        }, cardRepository);
         lstDeckCards.setAdapter(mDeckCardsAdapter);
         lstDeckCards.setOnChildClickListener(new OnChildClickListener() {
 
@@ -190,18 +192,6 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
     }
 
     @Override
-    public void onDeckNameChanged(Deck deck, String name) {
-    }
-
-    @Override
-    public void onDeckDeleted(Deck deck) {
-    }
-
-    @Override
-    public void onDeckCloned(Deck deck) {
-    }
-
-    @Override
     public void onDeckCardsChanged() {
         if (!isAdded()) return;
         // Refresh my cards
@@ -212,11 +202,6 @@ public class DeckMyCardsFragment extends Fragment implements OnDeckChangedListen
     public void onDeckIdentityChanged(Card newIdentity) {
         if (!isAdded()) return;
         setListView();
-    }
-
-    @Override
-    public void onSettingsChanged() {
-
     }
 
 }

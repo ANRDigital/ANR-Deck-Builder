@@ -5,6 +5,7 @@ import android.content.Context;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.HeaderListItemInterface;
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
@@ -22,14 +23,13 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     private static final String ReservedChars = "[\\|\\?\\*\\<\\\"\\:\\>\\+\\[\\]\\/\\\\\\']";
 
-    private String mName;
     private Card mIdentity;
-    private String mNotes;
-    private boolean mStarred;
+    private String mName = "";
+    private String mNotes = "";
+    private boolean mStarred = false;
     private UUID mUUID = UUID.randomUUID();
     private Long mRowId;
     private HashMap<Card, Integer> mCards = new HashMap<Card, Integer>();
-    private ArrayList<String> packFilter = new ArrayList<>();
 
     // Cards to add and cards to remove for deck building
     private HashMap<Card, CardCount> mCardsToAdd = new HashMap<Card, CardCount>();
@@ -52,28 +52,14 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     // Rules values
     public static final int BASE_AGENDA = 2;
-    public static final int MAX_INDIVIDUAL_CARD = 3;
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 2114649051205735605L;
     private boolean hasUnknownCards = false;
     private CardPool cardPool;
 
-    private Deck() {
-        this("", "");
-    }
-
-    public Deck(String name, Card Identity) {
-        this.mName = name;
-        this.mNotes = "";
-        this.mIdentity = Identity;
-        this.mStarred = false;
-    }
-
-    public Deck(String name, String identity_code) {
-        this(name, AppManager.getInstance().getCard(identity_code));
+    public Deck(Card identity, CardPool cardPool) {
+        this.mIdentity = identity;
+        this.cardPool = cardPool;
     }
 
     public String getName() {
@@ -474,11 +460,13 @@ public class Deck implements Serializable, HeaderListItemInterface {
     }
 
     public static Deck fromJSON(JSONObject json) {
-        Deck deck = new Deck();
+        AppManager appManager = AppManager.getInstance();
+        CardRepository repo = appManager.getCardRepository();
+        String idCardCode = json.optString(JSON_DECK_IDENTITY_CODE);
+        Card identityCard = repo.getCard(idCardCode);
+        Deck deck = new Deck(identityCard, repo.getGlobalCardPool());
         deck.mUUID = UUID.fromString(json.optString(JSON_DECK_UUID, UUID.randomUUID().toString()));
         deck.setName(json.optString(JSON_DECK_NAME));
-        AppManager appManager = AppManager.getInstance();
-        deck.setIdentity(appManager.getAllCards().getCard(json.optString(JSON_DECK_IDENTITY_CODE)));
         deck.setNotes(json.optString(JSON_DECK_NOTES));
         deck.setStarred(json.optBoolean(JSON_DECK_STARRED));
 

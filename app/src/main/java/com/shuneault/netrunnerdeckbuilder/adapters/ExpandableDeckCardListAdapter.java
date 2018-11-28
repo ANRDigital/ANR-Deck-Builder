@@ -16,7 +16,6 @@ import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardMWL;
-import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -28,7 +27,7 @@ import java.util.HashMap;
 
 public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 
-    private CardRepository mCardRepo;
+    private CardRepository repo;
 
     public interface OnButtonClickListener {
         void onPlusClick(Card card);
@@ -72,8 +71,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
     private boolean mMyCards = false;
     private OnButtonClickListener mListener;
 
-    public ExpandableDeckCardListAdapter(CardRepository mCardRepo, Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck, OnButtonClickListener listener) {
-        this.mCardRepo = mCardRepo;
+    public ExpandableDeckCardListAdapter(CardRepository repo, Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck, OnButtonClickListener listener) {
+        this.repo = repo;
         this.mContext = context;
         this.mArrDataHeader = listDataHeader;
         this.mArrDataChild = listChildData;
@@ -84,8 +83,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public ExpandableDeckCardListAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck, boolean isMyCards, OnButtonClickListener listener, CardRepository mCardRepo) {
-        this(mCardRepo, context, listDataHeader, listChildData, deck, listener);
+    public ExpandableDeckCardListAdapter(Context context, ArrayList<String> listDataHeader, HashMap<String, ArrayList<Card>> listChildData, Deck deck, boolean isMyCards, OnButtonClickListener listener, CardRepository repo) {
+        this(repo, context, listDataHeader, listChildData, deck, listener);
         mMyCards = true;
     }
 
@@ -138,7 +137,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
             viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + maxCardCount);
 
             // Set names
-            viewHolder.lblSetName.setText(card.getSetName());
+            viewHolder.lblSetName.setText(repo.getPack(card.getSetCode()).getName());
             if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false)) {
                 viewHolder.lblSetName.setVisibility(View.VISIBLE);
             } else {

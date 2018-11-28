@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardCount;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
+import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 
 import java.util.ArrayList;
@@ -163,19 +164,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // create decks in list
         while (c.moveToNext()) {
-            Deck deck = new Deck(c.getString(c.getColumnIndex(KEY_DECKS_NAME)), c.getString(c.getColumnIndex(KEY_DECKS_IDENTITY)));
-            deck.setNotes(c.getString(c.getColumnIndex(KEY_DECKS_NOTES)));
-            deck.setRowId(c.getLong(c.getColumnIndex(KEY_ID)));
-            deck.setStarred(c.getInt(c.getColumnIndex(KEY_DECKS_STARRED)) > 0);
+            String deckName = c.getString(c.getColumnIndex(KEY_DECKS_NAME));
+            String identityCode = c.getString(c.getColumnIndex(KEY_DECKS_IDENTITY));
+            Card identity = repo.getCard(identityCode);
             String packFilterValue = c.getString(c.getColumnIndex(KEY_DECKS_PACKFILTER));
+            CardPool pool;
             if (!packFilterValue.isEmpty()) {
                 ArrayList<String> pf = new ArrayList<>(Arrays.asList(packFilterValue.split(PACK_FILTER_SEPARATOR)));
-                deck.setCardPool(repo.getCardPool(pf));
+                pool = repo.getCardPool(pf);
             }
             else
             {
-                deck.setCardPool(repo.getCardPool(new ArrayList<>()));
+                pool = repo.getGlobalCardPool();
             }
+            Deck deck = new Deck(identity, pool);
+            deck.setName(deckName);
+            deck.setNotes(c.getString(c.getColumnIndex(KEY_DECKS_NOTES)));
+            deck.setRowId(c.getLong(c.getColumnIndex(KEY_ID)));
+            deck.setStarred(c.getInt(c.getColumnIndex(KEY_DECKS_STARRED)) > 0);
 
             decks.add(deck);
         }

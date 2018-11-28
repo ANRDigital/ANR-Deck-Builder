@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -85,13 +84,14 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Get the deck / set name
+        AppManager appManager = AppManager.getInstance();
         if (savedInstanceState == null) {
-            mDeck = AppManager.getInstance().getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0));
+            mDeck = appManager.getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0));
             mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
             mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
             mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
         } else {
-            mDeck = AppManager.getInstance().getDeck(savedInstanceState.getLong(EXTRA_DECK_ID, 0));
+            mDeck = appManager.getDeck(savedInstanceState.getLong(EXTRA_DECK_ID, 0));
             mSetName = savedInstanceState.getString(EXTRA_SET_NAME);
             mCardCode = savedInstanceState.getString(EXTRA_CARD_CODE);
             mPosition = savedInstanceState.getInt(EXTRA_POSITION);
@@ -101,7 +101,7 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
         if (mDeck != null) {
             setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
         } else if (mCardCode != null) {
-            setTheme(getResources().getIdentifier("Theme.Netrunner_" + AppManager.getInstance().getCard(mCardCode).getFactionCode().replace("-", ""), "style", this.getPackageName()));
+            setTheme(getResources().getIdentifier("Theme.Netrunner_" + appManager.getCard(mCardCode).getFactionCode().replace("-", ""), "style", this.getPackageName()));
         }
 
         setContentView(R.layout.activity_fullscreen_view);
@@ -115,11 +115,11 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
             getSupportActionBar().setIcon(mDeck.getIdentity().getFactionImageRes(this));
             Collections.sort(mCards, new CardSorterByCardType());
         } else if (mSetName != null) {
-            mCards = AppManager.getInstance().getCardsBySetName(mSetName);
+            mCards = appManager.getCardRepository().getPackCards(mSetName);
             Collections.sort(mCards, new CardSorterByCardNumber());
         } else if (mCardCode != null) {
             mCards = new ArrayList<Card>();
-            mCards.add(AppManager.getInstance().getCard(mCardCode));
+            mCards.add(appManager.getCard(mCardCode));
         }
 
         // Quit if deck is empty

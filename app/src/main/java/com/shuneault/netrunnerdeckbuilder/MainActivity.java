@@ -1,9 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder;
 
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -14,15 +11,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.fragments.ListDecksFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
@@ -121,11 +117,13 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
             case REQUEST_NEW_IDENTITY:
                 // Get the chosen identity
                 String identityCardCode = data.getStringExtra(ChooseIdentityActivity.EXTRA_IDENTITY_CODE);
-                Card card = AppManager.getInstance().getCard(identityCardCode);
+                AppManager appManager = AppManager.getInstance();
+                CardRepository repo = appManager.getCardRepository();
+                Card card = repo.getCard(identityCardCode);
 
                 // Create a new deck
-                Deck mDeck = new Deck("", card);
-                AppManager.getInstance().getAllDecks().add(mDeck);
+                Deck mDeck = new Deck(card, repo.getGlobalCardPool());
+                appManager.getAllDecks().add(mDeck);
 
                 // Save the new deck in the database
                 mDb.createDeck(mDeck);
@@ -207,26 +205,6 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
     @Override
     public void onDeckCardsChanged() {
 
-    }
-
-    @Override
-    public void onDeckNameChanged(Deck deck, String name) {
-
-    }
-
-    @Override
-    public void onDeckDeleted(Deck deck) {
-        mDb.deleteDeck(deck);
-    }
-
-    @Override
-    public void onDeckCloned(Deck deck) {
-        // Load the deck on screen
-        startDeckActivity(deck.getRowId());
-    }
-
-    @Override
-    public void onSettingsChanged() {
     }
 
     @Override

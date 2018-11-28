@@ -50,7 +50,6 @@ public class Card {
     private URL imageSrc;
     private int mostWantedInfluence;
     private boolean isUnknown = false;
-    private String packName;
 
     public Card() {
 
@@ -148,10 +147,6 @@ public class Card {
             return 0;
         else
             return Integer.parseInt(quantity);
-    }
-
-    public String getSetName() {
-        return this.packName;
     }
 
     public String getSetCode() {
@@ -416,10 +411,6 @@ public class Card {
         this.uniqueness = uniqueness;
     }
 
-    public void setPackName(String packName) {
-        this.packName = packName;
-    }
-
     public int getDeckLimit() {
         return deckLimit;
     }
@@ -455,12 +446,6 @@ public class Card {
 
     public static class SubTypeCode {
         public static final String ALLIANCE = "alliance";
-    }
-
-    public static class SetName {
-        //        public static final String ALTERNATES = "Alternates";
-        public static final String CORE_SET = "core";
-        public static final String REVISED_CORE_SET = "core2";
     }
 
     public static class SpecialCards {

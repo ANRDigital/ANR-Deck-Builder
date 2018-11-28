@@ -208,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:paddingRight="4dp"
-                android:text="SetName"
+                android:text="SetCode"
                 android:textSize="12sp" />
         </LinearLayout>
 

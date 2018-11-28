@@ -26,6 +26,7 @@ import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter.OnButtonClickListener;
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
@@ -88,14 +89,13 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
         // Do not inflate if already there
         if (menu.findItem(R.id.mnuSearch) == null)
             inflater.inflate(R.menu.deck_cards, menu);
+
+        // Configure Search
         MenuItem item = menu.findItem(R.id.mnuSearch);
         SearchView sv = new SearchView(getActivity());
         item.setShowAsAction(MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
         item.setActionView(sv);
-
-        //Applies white color on searchview text
-        SearchView.SearchAutoComplete searchAutoComplete =
-                (SearchView.SearchAutoComplete) sv.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        SearchView.SearchAutoComplete searchAutoComplete = sv.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchAutoComplete.setHintTextColor(Color.WHITE);
         searchAutoComplete.setTextColor(Color.WHITE);
         try {
@@ -104,12 +104,6 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
             mCursorDrawableRes.set(searchAutoComplete, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
         } catch (Exception e) {
         }
-
-        // set close button to white x
-//	    ImageView searchCloseIcon = (ImageView) sv.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-//	    searchCloseIcon.setImageDrawable(getResources().getDrawable(R.drawable.abc_ic_clear_mtrl_alpha));
-
-        // remove search icon
         sv.setIconifiedByDefault(false);
         ImageView searchIcon = (ImageView) sv.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
         searchIcon.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
@@ -119,7 +113,6 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
         searchPlate.setBackgroundResource(R.drawable.search);
 
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
             @Override
             public boolean onQueryTextSubmit(String arg0) {
                 return false;
@@ -135,17 +128,6 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
         });
         MenuItemCompat.setOnActionExpandListener(item, this);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //
-        switch (item.getItemId()) {
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
     }
 
     @Override
@@ -184,17 +166,19 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
     }
 
     private void setListView(Deck deck) {
+        AppManager appManager = AppManager.getInstance();
+        CardRepository cardRepo = appManager.getCardRepository();
+
         // Get the headers
         String sideCode = deck.getIdentity().getSideCode();
-        AppManager appManager = AppManager.getInstance();
-        ArrayList<String> headers = appManager.getAllCards().getCardType(sideCode);
-        // Remove the Identity category
-        headers.remove(deck.getIdentity().getTypeCode());
+        ArrayList<String> headers = cardRepo.getCardTypes(sideCode, false);
         Collections.sort(headers);
 
         // Get the cards
         mListCards = new HashMap<>();
-        CardList cardCollection = appManager.getCardsFromDataPacksToDisplay(mDeck.getCardPool().getPackFilter());
+        //CardList cardCollection = cardRepo.getCardsFromDataPacksToDisplay(mDeck.getCardPool().getPackFilter());
+        CardList cardCollection = mDeck.getCardPool().getCards();
+        cardCollection.addExtras(mDeck.getCards());
         for (Card theCard : cardCollection) {
             // Only add the cards that are on my side
             boolean isSameSide = theCard.getSideCode().equals(sideCode);
@@ -233,7 +217,7 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
         sortListCards(headers, mListCards);
 
         // Set the adapter
-        mDeckCardsAdapter = new ExpandableDeckCardListAdapter(appManager.getCardRepository(), getActivity(), headers, mListCards, deck, new OnButtonClickListener() {
+        mDeckCardsAdapter = new ExpandableDeckCardListAdapter(cardRepo, getActivity(), headers, mListCards, deck, new OnButtonClickListener() {
 
             @Override
             public void onPlusClick(Card card) {
@@ -264,20 +248,6 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
     @Override
     public void onResume() {
         super.onResume();
-        // Refresh the cards adapter as the changed preferences may have changed
-        //setListView();
-    }
-
-    @Override
-    public void onDeckNameChanged(Deck deck, String name) {
-    }
-
-    @Override
-    public void onDeckDeleted(Deck deck) {
-    }
-
-    @Override
-    public void onDeckCloned(Deck deck) {
     }
 
     @Override
@@ -287,13 +257,6 @@ public class DeckCardsFragment extends Fragment implements OnDeckChangedListener
 
     @Override
     public void onDeckIdentityChanged(Card newIdentity) {
-        if (!isAdded()) return;
-        setListView(mDeck);
-    }
-
-    @Override
-    public void onSettingsChanged() {
-        // Refresh the cards
         if (!isAdded()) return;
         setListView(mDeck);
     }

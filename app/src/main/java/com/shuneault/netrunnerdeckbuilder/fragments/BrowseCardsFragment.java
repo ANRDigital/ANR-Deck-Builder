@@ -14,10 +14,10 @@ import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
+import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -34,8 +34,8 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
     CardRepository cardRepo;
     private CardList mCards;
     private BrowseCardRecyclerViewAdapter mAdapter;
-    private ArrayList<String> mPackFilter = new ArrayList<>();
     private String mSearchText = "";
+    private CardPool mCardPool;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -60,12 +60,13 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            // TODO: Customize parameters
+
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            mCards = cardRepo.getCardsFromDataPacksToDisplay(mPackFilter);
+            mCardPool = cardRepo.getGlobalCardPool();
+            mCards = mCardPool.getCards();
 
-            mAdapter = new BrowseCardRecyclerViewAdapter(mCards, mListener);
+            mAdapter = new BrowseCardRecyclerViewAdapter(mCards, mListener, cardRepo);
             recyclerView.setAdapter(mAdapter);
         }
         return view;
@@ -102,12 +103,15 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
 
     private void updateResults() {
         mCards.clear();
-        mCards.addAll(cardRepo.searchCards(mSearchText, mPackFilter));
+        mCards.addAll(cardRepo.searchCards(mSearchText, mCardPool));
         mAdapter.notifyDataSetChanged();
     }
 
     public void updatePackFilter(ArrayList<String> packFilter) {
-        this.mPackFilter = packFilter;
+        if (packFilter.isEmpty())
+            mCardPool = cardRepo.getGlobalCardPool();
+        else
+            mCardPool = cardRepo.getCardPool(packFilter);
         updateResults();
     }
 

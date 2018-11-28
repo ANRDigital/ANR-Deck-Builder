@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.fragments.BrowseCardsFragment.OnBrowseCardsClickListener;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
@@ -24,10 +25,12 @@ public class BrowseCardRecyclerViewAdapter extends RecyclerView.Adapter<BrowseCa
 
     private final List<Card> mCards;
     private final OnBrowseCardsClickListener mListener;
+    private CardRepository repo;
 
-    public BrowseCardRecyclerViewAdapter(List<Card> items, OnBrowseCardsClickListener listener) {
+    public BrowseCardRecyclerViewAdapter(List<Card> items, OnBrowseCardsClickListener listener, CardRepository repo) {
         mCards = items;
         mListener = listener;
+        this.repo = repo;
     }
 
     @Override
@@ -85,7 +88,7 @@ public class BrowseCardRecyclerViewAdapter extends RecyclerView.Adapter<BrowseCa
 
             lblText.setText(TextFormatter.getFormattedString(context, card.getText()));
             ImageDisplayer.fillSmall(imgImage, card, context);
-            lblSetName.setText(card.getSetName());
+            lblSetName.setText(repo.getPack(card.getSetCode()).getName());
 
             mView.setOnClickListener(v -> {
                 if (null != mListener) {

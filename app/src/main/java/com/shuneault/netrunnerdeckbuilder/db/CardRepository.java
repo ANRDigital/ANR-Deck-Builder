@@ -8,36 +8,40 @@ import android.widget.Toast;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.CardBuilder;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
+import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider;
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper;
+import com.shuneault.netrunnerdeckbuilder.helper.SettingsProvider;
 import com.shuneault.netrunnerdeckbuilder.helper.StringDownloader;
-import com.shuneault.netrunnerdeckbuilder.prefs.ListPreferenceMultiSelect;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class CardRepository {
+    private final String mLanguagePref;
     private CardList mCards = new CardList();
     private ArrayList<Pack> mPacks = new ArrayList<>();
 
     private MostWantedList mActiveMWL;
     private HashMap<String, JSONObject> mMWLInfluences = new HashMap<>();
     private Context mContext;
+    private ISettingsProvider settingsProvider;
+    private JSONDataLoader fileLoader;
 
-    public CardRepository(Context context) {
+    public CardRepository(Context context, ISettingsProvider settingsProvider, JSONDataLoader fileLoader) {
         mContext = context;
+        this.settingsProvider = settingsProvider;
+        this.fileLoader = fileLoader;
+
+        mLanguagePref = settingsProvider.getLanguagePref();
+
         try{
             loadMwl();
             // MUST LOAD PACKS BEFORE CARDS
@@ -51,65 +55,23 @@ public class CardRepository {
 
     private void loadMwl() {
         // Most Wanted List
-        JSONObject mJsonMWLfile = null;
         try {
-            mJsonMWLfile = LocalFileHelper.getJSON_MWLFile(mContext);
-            JSONArray mMWLData = mJsonMWLfile.getJSONArray("data");
-            for (int i = 0; i < mMWLData.length(); i++) {
-                JSONObject mwlJSON = mMWLData.getJSONObject(i);
-                if (mwlJSON.has("active")) {
-                    mActiveMWL = new MostWantedList(mwlJSON);
-                }
-            }
+            MWLDetails mwl = fileLoader.getMwlDetails();
 
+            mActiveMWL = mwl.getActiveMWL();
             mMWLInfluences.clear();
-            JSONObject jsonMWLCards = mMWLData
-                    .getJSONObject(2)
-                    .getJSONObject("cards");
-            Iterator<String> iterCards = jsonMWLCards.keys();
-            while (iterCards.hasNext()) {
-                String cardCode = iterCards.next();
-                mMWLInfluences.put(cardCode, jsonMWLCards.getJSONObject(cardCode));
-            }
+            mMWLInfluences = (HashMap<String, JSONObject>) mwl.getInfluences().clone();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+
     private void loadCards() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         try {
-            //get json file
-            JSONObject jsonFile = LocalFileHelper.getJSONCardsFile(mContext);
-            String imageUrlTemplate = jsonFile.getString("imageUrlTemplate");
-            JSONArray jsonCards = jsonFile.getJSONArray("data");
-
+            ArrayList<Card> cards = fileLoader.getCardsFromFile(mLanguagePref, mMWLInfluences);
             mCards.clear();
-            for (int i = 0; i < jsonCards.length(); i++) {
-                // Create the card and add to the array
-                //		Do not load cards from the Alternates set
-                JSONObject jsonCard = jsonCards.getJSONObject(i);
-                JSONObject jsonLocale = jsonCard.optJSONObject("_locale");
-                if (jsonLocale != null) {
-                    String lanquagePref = preferences.getString(SettingsActivity.KEY_PREF_LANGUAGE, "en");
-                    JSONObject jsonLocaleProps = jsonLocale.getJSONObject(lanquagePref);
-                    Iterator<String> iter = jsonLocaleProps.keys();
-                    while (iter.hasNext()) {
-                        String key = iter.next();
-                        jsonCard.put(key, jsonLocaleProps.getString(key));
-                    }
-                }
-
-                CardBuilder cardBuilder = new CardBuilder(imageUrlTemplate, this);
-                Card card = cardBuilder.BuildFromJson(jsonCard);
-
-                int cardUniversalCost = 0;
-                if (mMWLInfluences.containsKey(card.getCode())) {
-                    cardUniversalCost = mMWLInfluences.get(card.getCode()).optInt("universal_faction_cost", 0);
-                }
-                card.setMostWantedInfluence(cardUniversalCost);
-                mCards.add(card);
-            }
+            mCards.addAll(cards);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,26 +80,25 @@ public class CardRepository {
 
     private void loadPacks() {
         try {
-            JSONObject jsonFile = LocalFileHelper.getJSONPacksFile(mContext);
-            JSONArray jsonPacks = jsonFile.getJSONArray("data");
+            ArrayList<Pack> packs = fileLoader.getPacksFromFile();
+
             mPacks.clear();
-            for (int i = 0; i < jsonPacks.length(); i++) {
-                Pack pack = new Pack(jsonPacks.getJSONObject(i));
-                mPacks.add(pack);
-            }
+            mPacks.addAll(packs);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+
     public CardList getAllCards() {
         return (CardList) mCards.clone();
     }
 
-    public List<Card> searchCards(String searchText, ArrayList<String> mPackFilter) {
+    public List<Card> searchCards(String searchText, CardPool cardPool) {
         String searchtxt = searchText.toLowerCase();
         ArrayList<Card> result = new ArrayList<>();
-        for (Card c : getCardsFromDataPacksToDisplay(mPackFilter)) {
+        for (Card c : cardPool.getCards()) {
             if (c.getTitle().toLowerCase().contains(searchtxt)
                     || c.getText().toLowerCase().contains(searchtxt)
                     || c.getSideCode().toLowerCase().contains(searchtxt)
@@ -172,7 +133,10 @@ public class CardRepository {
 
     private void doDownloadMWL(){
         // Most Wanted List
-        StringDownloader sdMWL = new StringDownloader(mContext, NetRunnerBD.getMWLUrl(), LocalFileHelper.FILE_MWL_JSON, new StringDownloader.FileDownloaderListener() {
+        StringDownloader sdMWL = new StringDownloader(mContext,
+                NetRunnerBD.getMWLUrl(),
+                LocalFileHelper.FILE_MWL_JSON,
+                new StringDownloader.FileDownloaderListener() {
 
             @Override
             public void onBeforeTask() {
@@ -228,6 +192,7 @@ public class CardRepository {
 
             @Override
             public void onTaskComplete(String s) {
+
                 loadPacks();
             }
 
@@ -245,23 +210,30 @@ public class CardRepository {
         // deck pack filter?
         if (packFilter.size() > 0) {
             packList = getPacksFromFilter(packFilter);
-            return mCards.getPackCards(packFilter, packList);
+            return mCards.getPackCards(packList);
         } else {
             // Return all cards if set in the preferences
-            if (getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_DISPLAY_ALL_DATA_PACKS, true)) {
+            CardRepositoryPreferences prefs = getPrefs();
+            if (prefs.displayAllPacksPref) {
                 return (CardList) mCards.clone();
             }
 
-            // Return only the data packFilter requested
-            String packsPref = getSharedPrefs().getString(SettingsActivity.KEY_PREF_DATA_PACKS_TO_DISPLAY, "");
-            ArrayList<String> globalPackFilter = new ArrayList<>(Arrays.asList(ListPreferenceMultiSelect.parseStoredValue(packsPref)));
-            packList = getPacksFromFilter(globalPackFilter);
+            // use global filter
+            packList = getPacksFromFilter(prefs.globalPackFilter);
 
-            return mCards.getPackCards(globalPackFilter, packList);
+            return mCards.getPackCards(packList);
         }
     }
 
+    private CardRepositoryPreferences getPrefs() {
+        return settingsProvider.getCardRepositoryPreferences();
+
+    }
+
     private ArrayList<Pack> getPacksFromFilter(ArrayList<String> packFilter) {
+        if (packFilter.isEmpty())
+            return mPacks;
+
         ArrayList<Pack> result = new ArrayList<>();
         for (Pack pack :
                 mPacks) {
@@ -272,17 +244,14 @@ public class CardRepository {
         return result;
     }
 
-    public SharedPreferences getSharedPrefs() {
-        return PreferenceManager.getDefaultSharedPreferences(mContext);
-    }
     public Card getCard(String code) {
         return mCards.getCard(code);
     }
 
     public CardList getPackCards(String setName) {
-        ArrayList<String> arr = new ArrayList<>();
-        arr.add(setName);
-        return getCardsFromDataPacksToDisplay(arr);
+        ArrayList<String> packNames = new ArrayList<>();
+        packNames.add(setName);
+        return mCards.getPackCards(getPacksFromFilter(packNames));
     }
 
     public void refreshCards() {
@@ -294,8 +263,48 @@ public class CardRepository {
         return mActiveMWL;
     }
 
+    public CardPool getGlobalCardPool() {
+        return getCardPool(getPrefs().globalPackFilter);
+    }
+
     public CardPool getCardPool(ArrayList<String> packFilter) {
-        int coreCount = Integer.parseInt(AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_AMOUNT_OF_CORE_DECKS, "3"));
-        return new CardPool(packFilter, coreCount);
+        ArrayList<Pack> packs = getPacksFromFilter(packFilter);
+        return new CardPool(getPrefs().coreCount, this, packs);
+    }
+
+    public boolean hasCards() {
+        return mCards.size() > 0;
+    }
+
+    public ArrayList<String> getCardTypes(String sideCode, boolean includeIdentity) {
+        ArrayList<String> cardTypes = mCards.getCardType(sideCode);
+        if (!includeIdentity)
+            cardTypes.remove(Card.Type.IDENTITY);
+        return cardTypes;
+    }
+
+
+    public CardList getPackCards(Pack p) {
+        CardList cards = new CardList();
+        for (Card card :
+                mCards) {
+            if (card.getSetCode().equals(p.getCode())){
+                cards.add(card);
+            }
+        }
+        return cards;
+    }
+
+
+    public static class CardRepositoryPreferences {
+        public int coreCount;
+        public boolean displayAllPacksPref;
+        public ArrayList<String> globalPackFilter;
+
+        public CardRepositoryPreferences(int coreCount, boolean displayAllPacks, ArrayList<String> globalPackFilter) {
+            this.coreCount = coreCount;
+            this.displayAllPacksPref = displayAllPacks;
+            this.globalPackFilter = globalPackFilter;
+        }
     }
 }

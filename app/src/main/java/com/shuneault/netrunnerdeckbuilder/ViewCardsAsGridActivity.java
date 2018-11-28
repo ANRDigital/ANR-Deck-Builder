@@ -40,7 +40,8 @@ public class ViewCardsAsGridActivity extends AppCompatActivity {
 
         // Get the deck / set name
         mDeckId = getIntent().getLongExtra(EXTRA_DECK_ID, 0);
-        Deck mDeck = AppManager.getInstance().getDeck(mDeckId);
+        AppManager appManager = AppManager.getInstance();
+        Deck mDeck = appManager.getDeck(mDeckId);
         mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
 
         // Build the cards array
@@ -53,9 +54,9 @@ public class ViewCardsAsGridActivity extends AppCompatActivity {
             cardCounts = mDeck.getCardCounts();
             Collections.sort(cardCounts, new Sorter.CardCountSorterByTypeThenName());
         } else {
-            mCards = AppManager.getInstance().getCardsBySetName(mSetName);
+            mCards = appManager.getCardRepository().getPackCards(mSetName);
             Collections.sort(mCards, new Sorter.CardSorterByCardNumber());
-            for (Pack pack : AppManager.getInstance().getAllPacks()) {
+            for (Pack pack : appManager.getAllPacks()) {
                 if (pack.getCode().equals(mSetName)) {
                     setTitle(pack.getName());
                     break;

@@ -37,6 +37,7 @@ import com.shuneault.netrunnerdeckbuilder.fragments.DeckInfoFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckMyCardsFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckStatsFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.DeckValidator;
@@ -177,7 +178,8 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     }
 
     private void setPackFilterIconVisibility() {
-        if (mDeck.getCardPool().isFiltered())
+        CardPool cardPool = mDeck.getCardPool();
+        if (cardPool != null & cardPool.isFiltered())
         {
             layoutFiltered.setVisibility(View.VISIBLE);
         } else {
@@ -451,11 +453,10 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         ChoosePacksDialogFragment frag = (ChoosePacksDialogFragment)dialog;
         ArrayList<String> packFilter = frag.getSelectedValues();
         CardRepository cardRepo = AppManager.getInstance().getCardRepository();
-        mDeck.setCardPool(cardRepo.getCardPool(packFilter));
-
-        // update fragments
-        if (fragDeckCards != null)
-            fragDeckCards.onSettingsChanged();
+        if (packFilter.isEmpty())
+            mDeck.setCardPool(cardRepo.getGlobalCardPool());
+        else
+            mDeck.setCardPool(cardRepo.getCardPool(packFilter));
 
         // update filtered icon
         setPackFilterIconVisibility();
@@ -478,24 +479,8 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 startActivity(intent);
                 finish();
 
-                // Update the fragment
-//                if (fragDeckInfo != null) {
-//                    fragDeckInfo.onDeckIdentityChanged(mDeck.getIdentity());
-//                }
                 break;
         }
-    }
-
-    // Allow the Fragment Deck Build to be updated
-    @Override
-    public void onDeckNameChanged(Deck deck, String name) {
-
-    }
-
-    @Override
-    public void onDeckDeleted(Deck deck) {
-        //
-
     }
 
     @Override
@@ -515,12 +500,6 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     }
 
     @Override
-    public void onDeckCloned(Deck deck) {
-        //
-
-    }
-
-    @Override
     public void onDeckIdentityChanged(Card newIdentity) {
         // Forward the event to sub fragments
         if (fragDeckInfo != null)
@@ -535,18 +514,6 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
         // Update the infobar
         updateInfoBar();
-    }
-
-    @Override
-    public void onSettingsChanged() {
-        // Forward the event to sub fragments
-        if (fragDeckInfo != null)
-            fragDeckInfo.onSettingsChanged();
-        if (fragDeckBuild != null)
-            fragDeckBuild.onSettingsChanged();
-        if (fragDeckCards != null)
-            fragDeckCards.onSettingsChanged();
-
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
-class CardLink {
+public class CardLink {
     private String cardCode;
     private int quantity;
 

@@ -1,45 +1,70 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
+
 import java.util.ArrayList;
 
 public class CardPool {
-    private static final int DEFAULT_QUANTITY = 3;
-    private final int iAmountCoreDecks;
+    private static final int DEFAULT_CARD_LIMIT = 3;
+    private final CardCountList mCardLimits;
 
-    private ArrayList<String> packFilter;
+    private ArrayList<String> packFilter = new ArrayList<>();
 
-    public CardPool(ArrayList<String> packFilter, int coreCount) {
-        this.packFilter = packFilter;
-        iAmountCoreDecks = coreCount;
+    public CardPool(int coreCount, CardRepository repo, ArrayList<Pack> packFilter) {
+        for (Pack p :
+                packFilter) {
+            this.packFilter.add(p.getName());
+        }
+
+        mCardLimits = new CardCountList();
+        // loop the packFilter
+        for (Pack p :
+                packFilter) {
+            // is it a core set?
+            int setCount = p.isCoreSet() ? coreCount : 1;
+
+            // are there card links?
+            ArrayList<CardLink> cardLinks = p.getCardLinks();
+            if (cardLinks.size() > 0){
+                // if so loop the links
+                for (CardLink cl :
+                        cardLinks) {
+                    // get the card and quantity to add
+                    Card card = repo.getCard(cl.getCardCode());
+                    int count = cl.getQuantity();
+                    addCard(card, count * setCount);
+                }
+            }
+            else
+            {
+                CardList packCards = repo.getPackCards(p);
+                for (Card c :
+                        packCards) {
+                    addCard(c, c.getQuantity() * setCount);
+                }
+            }
+        }
+    }
+
+    private void addCard(Card card, int count) {
+        // are there existing cards in the pool?
+        CardCount cc = mCardLimits.getCardCount(card);
+        if(cc != null){
+            // add the numbers together
+            count += cc.getCount();
+        }
+
+        // ensure deck limits are observed - if not set use default limit
+        int deckLimit = card.getDeckLimit() > 0 ? card.getDeckLimit() : DEFAULT_CARD_LIMIT;
+        count = Math.min(count, deckLimit);
+
+        mCardLimits.setCount(card, count);
     }
 
     public int getMaxCardCount(Card card) {
-        try {
-            int count;
-            count = getQuantityAvailable(card);
+        CardCount cardCount = mCardLimits.getCardCount(card);
 
-            count = Math.min(count, card.getDeckLimit());
-            return count;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return DEFAULT_QUANTITY;
-        }
-    }
-
-    private int getQuantityAvailable(Card card) {
-        //todo: make this pack-aware
-        int count;
-        if (this.isInCoreSet(card)) {
-            count =  Math.min(iAmountCoreDecks * card.getQuantity(), DEFAULT_QUANTITY);
-        } else {
-            count =  card.getQuantity();
-        }
-        return count;
-    }
-
-    private boolean isInCoreSet(Card card) {
-        return card.getSetCode().equals(Card.SetName.CORE_SET)
-                || card.getSetCode().equals(Card.SetName.REVISED_CORE_SET);
+        return cardCount != null ? cardCount.getCount() : 0 ;
     }
 
     public ArrayList<String> getPackFilter() {
@@ -48,5 +73,18 @@ public class CardPool {
 
     public boolean isFiltered() {
         return packFilter.size() > 0;
+    }
+
+    public CardList getCards() {
+        CardList cards = new CardList();
+        for (CardCount cc :
+                mCardLimits) {
+            cards.add(cc.getCard());
+        }
+        return cards;
+    }
+
+    public ArrayList<Card> getIdentities(String sideCode) {
+        return getCards().getIdentities(sideCode);
     }
 }

@@ -136,18 +136,6 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
     }
 
     @Override
-    public void onDeckNameChanged(Deck deck, String name) {
-        //
-
-    }
-
-    @Override
-    public void onDeckDeleted(Deck deck) {
-        //
-
-    }
-
-    @Override
     public void onDeckCardsChanged() {
         if (!isAdded()) return;
         Collections.sort(mCardsToAdd, new Sorter.CardCountSorterByName());
@@ -157,19 +145,8 @@ public class DeckBuildFragment extends Fragment implements OnDeckChangedListener
     }
 
     @Override
-    public void onDeckCloned(Deck deck) {
-        //
-
-    }
-
-    @Override
     public void onDeckIdentityChanged(Card newIdentity) {
         //
-
-    }
-
-    @Override
-    public void onSettingsChanged() {
 
     }
 

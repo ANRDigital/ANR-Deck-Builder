@@ -1,6 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
-import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
+import android.os.Build;
 
 import org.json.JSONObject;
 
@@ -43,12 +43,11 @@ public class CardBuilder {
     private static final String NAME_STRENGTH = "strength";
 
     private String imageUrlTemplate;
-    private CardRepository repo;
+    private String code;
 
-    public CardBuilder(String imageUrlTemplate, CardRepository repo) {
+    public CardBuilder(String imageUrlTemplate) {
 
         this.imageUrlTemplate = imageUrlTemplate;
-        this.repo = repo;
     }
 
     public Card BuildFromJson(JSONObject json) {
@@ -73,7 +72,6 @@ public class CardBuilder {
             card.setDeckLimit(json.optInt(NAME_DECK_LIMIT));
             String packCode = json.optString(NAME_SET_CODE);
             card.setSetCode(packCode);
-            card.setPackName(repo.getPack(packCode).getName());
             card.setUniqueness(json.optBoolean(NAME_UNIQUENESS));
             // does it have an unusual image_src? If not follow standard pattern
             String imageUrl = json.optString(NAME_IMAGE_URL_OVERRIDE);
@@ -93,5 +91,16 @@ public class CardBuilder {
         }
         
         return card;
+    }
+
+    public CardBuilder withCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    public Card Build() {
+        Card c = new Card();
+        c.setCode(code);
+        return c;
     }
 }
