@@ -27,7 +27,8 @@ public class SettingsProvider implements ISettingsProvider {
         int mCoreCount = Integer.parseInt(preferences.getString(SettingsActivity.KEY_PREF_AMOUNT_OF_CORE_DECKS, SettingsActivity.DEFAULT_CORE_DECKS));
         boolean bDisplayAllPacksPref = preferences.getBoolean(SettingsActivity.KEY_PREF_DISPLAY_ALL_DATA_PACKS, true);
         String packsPref = preferences.getString(SettingsActivity.KEY_PREF_DATA_PACKS_TO_DISPLAY, "");
-        ArrayList<String> globalPackFilter = new ArrayList<>(Arrays.asList(ListPreferenceMultiSelect.parseStoredValue(packsPref)));
+        String[] storedValue = ListPreferenceMultiSelect.parseStoredValue(packsPref);
+        ArrayList<String> globalPackFilter = storedValue != null ? new ArrayList<>(Arrays.asList(storedValue)) : new ArrayList<>();
 
         return new CardRepository.CardRepositoryPreferences(mCoreCount, bDisplayAllPacksPref, globalPackFilter);
     }
