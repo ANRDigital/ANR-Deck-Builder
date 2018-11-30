@@ -35,7 +35,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
         void onMinusClick(Card card);
     }
 
-    private static class DeckCardListItemViewHolder {
+    private class DeckCardListItemViewHolder {
+        private final View mView;
         ImageView imgImage;
         TextView lblIcons;
         TextView lblTitle;
@@ -43,11 +44,13 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
         TextView lblAmount;
         TextView lblInfluence;
         TextView lblMostWanted;
+        TextView lblCountWarning;
         TextView lblSetName;
         Button btnMinus;
         Button btnPlus;
 
         DeckCardListItemViewHolder(View view) {
+            mView = view;
             imgImage = view.findViewById(R.id.imgImage);
             lblIcons = view.findViewById(R.id.lblIcons);
             lblTitle = view.findViewById(R.id.lblTitre);
@@ -58,6 +61,76 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
             lblInfluence = view.findViewById(R.id.lblInfluence);
             lblMostWanted = view.findViewById(R.id.lblMostWanted);
             lblSetName = view.findViewById(R.id.lblSetName);
+        }
+
+        public void setItem(Card card) {
+            Context context = lblText.getContext();
+            ImageDisplayer.fillSmall(imgImage, card, context);
+            // Headline
+            lblIcons.setText(TextFormatter.FormatCardIcons(context, card));
+            lblTitle.setText(TextFormatter.FormatCardTitle(card));
+
+            lblText.setText(TextFormatter.getFormattedString(context, card.getText()));
+
+            final Integer maxCardCount = mDeck.getCardPool().getMaxCardCount(card);
+            Integer count = mDeck.getCardCount(card);
+            updateAmount(count, maxCardCount);
+
+            // Set names
+            lblSetName.setText(repo.getPack(card.getSetCode()).getName());
+            if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false)) {
+                lblSetName.setVisibility(View.VISIBLE);
+            } else {
+                lblSetName.setVisibility(View.GONE);
+            }
+
+            // Influence cost
+            int numInfluence = 0;
+            // out of faction influence cost
+            if (!mDeck.isFaction(card.getFactionCode())) {
+                numInfluence += card.getFactionCost();
+            }
+            // universal influence cost
+            if (card.isMostWanted() && AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_USE_MOST_WANTED_LIST, false)) {
+                //todo: get mwlinfluence from the current mwl entity
+                numInfluence += card.getMWLInfluence();
+            }
+            lblInfluence.setText(TextFormatter.GetInfluenceString(context, numInfluence));
+
+            // MWL 2.0 indicators
+            lblMostWanted.setText("");
+            MostWantedList mwl = AppManager.getInstance().getMWL();
+            CardMWL cardMWL = mwl.GetCardMWL(card);
+            if (cardMWL != null) {
+                lblMostWanted.setText(TextFormatter.GetMWLIcon(cardMWL));
+            }
+
+            // Plus and minus buttons
+            btnMinus.setOnClickListener(v -> {
+                mDeck.ReduceCard(card);
+                updateAmount(mDeck.getCardCount(card) , maxCardCount);
+                setBackgroundColor(mView, card);
+                mListener.onMinusClick(card);
+            });
+            btnPlus.setOnClickListener(v -> {
+                mDeck.AddCard(card);
+                updateAmount(mDeck.getCardCount(card) , maxCardCount);
+                setBackgroundColor(mView, card);
+                mListener.onPlusClick(card);
+            });
+
+        }
+
+        private void updateAmount(Integer count, Integer maxCardCount) {
+            String text = count + "/" + maxCardCount;
+            if (count > maxCardCount){
+                btnPlus.setText("⚠");
+                btnPlus.setEnabled(false);
+            } else {
+                btnPlus.setText("+");
+                btnPlus.setEnabled(true);
+            }
+            lblAmount.setText(text);
         }
     }
 
@@ -126,67 +199,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 
         // Assign the values
         if (card != null) {
-            ImageDisplayer.fillSmall(viewHolder.imgImage, card, mContext);
-            // Headline
-            viewHolder.lblIcons.setText(TextFormatter.FormatCardIcons(mContext, card));
-            viewHolder.lblTitle.setText(TextFormatter.FormatCardTitle(card));
-
-            viewHolder.lblText.setText(TextFormatter.getFormattedString(mContext, card.getText()));
-
-            final Integer maxCardCount = mDeck.getCardPool().getMaxCardCount(card);
-            viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + maxCardCount);
-
-            // Set names
-            viewHolder.lblSetName.setText(repo.getPack(card.getSetCode()).getName());
-            if (AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false)) {
-                viewHolder.lblSetName.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.lblSetName.setVisibility(View.GONE);
-            }
-
-            // Influence cost
-            int numInfluence = 0;
-            // out of faction influence cost
-            if (!mDeck.isFaction(card.getFactionCode())) {
-                numInfluence += card.getFactionCost();
-            }
-            // universal influence cost
-            if (card.isMostWanted() && AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_USE_MOST_WANTED_LIST, false)) {
-                //todo: get mwlinfluence from the current mwl entity
-                numInfluence += card.getMWLInfluence();
-            }
-            viewHolder.lblInfluence.setText(TextFormatter.GetInfluenceString(mContext, numInfluence));
-
-            // MWL 2.0 indicators
-            viewHolder.lblMostWanted.setText("");
-            MostWantedList mwl = AppManager.getInstance().getMWL();
-            CardMWL cardMWL = mwl.GetCardMWL(card);
-            if (cardMWL != null) {
-                viewHolder.lblMostWanted.setText(TextFormatter.GetMWLIcon(cardMWL));
-            }
-
-            // Plus and minus buttons
-            viewHolder.btnMinus.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    mDeck.ReduceCard(card);
-                    viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + maxCardCount);
-                    setBackgroundColor(view, card);
-                    mListener.onMinusClick(card);
-                }
-            });
-            viewHolder.btnPlus.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    mDeck.AddCard(card);
-                    viewHolder.lblAmount.setText(mDeck.getCardCount(card) + "/" + maxCardCount);
-                    setBackgroundColor(view, card);
-                    mListener.onPlusClick(card);
-                }
-            });
-
+            viewHolder.setItem(card);
         }
 
         // Return the view

@@ -111,11 +111,6 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
 
     public void updateCardCount(Card card, int count) {
-        // Count must be between 0 and the maximum allowed by the game
-        count = Math.max(0, count);
-
-        count = Math.min(cardPool.getMaxCardCount(card), count);
-
         // Add or remove the card count
         int iCountToAdd = (mCardsToAdd.get(card) == null ? 0 : mCardsToAdd.get(card).getCount());
         int iCountToRemove = (mCardsToRemove.get(card) == null ? 0 : mCardsToRemove.get(card).getCount());
@@ -557,13 +552,17 @@ public class Deck implements Serializable, HeaderListItemInterface {
     }
 
     public void ReduceCard(Card card) {
+        // not below 0
+        int count = Math.max(0, getCardCount(card) - 1);
 
-        updateCardCount(card, getCardCount(card) - 1);
+        updateCardCount(card, count);
     }
 
     public void AddCard(Card card) {
+        // not above the maximum allowed
+        int count = Math.min(cardPool.getMaxCardCount(card), getCardCount(card) + 1);
 
-        updateCardCount(card, getCardCount(card) + 1);
+        updateCardCount(card, count);
     }
 
     public void setCardPool(CardPool cardPool) {
