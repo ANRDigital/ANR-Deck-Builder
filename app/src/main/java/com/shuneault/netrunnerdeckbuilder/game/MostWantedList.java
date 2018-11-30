@@ -48,4 +48,8 @@ public class MostWantedList {
             return null;
         }
     }
+
+    public String getName() {
+        return name;
+    }
 }

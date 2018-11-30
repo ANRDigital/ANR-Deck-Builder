@@ -9,8 +9,13 @@ public class CardPool {
     private final CardCountList mCardLimits;
 
     private ArrayList<String> packFilter = new ArrayList<>();
+    private MostWantedList mMwl;
 
     public CardPool(int coreCount, CardRepository repo, ArrayList<Pack> packFilter) {
+        //todo: move mwl selection to format class (once created)
+        mMwl = repo.getActiveMwl();
+
+
         for (Pack p :
                 packFilter) {
             this.packFilter.add(p.getName());
@@ -87,5 +92,9 @@ public class CardPool {
 
     public ArrayList<Card> getIdentities(String sideCode) {
         return getCards().getIdentities(sideCode);
+    }
+
+    public MostWantedList getMwl() {
+        return mMwl;
     }
 }

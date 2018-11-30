@@ -34,6 +34,8 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
 
     // Database
     DatabaseHelper mDb;
+    private TextView lblMwlVersion;
+    private TextView lblMwlValid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +52,8 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
         imgIdentity = (ImageView) mainView.findViewById(R.id.imgIdentity);
         txtDeckName = (TextView) mainView.findViewById(R.id.lblLabel);
         txtDeckDescription = (TextView) mainView.findViewById(R.id.txtDeckDescription);
+        lblMwlVersion = mainView.findViewById(R.id.lblMwlVersion);
+        lblMwlValid = mainView.findViewById(R.id.lblMwlValid);
 
         // Variables
         mDb = new DatabaseHelper(getActivity());
@@ -58,6 +62,8 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
         ImageDisplayer.fill(imgIdentity, mDeck.getIdentity(), getActivity());
         txtDeckName.setText(mDeck.getName());
         txtDeckDescription.setText(mDeck.getNotes());
+        lblMwlVersion.setText(mDeck.getCardPool().getMwl().getName());
+        onValidation(bundle.getBoolean(DeckActivity.ARGUMENT_MWL_VALID));
 
         // Events
         txtDeckName.addTextChangedListener(new TextWatcher() {
@@ -125,4 +131,13 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
             imgIdentity.setImageBitmap(mDeck.getIdentity().getImage(getActivity()));
     }
 
+    public void onValidation(boolean valid) {
+        if (valid) {
+            lblMwlValid.setTextAppearance(getContext(), R.style.InfoBarGood);
+            lblMwlValid.setText("✓");
+        } else {
+            lblMwlValid.setTextAppearance(getContext(), R.style.InfoBarBad);
+            lblMwlValid.setText("✗");
+        }
+    }
 }

@@ -56,6 +56,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     public static final String ARGUMENT_DECK_ID = "com.shuneault.netrunnerdeckbuilder.ARGUMENT_DECK_ID";
     public static final String ARGUMENT_SELECTED_TAB = "com.shuneault.netrunnerdeckbuilder.ARGUMENT_SELECTED_TAB";
     public static final String TAG = "DeckFragmentTag";
+    public static final String ARGUMENT_MWL_VALID = "MwlValidity";
 
     private DeckInfoFragment fragDeckInfo;
     private DeckBuildFragment fragDeckBuild;
@@ -79,6 +80,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
     // Database
     private DatabaseHelper mDb;
+    private boolean mValid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,13 +218,21 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         // check MWL restrictions
         // this will become an IDeckValidator, format
         DeckValidator validator = AppManager.getInstance().getDeckValidator();
-        if (validator.Validate(mDeck)) {
+        mValid = validator.Validate(mDeck);
+        if (mValid) {
             lblInfoLegal.setTextAppearance(this, R.style.InfoBarGood);
             lblInfoLegal.setText("✓");
         } else {
             lblInfoLegal.setTextAppearance(this, R.style.InfoBarBad);
             lblInfoLegal.setText("✗");
         }
+
+        onValidation(mValid);
+    }
+
+    private void onValidation(boolean valid) {
+        if (fragDeckInfo != null)
+            fragDeckInfo.onValidation(valid);
     }
 
     public class DeckTabsPagerAdapter extends FragmentPagerAdapter {
@@ -239,6 +249,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                     fragDeckInfo = new DeckInfoFragment();
                     bundle = new Bundle();
                     bundle.putLong(ARGUMENT_DECK_ID, mDeck.getRowId());
+                    bundle.putLong(ARGUMENT_MWL_VALID, mDeck.getRowId());
                     fragDeckInfo.setArguments(bundle);
                     return fragDeckInfo;
                 case 1:

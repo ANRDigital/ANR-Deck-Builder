@@ -205,5 +205,6 @@
     <string name="title_browse_cards">Browse cards</string>
     <string name="action_search">Search</string>
     <string name="action_filter">Filter</string>
+    <string name="mwl_version">MWL Version</string>
 
 </resources>
