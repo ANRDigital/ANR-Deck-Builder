@@ -167,6 +167,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String deckName = c.getString(c.getColumnIndex(KEY_DECKS_NAME));
             String identityCode = c.getString(c.getColumnIndex(KEY_DECKS_IDENTITY));
             Card identity = repo.getCard(identityCode);
+
             String packFilterValue = c.getString(c.getColumnIndex(KEY_DECKS_PACKFILTER));
             CardPool pool;
             if (!packFilterValue.isEmpty()) {
@@ -178,6 +179,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 pool = repo.getGlobalCardPool();
             }
             Deck deck = new Deck(identity, pool);
+            if (identity.isUnknown())
+            {
+                deck.setHasUnknownCards();
+            }
             deck.setName(deckName);
             deck.setNotes(c.getString(c.getColumnIndex(KEY_DECKS_NOTES)));
             deck.setRowId(c.getLong(c.getColumnIndex(KEY_ID)));

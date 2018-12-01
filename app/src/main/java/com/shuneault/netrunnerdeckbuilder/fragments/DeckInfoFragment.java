@@ -36,6 +36,7 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
     DatabaseHelper mDb;
     private TextView lblMwlVersion;
     private TextView lblMwlValid;
+    private ValidityProvider mValidityProvider;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +64,7 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
         txtDeckName.setText(mDeck.getName());
         txtDeckDescription.setText(mDeck.getNotes());
         lblMwlVersion.setText(mDeck.getCardPool().getMwl().getName());
-        onValidation(bundle.getBoolean(DeckActivity.ARGUMENT_MWL_VALID));
+        setValid(mValidityProvider.isValid());
 
         // Events
         txtDeckName.addTextChangedListener(new TextWatcher() {
@@ -115,6 +116,12 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnDeckChangedListener");
         }
+
+        try {
+            mValidityProvider = (ValidityProvider) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement ValidityProvider");
+        }
     }
 
     @Override
@@ -131,7 +138,7 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
             imgIdentity.setImageBitmap(mDeck.getIdentity().getImage(getActivity()));
     }
 
-    public void onValidation(boolean valid) {
+    public void setValid(boolean valid) {
         if (valid) {
             lblMwlValid.setTextAppearance(getContext(), R.style.InfoBarGood);
             lblMwlValid.setText("✓");

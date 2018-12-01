@@ -110,7 +110,7 @@ public class CardList extends ArrayList<Card> {
         Card card = new Card(cardCode);
         card.setTitle("unknown card: " + cardCode);
         card.setIsUnknown();
-
+        
         return card;
     }
 

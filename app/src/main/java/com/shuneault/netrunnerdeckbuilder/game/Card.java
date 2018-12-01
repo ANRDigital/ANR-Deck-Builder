@@ -25,7 +25,7 @@ public class Card {
     private String text;
     private String baseLink;
     //    private String faction;
-    private String factionCode;
+    private String factionCode = Faction.FACTION_ANARCH;
     // factionCost is the out-of-faction influence cost to include in a deck
     private int factionCost;
 
@@ -39,7 +39,7 @@ public class Card {
     //    private String setName;
     private String setCode;
     //    private String side;
-    private String sideCode;
+    private String sideCode = Side.SIDE_RUNNER;
     private int agendaPoints;
     private int advancementCost;
     private int memoryUnits;
