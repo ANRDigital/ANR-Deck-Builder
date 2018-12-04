@@ -1,0 +1,24 @@
+{
+  "data":[
+    {
+      "id":1,
+      "name":"Core Experience",
+      "description":"Core set only",
+      "packs":[
+        {
+          "code":"sc19",
+          "count":1
+        }
+      ],
+      "rotation":true,
+      "mwl":0
+    },
+    {
+      "id":2,
+      "name":"Standard",
+      "description":"All packs, following rotation",
+      "rotation":true,
+      "mwl":9
+    }
+  ]
+}

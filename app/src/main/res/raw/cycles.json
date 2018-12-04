@@ -1,0 +1,148 @@
+{
+  "data": [
+    {
+      "code": "core",
+      "name": "Core Set",
+      "position": 1,
+      "size": 1,
+      "rotated": true
+    },
+    {
+      "code": "genesis",
+      "name": "Genesis",
+      "position": 2,
+      "size": 6,
+      "rotated": true
+    },
+    {
+      "code": "creation-and-control",
+      "name": "Creation and Control",
+      "position": 3,
+      "size": 1,
+      "rotated": false
+    },
+    {
+      "code": "spin",
+      "name": "Spin",
+      "position": 4,
+      "size": 6,
+      "rotated": true
+    },
+    {
+      "code": "draft",
+      "name": "Draft",
+      "position": 0,
+      "size": 1,
+      "rotated": false
+    },
+    {
+      "code": "honor-and-profit",
+      "name": "Honor and Profit",
+      "position": 5,
+      "size": 1,
+      "rotated": false
+    },
+    {
+      "code": "lunar",
+      "name": "Lunar",
+      "position": 6,
+      "size": 6,
+      "rotated": false
+    },
+    {
+      "code": "order-and-chaos",
+      "name": "Order and Chaos",
+      "position": 7,
+      "size": 1,
+      "rotated": false
+    },
+    {
+      "code": "sansan",
+      "name": "SanSan",
+      "position": 8,
+      "size": 6,
+      "rotated": false
+    },
+    {
+      "code": "data-and-destiny",
+      "name": "Data and Destiny",
+      "position": 9,
+      "size": 1,
+      "rotated": false
+    },
+    {
+      "code": "mumbad",
+      "name": "Mumbad",
+      "position": 10,
+      "size": 6,
+      "rotated": false
+    },
+    {
+      "code": "flashpoint",
+      "name": "Flashpoint",
+      "position": 11,
+      "size": 6,
+      "rotated": false
+    },
+    {
+      "code": "red-sand",
+      "name": "Red Sand",
+      "position": 12,
+      "size": 6,
+      "rotated": false
+    },
+    {
+      "code": "terminal-directive",
+      "name": "Terminal Directive",
+      "position": 13,
+      "size": 1,
+      "rotated": true
+    },
+    {
+      "code": "core2",
+      "name": "Revised Core Set",
+      "position": 20,
+      "size": 1,
+      "rotated": true
+    },
+    {
+      "code": "kitara",
+      "name": "Kitara",
+      "position": 21,
+      "size": 6,
+      "rotated": false
+    },
+    {
+      "code": "reign-and-reverie",
+      "name": "Reign and Reverie",
+      "position": 22,
+      "size": 1,
+      "rotated": false
+    },
+    {
+      "code": "magnum-opus",
+      "name": "Magnum Opus",
+      "position": 23,
+      "size": 1,
+      "rotated": false
+    },
+    {
+      "code": "napd",
+      "name": "NAPD Multiplayer",
+      "position": 24,
+      "size": 1,
+      "rotated": false
+    },
+    {
+      "code": "sc19",
+      "name": "System Core 2019",
+      "position": 25,
+      "size": 1,
+      "rotated": false
+    }
+  ],
+  "total": 20,
+  "success": true,
+  "version_number": "2.0",
+  "last_updated": "2018-11-30T17:12:47+00:00"
+}

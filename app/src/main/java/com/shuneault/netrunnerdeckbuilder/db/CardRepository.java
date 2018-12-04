@@ -10,6 +10,8 @@ import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.CardPool;
+import com.shuneault.netrunnerdeckbuilder.game.Cycle;
+import com.shuneault.netrunnerdeckbuilder.game.CycleList;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
@@ -28,6 +30,7 @@ public class CardRepository {
     private final String mLanguagePref;
     private CardList mCards = new CardList();
     private ArrayList<Pack> mPacks = new ArrayList<>();
+    private CycleList mCycles = new CycleList();
 
     private MostWantedList mActiveMWL;
     private HashMap<String, JSONObject> mMWLInfluences = new HashMap<>();
@@ -47,6 +50,7 @@ public class CardRepository {
             // MUST LOAD PACKS BEFORE CARDS
             loadPacks();
             loadCards();
+            loadCycles();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -65,7 +69,6 @@ public class CardRepository {
             e.printStackTrace();
         }
     }
-
 
     private void loadCards() {
         try {
@@ -90,6 +93,17 @@ public class CardRepository {
         }
     }
 
+    private void loadCycles() {
+        try {
+            ArrayList<Cycle> cycles = fileLoader.getCyclesFromFile();
+
+            mCycles.clear();
+            mCycles.addAll(cycles);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public CardList getAllCards() {
         return (CardList) mCards.clone();

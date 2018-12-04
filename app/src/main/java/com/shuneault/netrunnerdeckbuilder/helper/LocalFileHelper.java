@@ -18,6 +18,8 @@ public class LocalFileHelper {
     public static final String FILE_CARDS_JSON = "cardsv2.json";
     public static final String FILE_PACKS_JSON = "packs.json";
     public static final String FILE_MWL_JSON = "mwl.json";
+    public static final String FILE_CYCLES_JSON = "cycles.json";
+
     private Context context;
 
     public LocalFileHelper(Context context) {
@@ -39,6 +41,12 @@ public class LocalFileHelper {
         int fallbackResource = R.raw.packs;
         // Load the file in memory and return a JSON array
         return getLocalJson(context, FILE_PACKS_JSON, fallbackResource);
+    }
+
+    public JSONObject getJSONCyclesFile() throws IOException, JSONException {
+        int fallbackResource = R.raw.cycles;
+        // Load the file in memory and return a JSON array
+        return getLocalJson(context, FILE_CYCLES_JSON, fallbackResource);
     }
 
     @NonNull

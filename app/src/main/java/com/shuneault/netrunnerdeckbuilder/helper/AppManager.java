@@ -3,11 +3,15 @@ package com.shuneault.netrunnerdeckbuilder.helper;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.db.JSONDataLoader;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.Cycle;
+import com.shuneault.netrunnerdeckbuilder.game.CycleList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
@@ -45,7 +49,6 @@ public class AppManager extends Application {
         mInstance = this;
         mDb = new DatabaseHelper(this);
 
-        // setup Card repository
         ISettingsProvider settingsProvider = new SettingsProvider(this);
         JSONDataLoader fileLoader = new JSONDataLoader(new LocalFileHelper(this));
         mCardRepo = new CardRepository(this, settingsProvider, fileLoader);
@@ -65,8 +68,6 @@ public class AppManager extends Application {
 //            //todo: flag a message here?`
 //        }
     }
-
-
 
     public static AppManager getInstance() {
         return mInstance;
@@ -117,8 +118,6 @@ public class AppManager extends Application {
         }
         return null;
     }
-
-
 
     public DeckValidator getDeckValidator() {
         // create validator

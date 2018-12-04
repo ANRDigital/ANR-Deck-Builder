@@ -43,3 +43,5 @@ proguard/
 
 # Log Files
 *.log
+apk/release/output.json
+*.orig

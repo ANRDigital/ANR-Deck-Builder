@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardBuilder;
+import com.shuneault.netrunnerdeckbuilder.game.Cycle;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper;
@@ -13,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -71,6 +73,17 @@ public class JSONDataLoader {
             packs.add(pack);
         }
         return packs;
+    }
+
+    public ArrayList<Cycle> getCyclesFromFile() throws IOException, JSONException {
+        ArrayList<Cycle> cycles = new ArrayList<>();
+            JSONObject jsonFile = mLocalFileHelper.getJSONCyclesFile();
+            JSONArray jsonCycles = jsonFile.getJSONArray("data");
+            for (int i = 0; i < jsonCycles.length(); i++) {
+                Cycle cycle = new Cycle(jsonCycles.getJSONObject(i));
+                cycles.add(cycle);
+            }
+        return cycles;
     }
 
     @NonNull
