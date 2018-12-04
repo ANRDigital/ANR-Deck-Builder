@@ -35,7 +35,7 @@
         <EditText
             android:id="@+id/txtDeckDescription"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="top|left"
             android:hint="@string/description"
@@ -43,6 +43,29 @@
 
             <requestFocus />
         </EditText>
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/lblMwlVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/mwl_version"
+            android:padding="4dp"
+            android:text="MWL v2.2"
+            android:textColor="@color/text_default"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/lblMwlValid"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="4dp"
+            android:text="Y"
+            android:textColor="@color/text_default"
+            android:textSize="18sp" />
+    </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
