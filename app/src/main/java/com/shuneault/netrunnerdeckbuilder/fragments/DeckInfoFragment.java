@@ -139,12 +139,14 @@ public class DeckInfoFragment extends Fragment implements OnDeckChangedListener 
     }
 
     public void setValid(boolean valid) {
-        if (valid) {
-            lblMwlValid.setTextAppearance(getContext(), R.style.InfoBarGood);
-            lblMwlValid.setText("✓");
-        } else {
-            lblMwlValid.setTextAppearance(getContext(), R.style.InfoBarBad);
-            lblMwlValid.setText("✗");
+        if(lblMwlValid != null) {
+            if (valid) {
+                lblMwlValid.setTextAppearance(getContext(), R.style.InfoBarGood);
+                lblMwlValid.setText("✓");
+            } else {
+                lblMwlValid.setTextAppearance(getContext(), R.style.InfoBarBad);
+                lblMwlValid.setText("✗");
+            }
         }
     }
 }
