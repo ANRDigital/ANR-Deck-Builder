@@ -14,11 +14,23 @@ public class Cycle {
         this.rotated = json.optBoolean(KEY_ROTATED, false);
     }
 
+    public Cycle() {
+
+    }
+
     public String getCode() {
         return code;
     }
 
     public boolean isRotated() {
         return rotated;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setRotation(boolean value) {
+        this.rotated = value;
     }
 }

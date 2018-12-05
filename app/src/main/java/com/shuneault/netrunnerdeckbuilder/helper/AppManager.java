@@ -86,7 +86,7 @@ public class AppManager extends Application {
     }
 
     public ArrayList<Pack> getAllPacks() {
-        return mCardRepo.getPacks();
+        return mCardRepo.getPacks(true);
     }
 
     public ArrayList<String> getSetNames() {

@@ -13,6 +13,7 @@ import com.shuneault.netrunnerdeckbuilder.game.CardCount;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.game.Format;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -178,7 +179,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             {
                 pool = repo.getGlobalCardPool();
             }
-            Deck deck = new Deck(identity, pool);
+            //todo: load format from db
+            Format format = null;
+            Deck deck = new Deck(identity, pool, format);
             if (identity.isUnknown())
             {
                 deck.setHasUnknownCards();

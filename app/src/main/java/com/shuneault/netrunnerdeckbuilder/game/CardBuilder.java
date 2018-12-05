@@ -110,4 +110,9 @@ public class CardBuilder {
         this.setCode = setCode;
         return this;
     }
+
+    public CardBuilder withQuantity(int quantity) {
+        this.quantity = String.valueOf(quantity);
+        return this;
+    }
 }

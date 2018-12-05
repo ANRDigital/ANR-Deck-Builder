@@ -9,14 +9,14 @@ import java.util.Iterator;
 public class MostWantedList {
     private String code;
     private String name = "";
-    private String iD = "";
+    private String id = "";
     private boolean active = false;
     private HashMap<String, CardMWL> cards = new HashMap<>();
 
     public MostWantedList(JSONObject mwlData) {
         try {
             if (mwlData.has("id")) {
-                this.iD = mwlData.getString("id");
+                this.id = mwlData.getString("id");
             }
             if (mwlData.has("code")) {
                 this.code = mwlData.getString("code");
@@ -41,6 +41,10 @@ public class MostWantedList {
         }
     }
 
+    public MostWantedList() {
+
+    }
+
     public CardMWL GetCardMWL(Card card) {
         if (this.cards.containsKey(card.getCode())) {
             return cards.get(card.getCode());
@@ -51,5 +55,13 @@ public class MostWantedList {
 
     public String getName() {
         return name;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = String.valueOf(id);
     }
 }

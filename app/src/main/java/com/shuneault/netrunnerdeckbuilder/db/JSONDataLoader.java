@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardBuilder;
 import com.shuneault.netrunnerdeckbuilder.game.Cycle;
+import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper;
@@ -14,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,7 +27,7 @@ public class JSONDataLoader {
     }
 
     @NonNull
-    public ArrayList<Card> getCardsFromFile(String lanquagePref, HashMap<String, JSONObject> influences) throws IOException, JSONException {
+    public ArrayList<Card> getCardsFromFile(String lanquagePref, HashMap<String, Integer> influences) throws IOException, JSONException {
         //get json file
 
         JSONObject jsonFile = mLocalFileHelper.getJSONCardsFile();
@@ -54,7 +54,7 @@ public class JSONDataLoader {
 
             int cardUniversalCost = 0;
             if (influences.containsKey(card.getCode())) {
-                cardUniversalCost = influences.get(card.getCode()).optInt("universal_faction_cost", 0);
+                cardUniversalCost = influences.get(card.getCode());
             }
             card.setMostWantedInfluence(cardUniversalCost);
             cards.add(card);
@@ -90,25 +90,37 @@ public class JSONDataLoader {
     public MWLDetails getMwlDetails() throws IOException, JSONException {
         MWLDetails mwl = new MWLDetails();
 
-        JSONObject mJsonMWLfile = null;
-        mJsonMWLfile = mLocalFileHelper.getJSON_MWLFile();
+        JSONObject mJsonMWLfile = mLocalFileHelper.getJSON_MWLFile();
         JSONArray mMWLData = mJsonMWLfile.getJSONArray("data");
         for (int i = 0; i < mMWLData.length(); i++) {
             JSONObject mwlJSON = mMWLData.getJSONObject(i);
+            MostWantedList mwl1 = new MostWantedList(mwlJSON);
             if (mwlJSON.has("active")) {
-                mwl.setActiveMWL(new MostWantedList(mwlJSON));
+                mwl.setActiveMWL(mwl1);
             }
+            mwl.allLists.add(mwl1);
         }
 
+        HashMap<String, Integer> influences = mwl.getInfluences();
         JSONObject jsonMWLCards = mMWLData
                 .getJSONObject(2)
                 .getJSONObject("cards");
         Iterator<String> iterCards = jsonMWLCards.keys();
         while (iterCards.hasNext()) {
             String cardCode = iterCards.next();
-            mwl.getInfluences().put(cardCode, jsonMWLCards.getJSONObject(cardCode));
+            influences.put(cardCode, jsonMWLCards.getJSONObject(cardCode).optInt("universal_faction_cost", 0));
         }
         return mwl;
     }
 
+    public ArrayList<Format> getFormats() throws IOException, JSONException {
+        ArrayList<Format> formats = new ArrayList<>();
+        JSONObject jsonFormats = mLocalFileHelper.getJSONFormatsFile();
+        JSONArray formatData = jsonFormats.getJSONArray("data");
+        for (int i = 0; i < formatData.length(); i++) {
+            JSONObject formatJSON = formatData.getJSONObject(i);
+            formats.add(new Format(formatJSON));
+        }
+        return formats;
+    }
 }

@@ -19,6 +19,7 @@ public class LocalFileHelper {
     public static final String FILE_PACKS_JSON = "packs.json";
     public static final String FILE_MWL_JSON = "mwl.json";
     public static final String FILE_CYCLES_JSON = "cycles.json";
+    public static final String FILE_FORMATS_JSON = "formats.json";
 
     private Context context;
 
@@ -49,6 +50,12 @@ public class LocalFileHelper {
         return getLocalJson(context, FILE_CYCLES_JSON, fallbackResource);
     }
 
+    public JSONObject getJSONFormatsFile() throws IOException, JSONException {
+        int fallbackResource = R.raw.cycles;
+        // Load the file in memory and return a JSON array
+        return getLocalJson(context, FILE_FORMATS_JSON, fallbackResource);
+    }
+
     @NonNull
     private JSONObject getLocalJson(Context context, String filename, int fallbackResource) throws IOException, JSONException {
         // Load the file in memory and return a JSON array
@@ -77,4 +84,5 @@ public class LocalFileHelper {
         in.close();
         return jsonFile;
     }
+
 }

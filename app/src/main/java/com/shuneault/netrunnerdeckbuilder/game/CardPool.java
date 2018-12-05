@@ -6,27 +6,34 @@ import java.util.ArrayList;
 
 public class CardPool {
     private static final int DEFAULT_CARD_LIMIT = 3;
-    private final CardCountList mCardLimits;
+    private final CardCountList mCardLimits = new CardCountList();
 
     private ArrayList<String> packFilter = new ArrayList<>();
     private MostWantedList mMwl;
 
-    public CardPool(int coreCount, CardRepository repo, ArrayList<Pack> packFilter) {
+    public CardPool(CardRepository repo, int coreCount, ArrayList<Pack> packFilter) {
         //todo: move mwl selection to format class (once created)
         mMwl = repo.getActiveMwl();
 
-
-        for (Pack p :
-                packFilter) {
+        for (Pack p : packFilter) {
+            // store the name for later dialog use (this needs to change to code)
             this.packFilter.add(p.getName());
         }
 
-        ArrayList<Pack> packsToUse = packFilter.isEmpty() ? repo.getPacks() : packFilter;
-        mCardLimits = new CardCountList();
+        populateCardCounts(repo, coreCount, packFilter, true);
+    }
+
+    public CardPool(CardRepository repo, Format format) {
+        mMwl = repo.getMostWantedList(format.getMwlId());
+        ArrayList<Pack> packs = repo.getPacks(format.getPacks());
+
+        populateCardCounts(repo, format.getCoreCount(), packs, !format.getRotation());
+    }
+
+    private void populateCardCounts(CardRepository repo, int coreCount, ArrayList<Pack> packs, boolean includeRotated) {
         // loop the packFilter
-        for (Pack p :
-                packsToUse) {
-            // is it a core set?
+        ArrayList<Pack> packsToUse = packs.isEmpty() ? repo.getPacks(includeRotated) : packs;
+        for (Pack p : packsToUse) {
             int setCount = p.isCoreSet() ? coreCount : 1;
 
             // are there card links?

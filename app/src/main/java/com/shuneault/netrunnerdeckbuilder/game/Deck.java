@@ -56,10 +56,12 @@ public class Deck implements Serializable, HeaderListItemInterface {
     private static final long serialVersionUID = 2114649051205735605L;
     private boolean hasUnknownCards = false;
     private CardPool cardPool;
+    private Format format;
 
-    public Deck(Card identity, CardPool cardPool) {
+    public Deck(Card identity, CardPool cardPool, Format format) {
         this.mIdentity = identity;
         this.cardPool = cardPool;
+        this.format = format;
     }
 
     public String getName() {
@@ -459,7 +461,8 @@ public class Deck implements Serializable, HeaderListItemInterface {
         CardRepository repo = appManager.getCardRepository();
         String idCardCode = json.optString(JSON_DECK_IDENTITY_CODE);
         Card identityCard = repo.getCard(idCardCode);
-        Deck deck = new Deck(identityCard, repo.getGlobalCardPool());
+        Format format = new FormatBuilder().withId(1).Build();
+        Deck deck = new Deck(identityCard, repo.getGlobalCardPool(), format);
         deck.mUUID = UUID.fromString(json.optString(JSON_DECK_UUID, UUID.randomUUID().toString()));
         deck.setName(json.optString(JSON_DECK_NAME));
         deck.setNotes(json.optString(JSON_DECK_NOTES));
@@ -571,5 +574,9 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public CardPool getCardPool() {
         return cardPool;
+    }
+
+    public Format getFormat() {
+        return format;
     }
 }

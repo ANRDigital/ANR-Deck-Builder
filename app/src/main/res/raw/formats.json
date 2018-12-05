@@ -3,13 +3,9 @@
     {
       "id":1,
       "name":"Core Experience",
-      "description":"Core set only",
-      "packs":[
-        {
-          "code":"sc19",
-          "count":1
-        }
-      ],
+      "description":"Latest core set only",
+      "packs":["sc19"],
+      "core_count":1,
       "rotation":true,
       "mwl":0
     },

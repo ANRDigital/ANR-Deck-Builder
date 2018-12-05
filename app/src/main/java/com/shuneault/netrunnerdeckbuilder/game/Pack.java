@@ -17,6 +17,10 @@ public class Pack {
         this.name = name;
     }
 
+    public void setCycleCode(String code) {
+        this.cycle_code = code;
+    }
+
     public static class SetCode {
         public static final String CORE_SET = "core";
         public static final String REVISED_CORE_SET = "core2";

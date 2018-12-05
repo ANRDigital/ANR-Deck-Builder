@@ -23,6 +23,7 @@ import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.fragments.ListDecksFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
@@ -122,7 +123,9 @@ public class MainActivity extends AppCompatActivity implements OnDeckChangedList
                 Card card = repo.getCard(identityCardCode);
 
                 // Create a new deck
-                Deck mDeck = new Deck(card, repo.getGlobalCardPool());
+                //todo: get default format
+                Format format = null;
+                Deck mDeck = new Deck(card, repo.getGlobalCardPool(), format);
                 appManager.getAllDecks().add(mDeck);
 
                 // Save the new deck in the database

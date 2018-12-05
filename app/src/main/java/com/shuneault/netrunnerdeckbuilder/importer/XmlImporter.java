@@ -5,6 +5,7 @@ import android.text.Html;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 import org.w3c.dom.Document;
@@ -56,7 +57,9 @@ class XmlImporter implements IDeckImporter {
         // Build the new deck
         String identityCode = getCardCodeFromUUID(strIdentityID);
         Card identityCard = this.repo.getCard(identityCode);
-        Deck deck = new Deck(identityCard, repo.getGlobalCardPool());
+        //todo: getdefaultformat
+        Format format = null;
+        Deck deck = new Deck(identityCard, repo.getGlobalCardPool(), format);
         deck.setNotes(Html.fromHtml(deckNotes).toString());
         for (int i = 0; i < nodeCards.getLength(); i++) {
             Node node = nodeCards.item(i);
