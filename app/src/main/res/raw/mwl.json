@@ -640,9 +640,44 @@
           "is_restricted": 1
         }
       }
+    },
+    {
+      "id": 11,
+      "date_creation": "2018-11-30T17:12:57+00:00",
+      "date_update": "2018-11-30T17:12:57+00:00",
+      "code": "eternal-mwl-1-0",
+      "name": "Eternal MWL 1.0",
+      "active": false,
+      "date_start": "2018-12-21",
+      "cards": {
+        "11090": {
+          "deck_limit": 0
+        },
+        "23101": {
+          "deck_limit": 0
+        },
+        "10019": {
+          "deck_limit": 0
+        },
+        "08061": {
+          "deck_limit": 0
+        },
+        "11022": {
+          "deck_limit": 0
+        },
+        "12103": {
+          "deck_limit": 0
+        },
+        "11101": {
+          "deck_limit": 0
+        },
+        "23100": {
+          "deck_limit": 0
+        }
+      }
     }
-  ],
-  "total": 7,
+    ],
+  "total": 8,
   "success": true,
   "version_number": "2.0",
   "last_updated": "2018-11-30T17:12:57+00:00"
