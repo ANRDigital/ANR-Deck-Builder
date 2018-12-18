@@ -29,6 +29,9 @@ public class DeckValidator {
         for (Pack p : packs) {
             packCodes.add(p.getCode());
         }
+        if (!packCodes.contains(deck.getIdentity().getSetCode()))
+            return false;
+
         for (Card c : deck.getCards()) {
             if (!packCodes.contains(c.getSetCode())){
                 return false;
