@@ -1,12 +1,8 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
-import android.content.Context;
-
-import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.HeaderListItemInterface;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
-import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 import org.json.JSONArray;
@@ -49,18 +45,18 @@ public class Deck implements Serializable, HeaderListItemInterface {
     public static final String JSON_DECK_CARDS_TO_ADD = "cards_to_add";
     public static final String JSON_DECK_CARDS_TO_REMOVE = "cards_to_remove";
     public static final String JSON_DECK_CARDS_DONE = "is_done";
+    public static final String JSON_DECK_FORMAT = "format";
 
     // Rules values
     public static final int BASE_AGENDA = 2;
 
     private static final long serialVersionUID = 2114649051205735605L;
     private boolean hasUnknownCards = false;
-    private CardPool cardPool;
     private Format format;
+    private ArrayList<String> packFilter = new ArrayList<>();
 
-    public Deck(Card identity, CardPool cardPool, Format format) {
+    public Deck(Card identity, Format format) {
         this.mIdentity = identity;
-        this.cardPool = cardPool;
         this.format = format;
     }
 
@@ -418,6 +414,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
             json.putOpt(JSON_DECK_NOTES, mNotes);
             json.putOpt(JSON_DECK_STARRED, mStarred);
             json.putOpt(JSON_DECK_IDENTITY_CODE, mIdentity.getCode());
+            json.putOpt(JSON_DECK_FORMAT, this.format.getId());
 
             // Cards
             ArrayList<Card> cardList = getCards();
@@ -456,13 +453,11 @@ public class Deck implements Serializable, HeaderListItemInterface {
         return json;
     }
 
-    public static Deck fromJSON(JSONObject json) {
-        AppManager appManager = AppManager.getInstance();
-        CardRepository repo = appManager.getCardRepository();
+    public static Deck fromJSON(JSONObject json, CardRepository repo) {
         String idCardCode = json.optString(JSON_DECK_IDENTITY_CODE);
         Card identityCard = repo.getCard(idCardCode);
-        Format format = new FormatBuilder().withId(1).Build();
-        Deck deck = new Deck(identityCard, repo.getGlobalCardPool(), format);
+        Format format = repo.getFormat(json.optInt(JSON_DECK_FORMAT));
+        Deck deck = new Deck(identityCard, format);
         deck.mUUID = UUID.fromString(json.optString(JSON_DECK_UUID, UUID.randomUUID().toString()));
         deck.setName(json.optString(JSON_DECK_NAME));
         deck.setNotes(json.optString(JSON_DECK_NOTES));
@@ -473,7 +468,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
             JSONArray jsonCards = json.getJSONArray(JSON_DECK_CARDS);
             for (int i = 0; i < jsonCards.length(); i++) {
                 JSONObject jsonCard = jsonCards.getJSONObject(i);
-                deck.setCardCount(appManager.getCard(jsonCard.optString(JSON_DECK_CARD_CODE)), jsonCard.optInt(JSON_DECK_CARD_COUNT));
+                deck.setCardCount(repo.getCard(jsonCard.optString(JSON_DECK_CARD_CODE)), jsonCard.optInt(JSON_DECK_CARD_COUNT));
             }
 
             // By default, when a new card is added to a deck, it is added to the ADD list
@@ -487,7 +482,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
             JSONArray jsonCards = json.getJSONArray(JSON_DECK_CARDS_TO_ADD);
             for (int i = 0; i < jsonCards.length(); i++) {
                 JSONObject jsonCard = jsonCards.getJSONObject(i);
-                Card card = appManager.getCard(jsonCard.optString(JSON_DECK_CARD_CODE));
+                Card card = repo.getCard(jsonCard.optString(JSON_DECK_CARD_CODE));
                 deck.mCardsToAdd.put(card, new CardCount(card, jsonCard.optInt(JSON_DECK_CARD_COUNT), jsonCard.optBoolean(JSON_DECK_CARDS_DONE)));
             }
         } catch (JSONException e) {
@@ -498,27 +493,13 @@ public class Deck implements Serializable, HeaderListItemInterface {
             JSONArray jsonCards = json.getJSONArray(JSON_DECK_CARDS_TO_REMOVE);
             for (int i = 0; i < jsonCards.length(); i++) {
                 JSONObject jsonCard = jsonCards.getJSONObject(i);
-                Card card = appManager.getCard(jsonCard.optString(JSON_DECK_CARD_CODE));
+                Card card = repo.getCard(jsonCard.optString(JSON_DECK_CARD_CODE));
                 deck.mCardsToRemove.put(card, new CardCount(card, jsonCard.optInt(JSON_DECK_CARD_COUNT), jsonCard.optBoolean(JSON_DECK_CARDS_DONE)));
             }
         } catch (JSONException e) {
         }
 
         return deck;
-    }
-
-    public Deck clone(Context context) {
-        Deck newDeck = Deck.fromJSON(this.toJSON());
-        DatabaseHelper db = new DatabaseHelper(context);
-        newDeck.setName(String.format(context.getResources().getString(R.string.copy_of), newDeck.getName()));
-        // Do not clone the cards to add and cards to remove
-        newDeck.setCardsToAdd(new ArrayList<CardCount>());
-        newDeck.setCardsToRemove(new ArrayList<CardCount>());
-
-        // Save in the database
-        db.createDeck(newDeck);
-        db.saveDeck(newDeck);
-        return newDeck;
     }
 
     public boolean isStarred() {
@@ -561,22 +542,25 @@ public class Deck implements Serializable, HeaderListItemInterface {
         updateCardCount(card, count);
     }
 
-    public void AddCard(Card card) {
+    public void AddCard(Card card, int maxAllowed) {
         // not above the maximum allowed
-        int count = Math.min(cardPool.getMaxCardCount(card), getCardCount(card) + 1);
-
+        int count = Math.min(maxAllowed, getCardCount(card) + 1);
         updateCardCount(card, count);
-    }
-
-    public void setCardPool(CardPool cardPool) {
-        this.cardPool = cardPool;
-    }
-
-    public CardPool getCardPool() {
-        return cardPool;
     }
 
     public Format getFormat() {
         return format;
+    }
+
+    public void setFormat(Format format) {
+        this.format = format;
+    }
+
+    public ArrayList<String> getPackFilter() {
+        return packFilter;
+    }
+
+    public void setPackFilter(ArrayList<String> packFilter) {
+        this.packFilter = packFilter;
     }
 }

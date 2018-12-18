@@ -7,7 +7,6 @@ import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider;
 
 import org.json.JSONException;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,8 +30,7 @@ public class CardRepositoryTest {
     @Before
     public void Setup() throws IOException, JSONException {
         mLoaderMock = mock(JSONDataLoader.class);
-        MWLDetails mwlDetails = mock(MWLDetails.class);
-        when(mwlDetails.getActiveMWL()).thenReturn(null);
+        MwlData mwlDetails = mock(MwlData.class);
         when(mLoaderMock.getMwlDetails()).thenReturn(mwlDetails);
         mPacks = new ArrayList<>();
         mPacks.add(new PackBuilder().withCode("1234").withName("Pack One").Build());

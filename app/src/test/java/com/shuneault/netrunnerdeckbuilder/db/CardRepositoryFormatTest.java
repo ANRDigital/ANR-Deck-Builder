@@ -7,6 +7,7 @@ import com.shuneault.netrunnerdeckbuilder.game.Cycle;
 import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.game.FormatBuilder;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
+import com.shuneault.netrunnerdeckbuilder.game.Rotation;
 import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider;
 
 import org.json.JSONException;
@@ -30,13 +31,21 @@ public class CardRepositoryFormatTest {
     private ArrayList<Pack> mPacks;
     private ArrayList<Card> mCards;
     private ArrayList<Cycle> mCycles;
+    private ArrayList<Rotation> mRotations;
 
     @Before
     public void Setup() throws IOException, JSONException {
         mLoaderMock = mock(JSONDataLoader.class);
-        MWLDetails mwlDetails = mock(MWLDetails.class);
-        when(mwlDetails.getActiveMWL()).thenReturn(null);
+        MwlData mwlDetails = mock(MwlData.class);
         when(mLoaderMock.getMwlDetails()).thenReturn(mwlDetails);
+
+        mRotations = new ArrayList<Rotation>();
+        Rotation r = new Rotation();
+        r.setCode("rotation-2018");
+        r.getCycles().add("sc19");
+        r.getCycles().add("c2");
+        mRotations.add(r);
+        when(mLoaderMock.getRotations()).thenReturn(mRotations);
 
         mCycles = new ArrayList<>();
         mCycles.add(new CycleBuilder().withCode("sc19").Build());
@@ -120,10 +129,5 @@ public class CardRepositoryFormatTest {
         Card card = pool.getCards().get(0);
         assertEquals("123", card.getCode());
         assertEquals(3, pool.getMaxCardCount(card));
-    }
-
-    @Test
-    public void GetDefaultCardPool_LoadsFromFormat(){
-
     }
 }

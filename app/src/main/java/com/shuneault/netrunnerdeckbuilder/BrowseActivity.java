@@ -2,12 +2,12 @@ package com.shuneault.netrunnerdeckbuilder;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.core.view.MenuItemCompat;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -37,9 +37,9 @@ public class BrowseActivity extends AppCompatActivity implements BrowseCardsFrag
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.browse, menu);
+
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-
         sv.setOnQueryTextListener(
                 new SearchView.OnQueryTextListener(){
 

@@ -2,48 +2,44 @@ package com.shuneault.netrunnerdeckbuilder.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+import kotlin.Lazy;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.ViewModel.BrowseCardsViewModel;
+import com.shuneault.netrunnerdeckbuilder.adapters.BrowseCardRecyclerViewAdapter;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.CardList;
-import com.shuneault.netrunnerdeckbuilder.game.CardPool;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 import java.util.ArrayList;
+
+import static org.koin.java.standalone.KoinJavaComponent.inject;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnBrowseCardsClickListener}
- * interface.
+ * Activities containing this fragment MUST implement the {@link OnBrowseCardsClickListener} interface.
  */
 public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryTextListener{
+    private OnBrowseCardsClickListener mClickListener;
 
-    // TODO: Customize parameter argument names
-
-    private OnBrowseCardsClickListener mListener;
-
-    CardRepository cardRepo;
-    private CardList mCards;
     private BrowseCardRecyclerViewAdapter mAdapter;
     private String mSearchText = "";
-    private CardPool mCardPool;
+
+    Lazy<BrowseCardsViewModel> viewModel = inject(BrowseCardsViewModel.class);
+    Lazy<CardRepository> cardRepo = inject(CardRepository.class);
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public BrowseCardsFragment() {
-        cardRepo = AppManager.getInstance().getCardRepository();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,10 +59,10 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
 
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            mCardPool = cardRepo.getGlobalCardPool();
-            mCards = mCardPool.getCards();
+            BrowseCardsViewModel vm = viewModel.getValue();
+            vm.init();
 
-            mAdapter = new BrowseCardRecyclerViewAdapter(mCards, mListener, cardRepo);
+            mAdapter = new BrowseCardRecyclerViewAdapter(vm.getCards(), mClickListener, cardRepo.getValue());
             recyclerView.setAdapter(mAdapter);
         }
         return view;
@@ -76,7 +72,7 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnBrowseCardsClickListener) {
-            mListener = (OnBrowseCardsClickListener) context;
+            mClickListener = (OnBrowseCardsClickListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnBrowseCardsClickListener");
@@ -86,7 +82,7 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mClickListener = null;
     }
 
     @Override
@@ -102,16 +98,12 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
     }
 
     private void updateResults() {
-        mCards.clear();
-        mCards.addAll(cardRepo.searchCards(mSearchText, mCardPool));
+        viewModel.getValue().doSearch(mSearchText);
         mAdapter.notifyDataSetChanged();
     }
 
     public void updatePackFilter(ArrayList<String> packFilter) {
-        if (packFilter.isEmpty())
-            mCardPool = cardRepo.getGlobalCardPool();
-        else
-            mCardPool = cardRepo.getCardPool(packFilter);
+        viewModel.getValue().updatePackFilter(packFilter);
         updateResults();
     }
 

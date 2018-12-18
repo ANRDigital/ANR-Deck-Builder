@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
+
+import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +27,9 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.PercentFormatter;
 import com.github.mikephil.charting.utils.ValueFormatter;
-import com.shuneault.netrunnerdeckbuilder.DeckActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,11 +38,9 @@ import java.util.List;
 /**
  * Deck stats viewer fragment.
  */
-public class DeckStatsFragment extends Fragment {
+public class DeckStatsFragment extends DeckActivityFragment {
 
     private View mainView;
-
-    private Deck mDeck;
     private boolean mTryParseSubtypes;
 
     private BarChart mBarChart;
@@ -64,12 +61,15 @@ public class DeckStatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // The View
         mainView = inflater.inflate(R.layout.fragment_deck_stats, container, false);
 
-        // Fetch the deck
-        mDeck = AppManager.getInstance().getDeck(getArguments().getLong(DeckActivity.ARGUMENT_DECK_ID));
+        return mainView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         // Check the language to see if we should even bother trying to parse subtypes
         String lang = PreferenceManager
@@ -83,15 +83,6 @@ public class DeckStatsFragment extends Fragment {
         setUpGraphs();
         calculateDataSets();
 
-        return mainView;
-    }
-
-    public void onDeckCardsChanged() {
-
-        if (mBarChart != null) {
-            calculateDataSets();
-        }
-
     }
 
     /**
@@ -100,7 +91,7 @@ public class DeckStatsFragment extends Fragment {
     private void setUpGraphs() {
 
         // Cost/strength distribution bar chart
-        mBarChart = (BarChart) mainView.findViewById(R.id.barChart);
+        mBarChart = mainView.findViewById(R.id.barChart);
 
         mBarLabels = new ArrayList<>();
 
@@ -128,7 +119,7 @@ public class DeckStatsFragment extends Fragment {
 
 
         // Card type pie chart
-        mTypeChart = (PieChart) mainView.findViewById(R.id.typeChart);
+        mTypeChart = mainView.findViewById(R.id.typeChart);
 
         mTypeLabels = new ArrayList<>();
         mTypeDataSet = new PieDataSet(new ArrayList<Entry>(), "");
@@ -138,7 +129,7 @@ public class DeckStatsFragment extends Fragment {
         setUpPieChart(mTypeChart);
 
         // Ice/breaker subtype pie chart
-        mIceSubtypeChart = (PieChart) mainView.findViewById(R.id.iceSubtypeChart);
+        mIceSubtypeChart = mainView.findViewById(R.id.iceSubtypeChart);
 
         if (!mTryParseSubtypes) {
             mainView.findViewById(R.id.iceSubtypeChartSection).setVisibility(View.GONE);
@@ -149,7 +140,7 @@ public class DeckStatsFragment extends Fragment {
                 String.format(getString(R.string.stats_ice_subtype_chart), iceType));
 
         mIceSubtypeLabels = new ArrayList<>();
-        mIceSubtypeDataSet = new PieDataSet(new ArrayList<Entry>(), "");
+        mIceSubtypeDataSet = new PieDataSet(new ArrayList<>(), "");
         mIceSubtypeDataSet.setValueFormatter(new PercentFormatter());
         mIceSubtypeDataSet.setValueTextSize(10);
 
@@ -159,7 +150,7 @@ public class DeckStatsFragment extends Fragment {
     }
 
     private BarDataSet makeBarDataSet(int nameRes, int colorRes) {
-        BarDataSet result = new BarDataSet(new ArrayList<BarEntry>(), getString(nameRes));
+        BarDataSet result = new BarDataSet(new ArrayList<>(), getString(nameRes));
         result.setColor(getResources().getColor(colorRes));
         result.setDrawValues(false);
         result.setHighLightColor(Color.WHITE);
@@ -394,7 +385,7 @@ public class DeckStatsFragment extends Fragment {
 
         public BarMarkerView(Context context) {
             super(context, R.layout.stats_marker_text);
-            mText = (TextView) findViewById(R.id.statsBarChartMarkerText);
+            mText = findViewById(R.id.statsBarChartMarkerText);
         }
 
         public void setDataSetSize(int size) {

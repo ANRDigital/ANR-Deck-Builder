@@ -3,7 +3,7 @@ package com.shuneault.netrunnerdeckbuilder.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class SettingsProvider implements ISettingsProvider {
     private Context context;
 
-    SettingsProvider(Context context) {
+    public SettingsProvider(Context context) {
         this.context = context;
     }
 
@@ -37,6 +37,12 @@ public class SettingsProvider implements ISettingsProvider {
     public String getLanguagePref() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(SettingsActivity.KEY_PREF_LANGUAGE, "en");
+    }
+
+    @Override
+    public int getDefaultFormatId() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getInt(SettingsActivity.DEFAULT_FORMAT, 0);
     }
 
 }

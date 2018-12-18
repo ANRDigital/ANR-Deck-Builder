@@ -13,11 +13,12 @@ import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
+import com.shuneault.netrunnerdeckbuilder.game.Rotation;
+import com.shuneault.netrunnerdeckbuilder.helper.DeckValidator;
 import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider;
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper;
 import com.shuneault.netrunnerdeckbuilder.helper.StringDownloader;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +29,13 @@ public class CardRepository {
     private ArrayList<Pack> mPacks = new ArrayList<>();
     private CycleList mCycles = new CycleList();
 
-    private MostWantedList mActiveMWL;
     private HashMap<String, Integer> mMWLInfluences = new HashMap<>();
     private Context mContext;
     private ISettingsProvider settingsProvider;
     private JSONDataLoader fileLoader;
     private ArrayList<MostWantedList> mMostWantedLists = new ArrayList<>();
+    private ArrayList<Format> mFormats = new ArrayList<>();
+    private ArrayList<Rotation> mRotations = new ArrayList<>();
 
     public CardRepository(Context context, ISettingsProvider settingsProvider, JSONDataLoader fileLoader) {
         mContext = context;
@@ -48,8 +50,34 @@ public class CardRepository {
             loadPacks();
             loadCards();
             loadCycles();
+            loadRotations();
+            loadFormats();
         }
         catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFormats() {
+        try {
+            ArrayList<Format> formats = fileLoader.getFormats();
+
+            mFormats.clear();
+            mFormats.addAll(formats);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadRotations() {
+        try {
+            ArrayList<Rotation> rotations = fileLoader.getRotations();
+
+            mRotations.clear();
+            mRotations.addAll(rotations);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -57,9 +85,8 @@ public class CardRepository {
     private void loadMwl() {
         // Most Wanted List
         try {
-            MWLDetails mwl = fileLoader.getMwlDetails();
+            MwlData mwl = fileLoader.getMwlDetails();
             mMostWantedLists = mwl.getMWLs();
-            mActiveMWL = mwl.getActiveMWL();
             mMWLInfluences.clear();
             mMWLInfluences = (HashMap<String, Integer>) mwl.getInfluences().clone();
         } catch (Exception e) {
@@ -127,6 +154,21 @@ public class CardRepository {
                 mPacks) {
             if (includeRotated || !getCycle(p.getCycleCode()).isRotated()) {
                 result.add(p);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Pack> getPacks(Rotation rotation) {
+        if (rotation == null)
+        {
+            return mPacks;
+        }
+        ArrayList<Pack> result = new ArrayList<>();
+        for (String cycleCode : rotation.getCycles()){
+            for (Pack p : mPacks) {
+                if (p.getCycleCode().equals(cycleCode))
+                    result.add(p);
             }
         }
         return result;
@@ -283,10 +325,6 @@ public class CardRepository {
         doDownloadCards();
     }
 
-    public MostWantedList getActiveMwl() {
-        return mActiveMWL;
-    }
-
     public CardPool getGlobalCardPool() {
         CardRepositoryPreferences prefs = getPrefs();
         return getCardPool(prefs.displayAllPacksPref ? new ArrayList<>() : prefs.globalPackFilter);
@@ -331,6 +369,69 @@ public class CardRepository {
                 return mwl;
         }
         return null;
+    }
+
+    /**
+     * Returns the requested game format, or the default format if not found
+     * @param formatId  the id of the format to get
+     * @return          the Format object with the specified id
+     */
+    public Format getFormat(int formatId) {
+        for (Format f :
+                mFormats) {
+            if (f.getId() == formatId)
+                return f;
+        }
+        return getDefaultFormat();
+    }
+
+    public Format getDefaultFormat() {
+        int formatId = settingsProvider.getDefaultFormatId();
+        for (Format f :
+                mFormats) {
+            if (f.getId() == formatId)
+                return f;
+        }
+        return mFormats.get(0); // return the first if not set, or fall over if formats didn't load.
+    }
+
+    public ArrayList<Format> getFormats() {
+        return mFormats;
+    }
+
+    public Rotation getRotation(String code) {
+        for (Rotation rotation : mRotations) {
+            if (rotation.getCode().equals(code)) {
+                return rotation;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Pack> getPacks(Format format) {
+        // is the format for a limited pack set?
+        ArrayList<Pack> result = getPacks(format.getPacks());
+        if  (result.size() == 0){
+            // no limited set so check for rotation
+            Rotation rotation = getRotation(format.getRotation());
+            if (rotation != null){
+                // load specified packs from rotation
+                ArrayList<String> cycleCodes = rotation.getCycles();
+                for (Pack p: mPacks){
+                    if (cycleCodes.contains(p.getCycleCode()))
+                    {
+                        result.add(p);
+                    }
+                }
+            }
+            else
+            {
+                result.addAll(mPacks);
+            }
+        }
+
+        // then filter the results if there's a pack filter
+        return result;
     }
 
     public static class CardRepositoryPreferences {

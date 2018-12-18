@@ -1,27 +1,28 @@
 package com.shuneault.netrunnerdeckbuilder.helper;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
 
+import com.shuneault.netrunnerdeckbuilder.MyApplication;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
+import com.shuneault.netrunnerdeckbuilder.db.IDeckRepository;
 import com.shuneault.netrunnerdeckbuilder.db.JSONDataLoader;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.Cycle;
-import com.shuneault.netrunnerdeckbuilder.game.CycleList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 
 import java.util.ArrayList;
 
+import kotlin.Lazy;
+
+import static org.koin.java.standalone.KoinJavaComponent.inject;
+
 /**
  * Created by sebast on 24/01/16.
  */
-public class AppManager extends Application {
+public class AppManager extends MyApplication {
 
     /* File management */
     public static final String EXT_CARDS_IMAGES = ".png";
@@ -38,10 +39,12 @@ public class AppManager extends Application {
     // Decks
     private ArrayList<Deck> mDecks = new ArrayList<>();
 
-    private CardRepository mCardRepo;
+    public CardRepository mCardRepo;
     public CardRepository getCardRepository() {
         return mCardRepo;
     }
+
+    private Lazy<IDeckRepository> mDeckRepo = inject(IDeckRepository.class);
 
     @Override
     public void onCreate() {
@@ -52,7 +55,8 @@ public class AppManager extends Application {
         ISettingsProvider settingsProvider = new SettingsProvider(this);
         JSONDataLoader fileLoader = new JSONDataLoader(new LocalFileHelper(this));
         mCardRepo = new CardRepository(this, settingsProvider, fileLoader);
-        mDecks.addAll(mDb.getAllDecks(true, mCardRepo.getAllCards(), mCardRepo));
+
+        mDecks.addAll(mDeckRepo.getValue().getAllDecks());
 
         // Download the card list every week
 //        try {
@@ -82,7 +86,7 @@ public class AppManager extends Application {
     }
 
     public ArrayList<Deck> getAllDecks() {
-        return mDecks;
+        return mDeckRepo.getValue().getAllDecks();
     }
 
     public ArrayList<Pack> getAllPacks() {
@@ -91,15 +95,6 @@ public class AppManager extends Application {
 
     public ArrayList<String> getSetNames() {
         return mCardRepo.getPackNames();
-    }
-
-    public void addDeck(Deck deck) {
-        mDecks.add(deck);
-    }
-
-    public boolean deleteDeck(Deck deck) {
-        mDb.deleteDeck(deck);
-        return mDecks.remove(deck);
     }
 
     // Return the requested card
@@ -111,22 +106,7 @@ public class AppManager extends Application {
     // pass in a primitive long instead of Long object due to this
     // explanation here: http://bexhuff.com/java-autoboxing-wackiness
     public Deck getDeck(long rowId) {
-        for (Deck deck : this.mDecks) {
-            if (deck.getRowId() == rowId) {
-                return deck;
-            }
-        }
-        return null;
-    }
-
-    public DeckValidator getDeckValidator() {
-        // create validator
-        return new DeckValidator(mCardRepo.getActiveMwl());
-    }
-
-    // return the default (active) mwl
-    public MostWantedList getMWL() {
-        return mCardRepo.getActiveMwl();
+        return mDeckRepo.getValue().getDeck(rowId);
     }
 
 }

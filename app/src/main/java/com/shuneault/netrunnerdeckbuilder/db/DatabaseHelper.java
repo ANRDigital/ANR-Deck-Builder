@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * SQL
      */
     // Database Version
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     // Database Name
     private static final String DATABASE_NAME = "deckBuilder.db";
@@ -45,6 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_DECKS_STARRED = "starred";
     private static final String KEY_DECKS_PACKFILTER = "pack_filter";
     private static final String PACK_FILTER_SEPARATOR = "~";
+    private static final String KEY_DECKS_FORMAT = "format";
 
     // Deck Cards
     private static final String KEY_DECK_CARDS_DECK_ID = "deck_id";
@@ -62,7 +63,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             KEY_DECKS_NAME + " TEXT NOT NULL," +
             KEY_DECKS_NOTES + " TEXT NOT NULL," +
-            KEY_DECKS_IDENTITY + " TEXT NOT NULL" +
+            KEY_DECKS_IDENTITY + " TEXT NOT NULL," +
+            KEY_DECKS_FORMAT + " INTEGER" +
             ")";
     private static final String CREATE_TABLE_DECK_CARDS = "CREATE TABLE " + TABLE_DECK_CARDS + "(" +
             KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -89,6 +91,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String ALTER_TABLE_DECK_ADD_PACKFILTER = "ALTER TABLE " + TABLE_DECKS + " " +
             "ADD " + KEY_DECKS_PACKFILTER + " TEXT NOT NULL DEFAULT('')";
+
+    private static final String ALTER_TABLE_DECK_ADD_FORMAT = "ALTER TABLE " + TABLE_DECKS + " " +
+            "ADD " + KEY_DECKS_FORMAT + " INTEGER";
 
 
     public DatabaseHelper(Context context) {
@@ -123,6 +128,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             case 4:
                 // add pack filter field for decks
                 db.execSQL(ALTER_TABLE_DECK_ADD_PACKFILTER);
+            case 5:
+                db.execSQL(ALTER_TABLE_DECK_ADD_FORMAT);
         }
     }
 
@@ -156,11 +163,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return getWritableDatabase().delete(TABLE_DECKS, null, null) > 0;
     }
 
-    public ArrayList<Deck> getAllDecks(boolean withCards, CardList allCards, CardRepository repo) {
+    public ArrayList<Deck> getAllDecks(boolean withCards, CardRepository repo) {
         ArrayList<Deck> decks = new ArrayList<>();
         // read deck list from db
         Cursor c = getReadableDatabase().query(TABLE_DECKS,
-                new String[]{KEY_ID, KEY_DECKS_NAME, KEY_DECKS_NOTES, KEY_DECKS_IDENTITY, KEY_DECKS_STARRED, KEY_DECKS_PACKFILTER},
+                new String[]{KEY_ID, KEY_DECKS_NAME, KEY_DECKS_NOTES, KEY_DECKS_IDENTITY, KEY_DECKS_STARRED,
+                        KEY_DECKS_PACKFILTER, KEY_DECKS_FORMAT},
                 null, null, null, null, null);
 
         // create decks in list
@@ -169,19 +177,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String identityCode = c.getString(c.getColumnIndex(KEY_DECKS_IDENTITY));
             Card identity = repo.getCard(identityCode);
 
-            String packFilterValue = c.getString(c.getColumnIndex(KEY_DECKS_PACKFILTER));
-            CardPool pool;
-            if (!packFilterValue.isEmpty()) {
-                ArrayList<String> pf = new ArrayList<>(Arrays.asList(packFilterValue.split(PACK_FILTER_SEPARATOR)));
-                pool = repo.getCardPool(pf);
-            }
-            else
-            {
-                pool = repo.getGlobalCardPool();
-            }
-            //todo: load format from db
-            Format format = null;
-            Deck deck = new Deck(identity, pool, format);
+            int formatId = c.getInt(c.getColumnIndex(KEY_DECKS_FORMAT));
+            Format format = repo.getFormat(formatId);
+ //           pool = repo.getCardPool(format);
+            Deck deck = new Deck(identity, format);
             if (identity.isUnknown())
             {
                 deck.setHasUnknownCards();
@@ -190,6 +189,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             deck.setNotes(c.getString(c.getColumnIndex(KEY_DECKS_NOTES)));
             deck.setRowId(c.getLong(c.getColumnIndex(KEY_ID)));
             deck.setStarred(c.getInt(c.getColumnIndex(KEY_DECKS_STARRED)) > 0);
+            String packFilterValue = c.getString(c.getColumnIndex(KEY_DECKS_PACKFILTER));
+//            CardPool pool;
+            if (!packFilterValue.isEmpty()) {
+                ArrayList<String> pf = new ArrayList<>(Arrays.asList(packFilterValue.split(PACK_FILTER_SEPARATOR)));
+                deck.setPackFilter(pf);
+            }
 
             decks.add(deck);
         }
@@ -207,7 +212,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         null, null, null, null)) {
                     while (c1.moveToNext()) {
                         String cardCode = c1.getString(c1.getColumnIndex(KEY_DECK_CARDS_CODE));
-                        Card card = allCards.getCard(cardCode);
+                        Card card = repo.getCard(cardCode);
                         if (card.isUnknown()) {
                             d.setHasUnknownCards();
                         }
@@ -218,8 +223,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
 
                 // Cards to add / remove
-                d.setCardsToAdd(getDeckCardsToAdd(deckId, allCards));
-                d.setCardsToRemove(getDeckCardsToRemove(deckId, allCards));
+                d.setCardsToAdd(getDeckCardsToAdd(deckId, repo.getAllCards()));
+                d.setCardsToRemove(getDeckCardsToRemove(deckId, repo.getAllCards()));
             }
         }
         return decks;
@@ -308,7 +313,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         val.put(KEY_DECKS_NAME, deck.getName());
         val.put(KEY_DECKS_NOTES, deck.getNotes());
         val.put(KEY_DECKS_STARRED, deck.isStarred());
-        val.put(KEY_DECKS_PACKFILTER, TextUtils.join(PACK_FILTER_SEPARATOR, deck.getCardPool().getPackFilter()));
+        val.put(KEY_DECKS_PACKFILTER, TextUtils.join(PACK_FILTER_SEPARATOR, deck.getPackFilter()));
+        val.put(KEY_DECKS_FORMAT, deck.getFormat().getId());
 
         return getWritableDatabase().update(TABLE_DECKS, val, KEY_ID + "=" + deck.getRowId(), null) > 0;
     }

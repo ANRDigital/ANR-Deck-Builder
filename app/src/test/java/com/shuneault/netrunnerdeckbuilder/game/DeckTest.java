@@ -10,7 +10,7 @@ public class DeckTest {
         Card identity = new Card();
         int expectedFormatId = 1;
         Format format = new FormatBuilder().withId(expectedFormatId).Build();
-        Deck deck = new Deck(identity, null, format);
+        Deck deck = new Deck(identity, format);
 
         Format f = deck.getFormat();
 

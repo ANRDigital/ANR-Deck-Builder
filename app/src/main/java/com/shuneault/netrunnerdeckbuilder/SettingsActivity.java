@@ -17,7 +17,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -54,6 +54,7 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_EXPORT_ALL_DECKS = "pref_ExportAllDecks";
     public static final String KEY_PREF_ABOUT = "pref_About";
     public static final String DEFAULT_CORE_DECKS = "1";
+    public static final String DEFAULT_FORMAT = "pref_Format";
 
     private String mInitialPacksToDisplay;
 

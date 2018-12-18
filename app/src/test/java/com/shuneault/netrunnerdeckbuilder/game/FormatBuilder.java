@@ -6,7 +6,7 @@ public class FormatBuilder {
     private int id;
     private String name;
     private ArrayList<String> packs = new ArrayList<>();
-    private boolean rotation;
+    private String rotation;
     private int coreCount = 3;
     private int mwlId;
 
@@ -42,8 +42,8 @@ public class FormatBuilder {
     public FormatBuilder asStandard() {
         return this.withId(2)
                 .withName("Standard")
-                .withRotation(true)
-                .withMwl(9);
+                .withRotation("rotation-2018")
+                .withMwl(10);
     }
 
     private FormatBuilder withMwl(int mwl) {
@@ -62,7 +62,7 @@ public class FormatBuilder {
     }
 
 
-    private FormatBuilder withRotation(boolean rotation) {
+    private FormatBuilder withRotation(String rotation) {
         this.rotation = rotation;
         return this;
     }

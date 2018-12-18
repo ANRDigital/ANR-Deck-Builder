@@ -1,7 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder.helper;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 
@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,6 +19,7 @@ public class LocalFileHelper {
     public static final String FILE_MWL_JSON = "mwl.json";
     public static final String FILE_CYCLES_JSON = "cycles.json";
     public static final String FILE_FORMATS_JSON = "formats.json";
+    public static final String FILE_ROTATIONS_JSON = "rotations.json";
 
     private Context context;
 
@@ -51,9 +51,16 @@ public class LocalFileHelper {
     }
 
     public JSONObject getJSONFormatsFile() throws IOException, JSONException {
-        int fallbackResource = R.raw.cycles;
+        int fallbackResource = R.raw.formats;
         // Load the file in memory and return a JSON array
         return getLocalJson(context, FILE_FORMATS_JSON, fallbackResource);
+    }
+
+
+    public JSONObject getJSONRotationsFile() throws IOException, JSONException {
+        int fallbackResource = R.raw.rotations;
+        // Load the file in memory and return a JSON array
+        return getLocalJson(context, FILE_ROTATIONS_JSON, fallbackResource);
     }
 
     @NonNull

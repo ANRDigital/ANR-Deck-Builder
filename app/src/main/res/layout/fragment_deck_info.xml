@@ -43,29 +43,55 @@
 
             <requestFocus />
         </EditText>
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/lblMwlVersion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/mwl_version"
-            android:padding="4dp"
-            android:text="MWL v2.2"
-            android:textColor="@color/text_default"
-            android:textSize="18sp" />
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/lblMwlValid"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="4dp"
-            android:text="Y"
-            android:textColor="@color/text_default"
-            android:textSize="18sp" />
-    </LinearLayout>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/lblFormat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/mwl_version"
+                    android:padding="4dp"
+                    android:text="Format:"
+                    android:textColor="@color/text_default"
+                    android:textSize="18sp" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spnFormat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:layout_column="1"
+                    android:entries="@array/arr"
+                    android:padding="0dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/lblMwlVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_marginLeft="4dp"
+                    android:hint="@string/mwl_version"
+                    android:padding="4dp"
+                    android:text="MWL v2.2"
+                    android:textColor="@color/text_default"
+                    android:textSize="16sp" />
+            </TableRow>
+
+        </TableLayout>
+
+
     </LinearLayout>
 
 </LinearLayout>

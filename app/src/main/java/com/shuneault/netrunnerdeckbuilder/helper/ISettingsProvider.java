@@ -1,6 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder.helper;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 
@@ -9,4 +9,6 @@ public interface ISettingsProvider {
     CardRepository.CardRepositoryPreferences getCardRepositoryPreferences();
 
     String getLanguagePref();
+
+    int getDefaultFormatId();
 }

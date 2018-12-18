@@ -5,14 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.DeckActivity;
 import com.shuneault.netrunnerdeckbuilder.MainActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
-import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
+import com.shuneault.netrunnerdeckbuilder.db.IDeckRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.importer.UniversalImporter;
@@ -22,10 +21,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatActivity;
+import kotlin.Lazy;
+
+import static org.koin.java.standalone.KoinJavaComponent.inject;
+
 public class ImportDecksActivity extends AppCompatActivity {
 
     private AppManager mApp;
-    private DatabaseHelper mDb;
+    private Lazy<IDeckRepository> deckRepo = inject(IDeckRepository.class);
+    Lazy<CardRepository> cardRepo = inject(CardRepository.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +38,6 @@ public class ImportDecksActivity extends AppCompatActivity {
 
         // Database and App Manager
         mApp = AppManager.getInstance();
-        mDb = mApp.getDatabase();
-        CardRepository cardRepository = mApp.getCardRepository();
 
         // Intent
         Intent intent = getIntent();
@@ -46,10 +49,9 @@ public class ImportDecksActivity extends AppCompatActivity {
         try {
             if (theFile != null) {
                 // Get all decks
-                ArrayList<Deck> decks = new UniversalImporter(theFile, cardRepository).toDecks();
+                ArrayList<Deck> decks = new UniversalImporter(theFile, cardRepo.getValue()).toDecks();
                 for (Deck deck : decks) {
-                    mApp.addDeck(deck);
-                    mDb.createDeck(deck);
+                    deckRepo.getValue().createDeck(deck);
                 }
 
                 // Inform how many decks were imported

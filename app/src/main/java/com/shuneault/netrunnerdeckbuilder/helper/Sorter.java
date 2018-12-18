@@ -106,25 +106,23 @@ public final class Sorter {
      * 3. Other faction (ordered by name)
      */
     public static final class CardSorterByFactionWithMineFirst implements Comparator<Card> {
-        private Card mIdentity;
+        private final String factionCode;
 
-        public CardSorterByFactionWithMineFirst(Card identity) {
-            mIdentity = identity;
+        public CardSorterByFactionWithMineFirst(String factionCode) {
+            this.factionCode = factionCode;
         }
 
         @Override
         public int compare(Card lhs, Card rhs) {
             // Faction is my faction
-            if (lhs.getFactionCode().equals(mIdentity.getFactionCode()) && rhs.getFactionCode().equals(mIdentity.getFactionCode())) {
+            if (lhs.getFactionCode().equals(factionCode) && rhs.getFactionCode().equals(factionCode)) {
                 return lhs.getTitle().toLowerCase().compareTo(rhs.getTitle().toLowerCase());
             } else {
-                if (lhs.getFactionCode().equals(mIdentity.getFactionCode())) {
+                if (lhs.getFactionCode().equals(factionCode)) {
                     return -1;
-                } else if (rhs.getFactionCode().equals(mIdentity.getFactionCode())) {
+                } else if (rhs.getFactionCode().equals(factionCode)) {
                     return 1;
                 } else {
-
-
                     // Faction is neutral
                     if (lhs.getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL) && rhs.getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
                         return lhs.getTitle().toLowerCase().compareTo(rhs.getTitle().toLowerCase());
@@ -134,8 +132,6 @@ public final class Sorter {
                         } else if (rhs.getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
                             return 1;
                         } else {
-
-
                             // NOT my faction and NOT neutral
                             if (lhs.getFactionCode().equals(rhs.getFactionCode())) {
                                 return lhs.getTitle().toLowerCase().compareTo(rhs.getTitle().toLowerCase());

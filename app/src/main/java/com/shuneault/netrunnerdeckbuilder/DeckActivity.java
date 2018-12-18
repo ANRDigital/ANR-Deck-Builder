@@ -9,14 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.FileProvider;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,8 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shuneault.netrunnerdeckbuilder.ViewModel.DeckActivityViewModel;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
-import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper;
 import com.shuneault.netrunnerdeckbuilder.export.JintekiNet;
 import com.shuneault.netrunnerdeckbuilder.export.OCTGN;
 import com.shuneault.netrunnerdeckbuilder.export.PlainText;
@@ -36,34 +28,40 @@ import com.shuneault.netrunnerdeckbuilder.fragments.DeckHandFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckInfoFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckMyCardsFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckStatsFragment;
-import com.shuneault.netrunnerdeckbuilder.fragments.ValidityProvider;
+import com.shuneault.netrunnerdeckbuilder.interfaces.IDeckViewModelProvider;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
-import com.shuneault.netrunnerdeckbuilder.helper.DeckValidator;
+import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
-public class DeckActivity extends AppCompatActivity implements OnDeckChangedListener, ValidityProvider, ChoosePacksDialogFragment.ChoosePacksDialogListener {
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import kotlin.Lazy;
+
+import static org.koin.java.standalone.KoinJavaComponent.inject;
+
+public class DeckActivity extends AppCompatActivity implements OnDeckChangedListener,
+        ChoosePacksDialogFragment.ChoosePacksDialogListener, IDeckViewModelProvider {
 
     // Activity Result
     public static final int REQUEST_CHANGE_IDENTITY = 2;
 
     public static final String ARGUMENT_DECK_ID = "com.shuneault.netrunnerdeckbuilder.ARGUMENT_DECK_ID";
     public static final String ARGUMENT_SELECTED_TAB = "com.shuneault.netrunnerdeckbuilder.ARGUMENT_SELECTED_TAB";
-    public static final String TAG = "DeckFragmentTag";
 
     private DeckInfoFragment fragDeckInfo;
-    private DeckBuildFragment fragDeckBuild;
-    private DeckCardsFragment fragDeckCards;
-    private DeckMyCardsFragment fragDeckMyCards;
-    private DeckStatsFragment fragDeckStats;
-    private DeckHandFragment fragDeckHand;
 
     private Deck mDeck;
     private ViewPager mViewPager;
@@ -78,16 +76,15 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     private ActionBar mActionBar;
     private int mSelectedTab = 0;
 
-    // Database
-    private DatabaseHelper mDb;
-    private boolean mValid;
+    private Lazy<DeckActivityViewModel> viewModel = inject(DeckActivityViewModel.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppManager appManager = AppManager.getInstance();
-
         // Set the theme and layout
-        mDeck = appManager.getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
+        long deckId = getIntent().getExtras().getLong(ARGUMENT_DECK_ID);
+        viewModel.getValue().setDeckId(deckId);
+        mDeck = viewModel.getValue().getDeck();
+
         try {
             setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
         } catch (Exception e) {
@@ -116,22 +113,17 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
             mActionBar.setElevation(0);
         }
 
-        // Database
-        mDb = appManager.getDatabase();
-
         // Get the params
         if (savedInstanceState != null) {
-//            mDeck = AppManager.getInstance().getDeck(savedInstanceState.getLong(ARGUMENT_DECK_ID));
             mSelectedTab = savedInstanceState.getInt(ARGUMENT_SELECTED_TAB);
             // Restore the fragments instances
-            fragDeckInfo = (DeckInfoFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckInfoFragment.class.getName());
-            fragDeckMyCards = (DeckMyCardsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckMyCardsFragment.class.getName());
-            fragDeckCards = (DeckCardsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckCardsFragment.class.getName());
-            fragDeckBuild = (DeckBuildFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckBuildFragment.class.getName());
-            fragDeckStats = (DeckStatsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckStatsFragment.class.getName());
-            fragDeckHand = (DeckHandFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckHandFragment.class.getName());
+//            fragDeckInfo = (DeckInfoFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckInfoFragment.class.getName());
+//            fragDeckMyCards = (DeckMyCardsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckMyCardsFragment.class.getName());
+//            fragDeckCards = (DeckCardsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckCardsFragment.class.getName());
+//            fragDeckBuild = (DeckBuildFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckBuildFragment.class.getName());
+//            fragDeckStats = (DeckStatsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckStatsFragment.class.getName());
+//            fragDeckHand = (DeckHandFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckHandFragment.class.getName());
         } else {
-//            mDeck = AppManager.getInstance().getDeck(getIntent().getExtras().getLong(ARGUMENT_DECK_ID));
             mSelectedTab = getIntent().getExtras().getInt(ARGUMENT_SELECTED_TAB);
         }
 
@@ -154,12 +146,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
         setPackFilterIconVisibility();
 
-        layoutFiltered.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doSetPacks();
-            }
-        });
+        layoutFiltered.setOnClickListener(v -> doChoosePacks());
 
         // Update the infobar
         updateInfoBar();
@@ -181,8 +168,9 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     }
 
     private void setPackFilterIconVisibility() {
-        CardPool cardPool = mDeck.getCardPool();
-        if (cardPool != null & cardPool.isFiltered())
+        //todo: replace this with format check (.isFilterable)
+        ArrayList<String> packFilter = mDeck.getPackFilter();
+        if (packFilter != null & !packFilter.isEmpty())
         {
             layoutFiltered.setVisibility(View.VISIBLE);
         } else {
@@ -216,29 +204,18 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         else
             lblInfoCards.setTextAppearance(this, R.style.InfoBarBad);
 
-        // check MWL restrictions
-        // this will become an IDeckValidator, format
-        DeckValidator validator = AppManager.getInstance().getDeckValidator();
-        mValid = validator.Validate(mDeck);
-        if (mValid) {
+        if (viewModel.getValue().isValid()) {
             lblInfoLegal.setTextAppearance(this, R.style.InfoBarGood);
             lblInfoLegal.setText("✓");
         } else {
             lblInfoLegal.setTextAppearance(this, R.style.InfoBarBad);
             lblInfoLegal.setText("✗");
         }
-
-        onValidation(mValid);
-    }
-
-    private void onValidation(boolean valid) {
-        if (fragDeckInfo != null)
-            fragDeckInfo.setValid(valid);
     }
 
     @Override
-    public boolean isValid() {
-        return mValid;
+    public DeckActivityViewModel getViewModel() {
+        return this.viewModel.getValue();
     }
 
     public class DeckTabsPagerAdapter extends FragmentPagerAdapter {
@@ -249,44 +226,20 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
         @Override
         public Fragment getItem(int arg0) {
-            Bundle bundle;
             switch (arg0) {
                 case 0:
                     fragDeckInfo = new DeckInfoFragment();
-                    bundle = new Bundle();
-                    bundle.putLong(ARGUMENT_DECK_ID, mDeck.getRowId());
-                    fragDeckInfo.setArguments(bundle);
                     return fragDeckInfo;
                 case 1:
-                    fragDeckMyCards = new DeckMyCardsFragment();
-                    bundle = new Bundle();
-                    bundle.putLong(ARGUMENT_DECK_ID, mDeck.getRowId());
-                    fragDeckMyCards.setArguments(bundle);
-                    return fragDeckMyCards;
+                    return new DeckMyCardsFragment();
                 case 2:
-                    fragDeckCards = new DeckCardsFragment();
-                    bundle = new Bundle();
-                    bundle.putLong(ARGUMENT_DECK_ID, mDeck.getRowId());
-                    fragDeckCards.setArguments(bundle);
-                    return fragDeckCards;
+                    return new DeckCardsFragment();
                 case 3:
-                    fragDeckBuild = new DeckBuildFragment();
-                    bundle = new Bundle();
-                    bundle.putLong(DeckBuildFragment.ARGUMENT_DECK_ID, mDeck.getRowId());
-                    fragDeckBuild.setArguments(bundle);
-                    return fragDeckBuild;
+                    return new DeckBuildFragment();
                 case 4:
-                    fragDeckStats = new DeckStatsFragment();
-                    bundle = new Bundle();
-                    bundle.putLong(ARGUMENT_DECK_ID, mDeck.getRowId());
-                    fragDeckStats.setArguments(bundle);
-                    return fragDeckStats;
+                    return new DeckStatsFragment();
                 case 5:
-                    fragDeckHand = new DeckHandFragment();
-                    bundle = new Bundle();
-                    bundle.putLong(DeckHandFragment.ARGUMENT_DECK_ID, mDeck.getRowId());
-                    fragDeckHand.setArguments(bundle);
-                    return fragDeckHand;
+                    return new DeckHandFragment();
                 default:
                     return new DeckInfoFragment();
             }
@@ -316,7 +269,6 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
             }
             return "";
         }
-
     }
 
     @Override
@@ -337,7 +289,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        AppManager.getInstance().deleteDeck(mDeck);
+                        viewModel.getValue().deleteDeck(mDeck);
                         Toast.makeText(DeckActivity.this, R.string.message_deck_deleted, Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -354,12 +306,11 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 return true;
             case R.id.mnuCloneDeck:
                 // Create a clone of the deck
-                Deck newDeck = mDeck.clone(this);
-                AppManager.getInstance().addDeck(newDeck);
+                Long newDeckId = viewModel.getValue().cloneDeck(mDeck);
                 Toast.makeText(this, R.string.toast_deck_cloned_successfuly, Toast.LENGTH_LONG).show();
                 // Start the new deck activity
                 Intent intentClone = new Intent(DeckActivity.this, DeckActivity.class);
-                intentClone.putExtra(DeckActivity.ARGUMENT_DECK_ID, newDeck.getRowId());
+                intentClone.putExtra(DeckActivity.ARGUMENT_DECK_ID, newDeckId);
                 intentClone.putExtra(DeckActivity.ARGUMENT_SELECTED_TAB, 0);
                 startActivity(intentClone);
                 // Close this activity
@@ -408,16 +359,6 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 return true;
 
             case R.id.mnuPlainText:
-                // Generate the text to send
-                //      TITLE (Card Count)
-                //      IDENTITY
-                //      -- Card Category (Card Count)
-                //      <Count> <Card>...
-                //      <Count> <Card>...
-                //      -- Card Category (Card Count)
-                //      <Count> <Card>...
-                //      <Count> <Card>...
-
                 String plainText = new PlainText(this).fromDeck(mDeck);
 
                 // Create the send intent
@@ -446,7 +387,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 return true;
 
             case R.id.mnuSetPacks:
-                doSetPacks();
+                doChoosePacks();
                 return true;
 
             default:
@@ -455,29 +396,26 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
     }
 
-    private void doSetPacks() {
+    private void doChoosePacks() {
+        //todo: make pack list reflect format packs - setFormat() ?
         // display list alert dialog
         ChoosePacksDialogFragment choosePacksDlg = new ChoosePacksDialogFragment();
-        choosePacksDlg.setPackFilter(mDeck.getCardPool().getPackFilter());
+        choosePacksDlg.setPackFilter(mDeck.getPackFilter());
         choosePacksDlg.show(getSupportFragmentManager(), "choosePacks");
     }
-
 
     @Override
     public void onChoosePacksDialogPositiveClick(DialogFragment dialog) {
         // save the new setting
         ChoosePacksDialogFragment frag = (ChoosePacksDialogFragment)dialog;
         ArrayList<String> packFilter = frag.getSelectedValues();
-        CardRepository cardRepo = AppManager.getInstance().getCardRepository();
-        if (packFilter.isEmpty())
-            mDeck.setCardPool(cardRepo.getGlobalCardPool());
-        else
-            mDeck.setCardPool(cardRepo.getCardPool(packFilter));
+        viewModel.getValue().setPackFilter(packFilter);
 
         // update filtered icon
         setPackFilterIconVisibility();
 
-        onCardPoolChanged();
+        // Update the infobar
+        updateInfoBar();
     }
 
     @Override
@@ -487,8 +425,8 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
         switch (requestCode) {
             case REQUEST_CHANGE_IDENTITY:
-                mDeck.setIdentity(AppManager.getInstance().getCard(data.getStringExtra(ChooseIdentityActivity.EXTRA_IDENTITY_CODE)));
-                mDb.updateDeck(mDeck);
+                String idCode = data.getStringExtra(ChooseIdentityActivity.EXTRA_IDENTITY_CODE);
+                viewModel.getValue().changeDeckIdentity(mDeck, idCode);
 
                 // Restart the activity
                 Intent intent = new Intent(DeckActivity.this, DeckActivity.class);
@@ -503,47 +441,33 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
     @Override
     public void onDeckCardsChanged() {
-        // Call the DeckBuildFragment update
-        if (fragDeckBuild != null)
-            fragDeckBuild.onDeckCardsChanged();
-        if (fragDeckMyCards != null)
-            fragDeckMyCards.onDeckCardsChanged();
-        if (fragDeckCards != null)
-            fragDeckCards.onDeckCardsChanged();
-        if (fragDeckStats != null)
-            fragDeckStats.onDeckCardsChanged();
-
         // Update the infobar
         updateInfoBar();
-    }
-
-    public void onCardPoolChanged() {
-        // Call the DeckBuildFragment update
-        if (fragDeckMyCards != null)
-            fragDeckMyCards.onCardPoolChanged();
-        if (fragDeckCards != null)
-            fragDeckCards.onCardPoolChanged();
-
-        // Update the infobar
-        updateInfoBar();
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (Fragment f: fragments) {
+            if (f instanceof DeckMyCardsFragment)
+                ((DeckMyCardsFragment) f).onDeckCardsChanged();
+            if(f instanceof DeckCardsFragment)
+                ((DeckCardsFragment) f).onDeckCardsChanged();
+        }
     }
 
     @Override
-    public void onDeckIdentityChanged(Card newIdentity) {
-        // Forward the event to sub fragments
-        if (fragDeckInfo != null)
-            fragDeckInfo.onDeckIdentityChanged(newIdentity);
-        if (fragDeckBuild != null)
-            fragDeckBuild.onDeckIdentityChanged(newIdentity);
-        if (fragDeckCards != null)
-            fragDeckCards.onDeckIdentityChanged(newIdentity);
+    public void onFormatChanged(Format format) {
+        DeckActivityViewModel vm = viewModel.getValue();
+        if (vm.changeDeckFormat(format)) {
+            updateInfoBar();
+            List<Fragment> fragments = getSupportFragmentManager().getFragments();
+            for (Fragment f: fragments) {
+                if (f instanceof DeckMyCardsFragment)
+                    ((DeckMyCardsFragment) f).onFormatChanged();
+                if(f instanceof DeckCardsFragment)
+                    ((DeckCardsFragment) f).onFormatChanged();
+            }
+        }
 
-        // Change the actionbar icon
-        getSupportActionBar().setIcon(newIdentity.getFactionImageRes(this));
-
-        // Update the infobar
-        updateInfoBar();
     }
+
 
     @Override
     public void onPause() {
@@ -554,17 +478,10 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         Runnable myRunnable = new Runnable() {
             @Override
             public void run() {
-                mDb.saveDeck(mDeck);
-                // Close the database connection
-                mDb.close();
+                viewModel.getValue().save();
             }
         };
         myHandler.post(myRunnable);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -572,19 +489,19 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         outState.putLong(ARGUMENT_DECK_ID, mDeck.getRowId());
         outState.putInt(ARGUMENT_SELECTED_TAB, mSelectedTab);
 
-        // Save the fragments instances
-        if (fragDeckInfo != null)
-            getSupportFragmentManager().putFragment(outState, DeckInfoFragment.class.getName(), fragDeckInfo);
-        if (fragDeckMyCards != null)
-            getSupportFragmentManager().putFragment(outState, DeckMyCardsFragment.class.getName(), fragDeckMyCards);
-        if (fragDeckCards != null)
-            getSupportFragmentManager().putFragment(outState, DeckCardsFragment.class.getName(), fragDeckCards);
-        if (fragDeckBuild != null)
-            getSupportFragmentManager().putFragment(outState, DeckBuildFragment.class.getName(), fragDeckBuild);
-        if (fragDeckStats != null)
-            getSupportFragmentManager().putFragment(outState, DeckStatsFragment.class.getName(), fragDeckStats);
-        if (fragDeckHand != null)
-            getSupportFragmentManager().putFragment(outState, DeckHandFragment.class.getName(), fragDeckHand);
+        // Save the fragments instances --  not best practise... allow fragments to be destroyed.
+//        if (fragDeckInfo != null)
+//            getSupportFragmentManager().putFragment(outState, DeckInfoFragment.class.getName(), fragDeckInfo);
+//        if (fragDeckMyCards != null)
+//            getSupportFragmentManager().putFragment(outState, DeckMyCardsFragment.class.getName(), fragDeckMyCards);
+//        if (fragDeckCards != null)
+//            getSupportFragmentManager().putFragment(outState, DeckCardsFragment.class.getName(), fragDeckCards);
+//        if (fragDeckBuild != null)
+//            getSupportFragmentManager().putFragment(outState, DeckBuildFragment.class.getName(), fragDeckBuild);
+//        if (fragDeckStats != null)
+//            getSupportFragmentManager().putFragment(outState, DeckStatsFragment.class.getName(), fragDeckStats);
+//        if (fragDeckHand != null)
+//            getSupportFragmentManager().putFragment(outState, DeckHandFragment.class.getName(), fragDeckHand);
 
         super.onSaveInstanceState(outState);
     }

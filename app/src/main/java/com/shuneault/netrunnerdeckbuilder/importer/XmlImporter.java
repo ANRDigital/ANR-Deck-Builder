@@ -58,12 +58,13 @@ class XmlImporter implements IDeckImporter {
         String identityCode = getCardCodeFromUUID(strIdentityID);
         Card identityCard = this.repo.getCard(identityCode);
         //todo: getdefaultformat
-        Format format = null;
-        Deck deck = new Deck(identityCard, repo.getGlobalCardPool(), format);
+        Format format = repo.getDefaultFormat();
+        Deck deck = new Deck(identityCard, format);
         deck.setNotes(Html.fromHtml(deckNotes).toString());
         for (int i = 0; i < nodeCards.getLength(); i++) {
             Node node = nodeCards.item(i);
-            Card card = AppManager.getInstance().getCard(getCardCodeFromUUID(node.getAttributes().getNamedItem(KEY_ID).getTextContent()));
+            String code = getCardCodeFromUUID(node.getAttributes().getNamedItem(KEY_ID).getTextContent());
+            Card card = repo.getCard(code);
             if (card != null) {
                 // TODO: Tell the user we could not import all cards OR download the cards from the Internet
                 int count = Integer.parseInt(node.getAttributes().getNamedItem(KEY_QTY).getTextContent());

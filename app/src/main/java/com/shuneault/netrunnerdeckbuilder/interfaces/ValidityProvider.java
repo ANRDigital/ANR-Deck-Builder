@@ -1,4 +1,4 @@
-package com.shuneault.netrunnerdeckbuilder.fragments;
+package com.shuneault.netrunnerdeckbuilder.interfaces;
 
 public interface ValidityProvider {
 

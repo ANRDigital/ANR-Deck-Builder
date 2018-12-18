@@ -12,7 +12,7 @@ public class Format {
     private String description;
     private String name;
     private int id;
-    private boolean rotation;
+    private String rotation = "";
     private int mwlId;
     private ArrayList<String> packs = new ArrayList<>();
     private int coreCount = 3;
@@ -29,7 +29,7 @@ public class Format {
                 this.description = formatJSON.getString("description");
             }
             if (formatJSON.has("rotation")) {
-                this.rotation = formatJSON.getBoolean("rotation");
+                this.rotation = formatJSON.getString("rotation");
             }
             if (formatJSON.has("packs")){
                 JSONArray packArray = formatJSON.getJSONArray("packs");
@@ -69,11 +69,11 @@ public class Format {
         this.id = id;
     }
 
-    public boolean getRotation() {
+    public String getRotation() {
         return rotation;
     }
 
-    public void setRotation(boolean rotation) {
+    public void setRotation(String rotation) {
         this.rotation = rotation;
     }
 
@@ -99,5 +99,10 @@ public class Format {
 
     public void setCoreCount(int coreCount) {
         this.coreCount = coreCount;
+    }
+
+    @Override
+    public String toString(){
+        return this.name;
     }
 }

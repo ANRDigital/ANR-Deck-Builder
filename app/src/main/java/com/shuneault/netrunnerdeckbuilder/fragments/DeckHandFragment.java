@@ -2,10 +2,8 @@ package com.shuneault.netrunnerdeckbuilder.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,25 +13,21 @@ import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.HandCardsListAdapter;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class DeckHandFragment extends Fragment {
+import androidx.annotation.Nullable;
+
+public class DeckHandFragment extends DeckActivityFragment {
 
     // GUI
     private ListView lstCards;
     private Button btnNewHand;
     private Button btnDraw;
 
-    // Arguments
-    public static final String ARGUMENT_DECK_ID = "com.example.netrunnerdeckbuilder.ARGUMENT_DECK_ID";
-
     // Cards
     private Card[] mCards;
-    private Deck mDeck;
     private HandCardsListAdapter mAdapter;
 
     @Override
@@ -41,8 +35,28 @@ public class DeckHandFragment extends Fragment {
                              Bundle savedInstanceState) {
         View theView = inflater.inflate(R.layout.fragment_deck_hand, container, false);
 
+        // GUI
+        lstCards = theView.findViewById(R.id.lstCards);
+        btnNewHand = theView.findViewById(R.id.btnNewHand);
+        btnDraw = theView.findViewById(R.id.btnDraw);
+
+        // List
+        mAdapter = new HandCardsListAdapter(getActivity(), new ArrayList<Card>());
+        lstCards.setAdapter(mAdapter);
+
+        // Handle the clicks
+        btnNewHand.setOnClickListener(arg0 -> doNewHand());
+        btnDraw.setOnClickListener(arg0 -> doDraw());
+        lstCards.setOnItemClickListener((adapterView, view, i, l) -> doFullscreenCard(adapterView, i));
+
+        return theView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
         // Arguments
-        mDeck = AppManager.getInstance().getDeck(getArguments().getLong(ARGUMENT_DECK_ID));
         mCards = new Card[mDeck.getDeckSize()];
         int num = 0;
         for (int i = 0; i < mDeck.getCards().size(); i++) {
@@ -52,59 +66,42 @@ public class DeckHandFragment extends Fragment {
             }
         }
 
-        // GUI
-        lstCards = (ListView) theView.findViewById(R.id.lstCards);
-        btnNewHand = (Button) theView.findViewById(R.id.btnNewHand);
-        btnDraw = (Button) theView.findViewById(R.id.btnDraw);
-
         // Disable the btnDraw if necessary
         btnDraw.setEnabled(mCards.length > 0);
+    }
 
-        // List
-        mAdapter = new HandCardsListAdapter(getActivity(), new ArrayList<Card>());
-        lstCards.setAdapter(mAdapter);
+    private void doNewHand() {
+        // Clear and generate 5 new cards (or 9 for Andromeda identity
+        int handSize = 5;
+        if (mDeck.getIdentity().getCode().equals(Card.SpecialCards.CARD_ANDROMEDA))
+            handSize = 9;
+        mAdapter.clear();
+        // Shuffle
+        shuffleArray(mCards);
+        // Display the first hand
+        for (int i = 0; i < Math.min(handSize, mCards.length); i++) {
+            mAdapter.add(mCards[i]);
+        }
+        // Disable the btnDraw if necessary
+        disableDrawOnLimit();
+    }
 
-        // Handle the clicks
-        btnNewHand.setOnClickListener(new OnClickListener() {
+    private void doDraw() {
+        // Add a new card
+        mAdapter.add(mCards[mAdapter.getCount()]);
+        // Disable the btnDraw if necessary
+        disableDrawOnLimit();
+    }
 
-            @Override
-            public void onClick(View arg0) {
-                // Clear and generate 5 new cards (or 9 for Andromeda identity
-                int handSize = 5;
-                if (mDeck.getIdentity().getCode().equals(Card.SpecialCards.CARD_ANDROMEDA))
-                    handSize = 9;
-                mAdapter.clear();
-                // Shuffle
-                shuffleArray(mCards);
-                // Display the first hand
-                for (int i = 0; i < Math.min(handSize, mCards.length); i++) {
-                    mAdapter.add(mCards[i]);
-                }
-                // Disable the btnDraw if necessary
-                btnDraw.setEnabled(mAdapter.getCount() < mCards.length);
-            }
-        });
-        btnDraw.setOnClickListener(new OnClickListener() {
+    private void disableDrawOnLimit() {
+        btnDraw.setEnabled(mAdapter.getCount() < mCards.length);
+    }
 
-            @Override
-            public void onClick(View arg0) {
-                // Add a new card
-                mAdapter.add(mCards[mAdapter.getCount()]);
-                // Disable the btnDraw if necessary
-                btnDraw.setEnabled(mAdapter.getCount() < mCards.length);
-            }
-        });
-        lstCards.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Card card = (Card) adapterView.getAdapter().getItem(i);
-                Intent intent = new Intent(getActivity(), ViewDeckFullscreenActivity.class);
-                intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARD_CODE, card.getCode());
-                startActivity(intent);
-            }
-        });
-
-        return theView;
+    private void doFullscreenCard(AdapterView<?> adapterView, int i) {
+        Card card = (Card) adapterView.getAdapter().getItem(i);
+        Intent intent = new Intent(getActivity(), ViewDeckFullscreenActivity.class);
+        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARD_CODE, card.getCode());
+        startActivity(intent);
     }
 
     // Implementing Fisher-Yates shuffle
@@ -118,5 +115,4 @@ public class DeckHandFragment extends Fragment {
             ar[i] = a;
         }
     }
-
 }

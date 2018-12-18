@@ -1,6 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder.db;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardBuilder;
@@ -8,6 +8,7 @@ import com.shuneault.netrunnerdeckbuilder.game.Cycle;
 import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
+import com.shuneault.netrunnerdeckbuilder.game.Rotation;
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper;
 
 import org.json.JSONArray;
@@ -87,18 +88,14 @@ public class JSONDataLoader {
     }
 
     @NonNull
-    public MWLDetails getMwlDetails() throws IOException, JSONException {
-        MWLDetails mwl = new MWLDetails();
+    public MwlData getMwlDetails() throws IOException, JSONException {
+        MwlData mwl = new MwlData();
 
         JSONObject mJsonMWLfile = mLocalFileHelper.getJSON_MWLFile();
         JSONArray mMWLData = mJsonMWLfile.getJSONArray("data");
         for (int i = 0; i < mMWLData.length(); i++) {
             JSONObject mwlJSON = mMWLData.getJSONObject(i);
-            MostWantedList mwl1 = new MostWantedList(mwlJSON);
-            if (mwlJSON.has("active")) {
-                mwl.setActiveMWL(mwl1);
-            }
-            mwl.allLists.add(mwl1);
+            mwl.allLists.add(new MostWantedList(mwlJSON));
         }
 
         HashMap<String, Integer> influences = mwl.getInfluences();
@@ -122,5 +119,16 @@ public class JSONDataLoader {
             formats.add(new Format(formatJSON));
         }
         return formats;
+    }
+
+    public ArrayList<Rotation> getRotations() throws IOException, JSONException {
+        ArrayList<Rotation> rotations = new ArrayList<>();
+        JSONObject jsonRotations = mLocalFileHelper.getJSONRotationsFile();
+        JSONArray rotationsData = jsonRotations.getJSONArray("data");
+        for (int i = 0; i < rotationsData.length(); i++) {
+            JSONObject rotationData = rotationsData.getJSONObject(i);
+            rotations.add(new Rotation(rotationData));
+        }
+        return rotations;
     }
 }

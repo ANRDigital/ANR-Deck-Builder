@@ -2,19 +2,35 @@
   "data":[
     {
       "id":1,
-      "name":"Core Experience",
-      "description":"Latest core set only",
-      "packs":["sc19"],
-      "core_count":1,
-      "rotation":true,
-      "mwl":0
+      "name":"Standard",
+      "description":"All packs, following rotation",
+      "rotation":"rotation-2018",
+      "mwl":10
     },
     {
       "id":2,
-      "name":"Standard",
-      "description":"All packs, following rotation",
-      "rotation":true,
+      "name":"Snapshot",
+      "description":"All packs, following rotation as at Reign & Reverie",
+      "rotation":"rotation-2017",
       "mwl":9
+    },
+    {
+      "id":3,
+      "name":"Eternal",
+      "description":"All packs, ignoring rotation",
+      "mwl":9
+    },
+    {
+      "id":4,
+      "name":"Core Experience",
+      "description":"Latest core set only",
+      "packs":["sc19"],
+      "core_count":1
+    },
+    {
+      "id":5,
+      "name":"Casual",
+      "description":"No rules"
     }
   ]
 }
