@@ -196,9 +196,11 @@ public class DeckCardsFragment extends DeckActivityFragment implements MenuItemC
         // Get the cards
         mListCards.clear();
         mListCards.putAll(activityViewModel.getGroupedCards(deck, headers));
-        CharSequence query = sv.getQuery();
-        if (query.length() > 0){
-            mDeckCardsAdapter.filterData(query.toString());
+        if (sv != null) {
+            CharSequence query = sv.getQuery();
+            if (query.length() > 0){
+                mDeckCardsAdapter.filterData(query.toString());
+            }
         }
         mDeckCardsAdapter.notifyDataSetChanged();
     }
