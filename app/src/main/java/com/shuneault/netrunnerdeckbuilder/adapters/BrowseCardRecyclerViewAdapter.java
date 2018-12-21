@@ -57,7 +57,6 @@ public class BrowseCardRecyclerViewAdapter extends RecyclerView.Adapter<BrowseCa
         private TextView lblText;
         private TextView lblIcons;
         private TextView lblInfluence;
-        private TextView lblMostWanted;
         private TextView lblSetName;
 
         private Card mItem;
@@ -70,7 +69,6 @@ public class BrowseCardRecyclerViewAdapter extends RecyclerView.Adapter<BrowseCa
             imgImage = view.findViewById(R.id.imgImage);
             lblIcons = view.findViewById(R.id.lblIcons);
             lblInfluence = view.findViewById(R.id.lblInfluence);
-            lblMostWanted = view.findViewById(R.id.lblMostWanted);
             lblSetName = view.findViewById(R.id.lblSetName);
         }
 

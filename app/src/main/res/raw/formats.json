@@ -25,7 +25,8 @@
       "name":"Core Experience",
       "description":"Latest core set only",
       "packs":["sc19"],
-      "core_count":1
+      "core_count":1,
+      "filter":false
     },
     {
       "id":5,

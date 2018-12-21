@@ -71,8 +71,6 @@ public class CardRepositoryTest {
         CardPool pool = repo.getGlobalCardPool();
 
         assertNotNull(pool);
-        ArrayList<String> packFilter = pool.getPackFilter();
-        assertTrue(packFilter.isEmpty());
         assertEquals(mCards.size(), pool.getCards().size());
     }
 
@@ -92,8 +90,6 @@ public class CardRepositoryTest {
         CardPool pool = repo.getGlobalCardPool();
 
         assertNotNull(pool);
-        ArrayList<String> packFilter = pool.getPackFilter();
-        assertFalse(packFilter.isEmpty());
         assertEquals(3, pool.getCards().size());
     }
 }

@@ -1,5 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
+import android.text.TextUtils;
+
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.HeaderListItemInterface;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
@@ -11,9 +13,12 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
+
+import static com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper.PACK_FILTER_SEPARATOR;
 
 public class Deck implements Serializable, HeaderListItemInterface {
 
@@ -46,6 +51,8 @@ public class Deck implements Serializable, HeaderListItemInterface {
     public static final String JSON_DECK_CARDS_TO_REMOVE = "cards_to_remove";
     public static final String JSON_DECK_CARDS_DONE = "is_done";
     public static final String JSON_DECK_FORMAT = "format";
+    public static final String JSON_DECK_PACK_FILTER = "pack_filter";
+    public static final String JSON_DECK_CORE_COUNT = "core_count";
 
     // Rules values
     public static final int BASE_AGENDA = 2;
@@ -54,6 +61,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
     private boolean hasUnknownCards = false;
     private Format format;
     private ArrayList<String> packFilter = new ArrayList<>();
+    private int coreCount = 0; // 0 indicates no override
 
     public Deck(Card identity, Format format) {
         this.mIdentity = identity;
@@ -415,6 +423,8 @@ public class Deck implements Serializable, HeaderListItemInterface {
             json.putOpt(JSON_DECK_STARRED, mStarred);
             json.putOpt(JSON_DECK_IDENTITY_CODE, mIdentity.getCode());
             json.putOpt(JSON_DECK_FORMAT, this.format.getId());
+            json.putOpt(JSON_DECK_PACK_FILTER, TextUtils.join(PACK_FILTER_SEPARATOR, packFilter));
+            json.putOpt(JSON_DECK_CORE_COUNT, coreCount);
 
             // Cards
             ArrayList<Card> cardList = getCards();
@@ -457,7 +467,14 @@ public class Deck implements Serializable, HeaderListItemInterface {
         String idCardCode = json.optString(JSON_DECK_IDENTITY_CODE);
         Card identityCard = repo.getCard(idCardCode);
         Format format = repo.getFormat(json.optInt(JSON_DECK_FORMAT));
+
         Deck deck = new Deck(identityCard, format);
+        String packFilterValue = json.optString(JSON_DECK_PACK_FILTER);
+        if (!packFilterValue.isEmpty()) {
+            ArrayList<String> pf = new ArrayList<>(Arrays.asList(packFilterValue.split(PACK_FILTER_SEPARATOR)));
+            deck.setPackFilter(pf);
+        }
+        deck.setCoreCount(json.optInt(JSON_DECK_CORE_COUNT, 0)); // specifying 0 to ensure meaning
         deck.mUUID = UUID.fromString(json.optString(JSON_DECK_UUID, UUID.randomUUID().toString()));
         deck.setName(json.optString(JSON_DECK_NAME));
         deck.setNotes(json.optString(JSON_DECK_NOTES));
@@ -562,5 +579,13 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public void setPackFilter(ArrayList<String> packFilter) {
         this.packFilter = packFilter;
+    }
+
+    public int getCoreCount() {
+        return coreCount;
+    }
+
+    public void setCoreCount(int coreCount) {
+        this.coreCount = coreCount;
     }
 }

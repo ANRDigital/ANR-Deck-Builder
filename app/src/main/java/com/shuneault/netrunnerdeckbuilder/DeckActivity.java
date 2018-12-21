@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.ViewModel.DeckActivityViewModel;
-import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.export.JintekiNet;
 import com.shuneault.netrunnerdeckbuilder.export.OCTGN;
 import com.shuneault.netrunnerdeckbuilder.export.PlainText;
@@ -39,6 +38,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -77,6 +77,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     private int mSelectedTab = 0;
 
     private Lazy<DeckActivityViewModel> viewModel = inject(DeckActivityViewModel.class);
+    private int mCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,14 +165,11 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                     "dark_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "color", this.
                             getPackageName())));
         }
-
     }
 
     private void setPackFilterIconVisibility() {
-        //todo: replace this with format check (.isFilterable)
-        ArrayList<String> packFilter = mDeck.getPackFilter();
-        if (packFilter != null & !packFilter.isEmpty())
-        {
+        Format format = mDeck.getFormat();
+        if (format.canFilter()) {
             layoutFiltered.setVisibility(View.VISIBLE);
         } else {
             layoutFiltered.setVisibility(View.GONE);
@@ -211,6 +209,8 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
             lblInfoLegal.setTextAppearance(this, R.style.InfoBarBad);
             lblInfoLegal.setText("✗");
         }
+
+        setPackFilterIconVisibility();
     }
 
     @Override
@@ -327,6 +327,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 // Change the identity
                 Intent intentChooseIdentity = new Intent(this, ChooseIdentityActivity.class);
                 intentChooseIdentity.putExtra(ChooseIdentityActivity.EXTRA_SIDE_CODE, mDeck.getSide());
+                intentChooseIdentity.putExtra(ChooseIdentityActivity.EXTRA_FORMAT, mDeck.getFormat().getId());
                 intentChooseIdentity.putExtra(ChooseIdentityActivity.EXTRA_INITIAL_IDENTITY_CODE, mDeck.getIdentity().getCode());
                 startActivityForResult(intentChooseIdentity, REQUEST_CHANGE_IDENTITY);
                 return true;
@@ -390,6 +391,9 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 doChoosePacks();
                 return true;
 
+            case R.id.mnuCoreCount:
+                doSetCoreCount();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -397,11 +401,31 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     }
 
     private void doChoosePacks() {
-        //todo: make pack list reflect format packs - setFormat() ?
         // display list alert dialog
         ChoosePacksDialogFragment choosePacksDlg = new ChoosePacksDialogFragment();
-        choosePacksDlg.setPackFilter(mDeck.getPackFilter());
+        choosePacksDlg.setData(mDeck.getPackFilter(), mDeck.getFormat());
         choosePacksDlg.show(getSupportFragmentManager(), "choosePacks");
+    }
+
+    private void doSetCoreCount() {
+        AtomicInteger choice = new AtomicInteger();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.set_core_count)
+            .setSingleChoiceItems(R.array.arrCoreCountPreference, mDeck.getCoreCount(),
+                    (dialog, which) -> choice.set(which))
+            .setPositiveButton(R.string.ok, (dialog, which) -> {
+                int count = choice.get();
+                viewModel.getValue().setCoreCount(count); // which is zero based array
+                doCardPoolChange();
+
+                dialog.dismiss();
+            })
+            .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                dialog.dismiss();
+            });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
@@ -411,8 +435,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         ArrayList<String> packFilter = frag.getSelectedValues();
         viewModel.getValue().setPackFilter(packFilter);
 
-        // update filtered icon
-        setPackFilterIconVisibility();
+        doCardPoolChange();
 
         // Update the infobar
         updateInfoBar();
@@ -456,16 +479,20 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     public void onFormatChanged(Format format) {
         DeckActivityViewModel vm = viewModel.getValue();
         if (vm.changeDeckFormat(format)) {
-            updateInfoBar();
-            List<Fragment> fragments = getSupportFragmentManager().getFragments();
-            for (Fragment f: fragments) {
-                if (f instanceof DeckMyCardsFragment)
-                    ((DeckMyCardsFragment) f).onFormatChanged();
-                if(f instanceof DeckCardsFragment)
-                    ((DeckCardsFragment) f).onFormatChanged();
-            }
+            doCardPoolChange();
         }
 
+    }
+
+    private void doCardPoolChange() {
+        updateInfoBar();
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (Fragment f: fragments) {
+            if (f instanceof DeckMyCardsFragment)
+                ((DeckMyCardsFragment) f).onFormatChanged();
+            if(f instanceof DeckCardsFragment)
+                ((DeckCardsFragment) f).onFormatChanged();
+        }
     }
 
 

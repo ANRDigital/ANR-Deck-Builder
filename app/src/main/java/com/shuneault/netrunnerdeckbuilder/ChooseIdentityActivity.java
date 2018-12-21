@@ -18,8 +18,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.adapters.IdentitySpinnerAdapter;
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.fragments.NewDeckChooseIdentityFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 
@@ -29,6 +31,7 @@ import java.util.Collections;
 public class ChooseIdentityActivity extends AppCompatActivity {
 
     public static final String EXTRA_SIDE_CODE = "com.example.netrunnerdeckbuilder.EXTRA_SIDE_CODE";
+    public static final String EXTRA_FORMAT = "EXTRA_FORMAT";
     public static final String EXTRA_INITIAL_IDENTITY_CODE = "com.example.netrunnerdeckbuilder.EXTRA_INITIAL_IDENTITY_CODE";
 
     public static final String EXTRA_IDENTITY_CODE = "com.example.netrunnerdeckbuilder.EXTRA_IDENTITY_CODE";
@@ -41,6 +44,7 @@ public class ChooseIdentityActivity extends AppCompatActivity {
     private Card mIdentity;
     private String mSideCode;
     private String mInitialIdentity;
+    private Format mFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +56,18 @@ public class ChooseIdentityActivity extends AppCompatActivity {
         btnOK = (Button) findViewById(R.id.btnOK);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         pagerIdentity = (ViewPager) findViewById(R.id.pagerIdentity);
+        AppManager appManager = AppManager.getInstance();
+        CardRepository repo = appManager.getCardRepository();
 
         // Arguments
-        mSideCode = getIntent().getStringExtra(EXTRA_SIDE_CODE);
-        mInitialIdentity = getIntent().getStringExtra(EXTRA_INITIAL_IDENTITY_CODE);
+        Intent intent = getIntent();
+        mSideCode = intent.getStringExtra(EXTRA_SIDE_CODE);
+        mInitialIdentity = intent.getStringExtra(EXTRA_INITIAL_IDENTITY_CODE);
+        int formatID = intent.getIntExtra(EXTRA_FORMAT, 0);
+        mFormat = formatID > 0 ? repo.getFormat(formatID) : repo.getDefaultFormat();
 
         // The identities
-        AppManager appManager = AppManager.getInstance();
-        mIdentities = appManager.getCardRepository().getGlobalCardPool().getIdentities(mSideCode);
+        mIdentities = repo.getCardPool(mFormat).getIdentities(mSideCode);
         // Quit if no identities
         if (mIdentities.size() == 0) {
             Toast.makeText(this, "No identities in packs", Toast.LENGTH_LONG).show();

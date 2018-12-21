@@ -35,6 +35,9 @@
     <item android:id="@+id/mnuSetPacks"
         app:showAsAction="never"
         android:title="@string/set_card_pool" />
+    <item android:id="@+id/mnuCoreCount"
+        app:showAsAction="never"
+        android:title="@string/set_core_count" />
     <item android:id="@+id/mnuViewFullScreen"
           app:showAsAction="never"
         android:title="@string/view_fullscreen" />

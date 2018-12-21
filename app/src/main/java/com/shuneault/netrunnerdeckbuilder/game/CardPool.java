@@ -8,24 +8,13 @@ public class CardPool {
     private static final int DEFAULT_CARD_LIMIT = 3;
     private final CardCountList mCardLimits = new CardCountList();
 
-    private ArrayList<String> packFilter = new ArrayList<>();
+    public CardPool(CardRepository repo, ArrayList<Pack> packs, int coreCount, Rotation rotation) {
 
-    public CardPool(CardRepository repo, int coreCount, ArrayList<Pack> packFilter) {
-        for (Pack p : packFilter) {
-            // store the name for later dialog use (this needs to change to code)
-            this.packFilter.add(p.getName());
-        }
-
-        populateCardCounts(repo, coreCount, packFilter, null);
+        populateCardCounts(repo, coreCount, packs, rotation);
     }
 
-    public CardPool(CardRepository repo, Format format) {
-        ArrayList<Pack> packs = repo.getPacks(format.getPacks());
-
-        populateCardCounts(repo, format.getCoreCount(), packs, repo.getRotation(format.getRotation()));
-    }
-
-    private void populateCardCounts(CardRepository repo, int coreCount, ArrayList<Pack> packs, Rotation rotation) {
+    private void populateCardCounts(CardRepository repo, int coreCount, ArrayList<Pack> packs,
+                                    Rotation rotation) {
         // loop the packFilter
         ArrayList<Pack> packsToUse = packs.isEmpty() ? repo.getPacks(rotation) : packs;
         for (Pack p : packsToUse) {
@@ -55,6 +44,8 @@ public class CardPool {
     }
 
     private void addCard(Card card, int count) {
+        //todo: replace older card with new card when duplicates are found (compare by title text)
+
         // are there existing cards in the pool?
         CardCount cc = mCardLimits.getCardCount(card);
         if(cc != null){
@@ -75,18 +66,9 @@ public class CardPool {
         return cardCount != null ? cardCount.getCount() : 0 ;
     }
 
-    public ArrayList<String> getPackFilter() {
-        return packFilter;
-    }
-
-    public boolean isFiltered() {
-        return packFilter.size() > 0;
-    }
-
     public CardList getCards() {
         CardList cards = new CardList();
-        for (CardCount cc :
-                mCardLimits) {
+        for (CardCount cc : mCardLimits) {
             cards.add(cc.getCard());
         }
         return cards;

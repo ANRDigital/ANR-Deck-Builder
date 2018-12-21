@@ -95,11 +95,10 @@ public class CardRepositoryFormatTest {
         CardRepository repo = new CardRepository(null, settingsProvider, mLoaderMock);
 
         Format format = new FormatBuilder().asCoreExperience().Build();
-        CardPool pool = repo.getCardPool(format);
+        CardPool pool = repo.getCardPool(format, new ArrayList<>(), 0);
 
         assertNotNull(pool);
-        ArrayList<String> packFilter = pool.getPackFilter();
-        assertTrue(packFilter.isEmpty());
+
         assertEquals(3, pool.getCards().size());
         assertEquals(2, pool.getMaxCardCount(pool.getCards().get(0)));
     }
@@ -120,11 +119,9 @@ public class CardRepositoryFormatTest {
         CardRepository repo = new CardRepository(null, settingsProvider, mLoaderMock);
 
         Format format = new FormatBuilder().asStandard().Build();
-        CardPool pool = repo.getCardPool(format);
+        CardPool pool = repo.getCardPool(format, new ArrayList<>(), 0);
 
         assertNotNull(pool);
-        ArrayList<String> packFilter = pool.getPackFilter();
-        assertTrue(packFilter.isEmpty());
         assertEquals(6, pool.getCards().size());
         Card card = pool.getCards().get(0);
         assertEquals("123", card.getCode());

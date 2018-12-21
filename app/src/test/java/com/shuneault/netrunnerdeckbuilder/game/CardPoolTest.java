@@ -30,7 +30,8 @@ public class CardPoolTest {
 
         Format format = new FormatBuilder().asStandard().Build();
 
-        CardPool pool = new CardPool(repoMock, format);
+        ArrayList<Pack> packFilter = new ArrayList<>();
+        CardPool pool = new CardPool(repoMock, packFilter, 3, null);
 
         Assert.assertNotNull(pool);
 

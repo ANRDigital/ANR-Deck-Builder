@@ -9,6 +9,8 @@ import java.util.BitSet;
 import java.util.HashMap;
 
 public class Format {
+    public static final int FORMAT_STANDARD = 1;
+    public static final int FORMAT_ETERNAL = 3;
     private String description;
     private String name;
     private int id;
@@ -16,6 +18,7 @@ public class Format {
     private int mwlId;
     private ArrayList<String> packs = new ArrayList<>();
     private int coreCount = 3;
+    private boolean canFilter = true;
 
     public Format(JSONObject formatJSON) {
         try{
@@ -43,6 +46,9 @@ public class Format {
             }
             if (formatJSON.has("mwl")) {
                 this.mwlId = formatJSON.getInt("mwl");
+            }
+            if (formatJSON.has("filter")) {
+                this.canFilter = formatJSON.getBoolean("filter");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -104,5 +110,9 @@ public class Format {
     @Override
     public String toString(){
         return this.name;
+    }
+
+    public boolean canFilter() {
+        return this.canFilter;
     }
 }

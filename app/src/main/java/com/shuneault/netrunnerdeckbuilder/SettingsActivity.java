@@ -43,9 +43,9 @@ import static com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper.FILE_CAR
 public class SettingsActivity extends PreferenceActivity
         implements OnSharedPreferenceChangeListener {
 
-    public static final String KEY_PREF_DISPLAY_ALL_DATA_PACKS = "pref_DataPacksShowAll";
-    public static final String KEY_PREF_DATA_PACKS_TO_DISPLAY = "pref_DataPacks";
-    public static final String KEY_PREF_AMOUNT_OF_CORE_DECKS = "pref_AmountOfCoreDecks";
+//    public static final String KEY_PREF_DISPLAY_ALL_DATA_PACKS = "pref_DataPacksShowAll";
+//    public static final String KEY_PREF_DATA_PACKS_TO_DISPLAY = "pref_DataPacks";
+//    public static final String KEY_PREF_AMOUNT_OF_CORE_DECKS = "pref_AmountOfCoreDecks";
     public static final String KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS = "pref_ShowSetNames";
     public static final String KEY_PREF_CLEAR_CACHE = "pref_ClearCache";
     public static final String KEY_PREF_DOWNLOAD_ALL_IMAGES = "pref_DownloadAllImages";
@@ -53,14 +53,14 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_USE_MOST_WANTED_LIST = "pref_MostWantedList";
     public static final String KEY_PREF_EXPORT_ALL_DECKS = "pref_ExportAllDecks";
     public static final String KEY_PREF_ABOUT = "pref_About";
+    public static final String KEY_PREF_DEFAULT_FORMAT = "pref_Format";
     public static final String DEFAULT_CORE_DECKS = "1";
-    public static final String DEFAULT_FORMAT = "pref_Format";
 
     private String mInitialPacksToDisplay;
 
     // Preferences
-    Preference prefDataPacks;
-    Preference prefAmountOfCoreDecks;
+//    Preference prefDataPacks;
+//    Preference prefAmountOfCoreDecks;
     Preference prefClearCache;
     Preference prefDownloadAllImages;
     Preference prefLanguage;
@@ -73,7 +73,7 @@ public class SettingsActivity extends PreferenceActivity
         addPreferencesFromResource(R.xml.preferences);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
-        prefAmountOfCoreDecks = findPreference(KEY_PREF_AMOUNT_OF_CORE_DECKS);
+//        prefAmountOfCoreDecks = findPreference(KEY_PREF_AMOUNT_OF_CORE_DECKS);
         prefLanguage = findPreference(KEY_PREF_LANGUAGE);
         prefAbout = findPreference(KEY_PREF_ABOUT);
         prefAbout.setOnPreferenceClickListener(preference -> {
@@ -81,18 +81,18 @@ public class SettingsActivity extends PreferenceActivity
             return false;
         });
 
-        prefDataPacks = findPreference(KEY_PREF_DATA_PACKS_TO_DISPLAY);
-        prefDataPacks.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (newValue.toString().isEmpty()) {
-                    Toast.makeText(SettingsActivity.this, R.string.toast_require_one_datapack, Toast.LENGTH_LONG).show();
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        });
+//        prefDataPacks = findPreference(KEY_PREF_DATA_PACKS_TO_DISPLAY);
+//        prefDataPacks.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+//            @Override
+//            public boolean onPreferenceChange(Preference preference, Object newValue) {
+//                if (newValue.toString().isEmpty()) {
+//                    Toast.makeText(SettingsActivity.this, R.string.toast_require_one_datapack, Toast.LENGTH_LONG).show();
+//                    return false;
+//                } else {
+//                    return true;
+//                }
+//            }
+//        });
         prefClearCache = findPreference(KEY_PREF_CLEAR_CACHE);
         prefClearCache.setOnPreferenceClickListener(preference -> {
             doClearCache();
@@ -110,7 +110,7 @@ public class SettingsActivity extends PreferenceActivity
         });
 
         // Initial preferences
-        mInitialPacksToDisplay = PreferenceManager.getDefaultSharedPreferences(this).getString(KEY_PREF_DATA_PACKS_TO_DISPLAY, "");
+//        mInitialPacksToDisplay = PreferenceManager.getDefaultSharedPreferences(this).getString(KEY_PREF_DATA_PACKS_TO_DISPLAY, "");
 
         // Display the summary for data packs to display
         refreshPrefsSummaries();
@@ -206,19 +206,19 @@ public class SettingsActivity extends PreferenceActivity
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
         switch (key) {
-            case KEY_PREF_DATA_PACKS_TO_DISPLAY:
-                // If zero is selected, cancel commit
-                if (SetNamesPreferenceMultiSelect.parseStoredValue(sharedPreferences.getString(key, "")) == null) {
-                    sharedPreferences.edit().putString(key, mInitialPacksToDisplay).apply();
-                }
-                // change the summary to display the datapacks to use
-                mInitialPacksToDisplay = sharedPreferences.getString(key, "");
-                refreshPrefsSummaries();
-                break;
-            case KEY_PREF_DISPLAY_ALL_DATA_PACKS:
-            case KEY_PREF_AMOUNT_OF_CORE_DECKS:
-                refreshPrefsSummaries();
-                break;
+//            case KEY_PREF_DATA_PACKS_TO_DISPLAY:
+//                // If zero is selected, cancel commit
+//                if (SetNamesPreferenceMultiSelect.parseStoredValue(sharedPreferences.getString(key, "")) == null) {
+//                    sharedPreferences.edit().putString(key, mInitialPacksToDisplay).apply();
+//                }
+//                // change the summary to display the datapacks to use
+//                mInitialPacksToDisplay = sharedPreferences.getString(key, "");
+//                refreshPrefsSummaries();
+//                break;
+//            case KEY_PREF_DISPLAY_ALL_DATA_PACKS:
+//            case KEY_PREF_AMOUNT_OF_CORE_DECKS:
+//                refreshPrefsSummaries();
+//                break;
             case KEY_PREF_LANGUAGE:
                 doLanguageChange();
                 break;
@@ -276,16 +276,16 @@ public class SettingsActivity extends PreferenceActivity
     }
 
     private void refreshPrefsSummaries() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Packs
-        String packs[] = SetNamesPreferenceMultiSelect.parseStoredValue(sharedPreferences.getString(KEY_PREF_DATA_PACKS_TO_DISPLAY, ""));
-        if (packs != null) {
-            prefDataPacks.setSummary(TextUtils.join(", ", packs));
-        }
-
-        // Amount of core decks
-        prefAmountOfCoreDecks.setSummary(sharedPreferences.getString(KEY_PREF_AMOUNT_OF_CORE_DECKS, DEFAULT_CORE_DECKS));
+//        String packs[] = SetNamesPreferenceMultiSelect.parseStoredValue(sharedPreferences.getString(KEY_PREF_DATA_PACKS_TO_DISPLAY, ""));
+//        if (packs != null) {
+//            prefDataPacks.setSummary(TextUtils.join(", ", packs));
+//        }
+//
+//        // Amount of core decks
+//        prefAmountOfCoreDecks.setSummary(sharedPreferences.getString(KEY_PREF_AMOUNT_OF_CORE_DECKS, DEFAULT_CORE_DECKS));
     }
 
     @Override

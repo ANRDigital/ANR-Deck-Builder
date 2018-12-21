@@ -98,6 +98,7 @@ public class CardBuilder {
         return this;
     }
 
+    // only for test
     public Card Build() {
         Card c = new Card();
         c.setCode(code);

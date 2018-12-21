@@ -1,13 +1,11 @@
 package com.shuneault.netrunnerdeckbuilder.helper;
 
-import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardMWL;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class DeckValidator {

@@ -14,13 +14,14 @@ import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.game.Rotation;
-import com.shuneault.netrunnerdeckbuilder.helper.DeckValidator;
 import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider;
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper;
 import com.shuneault.netrunnerdeckbuilder.helper.StringDownloader;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class CardRepository {
@@ -274,36 +275,25 @@ public class CardRepository {
 
     }
 
-    public CardList getCardsFromDataPacksToDisplay(ArrayList<String> packFilter) {
-        ArrayList<Pack> packList;
-        // deck pack filter?
-        if (packFilter.size() > 0) {
-            packList = getPacksFromFilter(packFilter);
-            return mCards.getPackCards(packList);
-        } else {
-            // Return all cards if set in the preferences
-            CardRepositoryPreferences prefs = getPrefs();
-            if (prefs.displayAllPacksPref) {
-                return (CardList) mCards.clone();
-            }
-
-            // use global filter
-            packList = getPacksFromFilter(prefs.globalPackFilter);
-
-            return mCards.getPackCards(packList);
-        }
-    }
-
     private CardRepositoryPreferences getPrefs() {
         return settingsProvider.getCardRepositoryPreferences();
 
     }
 
-    private ArrayList<Pack> getPacksFromFilter(ArrayList<String> packFilter) {
+    public ArrayList<Pack> getPacksFromCodes(ArrayList<String> codes) {
         ArrayList<Pack> result = new ArrayList<>();
-        for (Pack pack :
-                mPacks) {
-            if (packFilter.contains(pack.getName())){
+        for (Pack pack : mPacks) {
+            if (codes.contains(pack.getCode())){
+                result.add(pack);
+            }
+        }
+        return result;
+    }
+
+    private ArrayList<Pack> getPacksFromNames(ArrayList<String> names) {
+        ArrayList<Pack> result = new ArrayList<>();
+        for (Pack pack : mPacks) {
+            if (names.contains(pack.getName())){
                 result.add(pack);
             }
         }
@@ -314,10 +304,11 @@ public class CardRepository {
         return mCards.getCard(code);
     }
 
-    public CardList getPackCards(String setName) {
-        ArrayList<String> packNames = new ArrayList<>();
-        packNames.add(setName);
-        return mCards.getPackCards(getPacksFromFilter(packNames));
+    public CardList getPackCards(String code) {
+        Pack pack = getPack(code);
+        ArrayList<Pack> packs = new ArrayList<>();
+        packs.add(pack);
+        return mCards.getPackCards(packs);
     }
 
     public void refreshCards() {
@@ -325,18 +316,36 @@ public class CardRepository {
         doDownloadCards();
     }
 
+    // this called by browse cards
     public CardPool getGlobalCardPool() {
         CardRepositoryPreferences prefs = getPrefs();
-        return getCardPool(prefs.displayAllPacksPref ? new ArrayList<>() : prefs.globalPackFilter);
+        ArrayList<String> packFilter = prefs.displayAllPacksPref ? new ArrayList<>() : prefs.globalPackFilter;
+        return getGlobalCardPool(packFilter);
     }
 
-    public CardPool getCardPool(ArrayList<String> packFilter) {
-        ArrayList<Pack> packs = getPacksFromFilter(packFilter);
-        return new CardPool(this, getPrefs().coreCount, packs);
+
+    // this called by browse cards
+    public CardPool getGlobalCardPool(ArrayList<String> packFilter) {
+        ArrayList<Pack> packs = getPacksFromCodes(packFilter);
+        int coreCount = getPrefs().coreCount;
+        Rotation rotation = null;
+        return new CardPool(this, packs, coreCount, rotation);
     }
 
-    public CardPool getCardPool(Format format) {
-        return new CardPool(this, format);
+    // this called by non-deck sources (identity)
+    public CardPool getCardPool(Format format){
+        return getCardPool(format, null, 0); // no deck / filter overrides
+    }
+
+    // this called by all deck sources
+    public CardPool getCardPool(Format format, ArrayList<String> packFilter, int deckCoreCount) {
+        ArrayList<Pack> packs = getPacks(format, packFilter);
+        Rotation rotation = this.getRotation(format.getRotation());
+        int coreCount = format.getCoreCount();
+        if (deckCoreCount > 0) {
+            coreCount = deckCoreCount;
+        }
+        return new CardPool(this, packs, coreCount, rotation);
     }
 
     public boolean hasCards() {
@@ -353,8 +362,7 @@ public class CardRepository {
 
     public CardList getPackCards(Pack p) {
         CardList cards = new CardList();
-        for (Card card :
-                mCards) {
+        for (Card card : mCards) {
             if (card.getSetCode().equals(p.getCode())){
                 cards.add(card);
             }
@@ -408,7 +416,7 @@ public class CardRepository {
         return null;
     }
 
-    public ArrayList<Pack> getPacks(Format format) {
+    public ArrayList<Pack> getPacks(Format format, ArrayList<String> packFilter) {
         // is the format for a limited pack set?
         ArrayList<Pack> result = getPacks(format.getPacks());
         if  (result.size() == 0){
@@ -431,7 +439,22 @@ public class CardRepository {
         }
 
         // then filter the results if there's a pack filter
+        if (format.canFilter() && packFilter != null && packFilter.size() > 0) {
+            Iterator<Pack> iter = result.iterator();
+
+            while (iter.hasNext()) {
+                Pack p = iter.next();
+
+                if (!packFilter.contains(p.getCode()))
+                    iter.remove();
+            }
+        }
+
         return result;
+    }
+
+    public ArrayList<Pack> getPacks(Format format) {
+        return getPacks(format, new ArrayList<>());
     }
 
     public static class CardRepositoryPreferences {

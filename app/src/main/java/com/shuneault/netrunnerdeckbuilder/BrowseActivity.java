@@ -8,18 +8,25 @@ import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import kotlin.Lazy;
+
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.fragments.BrowseCardsFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.ChoosePacksDialogFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 
 import java.util.ArrayList;
 
+import static com.shuneault.netrunnerdeckbuilder.game.Format.FORMAT_ETERNAL;
+import static org.koin.java.standalone.KoinJavaComponent.inject;
+
 public class BrowseActivity extends AppCompatActivity implements BrowseCardsFragment.OnBrowseCardsClickListener,ChoosePacksDialogFragment.ChoosePacksDialogListener {
 
     private ArrayList<String> mPackFilter = new ArrayList<>();
+    private Lazy<CardRepository> repo = inject(CardRepository.class);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +52,6 @@ public class BrowseActivity extends AppCompatActivity implements BrowseCardsFrag
 
                     @Override
                     public boolean onQueryTextSubmit(String s) {
-                        //todo: update search results
                         return false;
                     }
 
@@ -63,7 +69,7 @@ public class BrowseActivity extends AppCompatActivity implements BrowseCardsFrag
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 ChoosePacksDialogFragment choosePacksDlg = new ChoosePacksDialogFragment();
-                choosePacksDlg.setPackFilter(mPackFilter);
+                choosePacksDlg.setData(mPackFilter, repo.getValue().getFormat(FORMAT_ETERNAL));
                 choosePacksDlg.show(getSupportFragmentManager(), "choosePacks");
                 return false;
             }

@@ -4,8 +4,11 @@ import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.db.IDeckRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
+import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Format;
+import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
+import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.DeckValidator;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 
@@ -20,6 +23,7 @@ public class DeckActivityViewModel extends ViewModel {
     private IDeckRepository mDeckRepo;
     private CardRepository mCardRepo;
     private boolean valid;
+    private CardPool mCardPool;
 
     public DeckActivityViewModel(IDeckRepository mDeckRepo, CardRepository mCardRepo) {
         this.mDeckRepo = mDeckRepo;
@@ -34,7 +38,9 @@ public class DeckActivityViewModel extends ViewModel {
 
     private void reloadDeck(long deckId) {
         mDeck = mDeckRepo.getDeck(deckId);
-        validateDeck(mDeck.getFormat());
+        refreshCardPool();
+
+        validateDeck();
     }
 
     public Deck getDeck() {
@@ -59,16 +65,25 @@ public class DeckActivityViewModel extends ViewModel {
         if(!format.getName().equals(mDeck.getFormat().getName()))
         {
             mDeckRepo.setDeckFormat(mDeck, format);
-            validateDeck(format);
+            mDeck.getPackFilter().clear();
+            refreshCardPool();
+            validateDeck();
             return true; // format was changed
         }
         return false; // format was not changed
     }
 
-    private void validateDeck(Format format) {
-        int mwlId = format.getMwlId();
-        DeckValidator validator = new DeckValidator(mCardRepo.getMostWantedList(mwlId));
-        this.valid = validator.validate(mDeck, mCardRepo.getPacks(format));
+    private void refreshCardPool() {
+        mCardPool = mCardRepo.getCardPool(mDeck.getFormat(), mDeck.getPackFilter(), mDeck.getCoreCount());
+    }
+
+    public void validateDeck() {
+        Format format = mDeck.getFormat();
+        MostWantedList mostWantedList = mCardRepo.getMostWantedList(format.getMwlId());
+        ArrayList<Pack> packs = mCardRepo.getPacks(format, mDeck.getPackFilter());
+
+        DeckValidator validator = new DeckValidator(mostWantedList);
+        this.valid = validator.validate(mDeck, packs);
     }
 
     public boolean isValid() {
@@ -85,7 +100,20 @@ public class DeckActivityViewModel extends ViewModel {
 
     public void setPackFilter(ArrayList<String> packFilter) {
         mDeck.setPackFilter(packFilter);
-        //todo: trigger save here
+        mDeckRepo.updateDeck(mDeck);
+
+        refreshCardPool();
+
+        validateDeck();
+    }
+
+    public void setCoreCount(int count) {
+        mDeck.setCoreCount(count);
+        mDeckRepo.updateDeck(mDeck);
+
+        refreshCardPool();
+
+        validateDeck();
     }
 
     public ArrayList<String> getCardHeaders() {
@@ -98,11 +126,11 @@ public class DeckActivityViewModel extends ViewModel {
 
     public HashMap<String, ArrayList<Card>> getGroupedCards(Deck deck, ArrayList<String> headers) {
         HashMap<String, ArrayList<Card>> mListCards = new HashMap<>();
-        String sideCode = mDeck.getIdentity().getSideCode();;
+        String sideCode = deck.getIdentity().getSideCode();;
 
         boolean hideNonVirtualApex = true;//PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("pref_HideNonVirtualApex", true);
 
-        CardList cardCollection = mCardRepo.getCardPool(deck.getFormat()).getCards();
+        CardList cardCollection = mCardPool.getCards();
         cardCollection.addExtras(deck.getCards());
         for (Card theCard : cardCollection) {
             // Only add the cards that are on my side
@@ -176,7 +204,7 @@ public class DeckActivityViewModel extends ViewModel {
     }
 
     public void addCard(Card card) {
-        int max = mCardRepo.getCardPool(mDeck.getFormat()).getMaxCardCount(card);
+        int max = mCardPool.getMaxCardCount(card);
         mDeck.AddCard(card, max);
     }
 

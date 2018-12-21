@@ -23,4 +23,6 @@ public interface IDeckRepository {
     void setDeckFormat(Deck mDeck, Format format);
 
     void saveDeck(Deck deck);
+
+    void updateDeck(Deck deck);
 }

@@ -62,7 +62,7 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
             BrowseCardsViewModel vm = viewModel.getValue();
             vm.init();
 
-            mAdapter = new BrowseCardRecyclerViewAdapter(vm.getCards(), mClickListener, cardRepo.getValue());
+            mAdapter = new BrowseCardRecyclerViewAdapter(vm.getCardList(), mClickListener, cardRepo.getValue());
             recyclerView.setAdapter(mAdapter);
         }
         return view;

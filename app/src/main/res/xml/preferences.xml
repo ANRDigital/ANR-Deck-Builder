@@ -12,28 +12,6 @@
             android:defaultValue="en" />
 
         <CheckBoxPreference
-            android:key="pref_DataPacksShowAll"
-            android:disableDependentsState="true"
-            android:defaultValue="true"
-            android:title="@string/display_all_data_packs" />
-
-        <com.shuneault.netrunnerdeckbuilder.prefs.SetNamesPreferenceMultiSelect
-	        android:key="pref_DataPacks"
-	        android:dependency="pref_DataPacksShowAll"
-	        android:title="@string/data_packs_to_display"
-	        android:defaultValue="Core Set"
-	        android:entries="@array/arr"
-	        android:entryValues="@array/arr" />
-
-        <ListPreference
-            android:key="pref_AmountOfCoreDecks"
-            android:title="@string/amount_of_core_decks"
-            android:dependency="pref_DataPacksShowAll"
-            android:entryValues="@array/arrAmountOfCoreDecks"
-            android:defaultValue="3"
-            android:entries="@array/arrAmountOfCoreDecks"/>
-
-        <CheckBoxPreference
             android:key="pref_HideNonVirtualApex"
             android:defaultValue="true"
             android:title="@string/hide_non_virtual_apex" />

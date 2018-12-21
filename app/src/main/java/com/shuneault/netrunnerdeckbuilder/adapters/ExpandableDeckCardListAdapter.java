@@ -63,7 +63,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
         this.mArrDataChildOriginal = (HashMap<String, ArrayList<Card>>) listChildData.clone();
         this.mDeck = deck;
         this.mFormat = deck.getFormat();
-        this.pool = repo.getCardPool(mFormat);
+        this.pool = repo.getCardPool(mFormat, deck.getPackFilter(), deck.getCoreCount());
         this.mMostWantedList = repo.getMostWantedList(mFormat.getMwlId());
         this.mListener = listener;
         this.mMyCards = myCardsMode;

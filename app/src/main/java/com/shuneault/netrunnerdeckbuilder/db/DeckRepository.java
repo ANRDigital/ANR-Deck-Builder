@@ -85,4 +85,9 @@ public class DeckRepository implements IDeckRepository {
     public void saveDeck(Deck deck) {
         dbHelper.saveDeck(deck);
     }
+
+    @Override
+    public void updateDeck(Deck deck) {
+        dbHelper.updateDeck(deck);
+    }
 }

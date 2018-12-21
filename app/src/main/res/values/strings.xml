@@ -140,6 +140,12 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string-array name="arrCoreCountPreference">
+        <item>Default</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
     <string-array name="arrCardsLanguage">
         <item>English</item>
         <item>French</item>
@@ -206,5 +212,6 @@
     <string name="action_search">Search</string>
     <string name="action_filter">Filter</string>
     <string name="mwl_version">MWL Version</string>
+    <string name="set_core_count">Set core count</string>
 
 </resources>

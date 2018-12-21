@@ -3,6 +3,7 @@ package com.shuneault.netrunnerdeckbuilder.ViewModel;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.CardPool;
+import com.shuneault.netrunnerdeckbuilder.game.Pack;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class BrowseCardsViewModel extends ViewModel {
 
     }
 
-    public CardList getCards() {
+    public CardList getCardList() {
         return mCards;
     }
 
@@ -33,9 +34,6 @@ public class BrowseCardsViewModel extends ViewModel {
     }
 
     public void updatePackFilter(ArrayList<String> packFilter) {
-        if (packFilter.isEmpty())
-            mPool = cardRepo.getGlobalCardPool();
-        else
-            mPool = cardRepo.getCardPool(packFilter);
+        mPool = cardRepo.getGlobalCardPool(packFilter);
     }
 }

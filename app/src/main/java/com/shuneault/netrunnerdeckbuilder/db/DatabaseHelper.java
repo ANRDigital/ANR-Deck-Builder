@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * SQL
      */
     // Database Version
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
     // Database Name
     private static final String DATABASE_NAME = "deckBuilder.db";
@@ -44,8 +44,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_DECKS_IDENTITY = "identity_code";
     private static final String KEY_DECKS_STARRED = "starred";
     private static final String KEY_DECKS_PACKFILTER = "pack_filter";
-    private static final String PACK_FILTER_SEPARATOR = "~";
+    public static final String PACK_FILTER_SEPARATOR = "~";
     private static final String KEY_DECKS_FORMAT = "format";
+    private static final String KEY_DECKS_CORE_COUNT = "core_count";
 
     // Deck Cards
     private static final String KEY_DECK_CARDS_DECK_ID = "deck_id";
@@ -64,7 +65,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_DECKS_NAME + " TEXT NOT NULL," +
             KEY_DECKS_NOTES + " TEXT NOT NULL," +
             KEY_DECKS_IDENTITY + " TEXT NOT NULL," +
-            KEY_DECKS_FORMAT + " INTEGER" +
+            KEY_DECKS_FORMAT + " INTEGER," +
+            KEY_DECKS_CORE_COUNT + " INTEGER" +
             ")";
     private static final String CREATE_TABLE_DECK_CARDS = "CREATE TABLE " + TABLE_DECK_CARDS + "(" +
             KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -94,6 +96,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String ALTER_TABLE_DECK_ADD_FORMAT = "ALTER TABLE " + TABLE_DECKS + " " +
             "ADD " + KEY_DECKS_FORMAT + " INTEGER";
+
+
+    private static final String ALTER_TABLE_DECK_ADD_CORE_COUNT = "ALTER TABLE " + TABLE_DECKS + " " +
+            "ADD " + KEY_DECKS_CORE_COUNT + " INTEGER";
 
 
     public DatabaseHelper(Context context) {
@@ -130,6 +136,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.execSQL(ALTER_TABLE_DECK_ADD_PACKFILTER);
             case 5:
                 db.execSQL(ALTER_TABLE_DECK_ADD_FORMAT);
+            case 6:
+                db.execSQL(ALTER_TABLE_DECK_ADD_CORE_COUNT);
         }
     }
 
@@ -168,7 +176,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // read deck list from db
         Cursor c = getReadableDatabase().query(TABLE_DECKS,
                 new String[]{KEY_ID, KEY_DECKS_NAME, KEY_DECKS_NOTES, KEY_DECKS_IDENTITY, KEY_DECKS_STARRED,
-                        KEY_DECKS_PACKFILTER, KEY_DECKS_FORMAT},
+                        KEY_DECKS_PACKFILTER, KEY_DECKS_FORMAT, KEY_DECKS_CORE_COUNT},
                 null, null, null, null, null);
 
         // create decks in list
@@ -195,6 +203,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ArrayList<String> pf = new ArrayList<>(Arrays.asList(packFilterValue.split(PACK_FILTER_SEPARATOR)));
                 deck.setPackFilter(pf);
             }
+            deck.setCoreCount(c.getInt(c.getColumnIndex(KEY_DECKS_CORE_COUNT)));
 
             decks.add(deck);
         }
@@ -315,6 +324,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         val.put(KEY_DECKS_STARRED, deck.isStarred());
         val.put(KEY_DECKS_PACKFILTER, TextUtils.join(PACK_FILTER_SEPARATOR, deck.getPackFilter()));
         val.put(KEY_DECKS_FORMAT, deck.getFormat().getId());
+        val.put(KEY_DECKS_CORE_COUNT, deck.getCoreCount());
 
         return getWritableDatabase().update(TABLE_DECKS, val, KEY_ID + "=" + deck.getRowId(), null) > 0;
     }
