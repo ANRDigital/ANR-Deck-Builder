@@ -64,9 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             KEY_DECKS_NAME + " TEXT NOT NULL," +
             KEY_DECKS_NOTES + " TEXT NOT NULL," +
-            KEY_DECKS_IDENTITY + " TEXT NOT NULL," +
-            KEY_DECKS_FORMAT + " INTEGER," +
-            KEY_DECKS_CORE_COUNT + " INTEGER" +
+            KEY_DECKS_IDENTITY + " TEXT NOT NULL" +
             ")";
     private static final String CREATE_TABLE_DECK_CARDS = "CREATE TABLE " + TABLE_DECK_CARDS + "(" +
             KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
