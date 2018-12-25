@@ -109,7 +109,6 @@ public class DeckMyCardsFragment extends DeckActivityFragment {
         // Adapters
         CardRepository cardRepo = AppManager.getInstance().getCardRepository();
         mDeckCardsAdapter = new ExpandableDeckCardListAdapter(cardRepo, getActivity(), mHeaders, mListCards, this.mDeck, new OnButtonClickListener() {
-
             @Override
             public void onPlusClick(Card card) {
                 activityViewModel.addCard(card);
@@ -120,14 +119,13 @@ public class DeckMyCardsFragment extends DeckActivityFragment {
             @Override
             public void onMinusClick(Card card) {
                 activityViewModel.reduceCard(card);
-                mDeckCardsAdapter.notifyDataSetChanged();
 
                 // Remove zero cards
                 if (DeckMyCardsFragment.this.mDeck.getCardCount(card) <= 0) {
                     mListCards.get(card.getTypeCode()).remove(card);
-                    // Update the list
-                    mListener.onDeckCardsChanged();
                 }
+                // Update the list
+                mListener.onDeckCardsChanged();
             }
         }, true, AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false));
         lstDeckCards.setAdapter(mDeckCardsAdapter);
