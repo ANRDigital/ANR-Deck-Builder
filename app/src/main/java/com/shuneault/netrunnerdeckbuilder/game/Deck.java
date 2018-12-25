@@ -588,4 +588,10 @@ public class Deck implements Serializable, HeaderListItemInterface {
     public void setCoreCount(int coreCount) {
         this.coreCount = coreCount;
     }
+
+    public void replaceCard(Card card, Card replacement) {
+        int count = this.mCards.get(card);
+        updateCardCount(card, 0);
+        updateCardCount(replacement, count);
+    }
 }

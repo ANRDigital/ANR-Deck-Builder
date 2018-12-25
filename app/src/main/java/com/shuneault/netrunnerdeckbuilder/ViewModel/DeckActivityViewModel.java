@@ -67,7 +67,9 @@ public class DeckActivityViewModel extends ViewModel {
             mDeckRepo.setDeckFormat(mDeck, format);
             mDeck.getPackFilter().clear();
             refreshCardPool();
+            autoReplaceCards();
             validateDeck();
+            mDeckRepo.saveDeck(mDeck);
             return true; // format was changed
         }
         return false; // format was not changed
@@ -75,6 +77,25 @@ public class DeckActivityViewModel extends ViewModel {
 
     private void refreshCardPool() {
         mCardPool = mCardRepo.getCardPool(mDeck.getFormat(), mDeck.getPackFilter(), mDeck.getCoreCount());
+    }
+
+    //todo: this probably belongs somewhere else
+    private void autoReplaceCards() {
+        Card identity = mDeck.getIdentity();
+        Card id = mCardPool.findCardByTitle(identity.getTitle());
+        if (id != null){
+            mDeck.setIdentity(id);
+        }
+
+        // loop the cards in the deck and replace with
+        for (Card card : mDeck.getCards()) {
+            if (mCardPool.getMaxCardCount(card) == 0){
+                Card replacement = mCardPool.findCardByTitle(card.getTitle());
+                if (replacement != null){
+                    mDeck.replaceCard(card, replacement);
+                }
+            }
+        }
     }
 
     public void validateDeck() {
@@ -123,7 +144,6 @@ public class DeckActivityViewModel extends ViewModel {
         return headers;
     }
 
-
     public HashMap<String, ArrayList<Card>> getGroupedCards(Deck deck, ArrayList<String> headers) {
         HashMap<String, ArrayList<Card>> mListCards = new HashMap<>();
         String sideCode = deck.getIdentity().getSideCode();;
@@ -170,7 +190,6 @@ public class DeckActivityViewModel extends ViewModel {
         sortListCards(headers, mListCards, deck.getIdentity().getFactionCode());
         return mListCards;
     }
-
 
     public HashMap<String, ArrayList<Card>> getMyGroupedCards(ArrayList<String> headers, Deck deck) {
         // Generate a new card list to display and notify the adapter

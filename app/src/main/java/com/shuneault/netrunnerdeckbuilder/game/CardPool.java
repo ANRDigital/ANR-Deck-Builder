@@ -77,4 +77,14 @@ public class CardPool {
     public ArrayList<Card> getIdentities(String sideCode) {
         return getCards().getIdentities(sideCode);
     }
+
+    public Card findCardByTitle(String title) {
+        for (CardCount cc :
+                this.mCardLimits) {
+            if (cc.getCard().getTitle().equals(title)){
+                return cc.getCard();
+            }
+        }
+        return null;
+    }
 }
