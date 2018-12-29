@@ -319,7 +319,7 @@ public class CardRepository {
     // this called by browse cards
     public CardPool getGlobalCardPool() {
         CardRepositoryPreferences prefs = getPrefs();
-        ArrayList<String> packFilter = prefs.displayAllPacksPref ? new ArrayList<>() : prefs.globalPackFilter;
+        ArrayList<String> packFilter = prefs.globalPackFilter;
         return getGlobalCardPool(packFilter);
     }
 
@@ -459,12 +459,10 @@ public class CardRepository {
 
     public static class CardRepositoryPreferences {
         public int coreCount;
-        public boolean displayAllPacksPref;
         public ArrayList<String> globalPackFilter;
 
-        public CardRepositoryPreferences(int coreCount, boolean displayAllPacks, ArrayList<String> globalPackFilter) {
+        public CardRepositoryPreferences(int coreCount, ArrayList<String> globalPackFilter) {
             this.coreCount = coreCount;
-            this.displayAllPacksPref = displayAllPacks;
             this.globalPackFilter = globalPackFilter;
         }
     }

@@ -27,6 +27,8 @@ public class ChoosePacksDialogFragment extends DialogFragment {
 
     public interface ChoosePacksDialogListener {
         void onChoosePacksDialogPositiveClick(DialogFragment dialog);
+
+        void onMyCollectionChosen(DialogFragment dialog);
     }
 
     private ChoosePacksDialogListener mListener;
@@ -78,11 +80,14 @@ public class ChoosePacksDialogFragment extends DialogFragment {
 
             // Set the action buttons
             .setPositiveButton(R.string.ok, (dialog, id) -> mListener.onChoosePacksDialogPositiveClick(ChoosePacksDialogFragment.this))
-            .setNeutralButton(R.string.reset, (dialog, id) -> {
+            .setNegativeButton(R.string.reset, (dialog, id) -> {
                 for (int i = 0; i < arrChecks.length; i++) {
                     arrChecks[i] = false;
                 }
                 mListener.onChoosePacksDialogPositiveClick(ChoosePacksDialogFragment.this);
+            })
+            .setNeutralButton("My Collection", (dialog, which) -> {
+                mListener.onMyCollectionChosen(this);
             });
 
         return builder.create();

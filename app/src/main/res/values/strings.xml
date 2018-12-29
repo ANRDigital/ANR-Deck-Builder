@@ -213,5 +213,8 @@
     <string name="action_filter">Filter</string>
     <string name="mwl_version">MWL Version</string>
     <string name="set_core_count">Set core count</string>
+    <string name="my_collection">My Collection</string>
+    <string name="about_my_collection">What packs do you own?</string>
+    <string name="default_format">Default Format</string>
 
 </resources>

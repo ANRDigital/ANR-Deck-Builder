@@ -8,10 +8,9 @@ import androidx.annotation.NonNull;
 import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Format;
-import com.shuneault.netrunnerdeckbuilder.prefs.ListPreferenceMultiSelect;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Set;
 
 public class SettingsProvider implements ISettingsProvider {
     private Context context;
@@ -31,7 +30,7 @@ public class SettingsProvider implements ISettingsProvider {
 //        String[] storedValue = ListPreferenceMultiSelect.parseStoredValue(packsPref);
 //        ArrayList<String> globalPackFilter = storedValue != null ? new ArrayList<>(Arrays.asList(storedValue)) : new ArrayList<>();
 
-        return new CardRepository.CardRepositoryPreferences(3, false, new ArrayList<>());
+        return new CardRepository.CardRepositoryPreferences(3, new ArrayList<>());
     }
 
     @Override
@@ -43,7 +42,19 @@ public class SettingsProvider implements ISettingsProvider {
     @Override
     public int getDefaultFormatId() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getInt(SettingsActivity.KEY_PREF_DEFAULT_FORMAT, Format.FORMAT_STANDARD);
+        String formatIdString = preferences.getString(SettingsActivity.KEY_PREF_DEFAULT_FORMAT, String.valueOf(Format.FORMAT_STANDARD));
+        return Integer.parseInt(formatIdString);
+    }
+
+    @Override
+    public ArrayList<String> getMyCollection() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        ArrayList<String> packCodes = new ArrayList<>();
+        Set<String> setting = preferences.getStringSet(SettingsActivity.KEY_PREF_COLLECTION, null);
+        if (setting != null) {
+            packCodes.addAll(setting);
+        }
+        return packCodes;
     }
 
 }

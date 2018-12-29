@@ -27,6 +27,7 @@ import com.shuneault.netrunnerdeckbuilder.fragments.DeckHandFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckInfoFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckMyCardsFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.DeckStatsFragment;
+import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider;
 import com.shuneault.netrunnerdeckbuilder.interfaces.IDeckViewModelProvider;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
@@ -78,6 +79,8 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
     private Lazy<DeckActivityViewModel> viewModel = inject(DeckActivityViewModel.class);
     private int mCount = 0;
+
+    private Lazy<ISettingsProvider> settingsProvider = inject(ISettingsProvider.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -436,8 +439,15 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         viewModel.getValue().setPackFilter(packFilter);
 
         doCardPoolChange();
+        updateInfoBar();
+    }
 
-        // Update the infobar
+    @Override
+    public void onMyCollectionChosen(DialogFragment dialog) {
+        ArrayList<String> myCollection = settingsProvider.getValue().getMyCollection();
+        viewModel.getValue().setPackFilter(myCollection);
+
+        doCardPoolChange();
         updateInfoBar();
     }
 

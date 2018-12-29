@@ -32,7 +32,7 @@ public class DeckValidatorTest {
     public void NoMWLNoRotation_OnlylegalCards_PassesValidation(){
         MostWantedList mwl = new MostWantedList();
         DeckValidator validator = new DeckValidator(mwl);
-        Card idCard = new CardBuilder("").withCode("idCard").Build();
+        Card idCard = new CardBuilder("").withCode("idCard").withSetCode(legalSetCode).Build();
         Format format = new FormatBuilder().asCoreExperience().Build();
         Deck deck = new Deck(idCard, format);
         Card legalCard = new CardBuilder("").withSetCode(legalSetCode).Build();

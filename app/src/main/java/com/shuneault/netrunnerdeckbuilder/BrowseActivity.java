@@ -17,6 +17,7 @@ import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.fragments.BrowseCardsFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.ChoosePacksDialogFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public class BrowseActivity extends AppCompatActivity implements BrowseCardsFrag
 
     private ArrayList<String> mPackFilter = new ArrayList<>();
     private Lazy<CardRepository> repo = inject(CardRepository.class);
+    private Lazy<ISettingsProvider> settingsProvider = inject(ISettingsProvider.class);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +92,15 @@ public class BrowseActivity extends AppCompatActivity implements BrowseCardsFrag
         // save the new setting
         ChoosePacksDialogFragment dlg = (ChoosePacksDialogFragment)dialog;
         mPackFilter = dlg.getSelectedValues();
+
+        // update list
+        BrowseCardsFragment frag = (BrowseCardsFragment) getSupportFragmentManager().findFragmentById(R.id.browse_fragment);
+        frag.updatePackFilter(mPackFilter);
+    }
+
+    @Override
+    public void onMyCollectionChosen(DialogFragment dialog) {
+        mPackFilter = settingsProvider.getValue().getMyCollection();
 
         // update list
         BrowseCardsFragment frag = (BrowseCardsFragment) getSupportFragmentManager().findFragmentById(R.id.browse_fragment);

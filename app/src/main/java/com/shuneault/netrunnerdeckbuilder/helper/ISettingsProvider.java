@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 
+import java.util.ArrayList;
+
 public interface ISettingsProvider {
     @NonNull
     CardRepository.CardRepositoryPreferences getCardRepositoryPreferences();
@@ -11,4 +13,6 @@ public interface ISettingsProvider {
     String getLanguagePref();
 
     int getDefaultFormatId();
+
+    ArrayList<String> getMyCollection();
 }

@@ -85,7 +85,6 @@ public class CardRepositoryFormatTest {
         ArrayList<String> packfilter = new ArrayList<>();
         packfilter.add("Pack One");
         CardRepository.CardRepositoryPreferences prefs = new CardRepository.CardRepositoryPreferences(1,
-                true,
                 packfilter);
 
         ISettingsProvider settingsProvider = mock(ISettingsProvider.class);
@@ -109,7 +108,6 @@ public class CardRepositoryFormatTest {
         ArrayList<String> packfilter = new ArrayList<>();
         packfilter.add("Pack One");
         CardRepository.CardRepositoryPreferences prefs = new CardRepository.CardRepositoryPreferences(1,
-                true,
                 packfilter);
 
         ISettingsProvider settingsProvider = mock(ISettingsProvider.class);

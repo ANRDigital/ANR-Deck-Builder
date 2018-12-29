@@ -13,20 +13,28 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import androidx.core.content.FileProvider;
+import kotlin.Lazy;
+
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.ArraySet;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
+import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader;
 import com.shuneault.netrunnerdeckbuilder.helper.StringDownloader;
@@ -37,8 +45,13 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper.FILE_CARDS_JSON;
+import static org.koin.java.standalone.KoinJavaComponent.inject;
 
 public class SettingsActivity extends PreferenceActivity
         implements OnSharedPreferenceChangeListener {
@@ -55,17 +68,22 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_ABOUT = "pref_About";
     public static final String KEY_PREF_DEFAULT_FORMAT = "pref_Format";
     public static final String DEFAULT_CORE_DECKS = "1";
+    public static final String KEY_PREF_COLLECTION = "pref_collection";
 
     private String mInitialPacksToDisplay;
 
     // Preferences
 //    Preference prefDataPacks;
 //    Preference prefAmountOfCoreDecks;
+    MultiSelectListPreference prefCollection;
     Preference prefClearCache;
     Preference prefDownloadAllImages;
     Preference prefLanguage;
     Preference prefExportDecks;
     Preference prefAbout;
+    ListPreference prefDefFormat;
+
+    Lazy<CardRepository> repo = inject(CardRepository.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +127,31 @@ public class SettingsActivity extends PreferenceActivity
             return false;
         });
 
-        // Initial preferences
-//        mInitialPacksToDisplay = PreferenceManager.getDefaultSharedPreferences(this).getString(KEY_PREF_DATA_PACKS_TO_DISPLAY, "");
+        // Collection
+        prefCollection = (MultiSelectListPreference) findPreference(KEY_PREF_COLLECTION);
+        CardRepository repo = AppManager.getInstance().getCardRepository();
+        ArrayList<Pack> packs = repo.getPacks(true);
+        CharSequence[] packNames = new CharSequence[packs.size()];
+        CharSequence[] packCodes = new CharSequence[packs.size()];
+        for (int i = 0; i < packs.size(); i++) {
+            packNames[i] = packs.get(i).getName();
+            packCodes[i] = packs.get(i).getCode();
+        }
+
+        prefCollection.setEntries(packNames);
+        prefCollection.setEntryValues(packCodes);
+
+        // Format
+        prefDefFormat = (ListPreference)findPreference(KEY_PREF_DEFAULT_FORMAT);
+        ArrayList<Format> formats = repo.getFormats();
+        CharSequence[] formatNames = new CharSequence[formats.size()];
+        CharSequence[] formatIds = new CharSequence[formats.size()];
+        for (int i = 0; i < formats.size(); i++) {
+            formatNames[i] = formats.get(i).getName();
+            formatIds[i] = String.valueOf(formats.get(i).getId());
+        }
+        prefDefFormat.setEntries(formatNames);
+        prefDefFormat.setEntryValues(formatIds);
 
         // Display the summary for data packs to display
         refreshPrefsSummaries();
@@ -276,16 +317,15 @@ public class SettingsActivity extends PreferenceActivity
     }
 
     private void refreshPrefsSummaries() {
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        // Packs
-//        String packs[] = SetNamesPreferenceMultiSelect.parseStoredValue(sharedPreferences.getString(KEY_PREF_DATA_PACKS_TO_DISPLAY, ""));
-//        if (packs != null) {
-//            prefDataPacks.setSummary(TextUtils.join(", ", packs));
-//        }
-//
-//        // Amount of core decks
-//        prefAmountOfCoreDecks.setSummary(sharedPreferences.getString(KEY_PREF_AMOUNT_OF_CORE_DECKS, DEFAULT_CORE_DECKS));
+        Set<String> stringSet = sharedPreferences.getStringSet(KEY_PREF_COLLECTION, new HashSet<String>());
+        prefCollection.setSummary(stringSet.size() + " packs");
+
+        String defaultFormat = sharedPreferences.getString(KEY_PREF_DEFAULT_FORMAT, String.valueOf(Format.FORMAT_STANDARD));
+        int formatId = Integer.parseInt(defaultFormat);
+        String formatSummary = repo.getValue().getFormat(formatId).getName();
+        prefDefFormat.setSummary(formatSummary);
     }
 
     @Override

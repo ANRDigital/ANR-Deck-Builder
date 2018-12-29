@@ -2,6 +2,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory 
         android:title="@string/data_packs">
+        <MultiSelectListPreference
+            android:key="pref_collection"
+            android:title="@string/my_collection"
+            android:summary="@string/about_my_collection"
+            />
+
+        <ListPreference
+            android:key="pref_Format"
+            android:title="@string/default_format"
+            />
 
         <ListPreference
             android:key="pref_Language"
