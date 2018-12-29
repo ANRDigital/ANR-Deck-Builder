@@ -247,19 +247,10 @@ public class SettingsActivity extends PreferenceActivity
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
         switch (key) {
-//            case KEY_PREF_DATA_PACKS_TO_DISPLAY:
-//                // If zero is selected, cancel commit
-//                if (SetNamesPreferenceMultiSelect.parseStoredValue(sharedPreferences.getString(key, "")) == null) {
-//                    sharedPreferences.edit().putString(key, mInitialPacksToDisplay).apply();
-//                }
-//                // change the summary to display the datapacks to use
-//                mInitialPacksToDisplay = sharedPreferences.getString(key, "");
-//                refreshPrefsSummaries();
-//                break;
-//            case KEY_PREF_DISPLAY_ALL_DATA_PACKS:
-//            case KEY_PREF_AMOUNT_OF_CORE_DECKS:
-//                refreshPrefsSummaries();
-//                break;
+            case KEY_PREF_COLLECTION:
+            case KEY_PREF_DEFAULT_FORMAT:
+                refreshPrefsSummaries();
+                break;
             case KEY_PREF_LANGUAGE:
                 doLanguageChange();
                 break;
