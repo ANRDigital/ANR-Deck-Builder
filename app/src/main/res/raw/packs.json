@@ -539,10 +539,19 @@
       "position": 1,
       "size": 147,
       "ffg_id": null
+    },
+    {
+      "code": "df",
+      "cycle_code": "ashes",
+      "date_release": "2019-03-18",
+      "name": "Downfall",
+      "position": 1,
+      "size": 65,
+      "ffg_id": null
     }
   ],
-  "total": 60,
+  "total": 61,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2018-11-30T17:12:47+00:00"
+  "last_updated": "2019-02-20T20:52:18+00:00"
 }
