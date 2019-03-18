@@ -33,13 +33,6 @@
         
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/rules">
-        <CheckBoxPreference android:key="pref_MostWantedList"
-            android:defaultValue="false"
-            android:title="@string/use_most_wanted_list"
-            android:summary="@string/use_most_wanted_list_summary" />
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/cache">
         <Preference android:key="pref_ClearCache"
             android:title="@string/clear_cache"

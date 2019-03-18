@@ -18,9 +18,7 @@ import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider;
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper;
 import com.shuneault.netrunnerdeckbuilder.helper.StringDownloader;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,7 +28,6 @@ public class CardRepository {
     private ArrayList<Pack> mPacks = new ArrayList<>();
     private CycleList mCycles = new CycleList();
 
-    private HashMap<String, Integer> mMWLInfluences = new HashMap<>();
     private Context mContext;
     private ISettingsProvider settingsProvider;
     private JSONDataLoader fileLoader;
@@ -88,8 +85,6 @@ public class CardRepository {
         try {
             MwlData mwl = fileLoader.getMwlDetails();
             mMostWantedLists = mwl.getMWLs();
-            mMWLInfluences.clear();
-            mMWLInfluences = (HashMap<String, Integer>) mwl.getInfluences().clone();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,7 +92,7 @@ public class CardRepository {
 
     private void loadCards() {
         try {
-            ArrayList<Card> cards = fileLoader.getCardsFromFile(mLanguagePref, mMWLInfluences);
+            ArrayList<Card> cards = fileLoader.getCardsFromFile(mLanguagePref);
             mCards.clear();
             mCards.addAll(cards);
 

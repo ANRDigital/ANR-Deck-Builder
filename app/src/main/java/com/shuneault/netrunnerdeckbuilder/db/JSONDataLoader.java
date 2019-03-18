@@ -28,7 +28,7 @@ public class JSONDataLoader {
     }
 
     @NonNull
-    public ArrayList<Card> getCardsFromFile(String lanquagePref, HashMap<String, Integer> influences) throws IOException, JSONException {
+    public ArrayList<Card> getCardsFromFile(String lanquagePref) throws IOException, JSONException {
         //get json file
 
         JSONObject jsonFile = mLocalFileHelper.getJSONCardsFile();
@@ -52,12 +52,6 @@ public class JSONDataLoader {
 
             CardBuilder cardBuilder = new CardBuilder(imageUrlTemplate);
             Card card = cardBuilder.BuildFromJson(jsonCard);
-
-            int cardUniversalCost = 0;
-            if (influences.containsKey(card.getCode())) {
-                cardUniversalCost = influences.get(card.getCode());
-            }
-            card.setMostWantedInfluence(cardUniversalCost);
             cards.add(card);
         }
         return cards;
@@ -98,15 +92,6 @@ public class JSONDataLoader {
             mwl.allLists.add(new MostWantedList(mwlJSON));
         }
 
-        HashMap<String, Integer> influences = mwl.getInfluences();
-        JSONObject jsonMWLCards = mMWLData
-                .getJSONObject(2)
-                .getJSONObject("cards");
-        Iterator<String> iterCards = jsonMWLCards.keys();
-        while (iterCards.hasNext()) {
-            String cardCode = iterCards.next();
-            influences.put(cardCode, jsonMWLCards.getJSONObject(cardCode).optInt("universal_faction_cost", 0));
-        }
         return mwl;
     }
 

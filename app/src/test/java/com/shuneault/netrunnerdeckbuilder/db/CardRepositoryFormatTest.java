@@ -76,7 +76,7 @@ public class CardRepositoryFormatTest {
         mCards.add(new CardBuilder("").withCode("777").withSetCode("3456").Build());
         mCards.add(new CardBuilder("").withCode("888").withSetCode("3456").Build());
 
-        when(mLoaderMock.getCardsFromFile(anyString(), any())).thenReturn(mCards);
+        when(mLoaderMock.getCardsFromFile(anyString())).thenReturn(mCards);
     }
 
     @Test
