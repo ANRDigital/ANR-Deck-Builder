@@ -56,25 +56,16 @@ import static org.koin.java.standalone.KoinJavaComponent.inject;
 public class SettingsActivity extends PreferenceActivity
         implements OnSharedPreferenceChangeListener {
 
-//    public static final String KEY_PREF_DISPLAY_ALL_DATA_PACKS = "pref_DataPacksShowAll";
-//    public static final String KEY_PREF_DATA_PACKS_TO_DISPLAY = "pref_DataPacks";
-//    public static final String KEY_PREF_AMOUNT_OF_CORE_DECKS = "pref_AmountOfCoreDecks";
     public static final String KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS = "pref_ShowSetNames";
     public static final String KEY_PREF_CLEAR_CACHE = "pref_ClearCache";
     public static final String KEY_PREF_DOWNLOAD_ALL_IMAGES = "pref_DownloadAllImages";
     public static final String KEY_PREF_LANGUAGE = "pref_Language";
-    public static final String KEY_PREF_USE_MOST_WANTED_LIST = "pref_MostWantedList";
     public static final String KEY_PREF_EXPORT_ALL_DECKS = "pref_ExportAllDecks";
     public static final String KEY_PREF_ABOUT = "pref_About";
     public static final String KEY_PREF_DEFAULT_FORMAT = "pref_Format";
-    public static final String DEFAULT_CORE_DECKS = "1";
     public static final String KEY_PREF_COLLECTION = "pref_collection";
 
-    private String mInitialPacksToDisplay;
-
     // Preferences
-//    Preference prefDataPacks;
-//    Preference prefAmountOfCoreDecks;
     MultiSelectListPreference prefCollection;
     Preference prefClearCache;
     Preference prefDownloadAllImages;
@@ -91,7 +82,6 @@ public class SettingsActivity extends PreferenceActivity
         addPreferencesFromResource(R.xml.preferences);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
-//        prefAmountOfCoreDecks = findPreference(KEY_PREF_AMOUNT_OF_CORE_DECKS);
         prefLanguage = findPreference(KEY_PREF_LANGUAGE);
         prefAbout = findPreference(KEY_PREF_ABOUT);
         prefAbout.setOnPreferenceClickListener(preference -> {
@@ -99,18 +89,6 @@ public class SettingsActivity extends PreferenceActivity
             return false;
         });
 
-//        prefDataPacks = findPreference(KEY_PREF_DATA_PACKS_TO_DISPLAY);
-//        prefDataPacks.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-//            @Override
-//            public boolean onPreferenceChange(Preference preference, Object newValue) {
-//                if (newValue.toString().isEmpty()) {
-//                    Toast.makeText(SettingsActivity.this, R.string.toast_require_one_datapack, Toast.LENGTH_LONG).show();
-//                    return false;
-//                } else {
-//                    return true;
-//                }
-//            }
-//        });
         prefClearCache = findPreference(KEY_PREF_CLEAR_CACHE);
         prefClearCache.setOnPreferenceClickListener(preference -> {
             doClearCache();

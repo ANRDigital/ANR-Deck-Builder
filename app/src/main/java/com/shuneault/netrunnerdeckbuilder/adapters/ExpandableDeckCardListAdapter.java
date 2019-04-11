@@ -290,9 +290,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
                 numInfluence += card.getFactionCost();
             }
             // universal influence cost
-            if (card.isMostWanted() && AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_USE_MOST_WANTED_LIST, false)) {
-                //todo: get mwlinfluence from the current mwl entity
-                numInfluence += card.getMWLInfluence();
+            if (cardMWL != null) {
+                numInfluence += cardMWL.getUniversalFactionCost();
             }
             lblInfluence.setText(TextFormatter.GetInfluenceString(context, numInfluence));
 

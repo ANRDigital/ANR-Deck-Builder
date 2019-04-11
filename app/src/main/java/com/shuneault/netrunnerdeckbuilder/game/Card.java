@@ -100,10 +100,6 @@ public class Card {
         return baseLink;
     }
 
-//    public String getFaction() {
-//        return faction;
-//    }
-
     public String getFactionCode() {
         return factionCode;
     }
@@ -250,10 +246,6 @@ public class Card {
     public int getFactionImageRes(Context context) {
         if (getFactionCode().startsWith(Faction.FACTION_NEUTRAL)) return R.drawable.neutral;
         return context.getResources().getIdentifier(getFactionImageResName(), "drawable", context.getPackageName());
-    }
-
-    public int getMWLInfluence() {
-        return this.mostWantedInfluence;
     }
 
     public boolean isMostWanted() {
