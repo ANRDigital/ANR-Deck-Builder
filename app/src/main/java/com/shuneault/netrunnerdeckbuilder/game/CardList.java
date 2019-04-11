@@ -2,6 +2,7 @@ package com.shuneault.netrunnerdeckbuilder.game;
 
 import java.util.ArrayList;
 
+
 public class CardList extends ArrayList<Card> {
 
     /**

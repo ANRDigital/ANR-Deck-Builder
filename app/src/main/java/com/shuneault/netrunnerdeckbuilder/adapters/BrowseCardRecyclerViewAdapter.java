@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
-import com.shuneault.netrunnerdeckbuilder.fragments.BrowseCardsFragment.OnBrowseCardsClickListener;
+import com.shuneault.netrunnerdeckbuilder.fragments.OnBrowseCardsClickListener;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 import com.shuneault.netrunnerdeckbuilder.helper.TextFormatter;
@@ -42,7 +42,7 @@ public class BrowseCardRecyclerViewAdapter extends RecyclerView.Adapter<BrowseCa
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.setItem(mCards.get(position));
+        holder.setItem(mCards.get(position), position);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class BrowseCardRecyclerViewAdapter extends RecyclerView.Adapter<BrowseCa
             return super.toString();
         }
 
-        public void setItem(Card card) {
+        public void setItem(Card card, int position) {
             this.mItem = card;
             Context context = lblText.getContext();
             lblIcons.setText(TextFormatter.FormatCardIcons(context, card));
@@ -90,7 +90,7 @@ public class BrowseCardRecyclerViewAdapter extends RecyclerView.Adapter<BrowseCa
 
             mView.setOnClickListener(v -> {
                 if (null != mListener) {
-                    mListener.onCardClicked(mItem);
+                    mListener.onCardClicked(mItem, position);
                 }
             });
         }

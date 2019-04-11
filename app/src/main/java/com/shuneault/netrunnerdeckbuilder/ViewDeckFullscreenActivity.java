@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -68,6 +69,7 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
     public static final String EXTRA_SET_NAME = "com.example.netrunnerdeckbuilder.EXTRA_SET_NAME";
     public static final String EXTRA_CARD_CODE = "com.example.netrunnerdeckbuilder.EXTRA_CARD_CODE";
     public static final String EXTRA_POSITION = "com.example.netrunnerdeckbuilder.EXTRA_POSITION";
+    public static final String EXTRA_CARDS = "com.example.netrunnerdeckbuilder.EXTRA_CARDS";
 
     // GUI Elements
     private ViewPager mPager;
@@ -90,6 +92,7 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
             mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
             mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
             mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
+            mCards = (ArrayList<Card>) getIntent().getSerializableExtra(EXTRA_CARDS);
         } else {
             mDeck = appManager.getDeck(savedInstanceState.getLong(EXTRA_DECK_ID, 0));
             mSetName = savedInstanceState.getString(EXTRA_SET_NAME);
