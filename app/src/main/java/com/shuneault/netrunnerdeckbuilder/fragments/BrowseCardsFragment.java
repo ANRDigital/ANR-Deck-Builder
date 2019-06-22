@@ -1,24 +1,26 @@
 package com.shuneault.netrunnerdeckbuilder.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import kotlin.Lazy;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.ViewModel.BrowseCardsViewModel;
 import com.shuneault.netrunnerdeckbuilder.adapters.BrowseCardRecyclerViewAdapter;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import kotlin.Lazy;
 
 import static org.koin.java.standalone.KoinJavaComponent.inject;
 
@@ -27,7 +29,7 @@ import static org.koin.java.standalone.KoinJavaComponent.inject;
  * <p/>
  * Activities containing this fragment MUST implement the {@link OnBrowseCardsClickListener} interface.
  */
-public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryTextListener{
+public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryTextListener, OnBrowseCardsClickListener {
     private OnBrowseCardsClickListener mClickListener;
 
     private BrowseCardRecyclerViewAdapter mAdapter;
@@ -62,7 +64,7 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
             BrowseCardsViewModel vm = viewModel.getValue();
             vm.init();
 
-            mAdapter = new BrowseCardRecyclerViewAdapter(vm.getCardList(), mClickListener, cardRepo.getValue());
+            mAdapter = new BrowseCardRecyclerViewAdapter(vm.getCardList(), this, cardRepo.getValue());
             recyclerView.setAdapter(mAdapter);
         }
         return view;
@@ -107,17 +109,15 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
         updateResults();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnBrowseCardsClickListener {
-        void onCardClicked(Card card);
+    @Override
+    public void onCardClicked(Card card, int position) {
+        Intent intent = new Intent(this.getContext(), ViewDeckFullscreenActivity.class);
+
+        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARDS, viewModel.getValue().getCardList().getCodes());
+        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_POSITION, position);
+
+        startActivity(intent);
+
+        // mClickListener.onCardClicked(card, position);
     }
 }

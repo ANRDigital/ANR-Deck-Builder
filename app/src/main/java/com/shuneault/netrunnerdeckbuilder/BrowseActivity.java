@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.fragments.BrowseCardsFragment;
 import com.shuneault.netrunnerdeckbuilder.fragments.ChoosePacksDialogFragment;
+import com.shuneault.netrunnerdeckbuilder.fragments.OnBrowseCardsClickListener;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider;
 
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import static com.shuneault.netrunnerdeckbuilder.game.Format.FORMAT_ETERNAL;
 import static org.koin.java.standalone.KoinJavaComponent.inject;
 
-public class BrowseActivity extends AppCompatActivity implements BrowseCardsFragment.OnBrowseCardsClickListener,ChoosePacksDialogFragment.ChoosePacksDialogListener {
+public class BrowseActivity extends AppCompatActivity implements OnBrowseCardsClickListener,ChoosePacksDialogFragment.ChoosePacksDialogListener {
 
     private ArrayList<String> mPackFilter = new ArrayList<>();
     private Lazy<CardRepository> repo = inject(CardRepository.class);
@@ -80,7 +81,7 @@ public class BrowseActivity extends AppCompatActivity implements BrowseCardsFrag
     }
 
     @Override
-    public void onCardClicked(Card card) {
+    public void onCardClicked(Card card, int position) {
         // do nothing for now
         Intent intent = new Intent(this, ViewDeckFullscreenActivity.class);
         intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARD_CODE, card.getCode());
