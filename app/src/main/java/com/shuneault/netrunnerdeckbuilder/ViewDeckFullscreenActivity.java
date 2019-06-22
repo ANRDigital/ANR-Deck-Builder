@@ -5,10 +5,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -16,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
@@ -27,6 +22,11 @@ import com.shuneault.netrunnerdeckbuilder.util.SystemUiHider;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -92,7 +92,8 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
             mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
             mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
             mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
-            mCards = (ArrayList<Card>) getIntent().getSerializableExtra(EXTRA_CARDS);
+            ArrayList<String> cardCodes = (ArrayList<String>) getIntent().getSerializableExtra(EXTRA_CARDS);
+            mCards = appManager.getCardRepository().getCards(cardCodes);
         } else {
             mDeck = appManager.getDeck(savedInstanceState.getLong(EXTRA_DECK_ID, 0));
             mSetName = savedInstanceState.getString(EXTRA_SET_NAME);
@@ -132,7 +133,7 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
         }
 
         // Change the icon and title
-        updateTitle(mCards.get(0));
+        updateTitle(mCards.get(mPosition));
 
         // Set the adapter for the view pager
         mPager.setAdapter(new ImageViewPager());

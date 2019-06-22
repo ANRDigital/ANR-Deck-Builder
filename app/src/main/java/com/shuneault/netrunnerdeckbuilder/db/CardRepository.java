@@ -452,6 +452,14 @@ public class CardRepository {
         return getPacks(format, new ArrayList<>());
     }
 
+    public ArrayList<Card> getCards(ArrayList<String> cardCodes) {
+        ArrayList<Card> cards = new ArrayList<>();
+        for (String code : cardCodes) {
+            cards.add(mCards.getCard(code));
+        }
+        return cards;
+    }
+
     public static class CardRepositoryPreferences {
         public int coreCount;
         public ArrayList<String> globalPackFilter;

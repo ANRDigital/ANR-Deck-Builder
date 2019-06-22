@@ -3,12 +3,6 @@ package com.shuneault.netrunnerdeckbuilder.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import kotlin.Lazy;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +15,12 @@ import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import kotlin.Lazy;
 
 import static org.koin.java.standalone.KoinJavaComponent.inject;
 
@@ -113,7 +113,7 @@ public class BrowseCardsFragment extends Fragment implements SearchView.OnQueryT
     public void onCardClicked(Card card, int position) {
         Intent intent = new Intent(this.getContext(), ViewDeckFullscreenActivity.class);
 
-        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARDS, viewModel.getValue().getCardList());
+        intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARDS, viewModel.getValue().getCardList().getCodes());
         intent.putExtra(ViewDeckFullscreenActivity.EXTRA_POSITION, position);
 
         startActivity(intent);

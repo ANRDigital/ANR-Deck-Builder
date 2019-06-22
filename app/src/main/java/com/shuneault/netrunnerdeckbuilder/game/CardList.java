@@ -141,4 +141,12 @@ public class CardList extends ArrayList<Card> {
         this.removeAll(cards);
         this.addAll(cards);
     }
+
+    public ArrayList<String> getCodes() {
+        ArrayList<String> codeList = new ArrayList<>();
+        for (Card c : this) {
+            codeList.add(c.getCode());
+        }
+        return codeList;
+    }
 }
