@@ -33,5 +33,11 @@
       "name":"Casual",
       "description":"No rules"
     }
+  ,
+    {
+      "id":6,
+      "name":"Classic",
+      "description":"No rules"
+    }
   ]
 }
