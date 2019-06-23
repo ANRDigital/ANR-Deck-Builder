@@ -108,6 +108,7 @@ public class SettingsActivity extends PreferenceActivity
             sharedPreferences.edit()
                     .putLong(SHARED_PREF_LAST_UPDATE_DATE, Calendar.getInstance().getTimeInMillis())
                     .apply();
+            refreshPrefsSummaries();
             return false;
         });
         prefExportDecks = findPreference(KEY_PREF_EXPORT_ALL_DECKS);
