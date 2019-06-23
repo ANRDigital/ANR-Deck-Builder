@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -67,11 +68,11 @@ public class LocalFileHelper {
     private JSONObject getLocalJson(Context context, String filename, int fallbackResource) throws IOException, JSONException {
         // Load the file in memory and return a JSON array
         InputStream in;
-//        try {
-//            in = context.openFileInput(filename);
-//        } catch (FileNotFoundException e) {
+        try {
+            in = context.openFileInput(filename);
+        } catch (FileNotFoundException e) {
             in = context.getResources().openRawResource(fallbackResource);
-//        }
+        }
         return getJsonObject(in);
     }
 

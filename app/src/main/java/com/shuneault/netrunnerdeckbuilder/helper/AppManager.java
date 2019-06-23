@@ -10,7 +10,6 @@ import com.shuneault.netrunnerdeckbuilder.db.IDeckRepository;
 import com.shuneault.netrunnerdeckbuilder.db.JSONDataLoader;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 
 import java.util.ArrayList;
@@ -28,7 +27,6 @@ public class AppManager extends MyApplication {
     public static final String EXT_CARDS_IMAGES = ".png";
 
     // Shared Prefd
-    public static final String SHARED_PREF_LAST_UPDATE_DATE = "SHARED_PREF_LAST_UPDATE_DATE";
 
     // Logcat
     public static final String LOGCAT = "LOGCAT";

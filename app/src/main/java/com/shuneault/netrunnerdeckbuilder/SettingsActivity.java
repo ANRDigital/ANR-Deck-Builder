@@ -16,15 +16,12 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import androidx.core.content.FileProvider;
 import kotlin.Lazy;
 
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.util.ArraySet;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,15 +35,15 @@ import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.CardImagesDownloader;
 import com.shuneault.netrunnerdeckbuilder.helper.StringDownloader;
-import com.shuneault.netrunnerdeckbuilder.prefs.SetNamesPreferenceMultiSelect;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.Normalizer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,16 +56,19 @@ public class SettingsActivity extends PreferenceActivity
     public static final String KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS = "pref_ShowSetNames";
     public static final String KEY_PREF_CLEAR_CACHE = "pref_ClearCache";
     public static final String KEY_PREF_DOWNLOAD_ALL_IMAGES = "pref_DownloadAllImages";
+    public static final String KEY_PREF_DOWNLOAD_CARD_DATA = "pref_DownloadCardData";
     public static final String KEY_PREF_LANGUAGE = "pref_Language";
     public static final String KEY_PREF_EXPORT_ALL_DECKS = "pref_ExportAllDecks";
     public static final String KEY_PREF_ABOUT = "pref_About";
     public static final String KEY_PREF_DEFAULT_FORMAT = "pref_Format";
     public static final String KEY_PREF_COLLECTION = "pref_collection";
+    public static final String SHARED_PREF_LAST_UPDATE_DATE = "SHARED_PREF_LAST_UPDATE_DATE";
 
     // Preferences
     MultiSelectListPreference prefCollection;
     Preference prefClearCache;
     Preference prefDownloadAllImages;
+    Preference prefDownloadCardData;
     Preference prefLanguage;
     Preference prefExportDecks;
     Preference prefAbout;
@@ -80,7 +80,8 @@ public class SettingsActivity extends PreferenceActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         prefLanguage = findPreference(KEY_PREF_LANGUAGE);
         prefAbout = findPreference(KEY_PREF_ABOUT);
@@ -99,6 +100,16 @@ public class SettingsActivity extends PreferenceActivity
             doDownloadAllImages();
             return false;
         });
+        CardRepository repo = AppManager.getInstance().getCardRepository();
+        prefDownloadCardData = findPreference(KEY_PREF_DOWNLOAD_CARD_DATA);
+        prefDownloadCardData.setOnPreferenceClickListener(preference -> {
+            repo.doDownloadAllData();
+            // update last download date
+            sharedPreferences.edit()
+                    .putLong(SHARED_PREF_LAST_UPDATE_DATE, Calendar.getInstance().getTimeInMillis())
+                    .apply();
+            return false;
+        });
         prefExportDecks = findPreference(KEY_PREF_EXPORT_ALL_DECKS);
         prefExportDecks.setOnPreferenceClickListener(preference -> {
             doExportAllDecks();
@@ -107,7 +118,6 @@ public class SettingsActivity extends PreferenceActivity
 
         // Collection
         prefCollection = (MultiSelectListPreference) findPreference(KEY_PREF_COLLECTION);
-        CardRepository repo = AppManager.getInstance().getCardRepository();
         ArrayList<Pack> packs = repo.getPacks(true);
         CharSequence[] packNames = new CharSequence[packs.size()];
         CharSequence[] packCodes = new CharSequence[packs.size()];
@@ -295,6 +305,14 @@ public class SettingsActivity extends PreferenceActivity
         int formatId = Integer.parseInt(defaultFormat);
         String formatSummary = repo.getValue().getFormat(formatId).getName();
         prefDefFormat.setSummary(formatSummary);
+
+        Calendar lastUpdate = Calendar.getInstance();
+        long timeInMillis = sharedPreferences.getLong(SHARED_PREF_LAST_UPDATE_DATE, 0);
+        if (timeInMillis > 0) {
+            lastUpdate.setTimeInMillis(timeInMillis);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            prefDownloadCardData.setSummary("Last updated: " + formatter.format(lastUpdate.getTime()));
+        }
     }
 
     @Override
