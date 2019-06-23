@@ -78,6 +78,7 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
     private String mSetName = null;
     private String mCardCode = null;
     private int mPosition = 0;
+    private ArrayList<String> mCardCodes = new ArrayList<>();
 
     private ArrayList<Card> mCards = new ArrayList<>();
 
@@ -92,8 +93,7 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
             mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
             mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
             mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
-            ArrayList<String> cardCodes = (ArrayList<String>) getIntent().getSerializableExtra(EXTRA_CARDS);
-            mCards = appManager.getCardRepository().getCards(cardCodes);
+            mCardCodes = (ArrayList<String>) getIntent().getSerializableExtra(EXTRA_CARDS);
         } else {
             mDeck = appManager.getDeck(savedInstanceState.getLong(EXTRA_DECK_ID, 0));
             mSetName = savedInstanceState.getString(EXTRA_SET_NAME);
@@ -124,6 +124,8 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
         } else if (mCardCode != null) {
             mCards = new ArrayList<Card>();
             mCards.add(appManager.getCard(mCardCode));
+        } else if (mCardCodes != null && !mCardCodes.isEmpty()){
+            mCards = appManager.getCardRepository().getCards(mCardCodes);
         }
 
         // Quit if deck is empty
