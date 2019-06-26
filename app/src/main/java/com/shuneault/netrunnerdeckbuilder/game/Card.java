@@ -13,7 +13,7 @@ import com.shuneault.netrunnerdeckbuilder.helper.TextFormatter;
 import java.io.File;
 import java.net.URL;
 
-public class Card {
+public class Card implements java.io.Serializable {
     //    private Date lastModified;
     private String code;
     private String cost;

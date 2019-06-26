@@ -5,10 +5,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -26,6 +22,11 @@ import com.shuneault.netrunnerdeckbuilder.util.SystemUiHider;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -68,6 +69,7 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
     public static final String EXTRA_SET_NAME = "com.example.netrunnerdeckbuilder.EXTRA_SET_NAME";
     public static final String EXTRA_CARD_CODE = "com.example.netrunnerdeckbuilder.EXTRA_CARD_CODE";
     public static final String EXTRA_POSITION = "com.example.netrunnerdeckbuilder.EXTRA_POSITION";
+    public static final String EXTRA_CARDS = "com.example.netrunnerdeckbuilder.EXTRA_CARDS";
 
     // GUI Elements
     private ViewPager mPager;
@@ -76,6 +78,7 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
     private String mSetName = null;
     private String mCardCode = null;
     private int mPosition = 0;
+    private ArrayList<String> mCardCodes = new ArrayList<>();
 
     private ArrayList<Card> mCards = new ArrayList<>();
 
@@ -90,6 +93,7 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
             mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
             mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
             mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
+            mCardCodes = (ArrayList<String>) getIntent().getSerializableExtra(EXTRA_CARDS);
         } else {
             mDeck = appManager.getDeck(savedInstanceState.getLong(EXTRA_DECK_ID, 0));
             mSetName = savedInstanceState.getString(EXTRA_SET_NAME);
@@ -120,6 +124,8 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
         } else if (mCardCode != null) {
             mCards = new ArrayList<Card>();
             mCards.add(appManager.getCard(mCardCode));
+        } else if (mCardCodes != null && !mCardCodes.isEmpty()){
+            mCards = appManager.getCardRepository().getCards(mCardCodes);
         }
 
         // Quit if deck is empty
@@ -129,7 +135,7 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
         }
 
         // Change the icon and title
-        updateTitle(mCards.get(0));
+        updateTitle(mCards.get(mPosition));
 
         // Set the adapter for the view pager
         mPager.setAdapter(new ImageViewPager());

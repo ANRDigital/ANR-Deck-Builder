@@ -219,7 +219,80 @@ public class CardRepository {
             }
         });
         sdMWL.execute();
+    }
 
+    private void doDownloadFormats(){
+        // Game Formats
+        StringDownloader sdFormats = new StringDownloader(mContext,
+                NetRunnerBD.getFormatsUrl(),
+                LocalFileHelper.FILE_FORMATS_JSON,
+                new StringDownloader.FileDownloaderListener() {
+
+                    @Override
+                    public void onBeforeTask() {
+
+                    }
+
+                    @Override
+                    public void onTaskComplete(String s) {
+                        loadFormats();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
+        sdFormats.execute();
+    }
+
+    private void doDownloadCycles(){
+        // Cycles
+        StringDownloader sdCycles = new StringDownloader(mContext,
+                NetRunnerBD.getCyclesUrl(),
+                LocalFileHelper.FILE_CYCLES_JSON,
+                new StringDownloader.FileDownloaderListener() {
+
+                    @Override
+                    public void onBeforeTask() {
+
+                    }
+
+                    @Override
+                    public void onTaskComplete(String s) {
+                        loadCycles();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
+        sdCycles.execute();
+    }
+    private void doDownloadRotations(){
+        // Cycles
+        StringDownloader sdCycles = new StringDownloader(mContext,
+                NetRunnerBD.getRotationsUrl(),
+                LocalFileHelper.FILE_ROTATIONS_JSON,
+                new StringDownloader.FileDownloaderListener() {
+
+                    @Override
+                    public void onBeforeTask() {
+
+                    }
+
+                    @Override
+                    public void onTaskComplete(String s) {
+                        loadRotations();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
+        sdCycles.execute();
     }
 
     private void doDownloadCards() {
@@ -233,11 +306,6 @@ public class CardRepository {
 
             @Override
             public void onTaskComplete(String s) {
-                // update last download date
-//                getSharedPrefs()
-//                        .edit()
-//                        .putLong(SHARED_PREF_LAST_UPDATE_DATE, Calendar.getInstance().getTimeInMillis())
-//                        .apply();
                 loadCards();
                 Toast.makeText(mContext, R.string.card_list_updated_successfully, Toast.LENGTH_SHORT).show();
             }
@@ -306,7 +374,10 @@ public class CardRepository {
         return mCards.getPackCards(packs);
     }
 
-    public void refreshCards() {
+    public void doDownloadAllData() {
+        doDownloadCycles();
+        doDownloadRotations();
+        doDownloadFormats();
         doDownloadMWL();
         doDownloadCards();
     }
@@ -450,6 +521,14 @@ public class CardRepository {
 
     public ArrayList<Pack> getPacks(Format format) {
         return getPacks(format, new ArrayList<>());
+    }
+
+    public ArrayList<Card> getCards(ArrayList<String> cardCodes) {
+        ArrayList<Card> cards = new ArrayList<>();
+        for (String code : cardCodes) {
+            cards.add(mCards.getCard(code));
+        }
+        return cards;
     }
 
     public static class CardRepositoryPreferences {

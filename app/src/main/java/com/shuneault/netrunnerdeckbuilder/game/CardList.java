@@ -2,6 +2,7 @@ package com.shuneault.netrunnerdeckbuilder.game;
 
 import java.util.ArrayList;
 
+
 public class CardList extends ArrayList<Card> {
 
     /**
@@ -139,5 +140,13 @@ public class CardList extends ArrayList<Card> {
     public void addExtras(ArrayList<Card> cards) {
         this.removeAll(cards);
         this.addAll(cards);
+    }
+
+    public ArrayList<String> getCodes() {
+        ArrayList<String> codeList = new ArrayList<>();
+        for (Card c : this) {
+            codeList.add(c.getCode());
+        }
+        return codeList;
     }
 }

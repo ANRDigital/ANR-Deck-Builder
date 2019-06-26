@@ -15,4 +15,6 @@ public interface ISettingsProvider {
     int getDefaultFormatId();
 
     ArrayList<String> getMyCollection();
+
+    boolean getHideNonVirtualApex();
 }

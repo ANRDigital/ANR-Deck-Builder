@@ -39,6 +39,9 @@
             android:summary="@string/delete_all_images" />
         <Preference android:key="pref_DownloadAllImages"
             android:title="@string/download_all_images" />
+        <Preference android:key="pref_DownloadCardData"
+            android:title="Update all card data"
+            />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Export">
