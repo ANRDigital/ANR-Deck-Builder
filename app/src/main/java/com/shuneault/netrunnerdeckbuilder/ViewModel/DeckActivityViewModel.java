@@ -10,6 +10,7 @@ import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.DeckValidator;
+import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 
 import java.util.ArrayList;
@@ -19,15 +20,18 @@ import java.util.HashMap;
 import androidx.lifecycle.ViewModel;
 
 public class DeckActivityViewModel extends ViewModel {
+    private final ISettingsProvider settingsProvider;
     private Deck mDeck;
     private IDeckRepository mDeckRepo;
     private CardRepository mCardRepo;
     private boolean valid;
     private CardPool mCardPool;
 
-    public DeckActivityViewModel(IDeckRepository mDeckRepo, CardRepository mCardRepo) {
+
+    public DeckActivityViewModel(IDeckRepository mDeckRepo, CardRepository mCardRepo, ISettingsProvider settingsProvider) {
         this.mDeckRepo = mDeckRepo;
         this.mCardRepo = mCardRepo;
+        this.settingsProvider = settingsProvider;
     }
 
     public void setDeckId(long deckId) {
@@ -148,8 +152,6 @@ public class DeckActivityViewModel extends ViewModel {
         HashMap<String, ArrayList<Card>> mListCards = new HashMap<>();
         String sideCode = deck.getIdentity().getSideCode();;
 
-        boolean hideNonVirtualApex = true;//PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("pref_HideNonVirtualApex", true);
-
         CardList cardCollection = mCardPool.getCards();
         cardCollection.addExtras(deck.getCards());
         for (Card theCard : cardCollection) {
@@ -171,7 +173,7 @@ public class DeckActivityViewModel extends ViewModel {
             // Ignore non-virtual resources if runner is Apex and setting is set
             boolean isNonVirtualOK = true;
             if (theCard.isResource() && !theCard.isVirtual()) {
-                if (deck.isApex() && hideNonVirtualApex){
+                if (deck.isApex() && settingsProvider.getHideNonVirtualApex()){
                     isNonVirtualOK = false;
                 }
             }

@@ -57,4 +57,10 @@ public class SettingsProvider implements ISettingsProvider {
         return packCodes;
     }
 
+    @Override
+    public boolean getHideNonVirtualApex() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean("pref_HideNonVirtualApex", true);
+    }
+
 }
