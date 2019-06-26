@@ -165,7 +165,8 @@ public class DeckActivityViewModel extends ViewModel {
             String deckFaction = deck.getIdentity().getFactionCode();
             boolean isGoodAgenda = !theCard.isAgenda()
                     || theCard.getFactionCode().equals(deckFaction)
-                    || theCard.isNeutral();
+                    || theCard.isNeutral()
+                    || deck.getIdentity().isNeutral();
 
             // Cannot add Jinteki card for "Custom Biotics: Engineered for Success" Identity
             boolean isJintekiOK = !theCard.isJinteki() || !deck.getIdentity().getCode().equals(Card.SpecialCards.CARD_CUSTOM_BIOTICS_ENGINEERED_FOR_SUCCESS);
