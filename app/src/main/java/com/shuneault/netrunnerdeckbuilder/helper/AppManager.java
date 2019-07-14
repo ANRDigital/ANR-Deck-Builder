@@ -2,6 +2,7 @@ package com.shuneault.netrunnerdeckbuilder.helper;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.shuneault.netrunnerdeckbuilder.MyApplication;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
@@ -13,9 +14,11 @@ import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import kotlin.Lazy;
 
+import static com.shuneault.netrunnerdeckbuilder.SettingsActivity.SHARED_PREF_LAST_UPDATE_DATE;
 import static org.koin.java.standalone.KoinJavaComponent.inject;
 
 /**
@@ -57,18 +60,22 @@ public class AppManager extends MyApplication {
         mDecks.addAll(mDeckRepo.getValue().getAllDecks());
 
         // Download the card list every week
-//        try {
-//            Calendar today = Calendar.getInstance();
-//            Calendar lastUpdate = Calendar.getInstance();
-//            lastUpdate.setTimeInMillis(getSharedPrefs().getLong(SHARED_PREF_LAST_UPDATE_DATE, 0));
-//            if (today.getTimeInMillis() - lastUpdate.getTimeInMillis() > (24 * 60 * 60 * 1000 * 7)) {
-//                Log.i(LOGCAT, "Weekly download...");
-//                doDownloadCards();
-//                doDownloadMWL();
-//            }
-//        } catch (Exception ignored) {
-//            //todo: flag a message here?`
-//        }
+        try {
+            Calendar today = Calendar.getInstance();
+            Calendar lastUpdate = Calendar.getInstance();
+            lastUpdate.setTimeInMillis(getSharedPrefs().getLong(SHARED_PREF_LAST_UPDATE_DATE, 0));
+            if (today.getTimeInMillis() - lastUpdate.getTimeInMillis() > (24 * 60 * 60 * 1000 * 7)) {
+                Log.i(LOGCAT, "Weekly download...");
+
+                mCardRepo.doDownloadAllData();
+                // update last download date
+                getSharedPrefs().edit()
+                        .putLong(SHARED_PREF_LAST_UPDATE_DATE, Calendar.getInstance().getTimeInMillis())
+                        .apply();
+            }
+        } catch (Exception ignored) {
+            //todo: flag a message here?`
+        }
     }
 
     public static AppManager getInstance() {
