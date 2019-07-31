@@ -5,7 +5,7 @@
       "name":"Standard",
       "description":"All packs, following rotation",
       "rotation":"rotation-2018",
-      "mwl":12
+      "mwl":13
     },
     {
       "id":2,
@@ -17,8 +17,7 @@
     {
       "id":3,
       "name":"Eternal",
-      "description":"All packs, ignoring rotation",
-      "mwl":13
+      "description":"All packs, ignoring rotation"
     },
     {
       "id":4,
