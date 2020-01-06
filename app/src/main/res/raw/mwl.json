@@ -677,7 +677,7 @@
     {
       "id": 11,
       "date_creation": "2019-02-09T04:14:11+00:00",
-      "date_update": "2019-06-03T11:49:00+00:00",
+      "date_update": "2019-09-25T15:19:34+00:00",
       "code": "standard-mwl-3.1",
       "name": "Standard MWL 3.1",
       "active": false,
@@ -817,13 +817,16 @@
         },
         "25056": {
           "is_restricted": 1
+        },
+        "28002": {
+          "is_restricted": 1
         }
       }
     },
     {
       "id": 12,
       "date_creation": "2019-05-01T13:23:25+00:00",
-      "date_update": "2019-07-26T14:57:26+00:00",
+      "date_update": "2019-09-25T15:19:34+00:00",
       "code": "standard-mwl-3.2",
       "name": "Standard MWL 3.2",
       "active": false,
@@ -966,13 +969,19 @@
         },
         "25056": {
           "is_restricted": 1
+        },
+        "28001": {
+          "is_restricted": 1
+        },
+        "28002": {
+          "is_restricted": 1
         }
       }
     },
     {
       "id": 13,
       "date_creation": "2019-07-08T23:16:45+00:00",
-      "date_update": "2019-09-20T23:46:10+00:00",
+      "date_update": "2019-09-25T15:19:34+00:00",
       "code": "standard-mwl-3-3",
       "name": "Standard MWL 3.3",
       "active": false,
@@ -1127,13 +1136,19 @@
         },
         "25056": {
           "is_restricted": 1
+        },
+        "28001": {
+          "is_restricted": 1
+        },
+        "28002": {
+          "deck_limit": 0
         }
       }
     },
     {
       "id": 14,
       "date_creation": "2019-09-09T18:14:27+00:00",
-      "date_update": "2019-09-20T23:46:10+00:00",
+      "date_update": "2019-09-25T15:19:34+00:00",
       "code": "standard-mwl-3-4",
       "name": "Standard MWL 3.4",
       "active": true,
@@ -1288,12 +1303,188 @@
         },
         "25056": {
           "is_restricted": 1
+        },
+        "28001": {
+          "is_restricted": 1
+        },
+        "28002": {
+          "deck_limit": 0
+        }
+      }
+    },
+    {
+      "id": 15,
+      "date_creation": "2019-12-27T23:27:07+00:00",
+      "date_update": "2019-12-27T23:27:07+00:00",
+      "code": "standard-mwl-3-4-b",
+      "name": "Standard MWL 3.4b",
+      "active": false,
+      "date_start": "2019-12-31",
+      "cards": {
+        "01047": {
+          "is_restricted": 1
+        },
+        "03001": {
+          "deck_limit": 0
+        },
+        "03035": {
+          "is_restricted": 1
+        },
+        "06010": {
+          "is_restricted": 1
+        },
+        "06016": {
+          "is_restricted": 1
+        },
+        "06119": {
+          "is_restricted": 1
+        },
+        "08024": {
+          "is_restricted": 1
+        },
+        "08061": {
+          "deck_limit": 0
+        },
+        "08067": {
+          "is_restricted": 1
+        },
+        "08070": {
+          "deck_limit": 0
+        },
+        "08086": {
+          "is_restricted": 1
+        },
+        "09019": {
+          "deck_limit": 0
+        },
+        "09026": {
+          "is_restricted": 1
+        },
+        "09053": {
+          "deck_limit": 0
+        },
+        "10018": {
+          "is_restricted": 1
+        },
+        "10019": {
+          "deck_limit": 0
+        },
+        "10023": {
+          "is_restricted": 1
+        },
+        "10049": {
+          "deck_limit": 0
+        },
+        "10050": {
+          "is_restricted": 1
+        },
+        "10053": {
+          "deck_limit": 0
+        },
+        "10055": {
+          "deck_limit": 0
+        },
+        "10111": {
+          "deck_limit": 0
+        },
+        "11003": {
+          "deck_limit": 0
+        },
+        "11022": {
+          "is_restricted": 1
+        },
+        "11024": {
+          "is_restricted": 1
+        },
+        "11026": {
+          "deck_limit": 0
+        },
+        "11054": {
+          "deck_limit": 0
+        },
+        "11090": {
+          "deck_limit": 0
+        },
+        "11101": {
+          "deck_limit": 0
+        },
+        "11104": {
+          "deck_limit": 0
+        },
+        "11106": {
+          "deck_limit": 0
+        },
+        "11117": {
+          "deck_limit": 0
+        },
+        "12008": {
+          "is_restricted": 1
+        },
+        "12048": {
+          "is_restricted": 1
+        },
+        "12070": {
+          "is_restricted": 1
+        },
+        "12079": {
+          "is_restricted": 1
+        },
+        "12081": {
+          "deck_limit": 0
+        },
+        "12089": {
+          "deck_limit": 0
+        },
+        "12103": {
+          "deck_limit": 0
+        },
+        "20052": {
+          "is_restricted": 1
+        },
+        "21044": {
+          "is_restricted": 1
+        },
+        "21086": {
+          "deck_limit": 0
+        },
+        "21101": {
+          "deck_limit": 0
+        },
+        "21108": {
+          "is_restricted": 1
+        },
+        "21114": {
+          "deck_limit": 0
+        },
+        "22008": {
+          "deck_limit": 0
+        },
+        "23001": {
+          "is_restricted": 1
+        },
+        "23013": {
+          "deck_limit": 0
+        },
+        "23100": {
+          "deck_limit": 0
+        },
+        "23101": {
+          "deck_limit": 0
+        },
+        "25056": {
+          "is_restricted": 1
+        },
+        "28001": {
+          "is_restricted": 1
+        },
+        "28002": {
+          "deck_limit": 0
         }
       }
     }
   ],
-  "total": 11,
+  "total": 12,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2019-09-20T23:46:10+00:00"
+  "last_updated": "2019-12-27T23:27:07+00:00"
 }
