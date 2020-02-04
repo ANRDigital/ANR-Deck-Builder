@@ -45,6 +45,11 @@ public class CardBuilder {
     private String setCode;
     private String quantity = "3";
 
+    public CardBuilder() {
+        this.imageUrlTemplate = "";
+
+    }
+
     public CardBuilder(String imageUrlTemplate) {
 
         this.imageUrlTemplate = imageUrlTemplate;

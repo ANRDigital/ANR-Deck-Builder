@@ -18,10 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -39,7 +36,7 @@ public class CardRepositoryFormatTest {
         MwlData mwlDetails = mock(MwlData.class);
         when(mLoaderMock.getMwlDetails()).thenReturn(mwlDetails);
 
-        mRotations = new ArrayList<Rotation>();
+        mRotations = new ArrayList<>();
         Rotation r = new Rotation();
         r.setCode("rotation-2018");
         r.getCycles().add("sc19");
@@ -62,19 +59,19 @@ public class CardRepositoryFormatTest {
 
         mCards = new ArrayList<>();
         // core
-        mCards.add(new CardBuilder("").withCode("123").withSetCode("sc19").withQuantity(2).Build());
-        mCards.add(new CardBuilder("").withCode("234").withSetCode("sc19").Build());
-        mCards.add(new CardBuilder("").withCode("345").withSetCode("sc19").Build());
+        mCards.add(new CardBuilder().withCode("123").withSetCode("sc19").withQuantity(2).Build());
+        mCards.add(new CardBuilder().withCode("234").withSetCode("sc19").Build());
+        mCards.add(new CardBuilder().withCode("345").withSetCode("sc19").Build());
 
         // rotated
-        mCards.add(new CardBuilder("").withCode("987").withSetCode("2345").Build());
-        mCards.add(new CardBuilder("").withCode("876").withSetCode("2345").Build());
-        mCards.add(new CardBuilder("").withCode("765").withSetCode("2345").Build());
+        mCards.add(new CardBuilder().withCode("987").withSetCode("2345").Build());
+        mCards.add(new CardBuilder().withCode("876").withSetCode("2345").Build());
+        mCards.add(new CardBuilder().withCode("765").withSetCode("2345").Build());
 
         // not rotated
-        mCards.add(new CardBuilder("").withCode("666").withSetCode("3456").Build());
-        mCards.add(new CardBuilder("").withCode("777").withSetCode("3456").Build());
-        mCards.add(new CardBuilder("").withCode("888").withSetCode("3456").Build());
+        mCards.add(new CardBuilder().withCode("666").withSetCode("3456").Build());
+        mCards.add(new CardBuilder().withCode("777").withSetCode("3456").Build());
+        mCards.add(new CardBuilder().withCode("888").withSetCode("3456").Build());
 
         when(mLoaderMock.getCardsFromFile(anyString())).thenReturn(mCards);
     }
