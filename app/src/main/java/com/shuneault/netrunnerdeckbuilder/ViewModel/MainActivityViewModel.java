@@ -22,9 +22,10 @@ public class MainActivityViewModel extends ViewModel {
         this.deckRepo = deckRepo;
     }
 
-    public Deck createDeck(Card card) {
+    public Deck createDeck(String identityCardCode) {
+        Card identity = cardRepo.getCard(identityCardCode);
         Format format = cardRepo.getDefaultFormat();
-        Deck deck = new Deck(card, format);
+        Deck deck = new Deck(identity, format);
         deckRepo.createDeck(deck);
 
         return deck;

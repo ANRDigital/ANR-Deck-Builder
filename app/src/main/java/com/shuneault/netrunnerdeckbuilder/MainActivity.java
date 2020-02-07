@@ -105,12 +105,8 @@ public class MainActivity extends AppCompatActivity implements ListDecksFragment
             case REQUEST_NEW_IDENTITY:
                 // Get the chosen identity
                 String identityCardCode = data.getStringExtra(ChooseIdentityActivity.EXTRA_IDENTITY_CODE);
-                AppManager appManager = AppManager.getInstance();
-                CardRepository repo = appManager.getCardRepository();
-                Card card = repo.getCard(identityCardCode);
-
                 // Create a new deck
-                Deck mDeck = viewModel.createDeck(card);
+                Deck mDeck = viewModel.createDeck(identityCardCode);
 
                 // Start the new deck activity
                 startDeckActivity(mDeck.getRowId());
