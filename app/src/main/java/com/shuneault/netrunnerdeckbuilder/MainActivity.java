@@ -26,12 +26,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-import kotlin.Lazy;
 
-import static org.koin.java.standalone.KoinJavaComponent.inject;
+import static org.koin.java.standalone.KoinJavaComponent.get;
 
 public class MainActivity extends AppCompatActivity implements ListDecksFragment.OnListDecksFragmentListener {
-    private Lazy<MainActivityViewModel> viewModel = inject(MainActivityViewModel.class);
+
+    private MainActivityViewModel viewModel = get(MainActivityViewModel.class);
 
     // Request Codes for activity launch
     public static final int REQUEST_NEW_IDENTITY = 1;
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements ListDecksFragment
                 Card card = repo.getCard(identityCardCode);
 
                 // Create a new deck
-                Deck mDeck = viewModel.getValue().createDeck(card);
+                Deck mDeck = viewModel.createDeck(card);
 
                 // Start the new deck activity
                 startDeckActivity(mDeck.getRowId());

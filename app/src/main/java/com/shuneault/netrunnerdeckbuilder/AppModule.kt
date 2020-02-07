@@ -10,7 +10,7 @@ import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper
 import com.shuneault.netrunnerdeckbuilder.helper.SettingsProvider
 import org.koin.android.ext.android.startKoin
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.viewmodel.experimental.builder.viewModel
+import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
 val appModule = module {
@@ -24,9 +24,9 @@ val appModule = module {
     factory { JSONDataLoader(get()) }
     factory { LocalFileHelper(androidContext()) }
 
-    viewModel<DeckActivityViewModel>()
-    viewModel<MainActivityViewModel>()
-    viewModel<BrowseCardsViewModel>()
+    viewModel { DeckActivityViewModel(get(), get(), get()) }
+    viewModel { BrowseCardsViewModel(get()) }
+    viewModel { MainActivityViewModel (get(), get()) }
 }
 
 open class MyApplication : Application(){

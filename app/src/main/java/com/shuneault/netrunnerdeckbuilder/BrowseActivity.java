@@ -40,6 +40,8 @@ public class BrowseActivity extends AppCompatActivity implements OnBrowseCardsCl
         ActionBar mActionBar = getSupportActionBar();
         if (mActionBar != null) {
             mActionBar.setTitle(R.string.title_browse_cards);
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+            mActionBar.setHomeAsUpIndicator(R.drawable.baseline_close_white_24dp);
         }
 
     }
@@ -106,5 +108,12 @@ public class BrowseActivity extends AppCompatActivity implements OnBrowseCardsCl
         // update list
         BrowseCardsFragment frag = (BrowseCardsFragment) getSupportFragmentManager().findFragmentById(R.id.browse_fragment);
         frag.updatePackFilter(mPackFilter);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+
+        return false;
     }
 }
