@@ -66,6 +66,7 @@ public class ListDecksFragment extends Fragment {
 
         // Initialize the layout manager and adapter
         final ArrayList<Deck> mCurrentDecks = getCurrentDecks();
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         ListDecksAdapter mDeckAdapter = new ListDecksAdapter(mCurrentDecks, new ListDecksAdapter.DeckViewHolder.IViewHolderClicks() {
             @Override
@@ -77,10 +78,7 @@ public class ListDecksFragment extends Fragment {
 
             @Override
             public void onDeckStarred(Deck deck, boolean isStarred) {
-                deck.setStarred(isStarred);
-                DatabaseHelper mDb;
-                mDb = AppManager.getInstance().getDatabase();
-                mDb.updateDeck(deck);
+                viewModel.starDeck(deck, isStarred);
                 // Sort for new starred order
                 Collections.sort(mCurrentDecks, new Sorter.DeckSorter());
                 mRecyclerView.getAdapter().notifyDataSetChanged();
