@@ -237,5 +237,9 @@ public class DeckActivityViewModel extends ViewModel {
     public void save() {
         mDeckRepo.saveDeck(mDeck);
     }
+
+    public String getDeckFactionCode() {
+        return mDeck.getIdentity().getFactionCode();
+    }
 }
 
