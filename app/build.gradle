@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.shuneault.netrunnerdeckbuilder"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 81
         versionName "4.1.0"
@@ -39,7 +39,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.0-alpha05'
 
     implementation 'androidx.appcompat:appcompat:1.2.0-alpha02'
+    implementation 'androidx.browser:browser:1.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha01'
