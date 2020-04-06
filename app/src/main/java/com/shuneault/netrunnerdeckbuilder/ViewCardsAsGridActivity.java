@@ -17,6 +17,7 @@ import com.shuneault.netrunnerdeckbuilder.game.CardCount;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
+import com.shuneault.netrunnerdeckbuilder.helper.NrdbHelper;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter;
 
 import java.util.ArrayList;
@@ -89,6 +90,12 @@ public class ViewCardsAsGridActivity extends AppCompatActivity {
                     intent.putExtra(ViewDeckFullscreenActivity.EXTRA_POSITION, position);
                     startActivity(intent);
                 }
+            });
+            mGridView.setOnItemLongClickListener((adapterView, view, pos, id) -> {
+                CardCount item = (CardCount) adapterView.getItemAtPosition(pos);
+                Card card = item.getCard();
+                NrdbHelper.ShowNrdbWebPage(this, card);
+                return true;
             });
         }
     }
