@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shuneault.netrunnerdeckbuilder.DeckActivity;
+import com.shuneault.netrunnerdeckbuilder.DeckViewActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewModel.MainActivityViewModel;
 import com.shuneault.netrunnerdeckbuilder.adapters.ListDecksAdapter;
@@ -83,6 +84,14 @@ public class ListDecksFragment extends Fragment {
                 Collections.sort(mCurrentDecks, new Sorter.DeckSorter());
                 mRecyclerView.getAdapter().notifyDataSetChanged();
             }
+
+            @Override
+            public void onDeckView(Deck deck) {
+                // Load the deck view activity
+                if (!deck.hasUnknownCards())
+                    startDeckViewActivity(deck.getRowId());
+            }
+
         });
 
         // Initialize the RecyclerView
@@ -115,6 +124,12 @@ public class ListDecksFragment extends Fragment {
 
     private void startDeckActivity(Long rowId) {
         Intent intent = new Intent(getActivity(), DeckActivity.class);
+        intent.putExtra(DeckActivity.ARGUMENT_DECK_ID, rowId);
+        getActivity().startActivity(intent);
+    }
+
+    private void startDeckViewActivity(Long rowId) {
+        Intent intent = new Intent(getActivity(), DeckViewActivity.class);
         intent.putExtra(DeckActivity.ARGUMENT_DECK_ID, rowId);
         getActivity().startActivity(intent);
     }

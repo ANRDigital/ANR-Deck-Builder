@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/deckview_nav_graph.xml"
+    app:startDestination="@id/cardGridFragment">
+
+    <fragment
+        android:id="@+id/cardGridFragment"
+        android:name="com.shuneault.netrunnerdeckbuilder.fragments.cardgrid.CardGridFragment"
+        android:label="card_grid_fragment"
+        tools:layout="@layout/card_grid_fragment" />
+</navigation>
