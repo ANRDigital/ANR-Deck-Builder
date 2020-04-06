@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +19,7 @@ import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
+import com.shuneault.netrunnerdeckbuilder.helper.NrdbHelper;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter.CardSorterByCardNumber;
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter.CardSorterByCardType;
 import com.shuneault.netrunnerdeckbuilder.util.SystemUiHider;
@@ -29,7 +29,6 @@ import java.util.Collections;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
@@ -185,10 +184,8 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.mnuOnline:
                 // show nrdb page!
-                String url = "https://netrunnerdb.com/en/card/" + mCards.get(mPosition).getCode();
-                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                CustomTabsIntent customTabsIntent = builder.build();
-                customTabsIntent.launchUrl(this, Uri.parse(url));
+                Card currentCard = mCards.get(mPosition);
+                NrdbHelper.ShowNrdbWebPage(this, currentCard);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

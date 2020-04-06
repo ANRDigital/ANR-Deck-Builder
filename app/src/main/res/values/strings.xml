@@ -216,5 +216,6 @@
     <string name="my_collection">My Collection</string>
     <string name="about_my_collection">What packs do you own?</string>
     <string name="default_format">Default Format</string>
+    <string name="nrdb_card_url">https://netrunnerdb.com/en/card/%s</string>
 
 </resources>
