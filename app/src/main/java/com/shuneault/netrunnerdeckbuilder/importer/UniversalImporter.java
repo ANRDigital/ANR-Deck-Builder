@@ -13,12 +13,12 @@ public class UniversalImporter implements IDeckImporter {
 
     private ArrayList<Deck> mDecks;
 
-    public UniversalImporter(String text, CardRepository repo) throws DeckFormatNotSupportedException {
+    public UniversalImporter(String text, CardRepository repo, String fileName) throws DeckFormatNotSupportedException {
         try {
             mDecks = (new JsonImporter(text)).toDecks();
         } catch (Exception ignored) {
             try {
-                mDecks = (new XmlImporter(text, repo)).toDecks();
+                mDecks = (new XmlImporter(text, repo, fileName)).toDecks();
             } catch (Exception ignored2) {
             }
         }

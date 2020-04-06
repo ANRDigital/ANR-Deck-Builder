@@ -22,6 +22,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.jetbrains.annotations.NotNull;
+
 import kotlin.Lazy;
 
 import static org.koin.java.standalone.KoinJavaComponent.inject;
@@ -43,13 +46,16 @@ public class ImportDecksActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         // Get the file as string
-        String theFile = openFile(intent.getData());
+        Uri fileUri = intent.getData();
+        String fileName = getDeckNameFromOctgnFile(fileUri);
+
+        String fileData = openFile(fileUri);
 
         // Depending on the file, import one or multiple decks
         try {
-            if (theFile != null) {
+            if (fileData != null) {
                 // Get all decks
-                ArrayList<Deck> decks = new UniversalImporter(theFile, cardRepo.getValue()).toDecks();
+                ArrayList<Deck> decks = new UniversalImporter(fileData, cardRepo.getValue(), fileName).toDecks();
                 for (Deck deck : decks) {
                     deckRepo.getValue().createDeck(deck);
                 }
@@ -76,6 +82,15 @@ public class ImportDecksActivity extends AppCompatActivity {
             alertMustUpdateCardList();
         }
 
+    }
+
+    @NotNull
+    private String getDeckNameFromOctgnFile(Uri fileUri) {
+        // assuming the file is octgn from netrunnerdb
+        String filename = fileUri.getLastPathSegment();
+        String temp = filename.substring(0, filename.lastIndexOf('.')); // remove extension
+        temp = temp.replace('-', ' '); // replace hyphens
+        return temp;
     }
 
     private void alertMustUpdateCardList() {

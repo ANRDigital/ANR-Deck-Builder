@@ -63,18 +63,12 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     public static final String ARGUMENT_DECK_ID = "com.shuneault.netrunnerdeckbuilder.ARGUMENT_DECK_ID";
     public static final String ARGUMENT_SELECTED_TAB = "com.shuneault.netrunnerdeckbuilder.ARGUMENT_SELECTED_TAB";
 
-    private DeckInfoFragment fragDeckInfo;
-
-    private ViewPager mViewPager;
-    private SlidingTabLayout tabs;
-    private LinearLayout layoutAgendas;
     private LinearLayout layoutFiltered;
     private TextView lblInfoInfluence;
     private TextView lblInfoCards;
     private TextView lblInfoAgenda;
     private TextView lblInfoLegal;
 
-    private ActionBar mActionBar;
     private int mSelectedTab = 0;
 
     private DeckActivityViewModel viewModel = get(DeckActivityViewModel.class);
@@ -102,17 +96,17 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         setContentView(R.layout.fragment_deck);
 
         // GUI
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        layoutAgendas = (LinearLayout) findViewById(R.id.layoutAgendas);
-        layoutFiltered = (LinearLayout) findViewById(R.id.layoutFiltered);
-        lblInfoInfluence = (TextView) findViewById(R.id.lblInfoInfluence);
-        lblInfoCards = (TextView) findViewById(R.id.lblInfoCards);
-        lblInfoAgenda = (TextView) findViewById(R.id.lblInfoAgenda);
-        lblInfoLegal = (TextView) findViewById(R.id.lblInfoLegal);
+        ViewPager mViewPager = findViewById(R.id.pager);
+        LinearLayout layoutAgendas = findViewById(R.id.layoutAgendas);
+        layoutFiltered = findViewById(R.id.layoutFiltered);
+        lblInfoInfluence = findViewById(R.id.lblInfoInfluence);
+        lblInfoCards = findViewById(R.id.lblInfoCards);
+        lblInfoAgenda = findViewById(R.id.lblInfoAgenda);
+        lblInfoLegal = findViewById(R.id.lblInfoLegal);
 
 
         // ActionBar - set elevation to 0 to remove shadow
-        mActionBar = getSupportActionBar();
+        ActionBar mActionBar = getSupportActionBar();
         if (mActionBar != null) {
             mActionBar.setElevation(0);
         }
@@ -152,7 +146,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         mViewPager.setAdapter(new DeckTabsPagerAdapter(getSupportFragmentManager()));
 
         // attach tabs to view pager
-        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        SlidingTabLayout tabs = findViewById(R.id.tabs);
         tabs.setViewPager(mViewPager);
         if (viewModel.getDeck().getIdentity().getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
             tabs.setBackgroundColor(getResources().getColor(R.color.netrunner_blue));
@@ -224,9 +218,6 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         @Override
         public Fragment getItem(int arg0) {
             switch (arg0) {
-                case 0:
-                    fragDeckInfo = new DeckInfoFragment();
-                    return fragDeckInfo;
                 case 1:
                     return new DeckMyCardsFragment();
                 case 2:

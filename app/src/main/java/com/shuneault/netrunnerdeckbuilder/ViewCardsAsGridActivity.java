@@ -3,6 +3,8 @@ package com.shuneault.netrunnerdeckbuilder;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +36,12 @@ public class ViewCardsAsGridActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_deck_grid);
+
+        ActionBar mActionBar = getSupportActionBar();
+        if (mActionBar != null) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+            mActionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
+        }
 
         // GUI
         GridView mGridView = (GridView) findViewById(R.id.gridView);
@@ -108,4 +116,12 @@ public class ViewCardsAsGridActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+
+        return false;
+    }
+
 }

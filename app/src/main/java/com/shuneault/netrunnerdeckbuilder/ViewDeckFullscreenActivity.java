@@ -23,6 +23,7 @@ import com.shuneault.netrunnerdeckbuilder.util.SystemUiHider;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -85,6 +86,12 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ActionBar mActionBar = getSupportActionBar();
+        if (mActionBar != null) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+            mActionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
+        }
 
         // Get the deck / set name
         AppManager appManager = AppManager.getInstance();
@@ -245,6 +252,12 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+
+        return false;
+    }
 
 //
 //	@Override

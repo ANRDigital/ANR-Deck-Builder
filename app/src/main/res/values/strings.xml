@@ -194,8 +194,8 @@
     <string name="import_decks_from_file">Import decks from file</string>
 
     <plurals name="deck_imported_successfully">
-        <item quantity="one" formatted="false">%1$d deck imported successfully%2$s</item>
-        <item quantity="other" formatted="false">%1$d decks imported successfully%2$s</item>
+        <item formatted="false" quantity="one">%1$d deck imported successfully%2$s</item>
+        <item formatted="false" quantity="other">%1$d decks imported successfully%2$s</item>
     </plurals>
     <!--<string name="deck_imported_successfully"></string>-->
     <!--<string name="decks_imported_successfully"></string>-->

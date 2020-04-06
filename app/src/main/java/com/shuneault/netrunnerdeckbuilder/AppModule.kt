@@ -27,6 +27,7 @@ val appModule = module {
     viewModel { DeckActivityViewModel(get(), get(), get()) }
     viewModel { BrowseCardsViewModel(get()) }
     viewModel { MainActivityViewModel (get(), get()) }
+
 }
 
 open class MyApplication : Application(){

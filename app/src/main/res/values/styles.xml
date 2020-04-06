@@ -70,4 +70,13 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="Theme.Netrunner.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Netrunner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Netrunner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
