@@ -41,7 +41,7 @@ public class BrowseActivity extends AppCompatActivity implements OnBrowseCardsCl
         if (mActionBar != null) {
             mActionBar.setTitle(R.string.title_browse_cards);
             mActionBar.setDisplayHomeAsUpEnabled(true);
-            mActionBar.setHomeAsUpIndicator(R.drawable.baseline_close_white_24dp);
+            mActionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
         }
 
     }
