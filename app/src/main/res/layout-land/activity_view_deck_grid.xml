@@ -1,5 +1,5 @@
 <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/gridView"
     android:numColumns="auto_fit"
@@ -7,9 +7,5 @@
     android:columnWidth="195dp"
     android:horizontalSpacing="1dp"
     android:verticalSpacing="1dp"
-    android:gravity="center"
-    tools:context="com.shuneault.netrunnerdeckbuilder.ViewCardsAsGridActivity">
-
-
-
+    android:gravity="center">
 </GridView>

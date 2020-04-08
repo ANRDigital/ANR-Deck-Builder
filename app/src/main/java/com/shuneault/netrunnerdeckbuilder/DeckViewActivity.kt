@@ -8,7 +8,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class DeckViewActivity : AppCompatActivity() {
 
-    val deckViewModel: DeckActivityViewModel by viewModel()
+    private val deckViewModel: DeckActivityViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,5 @@ class DeckViewActivity : AppCompatActivity() {
         setContentView(R.layout.deck_view_activity)
 
     }
-
-
 
 }

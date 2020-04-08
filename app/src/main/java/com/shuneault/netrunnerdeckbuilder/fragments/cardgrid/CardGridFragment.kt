@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.shuneault.netrunnerdeckbuilder.R
-import com.shuneault.netrunnerdeckbuilder.ViewModel.DeckActivityViewModel
 import kotlinx.android.synthetic.main.card_grid_fragment.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class CardGridFragment : Fragment() {
 
-    val deckViewModel: DeckActivityViewModel by sharedViewModel()
+    val viewModel: CardGridViewModel by sharedViewModel()
 
     companion object {
         fun newInstance() = CardGridFragment()
@@ -26,8 +25,7 @@ class CardGridFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val deck = deckViewModel.deck
-        message.setText(deck.name)
+        message.text = viewModel.title
     }
 
 }

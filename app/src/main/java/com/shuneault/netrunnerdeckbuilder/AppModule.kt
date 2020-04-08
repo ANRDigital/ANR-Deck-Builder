@@ -5,6 +5,7 @@ import com.shuneault.netrunnerdeckbuilder.ViewModel.BrowseCardsViewModel
 import com.shuneault.netrunnerdeckbuilder.ViewModel.DeckActivityViewModel
 import com.shuneault.netrunnerdeckbuilder.ViewModel.MainActivityViewModel
 import com.shuneault.netrunnerdeckbuilder.db.*
+import com.shuneault.netrunnerdeckbuilder.fragments.cardgrid.CardGridViewModel
 import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper
 import com.shuneault.netrunnerdeckbuilder.helper.SettingsProvider
@@ -27,7 +28,7 @@ val appModule = module {
     viewModel { DeckActivityViewModel(get(), get(), get()) }
     viewModel { BrowseCardsViewModel(get()) }
     viewModel { MainActivityViewModel (get(), get()) }
-
+    viewModel { CardGridViewModel(get()) }
 }
 
 open class MyApplication : Application(){
