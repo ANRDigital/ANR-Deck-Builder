@@ -8,6 +8,5 @@
     <fragment
         android:id="@+id/cardGridFragment"
         android:name="com.shuneault.netrunnerdeckbuilder.fragments.cardgrid.CardGridFragment"
-        android:label="card_grid_fragment"
-        tools:layout="@layout/card_grid_fragment" />
+        android:label="card_grid_fragment" />
 </navigation>
