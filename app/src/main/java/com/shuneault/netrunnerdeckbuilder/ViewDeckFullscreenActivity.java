@@ -14,79 +14,32 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.game.Pack;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
-import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
-import com.shuneault.netrunnerdeckbuilder.helper.NrdbHelper;
-import com.shuneault.netrunnerdeckbuilder.helper.Sorter.CardSorterByCardNumber;
-import com.shuneault.netrunnerdeckbuilder.helper.Sorter.CardSorterByCardType;
-import com.shuneault.netrunnerdeckbuilder.util.SystemUiHider;
-
-import java.util.ArrayList;
-import java.util.Collections;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- *
- * @see SystemUiHider
- */
+import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel;
+import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.Deck;
+import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
+import com.shuneault.netrunnerdeckbuilder.helper.NrdbHelper;
+
+import java.util.ArrayList;
+
+import static org.koin.java.standalone.KoinJavaComponent.get;
+
 public class ViewDeckFullscreenActivity extends AppCompatActivity {
-    /**
-     * Whether or not the system UI should be auto-hidden after
-     * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
-     */
-    private static final boolean AUTO_HIDE = true;
-
-    /**
-     * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
-     * user interaction before hiding the system UI.
-     */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
-
-    /**
-     * If set, will toggle the system UI visibility upon interaction. Otherwise,
-     * will show the system UI visibility upon interaction.
-     */
-    private static final boolean TOGGLE_ON_CLICK = true;
-
-    /**
-     * The flags to pass to {@link SystemUiHider#getInstance}.
-     */
-    private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
-
-    /**
-     * The instance of the {@link SystemUiHider} for this activity.
-     */
-    private SystemUiHider mSystemUiHider;
-
-
     // Arguments
     public static final String EXTRA_DECK_ID = "com.example.netrunnerdeckbuilder.EXTRA_DECK_ID";
-    public static final String EXTRA_SET_NAME = "com.example.netrunnerdeckbuilder.EXTRA_SET_NAME";
     public static final String EXTRA_CARD_CODE = "com.example.netrunnerdeckbuilder.EXTRA_CARD_CODE";
     public static final String EXTRA_POSITION = "com.example.netrunnerdeckbuilder.EXTRA_POSITION";
     public static final String EXTRA_CARDS = "com.example.netrunnerdeckbuilder.EXTRA_CARDS";
 
-    // GUI Elements
-    private ViewPager mPager;
-
-    private Deck mDeck = null;
-    private String mSetName = null;
-    private String mCardCode = null;
-    private int mPosition = 0;
-    private ArrayList<String> mCardCodes = new ArrayList<>();
-
     private ArrayList<Card> mCards = new ArrayList<>();
 
+    private FullScreenViewModel vm = get(FullScreenViewModel.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,47 +50,31 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
             mActionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
         }
 
-        // Get the deck / set name
-        AppManager appManager = AppManager.getInstance();
-        if (savedInstanceState == null) {
-            mDeck = appManager.getDeck(getIntent().getLongExtra(EXTRA_DECK_ID, 0));
-            mSetName = getIntent().getStringExtra(EXTRA_SET_NAME);
-            mCardCode = getIntent().getStringExtra(EXTRA_CARD_CODE);
-            mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
-            mCardCodes = (ArrayList<String>) getIntent().getSerializableExtra(EXTRA_CARDS);
-        } else {
-            mDeck = appManager.getDeck(savedInstanceState.getLong(EXTRA_DECK_ID, 0));
-            mSetName = savedInstanceState.getString(EXTRA_SET_NAME);
-            mCardCode = savedInstanceState.getString(EXTRA_CARD_CODE);
-            mPosition = savedInstanceState.getInt(EXTRA_POSITION);
+        // load data
+        vm.setCardCode(getIntent().getStringExtra(EXTRA_CARD_CODE));
+        vm.setPosition(getIntent().getIntExtra(EXTRA_POSITION, 0));
+        ArrayList<String> cardList = (ArrayList<String>) getIntent().getSerializableExtra(EXTRA_CARDS);
+        if (cardList != null){
+            vm.setCardCodes(cardList);
+        }
+        long deckId = getIntent().getLongExtra(EXTRA_DECK_ID, 0);
+        if (deckId > 0) {
+            vm.loadDeck(deckId);
         }
 
         // set theme to identity's faction colors
-        if (mDeck != null) {
-            setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
-        } else if (mCardCode != null) {
-            setTheme(getResources().getIdentifier("Theme.Netrunner_" + appManager.getCard(mCardCode).getFactionCode().replace("-", ""), "style", this.getPackageName()));
+        String factionCode = vm.getFactionCode();
+        if (factionCode != null){
+            setTheme(getResources().getIdentifier("Theme.Netrunner_" + factionCode.replace("-", ""), "style", this.getPackageName()));
         }
 
         setContentView(R.layout.activity_fullscreen_view);
 
-        // GUI
-        mPager = (ViewPager) findViewById(R.id.pager);
+        // GUI Elements
+        ViewPager mPager = (ViewPager) findViewById(R.id.pager);
 
         // Build the image array
-        if (mDeck != null) {
-            mCards = mDeck.getCards();
-            getSupportActionBar().setIcon(mDeck.getIdentity().getFactionImageRes(this));
-            Collections.sort(mCards, new CardSorterByCardType());
-        } else if (mSetName != null) {
-            mCards = appManager.getCardRepository().getPackCards(mSetName);
-            Collections.sort(mCards, new CardSorterByCardNumber());
-        } else if (mCardCode != null) {
-            mCards = new ArrayList<Card>();
-            mCards.add(appManager.getCard(mCardCode));
-        } else if (mCardCodes != null && !mCardCodes.isEmpty()){
-            mCards = appManager.getCardRepository().getCards(mCardCodes);
-        }
+        mCards = vm.getCards();
 
         // Quit if deck is empty
         if (mCards.size() == 0) {
@@ -146,16 +83,16 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
         }
 
         // Change the icon and title
-        updateTitle(mCards.get(mPosition));
+        updateTitle(mCards.get(vm.getPosition()));
 
         // Set the adapter for the view pager
         mPager.setAdapter(new ImageViewPager());
-        mPager.setCurrentItem(mPosition);
-        mPager.setOnPageChangeListener(new OnPageChangeListener() {
+        mPager.setCurrentItem(vm.getPosition());
+        mPager.addOnPageChangeListener(new OnPageChangeListener() {
 
             @Override
             public void onPageSelected(int arg0) {
-                mPosition = arg0;
+                vm.setPosition(arg0);
                 Card card = mCards.get(arg0);
                 updateTitle(card);
             }
@@ -184,22 +121,12 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.mnuOnline:
                 // show nrdb page!
-                Card currentCard = mCards.get(mPosition);
+                Card currentCard = mCards.get(vm.getPosition());
                 NrdbHelper.ShowNrdbWebPage(this, currentCard);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (mDeck != null)
-            outState.putLong(EXTRA_DECK_ID, mDeck.getRowId());
-        outState.putString(EXTRA_SET_NAME, mSetName);
-        outState.putString(EXTRA_CARD_CODE, mCardCode);
-        outState.putInt(EXTRA_POSITION, mPosition);
     }
 
     private void exitIfDeckEmpty() {
@@ -220,15 +147,9 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
     }
 
     private void updateTitle(Card card) {
-        if (mDeck != null) {
-            setTitle("[" + mDeck.getCardCount(card) + "] - " + mDeck.getName());
-        } else if (mSetName != null) {
-            for (Pack pack : AppManager.getInstance().getAllPacks()) {
-                if (pack.getCode().equals(mSetName)) {
-                    setTitle(pack.getName());
-                    break;
-                }
-            }
+        Deck deck = vm.getDeck();
+        if (deck != null) {
+            setTitle("[" + deck.getCardCount(card) + "] - " + deck.getName());
         } else {
             setTitle(card.getTitle());
         }
@@ -283,47 +204,4 @@ public class ViewDeckFullscreenActivity extends AppCompatActivity {
 
         return false;
     }
-
-//
-//	@Override
-//	protected void onPostCreate(Bundle savedInstanceState) {
-//		super.onPostCreate(savedInstanceState);
-//
-//		// Trigger the initial hide() shortly after the activity has been
-//		// created, to briefly hint to the user that UI controls
-//		// are available.
-//		delayedHide(100);
-//	}
-//
-//	/**
-//	 * Touch listener to use for in-layout UI controls to delay hiding the
-//	 * system UI. This is to prevent the jarring behavior of controls going away
-//	 * while interacting with activity UI.
-//	 */
-//	View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-//		@Override
-//		public boolean onTouch(View view, MotionEvent motionEvent) {
-//			if (AUTO_HIDE) {
-//				delayedHide(AUTO_HIDE_DELAY_MILLIS);
-//			}
-//			return false;
-//		}
-//	};
-
-//	Handler mHideHandler = new Handler();
-//	Runnable mHideRunnable = new Runnable() {
-//		@Override
-//		public void run() {
-//			mSystemUiHider.hide();
-//		}
-//	};
-//
-//	/**
-//	 * Schedules a call to hide() in [delay] milliseconds, canceling any
-//	 * previously scheduled calls.
-//	 */
-//	private void delayedHide(int delayMillis) {
-//		mHideHandler.removeCallbacks(mHideRunnable);
-//		mHideHandler.postDelayed(mHideRunnable, delayMillis);
-//	}
 }

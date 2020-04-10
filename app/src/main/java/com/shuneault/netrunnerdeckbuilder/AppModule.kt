@@ -3,6 +3,7 @@ package com.shuneault.netrunnerdeckbuilder
 import android.app.Application
 import com.shuneault.netrunnerdeckbuilder.ViewModel.BrowseCardsViewModel
 import com.shuneault.netrunnerdeckbuilder.ViewModel.DeckActivityViewModel
+import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.ViewModel.MainActivityViewModel
 import com.shuneault.netrunnerdeckbuilder.db.*
 import com.shuneault.netrunnerdeckbuilder.fragments.cardgrid.CardGridViewModel
@@ -29,6 +30,7 @@ val appModule = module {
     viewModel { BrowseCardsViewModel(get()) }
     viewModel { MainActivityViewModel (get(), get()) }
     viewModel { CardGridViewModel(get()) }
+    viewModel { FullScreenViewModel(get(), get())}
 }
 
 open class MyApplication : Application(){
