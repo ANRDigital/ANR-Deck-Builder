@@ -52,11 +52,19 @@ class FullScreenViewModel(private val deckRepository: IDeckRepository, private v
     fun getCurrentCardTitle(): String {
         val cc: CardCount = cardCounts[position]
         deck?.let {
-            val num = deck?.getCardCount(cc.card);
-            val cardCount = it.cardCounts[position]
+            val num = it.getCardCount(cc.card);
             return String.format("%d x %s", num, cc.card.title)
         }
         return cc.card.title
+    }
+
+    fun getCurrentCard(): Card {
+        val cc: CardCount = cardCounts[position]
+        return cc.card
+    }
+
+    fun isEmpty(): Boolean {
+        return cardCounts.isEmpty()
     }
 
     val factionCode: String?

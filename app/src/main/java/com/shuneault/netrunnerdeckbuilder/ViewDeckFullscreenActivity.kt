@@ -6,12 +6,10 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
-import com.shuneault.netrunnerdeckbuilder.game.Card
 import com.shuneault.netrunnerdeckbuilder.helper.NrdbHelper
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ViewDeckFullscreenActivity : AppCompatActivity() {
-    private var mCards = ArrayList<Card>()
     private val vm: FullScreenViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) { // load data
@@ -59,8 +57,7 @@ class ViewDeckFullscreenActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.mnuOnline -> {
                 // show nrdb page!
-                val currentCard = mCards[vm.position]
-                NrdbHelper.ShowNrdbWebPage(this, currentCard)
+                NrdbHelper.ShowNrdbWebPage(this, vm.getCurrentCard())
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -68,7 +65,7 @@ class ViewDeckFullscreenActivity : AppCompatActivity() {
     }
 
     private fun exitIfDeckEmpty() {
-        if (mCards.size == 0) {
+        if (vm.isEmpty()) {
             val builder = AlertDialog.Builder(this)
             builder.setTitle(R.string.view_deck)
             builder.setMessage(R.string.deck_is_empty)
