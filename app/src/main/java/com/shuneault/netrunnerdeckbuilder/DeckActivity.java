@@ -33,6 +33,7 @@ import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
+import com.shuneault.netrunnerdeckbuilder.ui.ThemeHelper;
 import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
 import java.io.File;
@@ -51,6 +52,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import kotlin.Lazy;
 
+import static org.koin.java.standalone.KoinJavaComponent.get;
 import static org.koin.java.standalone.KoinJavaComponent.inject;
 
 public class DeckActivity extends AppCompatActivity implements OnDeckChangedListener,
@@ -62,23 +64,15 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     public static final String ARGUMENT_DECK_ID = "com.shuneault.netrunnerdeckbuilder.ARGUMENT_DECK_ID";
     public static final String ARGUMENT_SELECTED_TAB = "com.shuneault.netrunnerdeckbuilder.ARGUMENT_SELECTED_TAB";
 
-    private DeckInfoFragment fragDeckInfo;
-
-    private Deck mDeck;
-    private ViewPager mViewPager;
-    private SlidingTabLayout tabs;
-    private LinearLayout layoutAgendas;
     private LinearLayout layoutFiltered;
     private TextView lblInfoInfluence;
     private TextView lblInfoCards;
     private TextView lblInfoAgenda;
     private TextView lblInfoLegal;
 
-    private ActionBar mActionBar;
     private int mSelectedTab = 0;
 
-    private Lazy<DeckActivityViewModel> viewModel = inject(DeckActivityViewModel.class);
-    private int mCount = 0;
+    private DeckActivityViewModel viewModel = get(DeckActivityViewModel.class);
 
     private Lazy<ISettingsProvider> settingsProvider = inject(ISettingsProvider.class);
 
@@ -86,11 +80,10 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     protected void onCreate(Bundle savedInstanceState) {
         // Set the theme and layout
         long deckId = getIntent().getExtras().getLong(ARGUMENT_DECK_ID);
-        viewModel.getValue().setDeckId(deckId);
-        mDeck = viewModel.getValue().getDeck();
+        viewModel.setDeckId(deckId);
 
         try {
-            setTheme(getResources().getIdentifier("Theme.Netrunner_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "style", this.getPackageName()));
+            setTheme(ThemeHelper.Companion.getTheme(viewModel.getDeckFactionCode(), this));
         } catch (Exception e) {
             // do nothing, will use default blue theme instead
             e.printStackTrace();
@@ -99,20 +92,20 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         // super must be called after setTheme or else notification and navigation bars won't be themed properly
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.fragment_deck);
+        setContentView(R.layout.activity_deck);
 
         // GUI
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        layoutAgendas = (LinearLayout) findViewById(R.id.layoutAgendas);
-        layoutFiltered = (LinearLayout) findViewById(R.id.layoutFiltered);
-        lblInfoInfluence = (TextView) findViewById(R.id.lblInfoInfluence);
-        lblInfoCards = (TextView) findViewById(R.id.lblInfoCards);
-        lblInfoAgenda = (TextView) findViewById(R.id.lblInfoAgenda);
-        lblInfoLegal = (TextView) findViewById(R.id.lblInfoLegal);
+        ViewPager mViewPager = findViewById(R.id.pager);
+        LinearLayout layoutAgendas = findViewById(R.id.layoutAgendas);
+        layoutFiltered = findViewById(R.id.layoutFiltered);
+        lblInfoInfluence = findViewById(R.id.lblInfoInfluence);
+        lblInfoCards = findViewById(R.id.lblInfoCards);
+        lblInfoAgenda = findViewById(R.id.lblInfoAgenda);
+        lblInfoLegal = findViewById(R.id.lblInfoLegal);
 
 
         // ActionBar - set elevation to 0 to remove shadow
-        mActionBar = getSupportActionBar();
+        ActionBar mActionBar = getSupportActionBar();
         if (mActionBar != null) {
             mActionBar.setElevation(0);
         }
@@ -120,20 +113,13 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         // Get the params
         if (savedInstanceState != null) {
             mSelectedTab = savedInstanceState.getInt(ARGUMENT_SELECTED_TAB);
-            // Restore the fragments instances
-//            fragDeckInfo = (DeckInfoFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckInfoFragment.class.getName());
-//            fragDeckMyCards = (DeckMyCardsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckMyCardsFragment.class.getName());
-//            fragDeckCards = (DeckCardsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckCardsFragment.class.getName());
-//            fragDeckBuild = (DeckBuildFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckBuildFragment.class.getName());
-//            fragDeckStats = (DeckStatsFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckStatsFragment.class.getName());
-//            fragDeckHand = (DeckHandFragment) getSupportFragmentManager().getFragment(savedInstanceState, DeckHandFragment.class.getName());
         } else {
             mSelectedTab = getIntent().getExtras().getInt(ARGUMENT_SELECTED_TAB);
         }
 
         // Change the title
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setTitle(mDeck.getName());
+        mActionBar.setTitle(viewModel.getDeck().getName());
         // app icon doesn't work with support library - needs implemented differently
 //        if (mDeck.getIdentity().getFactionCode().equals(Card.Faction.FACTION_NEUTRAL)) {
 //            mActionBar.setLogo(getResources().getDrawable(R.drawable.ic_launcher));
@@ -142,7 +128,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 //        }
 
         // Display the agendas (in the infobar) only if it is a CORP deck
-        if (mDeck.getSide().equals(Card.Side.SIDE_CORPORATION)) {
+        if (viewModel.getDeck().getSide().equals(Card.Side.SIDE_CORPORATION)) {
             layoutAgendas.setVisibility(View.VISIBLE);
         } else {
             layoutAgendas.setVisibility(View.GONE);
@@ -159,19 +145,19 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         mViewPager.setAdapter(new DeckTabsPagerAdapter(getSupportFragmentManager()));
 
         // attach tabs to view pager
-        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        SlidingTabLayout tabs = findViewById(R.id.tabs);
         tabs.setViewPager(mViewPager);
-        if (mDeck.getIdentity().getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
+        if (viewModel.getDeck().getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
             tabs.setBackgroundColor(getResources().getColor(R.color.netrunner_blue));
         } else {
             tabs.setBackgroundColor(getResources().getColor(getResources().getIdentifier(
-                    "dark_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "color", this.
+                    "dark_" + viewModel.getDeck().getFactionCode().replace("-", ""), "color", this.
                             getPackageName())));
         }
     }
 
     private void setPackFilterIconVisibility() {
-        Format format = mDeck.getFormat();
+        Format format = viewModel.getDeck().getFormat();
         if (format.canFilter()) {
             layoutFiltered.setVisibility(View.VISIBLE);
         } else {
@@ -181,31 +167,32 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
     private void updateInfoBar() {
         // Update the influence, card count and agendas
-        if (mDeck.getInfluenceLimit() == Integer.MAX_VALUE) {
-            lblInfoInfluence.setText(mDeck.getDeckInfluence() + "/" + getResources().getString(R.string.infinite_symbol));
+        Deck deck = viewModel.getDeck();
+        if (deck.getInfluenceLimit() == Integer.MAX_VALUE) {
+            lblInfoInfluence.setText(deck.getDeckInfluence() + "/" + getResources().getString(R.string.infinite_symbol));
         } else {
-            lblInfoInfluence.setText(mDeck.getDeckInfluence() + "/" + mDeck.getInfluenceLimit());
+            lblInfoInfluence.setText(deck.getDeckInfluence() + "/" + deck.getInfluenceLimit());
         }
-        lblInfoCards.setText(mDeck.getDeckSize() + "/" + mDeck.getMinimumDeckSize());
-        lblInfoAgenda.setText(mDeck.getDeckAgenda() + "/(" + mDeck.getDeckAgendaMinimum() + '-' + (mDeck.getDeckAgendaMinimum() + 1) + ')');
+        lblInfoCards.setText(deck.getDeckSize() + "/" + deck.getMinimumDeckSize());
+        lblInfoAgenda.setText(deck.getDeckAgenda() + "/(" + deck.getDeckAgendaMinimum() + '-' + (deck.getDeckAgendaMinimum() + 1) + ')');
 
         // Update the style Influence
-        if (mDeck.isInfluenceOk())
+        if (deck.isInfluenceOk())
             lblInfoInfluence.setTextAppearance(this, R.style.InfoBarGood);
         else
             lblInfoInfluence.setTextAppearance(this, R.style.InfoBarBad);
         // Update the style Agendas
-        if (mDeck.isAgendaOk())
+        if (deck.isAgendaOk())
             lblInfoAgenda.setTextAppearance(this, R.style.InfoBarGood);
         else
             lblInfoAgenda.setTextAppearance(this, R.style.InfoBarBad);
         // Update the style Cards
-        if (mDeck.isCardCountOk())
+        if (deck.isCardCountOk())
             lblInfoCards.setTextAppearance(this, R.style.InfoBarGood);
         else
             lblInfoCards.setTextAppearance(this, R.style.InfoBarBad);
 
-        if (viewModel.getValue().isValid()) {
+        if (viewModel.isValid()) {
             lblInfoLegal.setTextAppearance(this, R.style.InfoBarGood);
             lblInfoLegal.setText("✓");
         } else {
@@ -218,7 +205,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
     @Override
     public DeckActivityViewModel getViewModel() {
-        return this.viewModel.getValue();
+        return this.viewModel;
     }
 
     public class DeckTabsPagerAdapter extends FragmentPagerAdapter {
@@ -230,9 +217,6 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         @Override
         public Fragment getItem(int arg0) {
             switch (arg0) {
-                case 0:
-                    fragDeckInfo = new DeckInfoFragment();
-                    return fragDeckInfo;
                 case 1:
                     return new DeckMyCardsFragment();
                 case 2:
@@ -282,6 +266,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.mnuDeleteDeck:
                 // Alert
@@ -292,7 +277,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        viewModel.getValue().deleteDeck(mDeck);
+                        viewModel.deleteDeck(viewModel.getDeck());
                         Toast.makeText(DeckActivity.this, R.string.message_deck_deleted, Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -309,7 +294,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 return true;
             case R.id.mnuCloneDeck:
                 // Create a clone of the deck
-                Long newDeckId = viewModel.getValue().cloneDeck(mDeck);
+                Long newDeckId = viewModel.cloneDeck(viewModel.getDeck());
                 Toast.makeText(this, R.string.toast_deck_cloned_successfuly, Toast.LENGTH_LONG).show();
                 // Start the new deck activity
                 Intent intentClone = new Intent(DeckActivity.this, DeckActivity.class);
@@ -321,26 +306,27 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 return true;
 
             case R.id.mnuViewFullScreen:
-                Intent intentFullScreen = new Intent(this, ViewCardsAsGridActivity.class);
-                intentFullScreen.putExtra(ViewCardsAsGridActivity.EXTRA_DECK_ID, mDeck.getRowId());
+                Intent intentFullScreen = new Intent(this, DeckViewActivity.class);
+                intentFullScreen.putExtra(DeckActivity.ARGUMENT_DECK_ID, viewModel.getDeck().getRowId());
                 startActivity(intentFullScreen);
                 return true;
 
             case R.id.mnuChangeIdentity:
                 // Change the identity
                 Intent intentChooseIdentity = new Intent(this, ChooseIdentityActivity.class);
-                intentChooseIdentity.putExtra(ChooseIdentityActivity.EXTRA_SIDE_CODE, mDeck.getSide());
-                intentChooseIdentity.putExtra(ChooseIdentityActivity.EXTRA_FORMAT, mDeck.getFormat().getId());
-                intentChooseIdentity.putExtra(ChooseIdentityActivity.EXTRA_INITIAL_IDENTITY_CODE, mDeck.getIdentity().getCode());
+                intentChooseIdentity.putExtra(ChooseIdentityActivity.EXTRA_SIDE_CODE, viewModel.getDeck().getSide());
+                intentChooseIdentity.putExtra(ChooseIdentityActivity.EXTRA_FORMAT, viewModel.getDeck().getFormat().getId());
+                intentChooseIdentity.putExtra(ChooseIdentityActivity.EXTRA_INITIAL_IDENTITY_CODE, viewModel.getDeck().getIdentity().getCode());
                 startActivityForResult(intentChooseIdentity, REQUEST_CHANGE_IDENTITY);
                 return true;
 
             case R.id.mnuOCTGN:
-                String filename = mDeck.getFileSafeName() + ".o8d";
+
+                String filename = viewModel.getDeck().getFileSafeName() + ".o8d";
                 // Save the file as OCTGN format
                 try {
                     FileOutputStream fileOut = this.openFileOutput(filename, Context.MODE_PRIVATE);
-                    fileOut.write(new OCTGN().fromDeck(mDeck).getBytes());
+                    fileOut.write(new OCTGN().fromDeck(viewModel.getDeck()).getBytes());
                     fileOut.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -349,7 +335,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 // Create the send intent
                 Intent intentEmail = new Intent(Intent.ACTION_SEND);
                 intentEmail.setType("text/plain");
-                intentEmail.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + mDeck.getName());
+                intentEmail.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + viewModel.getDeck().getName());
                 intentEmail.putExtra(Intent.EXTRA_TEXT, "\r\n\r\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
 
                 File fileStreamPath = getFileStreamPath(filename);
@@ -363,24 +349,24 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 return true;
 
             case R.id.mnuPlainText:
-                String plainText = new PlainText(this).fromDeck(mDeck);
+                String plainText = new PlainText(this).fromDeck(viewModel.getDeck());
 
                 // Create the send intent
                 Intent intentEmailPlain = new Intent(Intent.ACTION_SEND);
                 intentEmailPlain.setType("text/plain");
-                intentEmailPlain.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + mDeck.getName());
+                intentEmailPlain.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + viewModel.getDeck().getName());
                 intentEmailPlain.putExtra(Intent.EXTRA_TEXT, plainText + "\n\nDownload Android Netrunner DeckBuilder for free at https://play.google.com/store/apps/details?id=com.shuneault.netrunnerdeckbuilder");
                 startActivity(Intent.createChooser(intentEmailPlain, getText(R.string.menu_share)));
 
                 return true;
 
             case R.id.mnuJintekiNet:
-                String jintekiNet = new JintekiNet().fromDeck(mDeck);
+                String jintekiNet = new JintekiNet().fromDeck(viewModel.getDeck());
 
                 // Create the send intent
                 Intent intentJintekiNetPlain = new Intent(Intent.ACTION_SEND);
                 intentJintekiNetPlain.setType("text/plain");
-                intentJintekiNetPlain.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + mDeck.getName());
+                intentJintekiNetPlain.putExtra(Intent.EXTRA_SUBJECT, "NetRunner Deck - " + viewModel.getDeck().getName());
                 intentJintekiNetPlain.putExtra(Intent.EXTRA_TEXT, jintekiNet);
                 startActivity(Intent.createChooser(intentJintekiNetPlain, getText(R.string.menu_share)));
 
@@ -406,7 +392,8 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     private void doChoosePacks() {
         // display list alert dialog
         ChoosePacksDialogFragment choosePacksDlg = new ChoosePacksDialogFragment();
-        choosePacksDlg.setData(mDeck.getPackFilter(), mDeck.getFormat());
+        Deck deck = viewModel.getDeck();
+        choosePacksDlg.setData(deck.getPackFilter(), deck.getFormat());
         choosePacksDlg.show(getSupportFragmentManager(), "choosePacks");
     }
 
@@ -414,11 +401,11 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         AtomicInteger choice = new AtomicInteger();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.set_core_count)
-            .setSingleChoiceItems(R.array.arrCoreCountPreference, mDeck.getCoreCount(),
+            .setSingleChoiceItems(R.array.arrCoreCountPreference, viewModel.getDeck().getCoreCount(),
                     (dialog, which) -> choice.set(which))
             .setPositiveButton(R.string.ok, (dialog, which) -> {
                 int count = choice.get();
-                viewModel.getValue().setCoreCount(count); // which is zero based array
+                viewModel.setCoreCount(count); // which is zero based array
                 doCardPoolChange();
 
                 dialog.dismiss();
@@ -436,7 +423,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         // save the new setting
         ChoosePacksDialogFragment frag = (ChoosePacksDialogFragment)dialog;
         ArrayList<String> packFilter = frag.getSelectedValues();
-        viewModel.getValue().setPackFilter(packFilter);
+        viewModel.setPackFilter(packFilter);
 
         doCardPoolChange();
         updateInfoBar();
@@ -445,7 +432,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
     @Override
     public void onMyCollectionChosen(DialogFragment dialog) {
         ArrayList<String> myCollection = settingsProvider.getValue().getMyCollection();
-        viewModel.getValue().setPackFilter(myCollection);
+        viewModel.setPackFilter(myCollection);
 
         doCardPoolChange();
         updateInfoBar();
@@ -459,11 +446,11 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         switch (requestCode) {
             case REQUEST_CHANGE_IDENTITY:
                 String idCode = data.getStringExtra(ChooseIdentityActivity.EXTRA_IDENTITY_CODE);
-                viewModel.getValue().changeDeckIdentity(mDeck, idCode);
+                viewModel.changeDeckIdentity(viewModel.getDeck(), idCode);
 
                 // Restart the activity
                 Intent intent = new Intent(DeckActivity.this, DeckActivity.class);
-                intent.putExtra(DeckActivity.ARGUMENT_DECK_ID, mDeck.getRowId());
+                intent.putExtra(DeckActivity.ARGUMENT_DECK_ID, viewModel.getDeck().getRowId());
                 intent.putExtra(DeckActivity.ARGUMENT_SELECTED_TAB, mSelectedTab);
                 startActivity(intent);
                 finish();
@@ -487,7 +474,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
     @Override
     public void onFormatChanged(Format format) {
-        DeckActivityViewModel vm = viewModel.getValue();
+        DeckActivityViewModel vm = viewModel;
         if (vm.changeDeckFormat(format)) {
             doCardPoolChange();
         }
@@ -512,33 +499,14 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
         // Save the deck
         Handler myHandler = new Handler(Looper.getMainLooper());
-        Runnable myRunnable = new Runnable() {
-            @Override
-            public void run() {
-                viewModel.getValue().save();
-            }
-        };
+        Runnable myRunnable = () -> viewModel.save();
         myHandler.post(myRunnable);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putLong(ARGUMENT_DECK_ID, mDeck.getRowId());
+        outState.putLong(ARGUMENT_DECK_ID, viewModel.getDeck().getRowId());
         outState.putInt(ARGUMENT_SELECTED_TAB, mSelectedTab);
-
-        // Save the fragments instances --  not best practise... allow fragments to be destroyed.
-//        if (fragDeckInfo != null)
-//            getSupportFragmentManager().putFragment(outState, DeckInfoFragment.class.getName(), fragDeckInfo);
-//        if (fragDeckMyCards != null)
-//            getSupportFragmentManager().putFragment(outState, DeckMyCardsFragment.class.getName(), fragDeckMyCards);
-//        if (fragDeckCards != null)
-//            getSupportFragmentManager().putFragment(outState, DeckCardsFragment.class.getName(), fragDeckCards);
-//        if (fragDeckBuild != null)
-//            getSupportFragmentManager().putFragment(outState, DeckBuildFragment.class.getName(), fragDeckBuild);
-//        if (fragDeckStats != null)
-//            getSupportFragmentManager().putFragment(outState, DeckStatsFragment.class.getName(), fragDeckStats);
-//        if (fragDeckHand != null)
-//            getSupportFragmentManager().putFragment(outState, DeckHandFragment.class.getName(), fragDeckHand);
 
         super.onSaveInstanceState(outState);
     }

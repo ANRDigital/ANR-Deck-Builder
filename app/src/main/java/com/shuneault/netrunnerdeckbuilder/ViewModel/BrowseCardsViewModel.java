@@ -21,7 +21,6 @@ public class BrowseCardsViewModel extends ViewModel {
     public void init() {
         mPool = cardRepo.getGlobalCardPool();
         mCards = mPool.getCards();
-
     }
 
     public CardList getCardList() {

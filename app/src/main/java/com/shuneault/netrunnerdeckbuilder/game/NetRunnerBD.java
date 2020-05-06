@@ -12,9 +12,9 @@ public class NetRunnerBD {
     private static final String URL_GET_MWL = "https://netrunnerdb.com/api/2.0/public/mwl";
 
     // new github pages data location
-    public static final String URL_CARDS_JSON = "https://anrdigital.github.io/ANR-Deck-Builder/app/src/main/res/raw/cardsv2.json";
-    public static final String URL_PACKS_JSON = "https://anrdigital.github.io/ANR-Deck-Builder/app/src/main/res/raw/packs.json";
-    public static final String URL_MWL_JSON = "https://anrdigital.github.io/ANR-Deck-Builder/app/src/main/res/raw/mwl.json";
+//    public static final String URL_CARDS_JSON = "https://anrdigital.github.io/ANR-Deck-Builder/app/src/main/res/raw/cardsv2.json";
+//    public static final String URL_PACKS_JSON = "https://anrdigital.github.io/ANR-Deck-Builder/app/src/main/res/raw/packs.json";
+//    public static final String URL_MWL_JSON = "https://anrdigital.github.io/ANR-Deck-Builder/app/src/main/res/raw/mwl.json";
     public static final String URL_CYCLES_JSON = "https://anrdigital.github.io/ANR-Deck-Builder/app/src/main/res/raw/cycles.json";
     public static final String URL_FORMATS_JSON = "https://anrdigital.github.io/ANR-Deck-Builder/app/src/main/res/raw/formats.json";
     public static final String URL_ROTATIONS_JSON = "https://anrdigital.github.io/ANR-Deck-Builder/app/src/main/res/raw/rotations.json";

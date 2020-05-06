@@ -6,21 +6,39 @@ import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Format;
 
-import androidx.lifecycle.ViewModel;
-import kotlin.Lazy;
+import java.util.ArrayList;
 
-import static org.koin.java.standalone.KoinJavaComponent.inject;
+import androidx.lifecycle.ViewModel;
 
 public class MainActivityViewModel extends ViewModel {
-    private Lazy<CardRepository> cardRepo = inject(CardRepository.class);
-    private Lazy<IDeckRepository> deckRepo = inject(IDeckRepository.class);
+    private CardRepository cardRepo;
+    private IDeckRepository deckRepo;
+    private ArrayList<Deck> decks;
 
-    public Deck createDeck(Card card) {
-        CardRepository repo = cardRepo.getValue();
-        Format format = repo.getDefaultFormat();
-        Deck deck = new Deck(card, format);
-        deckRepo.getValue().createDeck(deck);
+    public MainActivityViewModel(CardRepository cardRepo, IDeckRepository deckRepo){
+        this.cardRepo = cardRepo;
+        this.deckRepo = deckRepo;
+    }
+
+    public Deck createDeck(String identityCardCode) {
+        Card identity = cardRepo.getCard(identityCardCode);
+        Format format = cardRepo.getDefaultFormat();
+        Deck deck = new Deck(identity, format);
+        deckRepo.createDeck(deck);
 
         return deck;
+    }
+
+    public ArrayList<Deck> getDecks() {
+        if (decks == null)
+        {
+            decks = deckRepo.getAllDecks();
+        }
+        return decks;
+    }
+
+    public void starDeck(Deck deck, boolean isStarred) {
+        deck.setStarred(isStarred);
+        deckRepo.saveDeck(deck);
     }
 }

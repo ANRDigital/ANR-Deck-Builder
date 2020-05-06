@@ -38,7 +38,9 @@
     <item android:id="@+id/mnuCoreCount"
         app:showAsAction="never"
         android:title="@string/set_core_count" />
-    <item android:id="@+id/mnuViewFullScreen"
-          app:showAsAction="never"
-        android:title="@string/view_fullscreen" />
+    <item
+        android:id="@+id/mnuViewFullScreen"
+        android:icon="@drawable/ic_photo_library_white_24dp"
+        android:title="@string/view_fullscreen"
+        app:showAsAction="always" />
 </menu>

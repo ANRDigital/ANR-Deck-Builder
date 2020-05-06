@@ -52,7 +52,7 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
     }
 
 
-    public static class DeckViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class DeckViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public TextView txtDeckTitle;
         public TextView txtDeckNotes;
         public ImageView imgDeckIdentity;
@@ -64,10 +64,14 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
             super(v);
             mListener = listener;
             // set click listener to ripple view
-            v.findViewById(R.id.ripple).setOnClickListener(this);
+            View itemRipple = v.findViewById(R.id.ripple);
+            itemRipple.setOnClickListener(this);
+            itemRipple.setOnLongClickListener(this);
             txtDeckTitle = v.findViewById(R.id.txtDeckTitle);
             txtDeckNotes = v.findViewById(R.id.txtDeckNotes);
             imgDeckIdentity = v.findViewById(R.id.imgDeckIdentity);
+            // hold menu
+
             // Favourite / Star image
             chkStarred = v.findViewById(R.id.chkStar);
             chkStarred.setOnClickListener(v1 -> mListener.onDeckStarred(deck, chkStarred.isChecked()));
@@ -93,10 +97,18 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
             chkStarred.setChecked(deck.isStarred());
         }
 
+        @Override
+        public boolean onLongClick(View view) {
+            mListener.onDeckView(deck);
+            return true;
+        }
+
         public interface IViewHolderClicks {
             void onDeckClick(Deck deck);
 
             void onDeckStarred(Deck deck, boolean isStarred);
+
+            void onDeckView(Deck deck);
         }
     }
 

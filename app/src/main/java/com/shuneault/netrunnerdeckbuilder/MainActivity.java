@@ -8,17 +8,6 @@ import android.view.ViewConfiguration;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
-import com.shuneault.netrunnerdeckbuilder.ViewModel.MainActivityViewModel;
-import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
-import com.shuneault.netrunnerdeckbuilder.fragments.ListDecksFragment;
-import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
-
-import java.lang.reflect.Field;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -26,12 +15,21 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-import kotlin.Lazy;
 
-import static org.koin.java.standalone.KoinJavaComponent.inject;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import com.shuneault.netrunnerdeckbuilder.ViewModel.MainActivityViewModel;
+import com.shuneault.netrunnerdeckbuilder.fragments.ListDecksFragment;
+import com.shuneault.netrunnerdeckbuilder.game.Card;
+import com.shuneault.netrunnerdeckbuilder.game.Deck;
+
+import java.lang.reflect.Field;
+
+import static org.koin.java.standalone.KoinJavaComponent.get;
 
 public class MainActivity extends AppCompatActivity implements ListDecksFragment.OnListDecksFragmentListener {
-    private Lazy<MainActivityViewModel> viewModel = inject(MainActivityViewModel.class);
+
+    private MainActivityViewModel viewModel = get(MainActivityViewModel.class);
 
     // Request Codes for activity launch
     public static final int REQUEST_NEW_IDENTITY = 1;
@@ -105,12 +103,8 @@ public class MainActivity extends AppCompatActivity implements ListDecksFragment
             case REQUEST_NEW_IDENTITY:
                 // Get the chosen identity
                 String identityCardCode = data.getStringExtra(ChooseIdentityActivity.EXTRA_IDENTITY_CODE);
-                AppManager appManager = AppManager.getInstance();
-                CardRepository repo = appManager.getCardRepository();
-                Card card = repo.getCard(identityCardCode);
-
                 // Create a new deck
-                Deck mDeck = viewModel.getValue().createDeck(card);
+                Deck mDeck = viewModel.createDeck(identityCardCode);
 
                 // Start the new deck activity
                 startDeckActivity(mDeck.getRowId());

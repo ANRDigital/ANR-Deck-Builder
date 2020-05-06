@@ -6,7 +6,6 @@ import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Format;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -36,7 +35,7 @@ class XmlImporter implements IDeckImporter {
 
     private ArrayList<Deck> mDecks;
 
-    XmlImporter(String text, CardRepository repo) throws Exception {
+    XmlImporter(String text, CardRepository repo, String fileName) throws Exception {
         this.repo = repo;
         ArrayList<Deck> decks = new ArrayList<>();
 
@@ -60,6 +59,7 @@ class XmlImporter implements IDeckImporter {
         //todo: getdefaultformat
         Format format = repo.getDefaultFormat();
         Deck deck = new Deck(identityCard, format);
+        deck.setName(fileName);
         deck.setNotes(Html.fromHtml(deckNotes).toString());
         for (int i = 0; i < nodeCards.getLength(); i++) {
             Node node = nodeCards.item(i);

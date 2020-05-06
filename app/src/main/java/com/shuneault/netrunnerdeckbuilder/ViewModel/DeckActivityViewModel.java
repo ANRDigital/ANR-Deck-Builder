@@ -142,7 +142,7 @@ public class DeckActivityViewModel extends ViewModel {
     }
 
     public ArrayList<String> getCardHeaders() {
-        String sideCode = mDeck.getIdentity().getSideCode();;
+        String sideCode = mDeck.getSideCode();;
         ArrayList<String> headers = mCardRepo.getCardTypes(sideCode, false);
         Collections.sort(headers);
         return headers;
@@ -150,7 +150,7 @@ public class DeckActivityViewModel extends ViewModel {
 
     public HashMap<String, ArrayList<Card>> getGroupedCards(Deck deck, ArrayList<String> headers) {
         HashMap<String, ArrayList<Card>> mListCards = new HashMap<>();
-        String sideCode = deck.getIdentity().getSideCode();;
+        String sideCode = deck.getSideCode();;
 
         CardList cardCollection = mCardPool.getCards();
         cardCollection.addExtras(deck.getCards());
@@ -162,7 +162,7 @@ public class DeckActivityViewModel extends ViewModel {
             boolean isIdentity = theCard.isIdentity();
 
             // Only display agendas that belong to neutral or my faction
-            String deckFaction = deck.getIdentity().getFactionCode();
+            String deckFaction = deck.getFactionCode();
             boolean isGoodAgenda = !theCard.isAgenda()
                     || theCard.getFactionCode().equals(deckFaction)
                     || theCard.isNeutral()
@@ -190,7 +190,7 @@ public class DeckActivityViewModel extends ViewModel {
         }
 
         // Sort the cards
-        sortListCards(headers, mListCards, deck.getIdentity().getFactionCode());
+        sortListCards(headers, mListCards, deck.getFactionCode());
         return mListCards;
     }
 
@@ -205,13 +205,13 @@ public class DeckActivityViewModel extends ViewModel {
             // Do not add the identities
             String typeCode = theCard.getTypeCode();
             String sideCode = theCard.getSideCode();
-            if (!typeCode.equals(Card.Type.IDENTITY) && sideCode.equals(deck.getIdentity().getSideCode())) {
+            if (!typeCode.equals(Card.Type.IDENTITY) && sideCode.equals(deck.getSideCode())) {
                 if (cardList.get(typeCode) == null)
                     cardList.put(typeCode, new ArrayList<Card>());
                 cardList.get(typeCode).add(theCard);
             }
         }
-        sortListCards(headers, cardList, deck.getIdentity().getFactionCode());
+        sortListCards(headers, cardList, deck.getFactionCode());
         return cardList;
     }
 
@@ -236,6 +236,10 @@ public class DeckActivityViewModel extends ViewModel {
 
     public void save() {
         mDeckRepo.saveDeck(mDeck);
+    }
+
+    public String getDeckFactionCode() {
+        return mDeck.getFactionCode();
     }
 }
 

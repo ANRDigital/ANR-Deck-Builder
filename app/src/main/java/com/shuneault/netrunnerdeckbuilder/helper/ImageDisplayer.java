@@ -2,11 +2,14 @@ package com.shuneault.netrunnerdeckbuilder.helper;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import com.shuneault.netrunnerdeckbuilder.game.Card;
-import com.shuneault.netrunnerdeckbuilder.util.CardImageDownloadUtil;
+import com.shuneault.netrunnerdeckbuilder.util.ImageDownloadUtil;
+
+import java.io.File;
 
 public class ImageDisplayer {
 
@@ -19,7 +22,7 @@ public class ImageDisplayer {
         this.mImageView = imageView;
 
         // Get the image in a thread and display in the ImageView
-        Bitmap theImage = small ? card.getSmallImage(context) : card.getImage(context);
+        Bitmap theImage = small ? getSmallImage(context, card.getImageFileName()) : getImage(context, card.getImageFileName());
         if (theImage != null) {
             imageView.setImageBitmap(theImage);
         } else {
@@ -51,7 +54,7 @@ public class ImageDisplayer {
             Card card = params[0];
 
             try {
-                return CardImageDownloadUtil.downloadCardImage(card, mContext);
+                return ImageDownloadUtil.downloadImageToCache(mContext, card.getImageSrc(), card.getImageFileName());
             } catch (Exception e) {
                 return null;
             }
@@ -66,6 +69,16 @@ public class ImageDisplayer {
 
         }
 
+    }
+
+    public static Bitmap getImage(Context context, String imageFileName) {
+        return BitmapFactory.decodeFile(new File(context.getCacheDir(), imageFileName).getAbsolutePath());
+    }
+
+    public static Bitmap getSmallImage(Context context, String imageFileName) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+        return BitmapFactory.decodeFile(new File(context.getCacheDir(), imageFileName).getAbsolutePath(), options);
     }
 
 }

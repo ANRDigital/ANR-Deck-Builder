@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.text.SpannableString;
 
 import com.shuneault.netrunnerdeckbuilder.R;
-import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.TextFormatter;
 
@@ -204,16 +203,6 @@ public class Card implements java.io.Serializable {
      */
     public SpannableString getFormattedText(Context context) {
         return TextFormatter.getFormattedString(context, getText());
-    }
-
-    public Bitmap getImage(Context context) {
-        return BitmapFactory.decodeFile(new File(context.getCacheDir(), this.getImageFileName()).getAbsolutePath());
-    }
-
-    public Bitmap getSmallImage(Context context) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 4;
-        return BitmapFactory.decodeFile(new File(context.getCacheDir(), this.getImageFileName()).getAbsolutePath(), options);
     }
 
     public boolean isImageFileExists(Context context) {

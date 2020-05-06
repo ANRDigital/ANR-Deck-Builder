@@ -548,10 +548,37 @@
       "position": 1,
       "size": 65,
       "ffg_id": null
+    },
+    {
+      "code": "ur",
+      "cycle_code": "ashes",
+      "date_release": "2019-12-31",
+      "name": "Uprising",
+      "position": 3,
+      "size": 65,
+      "ffg_id": null
+    },
+    {
+      "code": "urbp",
+      "cycle_code": "ashes",
+      "date_release": "2019-09-09",
+      "name": "Uprising Booster Pack",
+      "position": 2,
+      "size": 7,
+      "ffg_id": null
+    },
+    {
+      "code": "mor",
+      "cycle_code": "magnum-opus-reprint",
+      "date_release": "2019-07-24",
+      "name": "Magnum Opus Reprint",
+      "position": 1,
+      "size": 6,
+      "ffg_id": null
     }
   ],
-  "total": 61,
+  "total": 64,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2019-02-20T20:52:18+00:00"
+  "last_updated": "2019-09-25T15:19:20+00:00"
 }

@@ -1,8 +1,12 @@
-<androidx.viewpager.widget.ViewPager
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/pager"
-    android:background="#00000000"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
-    </androidx.viewpager.widget.ViewPager>
+
+    <fragment
+        android:name="com.shuneault.netrunnerdeckbuilder.fragments.FullscreenCardsFragment"
+        android:id="@+id/fullscreen_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
