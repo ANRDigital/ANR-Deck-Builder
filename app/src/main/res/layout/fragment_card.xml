@@ -62,7 +62,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/imgImage"
         android:layout_marginLeft="8dp"
-        android:layout_toLeftOf="@+id/btnMinus"
         android:layout_toRightOf="@+id/imgImage"
         android:text="TextView\nb\nc\nd\ne\nf\ng\ng"
         android:textSize="12sp" />

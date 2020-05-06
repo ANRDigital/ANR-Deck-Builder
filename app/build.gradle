@@ -10,7 +10,7 @@ android {
         releaseConfig {
             keyAlias 'anr digital'
             keyPassword 'oE3eWqY5YOr3'
-            storeFile file('C:/Users/dan/Dropbox/Apps/anrdigital.keystore')
+            storeFile file('C:/Users/danj3/Dropbox/Apps/anrdigital.keystore')
             storePassword 'k1jphBHN1d7h'
         }
     }
@@ -18,8 +18,8 @@ android {
         applicationId "com.shuneault.netrunnerdeckbuilder"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 86
-        versionName "4.5.0"
+        versionCode 87
+        versionName "4.5.1"
     }
     buildTypes {
         release {
