@@ -12,7 +12,7 @@ import com.shuneault.netrunnerdeckbuilder.MainActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
-import com.shuneault.netrunnerdeckbuilder.util.CardImageDownloadUtil;
+import com.shuneault.netrunnerdeckbuilder.util.ImageDownloadUtil;
 
 import java.io.File;
 
@@ -64,7 +64,6 @@ public class CardImagesDownloader extends AsyncTask<Void, Integer, Bitmap> {
             // Increment the counter
             iCount++;
             // Download if the file does not exists
-            //File f = new File(mContext.getFilesDir(), theCard.getImageFileName());
             File f = new File(mContext.getCacheDir(), theCard.getImageFileName());
             if (f.exists()) {
                 // Image is downloaded
@@ -74,7 +73,7 @@ public class CardImagesDownloader extends AsyncTask<Void, Integer, Bitmap> {
             }
 
             try {
-                CardImageDownloadUtil.downloadCardImage(theCard, mContext);
+                ImageDownloadUtil.downloadImageToCache(mContext, theCard.getImageSrc(), theCard.getImageFileName());
                 // Image is downloaded
                 mCardDownloaded = theCard;
                 publishProgress(iCount);

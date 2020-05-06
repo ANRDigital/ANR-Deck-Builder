@@ -1,17 +1,17 @@
 package com.shuneault.netrunnerdeckbuilder.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.shuneault.netrunnerdeckbuilder.R
 import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.game.CardCount
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer
+import com.shuneault.netrunnerdeckbuilder.helper.NrdbHelper
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -39,6 +39,8 @@ class FullscreenCardsFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +48,10 @@ class FullscreenCardsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_fullscreen_cards, container, false)
         val viewPager = view.findViewById<ViewPager2>(R.id.pager)
-        this.viewAdapter = ImageViewPagerAdapter(vm.cardCounts, View.OnClickListener { activity?.finish() } )
+        this.viewAdapter = ImageViewPagerAdapter(vm.cardCounts, View.OnClickListener {
+            findNavController().popBackStack()
+//            activity?.finish()
+        })
         viewPager.registerOnPageChangeCallback(object:
             ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
@@ -60,6 +65,22 @@ class FullscreenCardsFragment : Fragment() {
         viewPager.setCurrentItem(vm.position, false)
 
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fullscreen_menu, menu)
+        //super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.mnuOnline -> {
+                // show nrdb page!
+                NrdbHelper.ShowNrdbWebPage(context, vm.getCurrentCard())
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {

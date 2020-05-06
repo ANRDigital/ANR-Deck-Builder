@@ -124,7 +124,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 
         // Colored background for the cards in the deck
         if (mDeck.getCardCount(card) > 0) {
-            int theColor = mContext.getResources().getIdentifier("light_" + mDeck.getIdentity().getFactionCode().replace("-", ""), "color", mContext.getPackageName());
+            int theColor = mContext.getResources().getIdentifier("light_" + mDeck.getFactionCode().replace("-", ""), "color", mContext.getPackageName());
             if (theColor != 0) {
                 view.setBackgroundColor(mContext.getResources().getColor(theColor));
             } else {

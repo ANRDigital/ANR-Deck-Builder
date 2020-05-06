@@ -46,10 +46,10 @@ public final class Sorter {
             // All is OK
             if (lhs.isStarred() != rhs.isStarred()) {
                 return ((Boolean) !lhs.isStarred()).compareTo(!rhs.isStarred());
-            } else if (lhs.getIdentity().getFactionCode().equals(rhs.getIdentity().getFactionCode())) {
+            } else if (lhs.getFactionCode().equals(rhs.getFactionCode())) {
                 return lhs.getName().compareTo(rhs.getName());
             } else {
-                return lhs.getIdentity().getFactionCode().compareTo(rhs.getIdentity().getFactionCode());
+                return lhs.getFactionCode().compareTo(rhs.getFactionCode());
             }
         }
 

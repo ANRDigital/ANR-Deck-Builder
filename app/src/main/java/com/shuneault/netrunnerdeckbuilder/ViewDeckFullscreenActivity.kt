@@ -47,23 +47,6 @@ class ViewDeckFullscreenActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.fullscreen_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.mnuOnline -> {
-                // show nrdb page!
-                NrdbHelper.ShowNrdbWebPage(this, vm.getCurrentCard())
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     private fun exitIfDeckEmpty() {
         if (vm.isEmpty()) {
             val builder = AlertDialog.Builder(this)

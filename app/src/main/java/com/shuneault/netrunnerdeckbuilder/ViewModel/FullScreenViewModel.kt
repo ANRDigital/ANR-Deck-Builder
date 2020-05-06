@@ -67,10 +67,14 @@ class FullScreenViewModel(private val deckRepository: IDeckRepository, private v
         return cardCounts.isEmpty()
     }
 
+    fun getDeckTitle(): CharSequence? {
+        return deck?.name
+    }
+
     val factionCode: String?
         get() {
             if (deck != null) {
-                return deck!!.identity.factionCode
+                return deck!!.factionCode
             }
             return if (cardCode != null) {
                 cardCounts[0].card.factionCode

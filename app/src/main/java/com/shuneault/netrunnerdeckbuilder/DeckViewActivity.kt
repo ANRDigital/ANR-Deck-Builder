@@ -2,13 +2,13 @@ package com.shuneault.netrunnerdeckbuilder
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.shuneault.netrunnerdeckbuilder.ViewModel.DeckActivityViewModel
+import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class DeckViewActivity : AppCompatActivity() {
 
-    private val deckViewModel: DeckActivityViewModel by viewModel()
+    private val vm: FullScreenViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,8 +18,7 @@ class DeckViewActivity : AppCompatActivity() {
             finish()
         }
 
-        deckViewModel.setDeckId(deckId)
-
+        vm.loadDeck(deckId)
         setContentView(R.layout.deck_view_activity)
 
     }

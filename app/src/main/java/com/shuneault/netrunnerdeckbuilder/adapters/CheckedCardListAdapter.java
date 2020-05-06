@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.game.CardCount;
+import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class CheckedCardListAdapter extends ArrayAdapter<CardCount> {
         if (cardCount != null) {
             viewHolder.chkChecked.setChecked(cardCount.isDone());
             //viewHolder.imgFaction.setImageResource(mContext.getResources().getIdentifier(cardCount.getCard().getFactionImageResName(), "drawable", mContext.getPackageName()));
-            viewHolder.imgImage.setImageBitmap(cardCount.getCard().getImage(getContext()));
+            viewHolder.imgImage.setImageBitmap(ImageDisplayer.getImage(getContext(), cardCount.getCard().getImageFileName()));
             viewHolder.lblCardName.setText(cardCount.getCard().getTitle());
             if (cardCount.getCount() > 0) {
                 viewHolder.lblCardCount.setTextColor(ContextCompat.getColor(getContext(), R.color.value_positive));

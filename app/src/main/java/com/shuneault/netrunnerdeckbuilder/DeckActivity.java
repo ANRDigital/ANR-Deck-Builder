@@ -93,7 +93,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         // super must be called after setTheme or else notification and navigation bars won't be themed properly
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.fragment_deck);
+        setContentView(R.layout.activity_deck);
 
         // GUI
         ViewPager mViewPager = findViewById(R.id.pager);
@@ -148,11 +148,11 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         // attach tabs to view pager
         SlidingTabLayout tabs = findViewById(R.id.tabs);
         tabs.setViewPager(mViewPager);
-        if (viewModel.getDeck().getIdentity().getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
+        if (viewModel.getDeck().getFactionCode().startsWith(Card.Faction.FACTION_NEUTRAL)) {
             tabs.setBackgroundColor(getResources().getColor(R.color.netrunner_blue));
         } else {
             tabs.setBackgroundColor(getResources().getColor(getResources().getIdentifier(
-                    "dark_" + viewModel.getDeck().getIdentity().getFactionCode().replace("-", ""), "color", this.
+                    "dark_" + viewModel.getDeck().getFactionCode().replace("-", ""), "color", this.
                             getPackageName())));
         }
     }
@@ -307,8 +307,8 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
                 return true;
 
             case R.id.mnuViewFullScreen:
-                Intent intentFullScreen = new Intent(this, ViewCardsAsGridActivity.class);
-                intentFullScreen.putExtra(ViewCardsAsGridActivity.EXTRA_DECK_ID, viewModel.getDeck().getRowId());
+                Intent intentFullScreen = new Intent(this, DeckViewActivity.class);
+                intentFullScreen.putExtra(DeckActivity.ARGUMENT_DECK_ID, viewModel.getDeck().getRowId());
                 startActivity(intentFullScreen);
                 return true;
 

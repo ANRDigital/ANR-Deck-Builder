@@ -88,6 +88,10 @@ public class Deck implements Serializable, HeaderListItemInterface {
         mIdentity = card;
     }
 
+    public String getFactionCode(){
+        return mIdentity.getFactionCode();
+    }
+
     public String getNotes() {
         return mNotes;
     }
@@ -543,7 +547,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
     }
 
     public boolean isFaction(String factionCode) {
-        return getIdentity().getFactionCode().equals(factionCode);
+        return getFactionCode().equals(factionCode);
     }
 
     public void ReduceCard(Card card) {
@@ -587,5 +591,9 @@ public class Deck implements Serializable, HeaderListItemInterface {
         int count = this.mCards.get(card);
         updateCardCount(card, 0);
         updateCardCount(replacement, count);
+    }
+
+    public String getSideCode() {
+        return getIdentity().getSideCode();
     }
 }
