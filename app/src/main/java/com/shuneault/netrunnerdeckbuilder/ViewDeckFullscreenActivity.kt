@@ -2,11 +2,9 @@ package com.shuneault.netrunnerdeckbuilder
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
-import com.shuneault.netrunnerdeckbuilder.helper.NrdbHelper
+import com.shuneault.netrunnerdeckbuilder.ui.ThemeHelper
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ViewDeckFullscreenActivity : AppCompatActivity() {
@@ -17,7 +15,7 @@ class ViewDeckFullscreenActivity : AppCompatActivity() {
         vm.position = intent.getIntExtra(EXTRA_POSITION, 0)
         val cardList = intent.getSerializableExtra(EXTRA_CARDS)
         if (cardList != null) {
-            vm.cardCodes = cardList as java.util.ArrayList<String>
+            vm.cardCodes = cardList as ArrayList<String>
         }
 
         val deckId = intent.getLongExtra(EXTRA_DECK_ID, 0)
@@ -27,9 +25,7 @@ class ViewDeckFullscreenActivity : AppCompatActivity() {
         // set theme to identity's faction colors
         val factionCode = vm.factionCode
         if (factionCode != null) {
-            val themeName = "Theme.Netrunner_" + factionCode.replace("-", "")
-            val theme = resources.getIdentifier(themeName, "style", this.packageName)
-            setTheme(theme)
+            setTheme(ThemeHelper.getTheme(factionCode, this))
         }
         // super must be called after setTheme or else notification and navigation bars won't be themed properly
         super.onCreate(savedInstanceState)

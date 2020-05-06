@@ -33,6 +33,7 @@ import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
+import com.shuneault.netrunnerdeckbuilder.ui.ThemeHelper;
 import com.shuneault.netrunnerdeckbuilder.util.SlidingTabLayout;
 
 import java.io.File;
@@ -82,9 +83,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         viewModel.setDeckId(deckId);
 
         try {
-            String themeName = "Theme.Netrunner_" + viewModel.getDeckFactionCode().replace("-", "");
-            int theme = getResources().getIdentifier(themeName, "style", this.getPackageName());
-            setTheme(theme);
+            setTheme(ThemeHelper.Companion.getTheme(viewModel.getDeckFactionCode(), this));
         } catch (Exception e) {
             // do nothing, will use default blue theme instead
             e.printStackTrace();
