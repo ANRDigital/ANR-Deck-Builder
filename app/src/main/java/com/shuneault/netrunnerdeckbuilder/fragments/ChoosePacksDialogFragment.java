@@ -20,7 +20,6 @@ import static org.koin.java.standalone.KoinJavaComponent.inject;
 
 public class ChoosePacksDialogFragment extends DialogFragment {
 
-
     private Format format;
     private ArrayList<String> mPackCodes = new ArrayList<>();
     private Lazy<CardRepository> repo = inject(CardRepository.class);

@@ -22,14 +22,6 @@ public class SettingsProvider implements ISettingsProvider {
     @Override
     @NonNull
     public CardRepository.CardRepositoryPreferences getCardRepositoryPreferences() {
-        // does this do the actual reading, or can it be in constructor?
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        int mCoreCount = Integer.parseInt(preferences.getString(SettingsActivity.KEY_PREF_AMOUNT_OF_CORE_DECKS, SettingsActivity.DEFAULT_CORE_DECKS));
-//        boolean bDisplayAllPacksPref = preferences.getBoolean(SettingsActivity.KEY_PREF_DISPLAY_ALL_DATA_PACKS, true);
-//        String packsPref = preferences.getString(SettingsActivity.KEY_PREF_DATA_PACKS_TO_DISPLAY, "");
-//        String[] storedValue = ListPreferenceMultiSelect.parseStoredValue(packsPref);
-//        ArrayList<String> globalPackFilter = storedValue != null ? new ArrayList<>(Arrays.asList(storedValue)) : new ArrayList<>();
-
         return new CardRepository.CardRepositoryPreferences(3, new ArrayList<>());
     }
 
