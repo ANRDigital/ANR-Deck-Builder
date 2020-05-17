@@ -30,7 +30,6 @@ import java.util.*
  */
 class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowseCardsClickListener {
     private var mAdapter: BrowseCardRecyclerViewAdapter? = null
-    private var mSearchText = ""
     val vm: BrowseCardsViewModel by sharedViewModel()
     val fullVM: FullScreenViewModel by sharedViewModel()
     var cardRepo = KoinJavaComponent.inject(CardRepository::class.java)
@@ -56,13 +55,13 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
     }
 
     override fun onQueryTextChange(newText: String): Boolean {
-        mSearchText = newText
+        vm.searchText = newText
         updateResults()
         return true
     }
 
     private fun updateResults() {
-        vm.doSearch(mSearchText)
+        vm.doSearch(vm.searchText)
         mAdapter!!.notifyDataSetChanged()
     }
 

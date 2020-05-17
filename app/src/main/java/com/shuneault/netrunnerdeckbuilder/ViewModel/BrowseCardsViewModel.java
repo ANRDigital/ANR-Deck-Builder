@@ -19,6 +19,8 @@ public class BrowseCardsViewModel extends ViewModel {
     public ArrayList<String> packFilter = new ArrayList<>();
     private CardList mCards;
     private ISettingsProvider settingsProvider;
+    @NotNull
+    public String searchText;
 
     public BrowseCardsViewModel(CardRepository cardRepo, ISettingsProvider settingsProvider) {
         this.cardRepo = cardRepo;
