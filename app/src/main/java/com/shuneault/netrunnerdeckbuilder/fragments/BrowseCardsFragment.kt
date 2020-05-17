@@ -2,9 +2,7 @@ package com.shuneault.netrunnerdeckbuilder.fragments
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuItemCompat
-import androidx.fragment.app.DialogFragment
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,11 +12,9 @@ import com.shuneault.netrunnerdeckbuilder.ViewModel.BrowseCardsViewModel
 import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.adapters.BrowseCardRecyclerViewAdapter
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository
-import com.shuneault.netrunnerdeckbuilder.fragments.ChoosePacksDialogFragment.ChoosePacksDialogListener
 import com.shuneault.netrunnerdeckbuilder.game.Card
 import com.shuneault.netrunnerdeckbuilder.game.Format
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.java.standalone.KoinJavaComponent
 import java.util.*
 
@@ -29,6 +25,7 @@ import java.util.*
  * Activities containing this fragment MUST implement the [OnBrowseCardsClickListener] interface.
  */
 class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowseCardsClickListener {
+    private lateinit var sv: SearchView
     private var mAdapter: BrowseCardRecyclerViewAdapter? = null
     val vm: BrowseCardsViewModel by sharedViewModel()
     val fullVM: FullScreenViewModel by sharedViewModel()
@@ -55,8 +52,10 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
     }
 
     override fun onQueryTextChange(newText: String): Boolean {
-        vm.searchText = newText
-        updateResults()
+        if(isVisible) {
+            vm.searchText = newText
+            updateResults()
+        }
         return true
     }
 
@@ -72,6 +71,7 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
 
     // on list card clicked
     override fun onCardClicked(card: Card, position: Int) {
+        sv.clearFocus()
         fullVM.cardCodes = vm.cardList.codes
         fullVM.position = position
         val action = BrowseCardsFragmentDirections.actionBrowseCardsFragmentToFullscreenCardsFragment2()
@@ -82,10 +82,6 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.browse, menu)
 
-        val searchItem = menu.findItem(R.id.action_search)
-        val sv = MenuItemCompat.getActionView(searchItem) as SearchView
-        sv.setOnQueryTextListener(this)
-
         val filterItem = menu.findItem(R.id.action_filter)
         filterItem.setOnMenuItemClickListener {
             val choosePacksDlg = ChoosePacksDialogFragment()
@@ -93,6 +89,18 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
             fragmentManager?.let { it1 -> choosePacksDlg.show(it1, "choosePacks") }
             false
         }
+
+        sv = menu.findItem(R.id.action_search).actionView as SearchView
+        sv.setOnQueryTextListener(this)
+        sv.maxWidth = Integer.MAX_VALUE
+        if (vm.searchText != null)
+        {
+            sv.isIconified = false
+
+            sv.setQuery(vm.searchText, false)
+            sv.clearFocus()
+        }
+
     }
 
 

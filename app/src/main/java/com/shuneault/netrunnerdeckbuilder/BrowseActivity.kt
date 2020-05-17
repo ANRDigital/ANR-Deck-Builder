@@ -21,9 +21,10 @@ class BrowseActivity : AppCompatActivity(), OnBrowseCardsClickListener, ChoosePa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.browse_cards)
+        setTitle(R.string.title_browse_cards)
+
         val mActionBar = supportActionBar
         if (mActionBar != null) {
-            mActionBar.setTitle(R.string.title_browse_cards)
             mActionBar.setDisplayHomeAsUpEnabled(true)
             mActionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp)
         }
