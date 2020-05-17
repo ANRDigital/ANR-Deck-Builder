@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/browseCardsFragment"
         android:name="com.shuneault.netrunnerdeckbuilder.fragments.BrowseCardsFragment"
+        android:label="@string/title_browse_cards"
         tools:layout="@layout/fragment_browse_cards">
         <action
             android:id="@+id/action_browseCardsFragment_to_fullscreenCardsFragment2"

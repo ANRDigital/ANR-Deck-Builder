@@ -35,6 +35,7 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_browse_cards, container, false)
         setHasOptionsMenu(true)
+        activity?.title = getString(R.string.title_browse_cards)
         // Set the adapter
         if (view is RecyclerView) {
             val context = view.getContext()
@@ -93,7 +94,7 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
         sv = menu.findItem(R.id.action_search).actionView as SearchView
         sv.setOnQueryTextListener(this)
         sv.maxWidth = Integer.MAX_VALUE
-        if (vm.searchText != null)
+        if (vm.searchText != null && vm.searchText != "")
         {
             sv.isIconified = false
 
