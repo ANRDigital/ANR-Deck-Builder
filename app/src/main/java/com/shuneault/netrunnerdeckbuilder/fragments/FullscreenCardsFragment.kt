@@ -103,7 +103,10 @@ class FullscreenCardsFragment : Fragment() {
                 }
     }
 
-    private class ImageViewPagerAdapter(private val mCardCounts: ArrayList<CardCount>, val itemClickListener: View.OnClickListener) : RecyclerView.Adapter<ImageViewPagerAdapter.ImageViewHolder>() {
+    private class ImageViewPagerAdapter(
+            private val mCardCounts: ArrayList<CardCount>,
+            val itemClickListener: View.OnClickListener
+    ) : RecyclerView.Adapter<ImageViewPagerAdapter.ImageViewHolder>() {
         // ViewHolder class for ImageView
         class ImageViewHolder(itemView: View):RecyclerView.ViewHolder(itemView)
 

@@ -27,7 +27,7 @@ val appModule = module {
     factory { LocalFileHelper(androidContext()) }
 
     viewModel { DeckActivityViewModel(get(), get(), get()) }
-    viewModel { BrowseCardsViewModel(get()) }
+    viewModel { BrowseCardsViewModel(get(), get()) }
     viewModel { MainActivityViewModel (get(), get()) }
     viewModel { CardGridViewModel(get()) }
     viewModel { FullScreenViewModel(get(), get())}

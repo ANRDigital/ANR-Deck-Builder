@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
-import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardMWL;
@@ -19,7 +18,6 @@ import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 import com.shuneault.netrunnerdeckbuilder.helper.TextFormatter;
 
@@ -38,12 +36,10 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
     private ArrayList<String> mArrDataHeaderOriginal; // The headers
     private HashMap<String, ArrayList<Card>> mArrDataChildOriginal;
     private Deck mDeck; // The containing deck
-    private boolean mMyCards = false;
+    private boolean mMyCards;
     private OnButtonClickListener mListener;
     private final MostWantedList mMostWantedList;
-    private final Format mFormat;
     private CardRepository repo;
-    private String query;
 
     public interface OnButtonClickListener {
         void onPlusClick(Card card);
@@ -62,7 +58,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
         this.mArrDataHeaderOriginal = (ArrayList<String>) listDataHeader.clone();
         this.mArrDataChildOriginal = (HashMap<String, ArrayList<Card>>) listChildData.clone();
         this.mDeck = deck;
-        this.mFormat = deck.getFormat();
+        Format mFormat = deck.getFormat();
         this.pool = repo.getCardPool(mFormat, deck.getPackFilter(), deck.getCoreCount());
         this.mMostWantedList = repo.getMostWantedList(mFormat.getMwlId());
         this.mListener = listener;
@@ -169,8 +165,8 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
             v = mInflater.inflate(R.layout.list_view_header, null, false);
         }
 
-        TextView lblHeader = (TextView) v.findViewById(R.id.lblHeader);
-        /**
+        TextView lblHeader = v.findViewById(R.id.lblHeader);
+        /*
          * The count is:
          * 		mMyCards=true: How many cards in deck (total count)
          * 		mMyCards=false: How many different cards available within group
@@ -201,7 +197,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
     }
 
     public void filterData(String newQuery) {
-        query = newQuery.toLowerCase();
+        String query = newQuery.toLowerCase();
         mArrDataChild.clear();
         mArrDataHeader.clear();
 

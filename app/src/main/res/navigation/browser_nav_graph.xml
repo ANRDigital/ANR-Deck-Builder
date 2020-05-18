@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/browser_nav_graph.xml"
+    app:startDestination="@id/browseCardsFragment">
+
+    <fragment
+        android:id="@+id/browseCardsFragment"
+        android:name="com.shuneault.netrunnerdeckbuilder.fragments.BrowseCardsFragment"
+        android:label="@string/title_browse_cards"
+        tools:layout="@layout/fragment_browse_cards">
+        <action
+            android:id="@+id/action_browseCardsFragment_to_fullscreenCardsFragment2"
+            app:destination="@id/fullscreenCardsFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullscreenCardsFragment2"
+        android:name="com.shuneault.netrunnerdeckbuilder.fragments.FullscreenCardsFragment"
+        tools:layout="@layout/fragment_fullscreen_cards" />
+</navigation>
