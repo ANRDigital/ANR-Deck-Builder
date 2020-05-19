@@ -13,6 +13,7 @@ import com.shuneault.netrunnerdeckbuilder.game.CardCount
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer
 import com.shuneault.netrunnerdeckbuilder.helper.NrdbHelper
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+import java.lang.IllegalStateException
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,8 +50,13 @@ class FullscreenCardsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_fullscreen_cards, container, false)
         val viewPager = view.findViewById<ViewPager2>(R.id.pager)
         this.viewAdapter = ImageViewPagerAdapter(vm.cardCounts, View.OnClickListener {
-            findNavController().popBackStack()
-//            activity?.finish()
+            //TODO: remove this try / catch when fullscreen is always in a navhost
+            try {
+                findNavController().popBackStack()
+            }
+            catch (e: IllegalStateException) {
+                activity?.finish()
+            }
         })
         viewPager.registerOnPageChangeCallback(object:
             ViewPager2.OnPageChangeCallback(){
