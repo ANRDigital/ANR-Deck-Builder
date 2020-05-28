@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 import androidx.lifecycle.ViewModel;
 
-import org.jetbrains.annotations.NotNull;
-
 public class BrowseCardsViewModel extends ViewModel {
     private CardRepository cardRepo;
     private CardPool mPool;
@@ -43,16 +41,13 @@ public class BrowseCardsViewModel extends ViewModel {
         mCards.addAll(cardRepo.searchCards(searchText, mPool));
     }
 
-    public void updatePackFilter(ArrayList<String> packFilter) {
-        mPool = cardRepo.getCardPool(this.browseFormat, packFilter);
+    public void updatePackFilter(ArrayList<String> packFilter, Format format) {
+        this.browseFormat = format;
         this.packFilter = packFilter;
+        mPool = cardRepo.getCardPool(format, packFilter);
     }
 
     public void useMyCollectionAsFilter() {
-        packFilter = settingsProvider.getMyCollection();
-    }
-
-    public void setFilter(@NotNull ArrayList<String> values) {
-        packFilter = values;
+        updatePackFilter(settingsProvider.getMyCollection(), browseFormat);
     }
 }

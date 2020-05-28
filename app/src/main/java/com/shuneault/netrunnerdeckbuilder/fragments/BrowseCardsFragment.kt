@@ -15,7 +15,6 @@ import com.shuneault.netrunnerdeckbuilder.db.CardRepository
 import com.shuneault.netrunnerdeckbuilder.game.Card
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.java.standalone.KoinJavaComponent
-import java.util.*
 
 /**
  * A fragment representing a list of Items.
@@ -35,7 +34,7 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
         val view = inflater.inflate(R.layout.fragment_browse_cards, container, false)
         setHasOptionsMenu(true)
         vm.init()
-        activity?.title = getString(R.string.title_browse_cards) + " [" + vm.browseFormat.name + "]"
+        updateTitle()
         // Set the adapter
         if (view is RecyclerView) {
             val context = view.getContext()
@@ -44,6 +43,10 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
             view.adapter = mAdapter
         }
         return view
+    }
+
+    private fun updateTitle() {
+        activity?.title = getString(R.string.title_browse_cards) + " [" + vm.browseFormat.name + "]"
     }
 
     override fun onQueryTextSubmit(query: String): Boolean {
@@ -59,12 +62,12 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
     }
 
     private fun updateResults() {
+        updateTitle()
         vm.doSearch(vm.searchText)
         mAdapter!!.notifyDataSetChanged()
     }
 
-    fun updatePackFilter(packFilter: ArrayList<String?>?) {
-        vm.updatePackFilter(packFilter)
+    fun notifyDataUpdated() {
         updateResults()
     }
 

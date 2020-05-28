@@ -12,7 +12,6 @@ import com.shuneault.netrunnerdeckbuilder.fragments.ChoosePacksDialogFragment.Ch
 import com.shuneault.netrunnerdeckbuilder.fragments.OnBrowseCardsClickListener
 import com.shuneault.netrunnerdeckbuilder.game.Card
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.util.*
 
 class BrowseActivity : AppCompatActivity(), OnBrowseCardsClickListener, ChoosePacksDialogListener {
     val vm: BrowseCardsViewModel by viewModel()
@@ -42,20 +41,21 @@ class BrowseActivity : AppCompatActivity(), OnBrowseCardsClickListener, ChoosePa
 
     override fun onChoosePacksDialogPositiveClick(dialog: DialogFragment?) {
         val dlg = dialog as ChoosePacksDialogFragment
-        vm.setFilter(dlg.getSelectedValues())
-        vm.browseFormat = dlg.format
-        // update list
+        vm.updatePackFilter(dlg.getSelectedValues(), dlg.format)
+
+        // update the screen / list
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val childFragmentManager = navHostFragment!!.childFragmentManager
         val frag = childFragmentManager.primaryNavigationFragment as BrowseCardsFragment?
-        frag!!.updatePackFilter(vm.packFilter)
+        frag!!.notifyDataUpdated()
     }
 
     override fun onMyCollectionChosen(dialog: DialogFragment?) {
         vm.useMyCollectionAsFilter()
+
         // update list
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val frag = navHostFragment!!.childFragmentManager.primaryNavigationFragment as BrowseCardsFragment?
-        frag!!.updatePackFilter(vm.packFilter)
+        frag!!.notifyDataUpdated()
     }
 }
