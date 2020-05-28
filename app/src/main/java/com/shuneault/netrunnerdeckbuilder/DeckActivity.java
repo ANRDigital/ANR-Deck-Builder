@@ -391,10 +391,9 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
     private void doChoosePacks() {
         // display list alert dialog
-        ChoosePacksDialogFragment choosePacksDlg = new ChoosePacksDialogFragment();
         Deck deck = viewModel.getDeck();
-        choosePacksDlg.setData(deck.getPackFilter(), deck.getFormat());
-        choosePacksDlg.show(getSupportFragmentManager(), "choosePacks");
+        ChoosePacksDialogFragment dialog = new ChoosePacksDialogFragment(deck.getPackFilter(), deck.getFormat(), false);
+        dialog.show(getSupportFragmentManager(), "choosePacks");
     }
 
     private void doSetCoreCount() {

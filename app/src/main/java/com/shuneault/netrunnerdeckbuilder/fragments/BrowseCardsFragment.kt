@@ -13,7 +13,6 @@ import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.adapters.BrowseCardRecyclerViewAdapter
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository
 import com.shuneault.netrunnerdeckbuilder.game.Card
-import com.shuneault.netrunnerdeckbuilder.game.Format
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.java.standalone.KoinJavaComponent
 import java.util.*
@@ -35,15 +34,14 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_browse_cards, container, false)
         setHasOptionsMenu(true)
-        activity?.title = getString(R.string.title_browse_cards)
+        vm.init()
+        activity?.title = getString(R.string.title_browse_cards) + " [" + vm.browseFormat.name + "]"
         // Set the adapter
         if (view is RecyclerView) {
             val context = view.getContext()
-            val recyclerView = view
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            vm.init()
+            view.layoutManager = LinearLayoutManager(context)
             mAdapter = BrowseCardRecyclerViewAdapter(vm.cardList, this, cardRepo.value)
-            recyclerView.adapter = mAdapter
+            view.adapter = mAdapter
         }
         return view
     }
@@ -85,8 +83,7 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
 
         val filterItem = menu.findItem(R.id.action_filter)
         filterItem.setOnMenuItemClickListener {
-            val choosePacksDlg = ChoosePacksDialogFragment()
-            choosePacksDlg.setData(vm.packFilter, vm.getFormat(Format.FORMAT_ETERNAL))
+            val choosePacksDlg = ChoosePacksDialogFragment(vm.packFilter, vm.browseFormat, true )
             fragmentManager?.let { it1 -> choosePacksDlg.show(it1, "choosePacks") }
             false
         }

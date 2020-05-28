@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import androidx.lifecycle.ViewModel;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class BrowseCardsViewModel extends ViewModel {
     private CardRepository cardRepo;
@@ -20,15 +19,17 @@ public class BrowseCardsViewModel extends ViewModel {
     private CardList mCards;
     private ISettingsProvider settingsProvider;
     public String searchText = "";
+    public Format browseFormat;
 
     public BrowseCardsViewModel(CardRepository cardRepo, ISettingsProvider settingsProvider) {
         this.cardRepo = cardRepo;
+        browseFormat = cardRepo.getDefaultFormat();
         this.settingsProvider = settingsProvider;
     }
 
     public void init() {
         if (mPool == null){
-            mPool = cardRepo.getGlobalCardPool();
+            mPool = cardRepo.getCardPool();
             mCards = mPool.getCards();
         }
     }
@@ -43,13 +44,8 @@ public class BrowseCardsViewModel extends ViewModel {
     }
 
     public void updatePackFilter(ArrayList<String> packFilter) {
-        mPool = cardRepo.getGlobalCardPool(packFilter);
+        mPool = cardRepo.getCardPool(this.browseFormat, packFilter);
         this.packFilter = packFilter;
-    }
-
-    @Nullable
-    public Format getFormat(int formatID) {
-        return cardRepo.getFormat(formatID);
     }
 
     public void useMyCollectionAsFilter() {

@@ -22,7 +22,7 @@ public class SettingsProvider implements ISettingsProvider {
     @Override
     @NonNull
     public CardRepository.CardRepositoryPreferences getCardRepositoryPreferences() {
-        return new CardRepository.CardRepositoryPreferences(3, new ArrayList<>());
+        return new CardRepository.CardRepositoryPreferences(3);
     }
 
     @Override

@@ -382,25 +382,20 @@ public class CardRepository {
         doDownloadCards();
     }
 
-    // this called by browse cards
-    public CardPool getGlobalCardPool() {
-        CardRepositoryPreferences prefs = getPrefs();
-        ArrayList<String> packFilter = prefs.globalPackFilter;
-        return getGlobalCardPool(packFilter);
-    }
-
-
-    // this called by browse cards
-    public CardPool getGlobalCardPool(ArrayList<String> packFilter) {
-        ArrayList<Pack> packs = getPacksFromCodes(packFilter);
-        int coreCount = getPrefs().coreCount;
-        Rotation rotation = null;
-        return new CardPool(this, packs, coreCount, rotation);
+    // this called by card browser
+    public CardPool getCardPool() {
+        Format defaultFormat = getDefaultFormat();
+        return getCardPool(defaultFormat);
     }
 
     // this called by non-deck sources (identity)
     public CardPool getCardPool(Format format){
         return getCardPool(format, null, 0); // no deck / filter overrides
+    }
+
+    // this called by card browser
+    public CardPool getCardPool(Format format, ArrayList<String> packFilter){
+        return getCardPool(format, packFilter, 0); // no deck / filter overrides
     }
 
     // this called by all deck sources
@@ -533,11 +528,9 @@ public class CardRepository {
 
     public static class CardRepositoryPreferences {
         public int coreCount;
-        public ArrayList<String> globalPackFilter;
 
-        public CardRepositoryPreferences(int coreCount, ArrayList<String> globalPackFilter) {
+        public CardRepositoryPreferences(int coreCount) {
             this.coreCount = coreCount;
-            this.globalPackFilter = globalPackFilter;
         }
     }
 
