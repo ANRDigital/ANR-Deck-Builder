@@ -104,7 +104,7 @@ class ChoosePacksDialogFragment(val packFilter: ArrayList<String>, startFormat: 
         mListener = try {
             context as ChoosePacksDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(activity.toString() + " must implement NoticeDialogListener")
+            throw ClassCastException(activity.toString() + " must implement ChoosePacksDialogListener")
         }
     }
 }

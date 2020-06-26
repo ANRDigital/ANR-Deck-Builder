@@ -66,5 +66,6 @@
 	<color name="stats_graph_type_resource_asset">#2ec1d1</color>
 	<color name="stats_graph_type_hardware_upgrade">#d100c9</color>
 	<color name="stats_graph_type_agenda">#d12c22</color>
+	<color name="list_background">#F0F0F0</color>
 
 </resources>

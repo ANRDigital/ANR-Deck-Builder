@@ -16,7 +16,6 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.shuneault.netrunnerdeckbuilder.R;
-import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter.OnButtonClickListener;
@@ -127,7 +126,7 @@ public class DeckMyCardsFragment extends DeckActivityFragment {
                 // Update the list
                 mListener.onDeckCardsChanged();
             }
-        }, true, AppManager.getInstance().getSharedPrefs().getBoolean(SettingsActivity.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false));
+        }, true, AppManager.getInstance().getSharedPrefs().getBoolean(SettingsFragment.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false));
         lstDeckCards.setAdapter(mDeckCardsAdapter);
         lstDeckCards.setOnChildClickListener(new OnChildClickListener() {
 

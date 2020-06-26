@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory 
-        android:title="@string/data_packs">
+        android:title="@string/data_packs"
+        app:iconSpaceReserved="false"
+        android:layout="@layout/my_preference_category"
+        >
         <MultiSelectListPreference
             android:key="pref_collection"
             android:title="@string/my_collection"
             android:summary="@string/about_my_collection"
+            app:iconSpaceReserved="false"
             />
 
         <ListPreference
             android:key="pref_Format"
             android:title="@string/default_format"
+            app:iconSpaceReserved="false"
             />
 
         <ListPreference
@@ -19,38 +25,55 @@
             android:summary="@string/cards_language_summary"
             android:entries="@array/arrCardsLanguage"
             android:entryValues="@array/arrCardsLanguageValues"
-            android:defaultValue="en" />
+            android:defaultValue="en"
+            app:iconSpaceReserved="false" />
 
         <CheckBoxPreference
             android:key="pref_HideNonVirtualApex"
             android:defaultValue="true"
-            android:title="@string/hide_non_virtual_apex" />
+            android:title="@string/hide_non_virtual_apex"
+            app:iconSpaceReserved="false" />
 
         <CheckBoxPreference
             android:key="pref_ShowSetNames"
             android:defaultValue="false"
-            android:title="@string/display_set_names_with_cards" />
+            android:title="@string/display_set_names_with_cards"
+            app:iconSpaceReserved="false" />
         
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/cache">
+    <PreferenceCategory android:title="@string/cache"
+        android:layout="@layout/my_preference_category"
+
+        app:iconSpaceReserved="false">
         <Preference android:key="pref_ClearCache"
             android:title="@string/clear_cache"
-            android:summary="@string/delete_all_images" />
+            android:summary="@string/delete_all_images"
+            app:iconSpaceReserved="false"/>
         <Preference android:key="pref_DownloadAllImages"
-            android:title="@string/download_all_images" />
+            android:title="@string/download_all_images"
+            app:iconSpaceReserved="false" />
         <Preference android:key="pref_DownloadCardData"
             android:title="Update all card data"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Export">
+    <PreferenceCategory android:title="Export"
+        android:layout="@layout/my_preference_category"
+
+        app:iconSpaceReserved="false">
         <Preference android:key="pref_ExportAllDecks"
-            android:title="@string/export_all_decks" />
+            android:title="@string/export_all_decks"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Other">
+    <PreferenceCategory android:title="Other"
+        android:layout="@layout/my_preference_category"
+
+        app:iconSpaceReserved="false">
         <Preference android:key="pref_About"
-            android:title="@string/menu_about" />
+            android:title="@string/menu_about"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
 </PreferenceScreen>

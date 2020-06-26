@@ -6,18 +6,26 @@
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
+    <style name="AppBaseTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-
+        <item name="colorPrimary">@color/netrunner_blue</item>
+        <item name="colorPrimaryVariant">@color/netrunner_blue_light</item>
+        <item name="colorSecondary">@color/fab_color</item>
+        <item name="colorPrimaryDark">@color/netrunner_blue_dark</item>
+        <item name="colorAccent">@color/netrunner_blue_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="buttonTint">@color/navigation_text_color</item>
     </style>
 
     <!-- ListViewItems -->
@@ -72,12 +80,8 @@
 
     </style>
 
-    <style name="Theme.Netrunner.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <style name="Theme.Netrunner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Netrunner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

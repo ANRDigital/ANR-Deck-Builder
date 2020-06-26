@@ -1,0 +1,12 @@
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/title"
+    android:textColor="@color/netrunner_blue"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    android:padding="8sp"
+    />
+
+

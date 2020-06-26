@@ -2,7 +2,6 @@ package com.shuneault.netrunnerdeckbuilder.game;
 
 import android.text.TextUtils;
 
-import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.HeaderListItemInterface;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
