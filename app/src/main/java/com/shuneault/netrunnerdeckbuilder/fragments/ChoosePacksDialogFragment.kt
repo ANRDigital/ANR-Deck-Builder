@@ -80,7 +80,7 @@ class ChoosePacksDialogFragment(val packFilter: ArrayList<String>, startFormat: 
                     adapter.clearSelectedValues()
                     mListener!!.onChoosePacksDialogPositiveClick(this)
                 }
-                .setNeutralButton("My Collection") { dialog: DialogInterface?, which: Int -> mListener!!.onMyCollectionChosen(this) }
+//                .setNeutralButton("My Collection") { dialog: DialogInterface?, which: Int -> mListener!!.onMyCollectionChosen(this) }
         return builder.create()
     }
 

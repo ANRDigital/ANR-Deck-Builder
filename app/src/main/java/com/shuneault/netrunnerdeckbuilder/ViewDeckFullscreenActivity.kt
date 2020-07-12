@@ -3,6 +3,7 @@ package com.shuneault.netrunnerdeckbuilder
 import android.app.AlertDialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.ui.ThemeHelper
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -45,7 +46,7 @@ class ViewDeckFullscreenActivity : AppCompatActivity() {
 
     private fun exitIfDeckEmpty() {
         if (vm.isEmpty()) {
-            val builder = AlertDialog.Builder(this)
+            val builder = MaterialAlertDialogBuilder(this)
             builder.setTitle(R.string.view_deck)
             builder.setMessage(R.string.deck_is_empty)
             builder.setCancelable(false)

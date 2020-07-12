@@ -25,6 +25,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.shuneault.netrunnerdeckbuilder.BuildConfig;
 import com.shuneault.netrunnerdeckbuilder.MainActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
@@ -160,7 +161,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         }
         txt.setMovementMethod(LinkMovementMethod.getInstance());
         txt.setPadding(25, 25, 25, 25);
-        AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder builder2 = new MaterialAlertDialogBuilder(getContext());
         builder2.setTitle(R.string.menu_about);
         builder2.setView(txt);
         builder2.setPositiveButton(R.string.ok, null);
@@ -168,7 +169,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     private void doClearCache() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.clear_cache);
         builder.setMessage(getString(R.string.message_clear_cache));
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

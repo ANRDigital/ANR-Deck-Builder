@@ -209,6 +209,7 @@
 
 	<style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
 		<item name="android:searchIcon">@drawable/ic_action_search</item>
+		<item name="android:closeIcon">@drawable/ic_close_white_24dp</item>
 	</style>
 
 	<style name="SearchAutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">

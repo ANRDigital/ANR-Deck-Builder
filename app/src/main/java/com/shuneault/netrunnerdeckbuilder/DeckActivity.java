@@ -1,7 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder;
 
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.shuneault.netrunnerdeckbuilder.ViewModel.DeckActivityViewModel;
 import com.shuneault.netrunnerdeckbuilder.export.JintekiNet;
 import com.shuneault.netrunnerdeckbuilder.export.OCTGN;
@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
@@ -270,7 +271,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         switch (item.getItemId()) {
             case R.id.mnuDeleteDeck:
                 // Alert
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
                 builder.setTitle(R.string.delete_deck);
                 builder.setMessage(R.string.message_delete_deck);
                 builder.setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {
@@ -398,7 +399,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
 
     private void doSetCoreCount() {
         AtomicInteger choice = new AtomicInteger();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.set_core_count)
             .setSingleChoiceItems(R.array.arrCoreCountPreference, viewModel.getDeck().getCoreCount(),
                     (dialog, which) -> choice.set(which))

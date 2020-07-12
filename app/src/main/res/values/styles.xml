@@ -84,4 +84,9 @@
 
     <style name="Theme.Netrunner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="DialogListCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+
+
+    </style>
+
 </resources>

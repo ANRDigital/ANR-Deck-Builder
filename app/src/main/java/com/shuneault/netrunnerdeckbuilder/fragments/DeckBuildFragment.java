@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.adapters.CheckedCardListAdapter;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
@@ -73,7 +74,7 @@ public class DeckBuildFragment extends DeckActivityFragment {
 
     private void doUnBuild() {
         // Ask to make sure we want to "unbuild" the deck
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setMessage(getString(R.string.message_unbuild));
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             mDeck.clearCardsToAddAndRemove();
@@ -92,7 +93,7 @@ public class DeckBuildFragment extends DeckActivityFragment {
     private void doClearAll() {
         // Ask if we are sure to clear everything
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setMessage(R.string.message_clear_checked_cards);
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             mDeck.clearCardsToAddAndRemove(true);
