@@ -1,9 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" >
-	<item android:id="@+id/mnuViewSet" android:title="@string/menu_browse_cards" android:icon="@drawable/icon_deck" app:showAsAction="always" android:orderInCategory="996" />
-    <item
-        android:id="@+id/mnuOptions"
-        android:icon="@drawable/ic_settings_white_24dp"
-        android:orderInCategory="998"
-        android:title="@string/menu_options"
-        app:showAsAction="always" />
-</menu>

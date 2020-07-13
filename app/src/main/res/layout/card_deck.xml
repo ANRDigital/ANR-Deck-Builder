@@ -44,7 +44,8 @@
 				android:ellipsize="end"
 				android:maxLines="1"
 				android:text="txtDeckTitle"
-				android:textAppearance="?android:attr/textAppearanceMedium"/>
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				/>
 
 			<CheckBox
 				android:id="@+id/chkStar"

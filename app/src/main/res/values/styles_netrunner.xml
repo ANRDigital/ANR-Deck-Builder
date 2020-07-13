@@ -2,7 +2,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
            xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Netrunner" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.Netrunner" parent="Theme.MaterialComponents.Light.NoActionBar">
 	    <item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar</item>
 	    <item name="actionBarStyle">@style/ActionBar</item>
 	    <item name="android:windowContentOverlay">@null</item>
@@ -13,9 +13,11 @@
         <item name="android:textColor">@color/text_default</item>
     </style>
 
-	<style name="ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+	<style name="ActionBar" >
 		<item name="android:background" tools:ignore="NewApi">@color/netrunner_blue</item>
 		<item name="background">@color/netrunner_blue</item>
+		<item name="titleTextColor">@color/white</item>
+
 	</style>
 
 	<style name="menu_labels_style">

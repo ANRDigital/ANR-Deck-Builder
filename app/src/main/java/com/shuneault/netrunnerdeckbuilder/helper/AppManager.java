@@ -18,7 +18,7 @@ import java.util.Calendar;
 
 import kotlin.Lazy;
 
-import static com.shuneault.netrunnerdeckbuilder.SettingsActivity.SHARED_PREF_LAST_UPDATE_DATE;
+import static com.shuneault.netrunnerdeckbuilder.fragments.SettingsFragment.SHARED_PREF_LAST_UPDATE_DATE;
 import static org.koin.java.standalone.KoinJavaComponent.inject;
 
 /**

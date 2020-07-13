@@ -1,6 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder.prefs;
 
-import android.app.AlertDialog.Builder;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.preference.ListPreference;
@@ -30,7 +30,7 @@ public class ListPreferenceMultiSelect extends ListPreference {
     }
 
     @Override
-    protected void onPrepareDialogBuilder(Builder builder) {
+    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         CharSequence[] entries = getEntries();
         CharSequence[] entryValues = getEntryValues();
 

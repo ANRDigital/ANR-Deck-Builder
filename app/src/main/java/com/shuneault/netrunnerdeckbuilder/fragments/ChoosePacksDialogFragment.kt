@@ -12,6 +12,7 @@ import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.shuneault.netrunnerdeckbuilder.R
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository
 import com.shuneault.netrunnerdeckbuilder.fragments.dialog.PackListRecyclerViewAdapter
@@ -70,7 +71,7 @@ class ChoosePacksDialogFragment(val packFilter: ArrayList<String>, startFormat: 
 
         reloadPackList()
 
-        val builder = AlertDialog.Builder(activity)
+        val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setTitle(R.string.choose_packs)
                 .setView(view)
                 // Set the action buttons
@@ -79,7 +80,7 @@ class ChoosePacksDialogFragment(val packFilter: ArrayList<String>, startFormat: 
                     adapter.clearSelectedValues()
                     mListener!!.onChoosePacksDialogPositiveClick(this)
                 }
-                .setNeutralButton("My Collection") { dialog: DialogInterface?, which: Int -> mListener!!.onMyCollectionChosen(this) }
+                .setNeutralButton("Collection") { dialog: DialogInterface?, which: Int -> mListener!!.onMyCollectionChosen(this) }
         return builder.create()
     }
 
@@ -104,7 +105,7 @@ class ChoosePacksDialogFragment(val packFilter: ArrayList<String>, startFormat: 
         mListener = try {
             context as ChoosePacksDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(activity.toString() + " must implement NoticeDialogListener")
+            throw ClassCastException(activity.toString() + " must implement ChoosePacksDialogListener")
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.shuneault.netrunnerdeckbuilder.game;
 
-import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
+import com.shuneault.netrunnerdeckbuilder.fragments.SettingsFragment;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
 public class NetRunnerBD {
@@ -20,7 +20,7 @@ public class NetRunnerBD {
     public static final String URL_ROTATIONS_JSON = "https://anrdigital.github.io/ANR-Deck-Builder/app/src/main/res/raw/rotations.json";
 
     public static String getAllCardsUrl() {
-        return String.format(URL_GET_ALL_CARDS, AppManager.getInstance().getSharedPrefs().getString(SettingsActivity.KEY_PREF_LANGUAGE, "en"));
+        return String.format(URL_GET_ALL_CARDS, AppManager.getInstance().getSharedPrefs().getString(SettingsFragment.KEY_PREF_LANGUAGE, "en"));
     }
 
     public static String getAllPacksUrl() {
