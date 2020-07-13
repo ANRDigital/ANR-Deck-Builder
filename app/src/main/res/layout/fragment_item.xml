@@ -4,7 +4,7 @@
     android:id="@+id/item_check"
     style="@style/DialogListCheckBoxStyle"
     android:layout_width="match_parent"
-    android:layout_height="48sp"
+    android:layout_height="42sp"
 
     android:textSize="18sp"
     tools:text="item" />
