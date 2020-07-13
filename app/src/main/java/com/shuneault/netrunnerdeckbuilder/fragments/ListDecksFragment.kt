@@ -123,8 +123,6 @@ class ListDecksFragment : Fragment() {
                 // Start the new deck activity
                 startDeckActivity(mDeck.rowId)
             }
-            MainActivity.REQUEST_SETTINGS -> {
-            }
         }
     }
 

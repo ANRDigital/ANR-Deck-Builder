@@ -43,32 +43,10 @@ class MainActivity : AppCompatActivity(), OnBrowseCardsClickListener,
         startActivity(intent)
     }
 
-    private inner class DecksFragmentPager(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
-        override fun getPageTitle(position: Int): CharSequence? {
-            when (position) {
-                0 -> return resources.getString(R.string.runner)
-                1 -> return resources.getString(R.string.corp)
-            }
-            return ""
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return when (position) {
-                0 -> ListDecksFragment.newInstance(Card.Side.SIDE_RUNNER)
-                1 -> ListDecksFragment.newInstance(Card.Side.SIDE_CORPORATION)
-                else -> ListDecksFragment.newInstance(Card.Side.SIDE_RUNNER)
-            }
-        }
-
-        override fun getCount(): Int {
-            return 2
-        }
-    }
-
     companion object {
         // Request Codes for activity launch
         const val REQUEST_NEW_IDENTITY = 1
-        const val REQUEST_SETTINGS = 3
+        const val REQUEST_SETTINGS = 3 //todo: delete this
     }
 
     override fun onChoosePacksDialogPositiveClick(dialog: DialogFragment?) {
