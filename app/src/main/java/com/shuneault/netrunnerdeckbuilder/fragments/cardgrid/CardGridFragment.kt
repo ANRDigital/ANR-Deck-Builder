@@ -44,7 +44,7 @@ class CardGridFragment : Fragment() {
         gridView.onItemLongClickListener = OnItemLongClickListener { adapterView: AdapterView<*>, view: View?, pos: Int, id: Long ->
             val item = adapterView.getItemAtPosition(pos) as CardCount
             val card = item.card
-            NrdbHelper.ShowNrdbWebPage(context, card)
+            NrdbHelper.ShowNrdbWebPage(requireContext(), card)
             true
         }
 

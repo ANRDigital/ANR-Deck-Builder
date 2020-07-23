@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-public class DeckActivityFragment extends Fragment {
+public abstract class DeckActivityFragment extends Fragment {
     protected Deck mDeck;
     protected DeckActivityViewModel activityViewModel;
     protected IDeckViewModelProvider mViewModelProvider;

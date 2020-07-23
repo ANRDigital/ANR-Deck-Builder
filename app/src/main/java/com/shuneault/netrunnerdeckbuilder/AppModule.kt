@@ -7,6 +7,7 @@ import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.ViewModel.MainActivityViewModel
 import com.shuneault.netrunnerdeckbuilder.db.*
 import com.shuneault.netrunnerdeckbuilder.fragments.cardgrid.CardGridViewModel
+import com.shuneault.netrunnerdeckbuilder.fragments.nrdb.NrdbFragmentViewModel
 import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper
 import com.shuneault.netrunnerdeckbuilder.helper.SettingsProvider
@@ -31,6 +32,7 @@ val appModule = module {
     viewModel { MainActivityViewModel (get(), get()) }
     viewModel { CardGridViewModel(get()) }
     viewModel { FullScreenViewModel(get(), get())}
+    viewModel { NrdbFragmentViewModel() }
 }
 
 open class MyApplication : Application(){

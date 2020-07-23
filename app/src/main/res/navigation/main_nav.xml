@@ -27,4 +27,10 @@
         android:id="@+id/action_settings"
         android:name="com.shuneault.netrunnerdeckbuilder.fragments.SettingsFragment"
         android:label="SettingsFragment" />
+
+    <fragment
+        android:id="@+id/action_nrdb"
+        android:name="com.shuneault.netrunnerdeckbuilder.fragments.nrdb.NrdbFragment"
+        android:label="nrdbFragment"
+        tools:layout="@layout/fragment_nrdb" />
 </navigation>

@@ -48,16 +48,6 @@ class HomeFragment : Fragment() {
         return view
     }
 
-
-
-
-
-    private fun startDeckActivity(rowId: Long) {
-        val intent = Intent(context, DeckActivity::class.java)
-        intent.putExtra(DeckActivity.ARGUMENT_DECK_ID, rowId)
-        startActivity(intent)
-    }
-
     private class DecksFragmentPager(fm: FragmentManager?, val runnerName: String, val corpName: CharSequence?) : FragmentPagerAdapter(fm!!) {
         override fun getPageTitle(position: Int): CharSequence? {
             when (position) {

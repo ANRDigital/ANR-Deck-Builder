@@ -14,6 +14,12 @@
         android:title="@string/action_cards"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_nrdb"
+        android:enabled="true"
+        android:icon="@drawable/link_white_nrdb"
+        android:title="@string/action_nrdb"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_settings"
         android:enabled="true"
         android:icon="@drawable/ic_settings_white_24dp"

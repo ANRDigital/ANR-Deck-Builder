@@ -1,0 +1,11 @@
+{
+  "client_id": "30_43lvcug21iqsgg44oss8go40ok04s80wcc8gocog8o0k88ck0c",
+  "redirect_uri": "org.anrdigital.anrdeckbuilder://oauth2callback",
+  "authorization_scope": "",
+  "discovery_uri": "",
+  "authorization_endpoint_uri": "https://netrunnerdb.com/oauth/v2/auth",
+  "token_endpoint_uri": "https://netrunnerdb.com/oauth/v2/token",
+  "registration_endpoint_uri": "https://netrunnerdb.com/oauth/v2/auth",
+  "user_info_endpoint_uri": "https://netrunnerdb.com/oauth/v2/auth",
+  "https_required": true
+}

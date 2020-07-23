@@ -82,7 +82,7 @@ class FullscreenCardsFragment : Fragment() {
         return when (item.itemId) {
             R.id.mnuOnline -> {
                 // show nrdb page!
-                NrdbHelper.ShowNrdbWebPage(context, vm.getCurrentCard())
+                NrdbHelper.ShowNrdbWebPage(requireContext(), vm.getCurrentCard())
                 true
             }
             else -> super.onOptionsItemSelected(item)

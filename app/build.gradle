@@ -13,6 +13,12 @@ android {
         targetSdkVersion 28
         versionCode 87
         versionName "4.5.1"
+
+        // Make sure this is consistent with the redirect URI used in res/raw/auth_config.json,
+        // or specify additional redirect URIs in AndroidManifest.xml
+        manifestPlaceholders = [
+                'appAuthRedirectScheme': 'org.anrdigital.anrdeckbuilder'
+        ]
     }
 
     buildTypes {
@@ -49,6 +55,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
 
+    implementation 'net.openid:appauth:0.7.1'
+    implementation "com.squareup.okio:okio:1.17.5"
 
     // ViewModel and LiveData
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
