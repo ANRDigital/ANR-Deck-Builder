@@ -281,7 +281,7 @@ public class Card implements java.io.Serializable {
     }
 
     public boolean isIdentity() {
-        return getTypeCode().equals(Type.IDENTITY);
+        return Type.IDENTITY.equals(getTypeCode());
     }
 
     public boolean isJinteki() {

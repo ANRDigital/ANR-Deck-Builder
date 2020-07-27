@@ -1,6 +1,5 @@
 package com.shuneault.netrunnerdeckbuilder.fragments.cardgrid
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +11,10 @@ import android.widget.GridView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.shuneault.netrunnerdeckbuilder.R
-import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity
 import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.adapters.CardCountImageAdapter
-import com.shuneault.netrunnerdeckbuilder.fragments.FullscreenCardsFragment
 import com.shuneault.netrunnerdeckbuilder.game.CardCount
-import com.shuneault.netrunnerdeckbuilder.helper.NrdbHelper
+import com.shuneault.netrunnerdeckbuilder.api.NrdbHelper
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class CardGridFragment : Fragment() {

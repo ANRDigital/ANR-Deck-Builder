@@ -20,12 +20,11 @@ import java.util.ArrayList;
  */
 public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.DeckViewHolder> {
 
-    private ArrayList<Deck> mDeckList;
+    private ArrayList<Deck> mDeckList = new ArrayList<>();
     private DeckViewHolder.IViewHolderClicks mListener;
 
-    public ListDecksAdapter(ArrayList<Deck> deckList, DeckViewHolder.IViewHolderClicks listener) {
+    public ListDecksAdapter(DeckViewHolder.IViewHolderClicks listener) {
         super();
-        mDeckList = deckList;
         mListener = listener;
     }
 

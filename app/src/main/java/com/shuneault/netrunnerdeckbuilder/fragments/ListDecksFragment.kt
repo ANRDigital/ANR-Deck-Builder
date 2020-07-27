@@ -64,7 +64,7 @@ class ListDecksFragment : Fragment() {
 
         // Initialize the layout manager and adapter
         val mCurrentDecks = currentDecks
-        val mDeckAdapter = ListDecksAdapter(mCurrentDecks, object : IViewHolderClicks {
+        val mDeckAdapter = ListDecksAdapter(object : IViewHolderClicks {
             override fun onDeckClick(deck: Deck) {
                 // Load the deck activity
                 if (!deck.hasUnknownCards()) startDeckActivity(deck.rowId)
@@ -82,6 +82,7 @@ class ListDecksFragment : Fragment() {
                 if (!deck.hasUnknownCards()) startDeckViewActivity(deck.rowId)
             }
         })
+        mDeckAdapter.setData(mCurrentDecks)
 
         mRecyclerView.setAdapter(mDeckAdapter)
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
