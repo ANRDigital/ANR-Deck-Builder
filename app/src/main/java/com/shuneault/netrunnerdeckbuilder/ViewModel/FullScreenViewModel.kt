@@ -30,8 +30,7 @@ class FullScreenViewModel(private val deckRepository: IDeckRepository, private v
             }
             // NO Card Sort
         }
-    var deck: Deck? = null
-        private set
+    private var deck: Deck? = null
 
     fun setCardCode(cardCode: String?) {
         cardCode?.let {
@@ -42,6 +41,15 @@ class FullScreenViewModel(private val deckRepository: IDeckRepository, private v
 
     fun loadDeck(deckId: Long) {
         deck = deckRepository.getDeck(deckId)
+        updateCounts()
+    }
+
+    fun setDeck(deck: Deck){
+        this.deck = deck
+        updateCounts()
+    }
+
+    private fun updateCounts() {
         deck?.let {
             cardCounts.clear()
             cardCounts.addAll(it.cardCounts)

@@ -4,11 +4,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
 
-public class Format {
+public class Format implements Serializable {
     public static final int FORMAT_STANDARD = 1;
     public static final int FORMAT_ETERNAL = 3;
     private String description;

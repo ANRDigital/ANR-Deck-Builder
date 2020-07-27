@@ -59,7 +59,7 @@ class NrdbFragment : Fragment() {
         val mDeckAdapter = ListDecksAdapter(object : ListDecksAdapter.DeckViewHolder.IViewHolderClicks {
             override fun onDeckClick(deck: Deck) {
                 // Load the deck activity
-                if (!deck.hasUnknownCards()) startDeckViewActivity(deck.rowId)
+                if (!deck.hasUnknownCards()) startDeckViewActivityForNrdbDeck(deck)
             }
 
             override fun onDeckStarred(deck: Deck, isStarred: Boolean) {
@@ -71,7 +71,7 @@ class NrdbFragment : Fragment() {
 
             override fun onDeckView(deck: Deck) {
                 // Load the deck view activity
-                if (!deck.hasUnknownCards()) startDeckViewActivity(deck.rowId)
+                if (!deck.hasUnknownCards()) startDeckViewActivityForNrdbDeck(deck)
             }
         })
 
@@ -88,10 +88,9 @@ class NrdbFragment : Fragment() {
         return view
     }
 
-    //todo: move to
-    private fun startDeckViewActivity(rowId: Long) {
+    private fun startDeckViewActivityForNrdbDeck(deck: Deck) {
         val intent = Intent(activity, DeckViewActivity::class.java)
-        intent.putExtra(DeckActivity.ARGUMENT_DECK_ID, rowId)
+        intent.putExtra(DeckViewActivity.ARGUMENT_DECK, deck)
         requireActivity().startActivity(intent)
     }
 
