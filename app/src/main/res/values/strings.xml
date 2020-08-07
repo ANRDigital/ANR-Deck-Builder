@@ -227,5 +227,8 @@
     <string name="action_cards">Cards</string>
     <string name="action_nrdb">Nrdb</string>
     <string name="nrdb_sign_in">Sign In</string>
+    <string name="nrdb_public">Decklists</string>
+    <string name="nrdb_my_decks">My decks</string>
+    <string name="accessing_nrdb">\"Accessing Nrdb\"</string>
 
 </resources>

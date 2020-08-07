@@ -8,6 +8,6 @@ interface NrdbApiService {
     @GET("public/decklists/by_date/{date}")
     fun getDateDeckLists(@Path("date") date: String): Call<NrdbDeckLists>
 
-    @GET("private/decklists/")
+    @GET("private/decks")
     fun getMyDeckLists(): Call<NrdbDeckLists>
 }

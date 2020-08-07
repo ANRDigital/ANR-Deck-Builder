@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/action_nrdb"
-        android:name="com.shuneault.netrunnerdeckbuilder.fragments.nrdb.NrdbFragment"
+        android:name="com.shuneault.netrunnerdeckbuilder.fragments.NrdbScreenFragment"
         android:label="nrdbFragment"
         tools:layout="@layout/fragment_nrdb" />
 </navigation>

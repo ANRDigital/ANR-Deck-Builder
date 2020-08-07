@@ -76,17 +76,6 @@ class MainActivity : AppCompatActivity(), OnBrowseCardsClickListener,
         }
     }
 
-    fun readAuthState(): AuthState {
-        val authPrefs = getSharedPreferences("auth", Context.MODE_PRIVATE)
-        val stateJson = authPrefs.getString("stateJson", null)
-        var state: AuthState
-        return if (stateJson != null) {
-            AuthState.jsonDeserialize(stateJson)
-        } else {
-            AuthState()
-        }
-    }
-
     fun writeAuthState(state: AuthState) {
         val authPrefs = getSharedPreferences("auth", Context.MODE_PRIVATE)
         authPrefs.edit()
