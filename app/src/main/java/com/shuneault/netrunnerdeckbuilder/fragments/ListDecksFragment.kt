@@ -81,7 +81,9 @@ class ListDecksFragment : Fragment() {
                 // Load the deck view activity
                 if (!deck.hasUnknownCards()) startDeckViewActivity(deck.rowId)
             }
-        })
+        },
+        true)
+
         mDeckAdapter.setData(mCurrentDecks)
 
         mRecyclerView.setAdapter(mDeckAdapter)

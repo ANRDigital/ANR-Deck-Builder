@@ -1,8 +1,12 @@
 package com.shuneault.netrunnerdeckbuilder.fragments.nrdb
 
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.*
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +17,8 @@ import com.shuneault.netrunnerdeckbuilder.adapters.ListDecksAdapter
 import com.shuneault.netrunnerdeckbuilder.appauth.AuthStateManager
 import com.shuneault.netrunnerdeckbuilder.game.Deck
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
+
 
 private const val ARG_MODE = "MODE_PARAMETER"
 
@@ -54,17 +60,15 @@ class NrdbFragment : Fragment() {
             }
 
             override fun onDeckStarred(deck: Deck, isStarred: Boolean) {
-//                vm.starDeck(deck, isStarred)
-//                // Sort for new starred order
-//                Collections.sort(mCurrentDecks, Sorter.DeckSorter())
-//                mRecyclerView?.adapter!!.notifyDataSetChanged()
+                // do nothing not showing stars
             }
 
             override fun onDeckView(deck: Deck) {
                 // Load the deck view activity
                 if (!deck.hasUnknownCards()) startDeckViewActivityForNrdbDeck(deck)
             }
-        })
+        },
+        false)
 
         // Initialize the layout manager and adapter
         when(fragmentMode){

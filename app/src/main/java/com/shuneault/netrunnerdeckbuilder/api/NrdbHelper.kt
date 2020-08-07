@@ -16,6 +16,7 @@ import net.openid.appauth.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.*
 
 object NrdbHelper {
@@ -53,11 +54,11 @@ object NrdbHelper {
         authorizationService.performAuthorizationRequest(request, pendingIntent)
     }
 
-    fun getDateDeckLists(today: Date, context: Context,
+    fun getDateDeckLists(date: Date, context: Context,
                                  onSuccess: (Response<NrdbDeckLists>)->Unit) {
         //todo: cache response?
-//        val dateString = SimpleDateFormat("yyyy-MM-dd").format(today)
-        val dateString = "2020-07-28"
+        val dateString = SimpleDateFormat("yyyy-MM-dd").format(date)
+//        val dateString = "2020-07-28"
 
         val apiService = NrdbClient().getApiService(context)
         val call = apiService.getDateDeckLists(dateString)

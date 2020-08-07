@@ -22,10 +22,12 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
 
     private ArrayList<Deck> mDeckList = new ArrayList<>();
     private DeckViewHolder.IViewHolderClicks mListener;
+    private boolean mShowStars;
 
-    public ListDecksAdapter(DeckViewHolder.IViewHolderClicks listener) {
+    public ListDecksAdapter(DeckViewHolder.IViewHolderClicks listener, boolean showStars) {
         super();
         mListener = listener;
+        mShowStars = showStars;
     }
 
     public void setData(ArrayList<Deck> newDeckList) {
@@ -37,7 +39,7 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
     @Override
     public DeckViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_deck, viewGroup, false);
-        return new DeckViewHolder(itemView, mListener);
+        return new DeckViewHolder(itemView, mListener, mShowStars);
     }
 
     @Override
@@ -57,11 +59,13 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
         public ImageView imgDeckIdentity;
         private CheckBox chkStarred;
         private IViewHolderClicks mListener;
+        private boolean mShowStars;
         private Deck deck;
 
-        DeckViewHolder(View v, IViewHolderClicks listener) {
+        DeckViewHolder(View v, IViewHolderClicks listener, boolean showStars) {
             super(v);
             mListener = listener;
+            this.mShowStars = showStars;
             // set click listener to ripple view
             View itemRipple = v.findViewById(R.id.ripple);
             itemRipple.setOnClickListener(this);
@@ -94,6 +98,8 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
             txtDeckNotes.setText(deckNotes);
             ImageDisplayer.fill(imgDeckIdentity, deck.getIdentity(), context);
             chkStarred.setChecked(deck.isStarred());
+
+            chkStarred.setVisibility(mShowStars? View.VISIBLE : View.GONE);
         }
 
         @Override
