@@ -2,6 +2,8 @@ package com.shuneault.netrunnerdeckbuilder.adapters;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,10 +97,11 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
             if(deck.hasUnknownCards()){
                 deckNotes = context.getString(R.string.has_unknown_cards);
             }
-            txtDeckNotes.setText(deckNotes);
-            ImageDisplayer.fill(imgDeckIdentity, deck.getIdentity(), context);
-            chkStarred.setChecked(deck.isStarred());
+            txtDeckNotes.setText(Html.fromHtml(deckNotes));
 
+            ImageDisplayer.fill(imgDeckIdentity, deck.getIdentity(), context);
+
+            chkStarred.setChecked(deck.isStarred());
             chkStarred.setVisibility(mShowStars? View.VISIBLE : View.GONE);
         }
 
