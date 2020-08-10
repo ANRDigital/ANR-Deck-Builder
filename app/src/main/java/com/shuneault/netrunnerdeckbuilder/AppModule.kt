@@ -32,7 +32,7 @@ val appModule = module {
     viewModel { MainActivityViewModel (get(), get()) }
     viewModel { CardGridViewModel(get()) }
     viewModel { FullScreenViewModel(get(), get())}
-    viewModel { NrdbFragmentViewModel(get()) }
+    viewModel { NrdbFragmentViewModel(get(), get()) }
 }
 
 open class MyApplication : Application(){

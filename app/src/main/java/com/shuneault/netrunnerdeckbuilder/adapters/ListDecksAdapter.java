@@ -4,7 +4,10 @@ import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -55,7 +58,8 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
     }
 
 
-    public static class DeckViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public static class DeckViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            View.OnCreateContextMenuListener {
         public TextView txtDeckTitle;
         public TextView txtDeckNotes;
         public ImageView imgDeckIdentity;
@@ -66,12 +70,14 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
 
         DeckViewHolder(View v, IViewHolderClicks listener, boolean showStars) {
             super(v);
+            v.setOnClickListener(this);
+            v.setOnCreateContextMenuListener(this);
+
             mListener = listener;
             this.mShowStars = showStars;
             // set click listener to ripple view
             View itemRipple = v.findViewById(R.id.ripple);
             itemRipple.setOnClickListener(this);
-            itemRipple.setOnLongClickListener(this);
             txtDeckTitle = v.findViewById(R.id.txtDeckTitle);
             txtDeckNotes = v.findViewById(R.id.txtDeckNotes);
             imgDeckIdentity = v.findViewById(R.id.imgDeckIdentity);
@@ -106,9 +112,20 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
         }
 
         @Override
-        public boolean onLongClick(View view) {
-            mListener.onDeckView(deck);
-            return true;
+        public void onCreateContextMenu(ContextMenu menu, View v,
+                                        ContextMenu.ContextMenuInfo menuInfo) {
+            new MenuInflater(v.getContext()).inflate(R.menu.deck_context_menu, menu);
+            MenuItem viewItem = menu.findItem(R.id.view_item);
+            viewItem.setOnMenuItemClickListener(menuItem -> {
+                mListener.onDeckView(deck);
+                return true;
+            });
+
+            MenuItem copyItem = menu.findItem(R.id.save_copy_item);
+            copyItem.setOnMenuItemClickListener(menuItem -> {
+                mListener.onSaveACopy(deck);
+                return true;
+            });
         }
 
         public interface IViewHolderClicks {
@@ -117,6 +134,8 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
             void onDeckStarred(Deck deck, boolean isStarred);
 
             void onDeckView(Deck deck);
+
+            void onSaveACopy(Deck deck);
         }
     }
 

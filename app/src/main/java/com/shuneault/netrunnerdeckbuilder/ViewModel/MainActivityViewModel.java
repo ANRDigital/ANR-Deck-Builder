@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import androidx.lifecycle.ViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 public class MainActivityViewModel extends ViewModel {
     private CardRepository cardRepo;
     private IDeckRepository deckRepo;
@@ -40,5 +42,9 @@ public class MainActivityViewModel extends ViewModel {
     public void starDeck(Deck deck, boolean isStarred) {
         deck.setStarred(isStarred);
         deckRepo.saveDeck(deck);
+    }
+
+    public void cloneDeck(@NotNull Deck deck) {
+        deckRepo.cloneDeck(deck);
     }
 }

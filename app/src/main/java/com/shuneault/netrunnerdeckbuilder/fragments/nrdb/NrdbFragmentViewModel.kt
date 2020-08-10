@@ -10,6 +10,8 @@ import com.shuneault.netrunnerdeckbuilder.api.NrdbClient
 import com.shuneault.netrunnerdeckbuilder.api.NrdbDeckLists
 import com.shuneault.netrunnerdeckbuilder.api.NrdbHelper
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository
+import com.shuneault.netrunnerdeckbuilder.db.DeckRepository
+import com.shuneault.netrunnerdeckbuilder.db.IDeckRepository
 import com.shuneault.netrunnerdeckbuilder.game.Deck
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager
 import com.shuneault.netrunnerdeckbuilder.helper.NrdbDeckFactory
@@ -19,7 +21,7 @@ import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
 
-class NrdbFragmentViewModel(private val cardRepository: CardRepository) : ViewModel() {
+class NrdbFragmentViewModel(private val cardRepository: CardRepository, private val deckRepository: IDeckRepository) : ViewModel() {
 
     private var todaysDeckLists = MutableLiveData<ArrayList<Deck>>()
     private var privateDecks = MutableLiveData<ArrayList<Deck>>()
@@ -61,6 +63,9 @@ class NrdbFragmentViewModel(private val cardRepository: CardRepository) : ViewMo
         privateDecks.value = result
     }
 
+    fun cloneDeck(deck: Deck) {
+        deckRepository.cloneDeck(deck);
+    }
 
 
 }

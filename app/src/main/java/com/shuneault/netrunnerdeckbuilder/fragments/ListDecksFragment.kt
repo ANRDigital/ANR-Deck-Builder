@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -80,6 +81,11 @@ class ListDecksFragment : Fragment() {
             override fun onDeckView(deck: Deck) {
                 // Load the deck view activity
                 if (!deck.hasUnknownCards()) startDeckViewActivity(deck.rowId)
+            }
+
+            override fun onSaveACopy(deck: Deck) {
+                vm.cloneDeck(deck)
+                Toast.makeText(requireContext(), R.string.on_copy_saved, Toast.LENGTH_SHORT )
             }
         },
         true)

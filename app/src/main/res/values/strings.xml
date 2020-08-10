@@ -230,5 +230,8 @@
     <string name="nrdb_public">Decklists</string>
     <string name="nrdb_my_decks">My decks</string>
     <string name="accessing_nrdb">\"Accessing Nrdb\"</string>
+    <string name="view">View</string>
+    <string name="save_a_copy">Save a copy</string>
+    <string name="on_copy_saved">Copy saved</string>
 
 </resources>
