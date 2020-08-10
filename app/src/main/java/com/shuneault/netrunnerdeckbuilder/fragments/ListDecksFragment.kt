@@ -85,7 +85,7 @@ class ListDecksFragment : Fragment() {
 
             override fun onSaveACopy(deck: Deck) {
                 vm.cloneDeck(deck)
-                Toast.makeText(requireContext(), R.string.on_copy_saved, Toast.LENGTH_SHORT )
+                Toast.makeText(requireContext(), R.string.on_copy_saved, Toast.LENGTH_SHORT ).show()
             }
         },
         true)
