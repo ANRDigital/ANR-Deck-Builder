@@ -114,17 +114,19 @@ object NrdbHelper {
     }
 
     fun doNrdbSignOut(context: Context) {
+        isSignedIn = false
+
         // discard the authorization and token state, but retain the configuration and
         // dynamic client registration (if applicable), to save from retrieving them again.
         val mStateManager = AuthStateManager.getInstance(context)
         val currentState: AuthState = mStateManager.current
-        val clearedState = AuthState(currentState.authorizationServiceConfiguration!!)
-        if (currentState.lastRegistrationResponse != null) {
-            clearedState.update(currentState.lastRegistrationResponse)
+        if (currentState.authorizationServiceConfiguration != null) {
+            val clearedState = AuthState(currentState.authorizationServiceConfiguration!!)
+            if (currentState.lastRegistrationResponse != null) {
+                clearedState.update(currentState.lastRegistrationResponse)
+            }
+            mStateManager.replace(clearedState)
         }
-        mStateManager.replace(clearedState)
-
-        isSignedIn = false
     }
 
 }

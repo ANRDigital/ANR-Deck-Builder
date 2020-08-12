@@ -29,8 +29,6 @@ import java.util.*
  */
 class ListDecksFragment : Fragment() {
 
-    private var mCurrentDecks = ArrayList<Deck>()
-
     // Database and decks
     private val vm: MainActivityViewModel by viewModel()
     private var mScrollDirection = 0
@@ -66,7 +64,6 @@ class ListDecksFragment : Fragment() {
         mRecyclerView.layoutManager = mLayoutManager
 
         // Initialize the layout manager and adapter
-        val decks = currentDecks
         val deckAdapter = ListDecksAdapter(object : IViewHolderClicks {
             override fun onDeckClick(deck: Deck) {
                 // Load the deck activity
@@ -76,7 +73,6 @@ class ListDecksFragment : Fragment() {
             override fun onDeckStarred(deck: Deck, isStarred: Boolean) {
                 vm.starDeck(deck, isStarred)
                 // Sort for new starred order
-                Collections.sort(decks, DeckSorter())
                 mRecyclerView?.adapter!!.notifyDataSetChanged()
             }
 
@@ -92,7 +88,7 @@ class ListDecksFragment : Fragment() {
         },
         true)
 
-        deckAdapter.setData(decks)
+        vm.getDecksForSide(mSide).observe(viewLifecycleOwner, androidx.lifecycle.Observer { data -> deckAdapter.setData(data) })
 
         mRecyclerView.adapter = deckAdapter
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -136,20 +132,6 @@ class ListDecksFragment : Fragment() {
             }
         }
     }
-
-    // Only the selected tab decks
-    private val currentDecks: ArrayList<Deck>
-        private get() {
-            // Only the selected tab decks
-            for (deck in vm.decks) {
-                if (deck != null && deck.side == mSide) {
-                    mCurrentDecks.add(deck)
-                }
-            }
-            // Sort the list
-            Collections.sort(mCurrentDecks, DeckSorter())
-            return mCurrentDecks
-        }
 
     private fun startDeckActivity(rowId: Long) {
         val intent = Intent(activity, DeckActivity::class.java)

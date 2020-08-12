@@ -38,6 +38,7 @@ class NrdbFragment : Fragment() {
             fragmentMode = it.getInt(ARG_MODE)
         }
 
+        activity?.title = "NRDB Decks"
         setHasOptionsMenu(true)
     }
 
