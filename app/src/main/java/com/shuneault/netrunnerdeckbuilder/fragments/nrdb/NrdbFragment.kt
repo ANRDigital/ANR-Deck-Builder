@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.shuneault.netrunnerdeckbuilder.DeckViewActivity
 import com.shuneault.netrunnerdeckbuilder.R
 import com.shuneault.netrunnerdeckbuilder.adapters.ListDecksAdapter
@@ -107,8 +108,21 @@ class NrdbFragment : Fragment() {
     }
 
     private fun ToggleNrdbSignIn() {
-        //todo: if signed in then check you want to sign out (confirmdlg), otherwise...
-        vm.toggleNrdbSignIn(requireContext())
+        if (vm.isSignedIn){
+            // Alert
+            // Alert
+            val builder = MaterialAlertDialogBuilder(requireContext())
+            builder.setTitle(R.string.confirm_signout)
+            builder.setPositiveButton(R.string.ok) { dialog, which ->
+                vm.nrdbSignOut(requireContext())
+            }
+            builder.setNegativeButton(R.string.cancel) { dialog, which -> }
+            builder.show()
+        }
+        else
+        {
+            vm.nrdbSignIn(requireContext())
+        }
     }
 
     companion object {

@@ -98,7 +98,12 @@ class MainActivity : AppCompatActivity(), OnBrowseCardsClickListener,
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
         val navHostFragment = supportFragmentManager
                 .findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
-        NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment!!.navController)
+        val navController = navHostFragment!!.navController
+        NavigationUI.setupWithNavController(bottomNavigationView, navController)
+
+        if (intent.hasExtra(STARTUP_TYPE) && intent.getIntExtra(STARTUP_TYPE, STARTUP_NORMAL) == STARTUP_NRDB_AUTH) {
+            navController.navigate(R.id.action_nrdb)
+        }
     }
 
     override fun onCardClicked(card: Card, position: Int) { // do nothing for now
@@ -108,6 +113,11 @@ class MainActivity : AppCompatActivity(), OnBrowseCardsClickListener,
     }
 
     companion object {
+        const val STARTUP_TYPE = "STARTUP_TYPE"
+        const val STARTUP_NORMAL = 0
+        const val STARTUP_NRDB_AUTH = 1
+
+
         // Request Codes for activity launch
         const val REQUEST_NEW_IDENTITY = 1
         const val REQUEST_SETTINGS = 3 //todo: delete this

@@ -233,5 +233,6 @@
     <string name="view">View</string>
     <string name="save_a_copy">Save a copy</string>
     <string name="on_copy_saved">Copy saved</string>
+    <string name="confirm_signout">Sign out from Nrdb?</string>
 
 </resources>

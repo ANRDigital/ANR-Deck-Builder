@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object NrdbHelper {
+    var isSignedIn = false
     const val NRDB_SECRET = "lvlwz4israoo44kso088c4g40kwwco40008w04sgswc084kcw"
 
     /* Shows a card's page on netrunnerdb.com */
@@ -52,6 +53,8 @@ object NrdbHelper {
 
         val pendingIntent = PendingIntent.getActivity(context, request.hashCode(), postAuthorizationIntent, 0)
         authorizationService.performAuthorizationRequest(request, pendingIntent)
+
+        isSignedIn = true;
     }
 
     fun getDateDeckLists(date: Date, context: Context,
@@ -84,7 +87,7 @@ object NrdbHelper {
                 ) {
                     _, _, ex ->
                     if (ex != null) {
-                        this.signOut(context)
+                        this.doNrdbSignOut(context)
                     }
                     else {
                         privateDeckListsAction(context, onSuccess)
@@ -110,7 +113,7 @@ object NrdbHelper {
         })
     }
 
-    private fun signOut(context: Context) {
+    fun doNrdbSignOut(context: Context) {
         // discard the authorization and token state, but retain the configuration and
         // dynamic client registration (if applicable), to save from retrieving them again.
         val mStateManager = AuthStateManager.getInstance(context)
@@ -120,6 +123,8 @@ object NrdbHelper {
             clearedState.update(currentState.lastRegistrationResponse)
         }
         mStateManager.replace(clearedState)
+
+        isSignedIn = false
     }
 
 }

@@ -29,6 +29,8 @@ import java.util.*
  */
 class ListDecksFragment : Fragment() {
 
+    private var mCurrentDecks = ArrayList<Deck>()
+
     // Database and decks
     private val vm: MainActivityViewModel by viewModel()
     private var mScrollDirection = 0
@@ -60,12 +62,12 @@ class ListDecksFragment : Fragment() {
         // Initialize the RecyclerView
         mRecyclerView = mainView.findViewById(R.id.recyclerView)
         mRecyclerView.setHasFixedSize(true)
-        val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(activity)
+        val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         mRecyclerView.layoutManager = mLayoutManager
 
         // Initialize the layout manager and adapter
-        val mCurrentDecks = currentDecks
-        val mDeckAdapter = ListDecksAdapter(object : IViewHolderClicks {
+        val decks = currentDecks
+        val deckAdapter = ListDecksAdapter(object : IViewHolderClicks {
             override fun onDeckClick(deck: Deck) {
                 // Load the deck activity
                 if (!deck.hasUnknownCards()) startDeckActivity(deck.rowId)
@@ -74,7 +76,7 @@ class ListDecksFragment : Fragment() {
             override fun onDeckStarred(deck: Deck, isStarred: Boolean) {
                 vm.starDeck(deck, isStarred)
                 // Sort for new starred order
-                Collections.sort(mCurrentDecks, DeckSorter())
+                Collections.sort(decks, DeckSorter())
                 mRecyclerView?.adapter!!.notifyDataSetChanged()
             }
 
@@ -90,9 +92,9 @@ class ListDecksFragment : Fragment() {
         },
         true)
 
-        mDeckAdapter.setData(mCurrentDecks)
+        deckAdapter.setData(decks)
 
-        mRecyclerView.setAdapter(mDeckAdapter)
+        mRecyclerView.adapter = deckAdapter
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0 && mScrollDirection <= 0) { // Scroll Down
@@ -139,9 +141,7 @@ class ListDecksFragment : Fragment() {
     private val currentDecks: ArrayList<Deck>
         private get() {
             // Only the selected tab decks
-            val mCurrentDecks = ArrayList<Deck>()
-            val mDecks = vm.decks
-            for (deck in mDecks) {
+            for (deck in vm.decks) {
                 if (deck != null && deck.side == mSide) {
                     mCurrentDecks.add(deck)
                 }
@@ -161,11 +161,6 @@ class ListDecksFragment : Fragment() {
         val intent = Intent(activity, DeckViewActivity::class.java)
         intent.putExtra(DeckActivity.ARGUMENT_DECK_ID, rowId)
         requireActivity().startActivity(intent)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        (mRecyclerView!!.adapter as ListDecksAdapter?)!!.setData(currentDecks)
     }
 
     companion object {

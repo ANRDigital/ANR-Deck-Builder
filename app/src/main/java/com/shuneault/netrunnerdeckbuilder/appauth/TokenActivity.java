@@ -1,17 +1,3 @@
-/*
- * Copyright 2015 The AppAuth for Android Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.shuneault.netrunnerdeckbuilder.appauth;
 
 import android.content.Intent;
@@ -28,11 +14,9 @@ import com.shuneault.netrunnerdeckbuilder.MainActivity;
 import com.shuneault.netrunnerdeckbuilder.api.NrdbHelper;
 
 import net.openid.appauth.AppAuthConfiguration;
-import net.openid.appauth.AuthState;
 import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
-import net.openid.appauth.AuthorizationServiceDiscovery;
 import net.openid.appauth.ClientAuthentication;
 import net.openid.appauth.ClientSecretBasic;
 import net.openid.appauth.TokenRequest;
@@ -41,16 +25,9 @@ import net.openid.appauth.TokenResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
-
-import okio.Okio;
 
 
 /**
@@ -184,94 +161,9 @@ public class TokenActivity extends AppCompatActivity {
     private void displayAuthorized() {
         Intent mainIntent = new Intent(this, MainActivity.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mainIntent.putExtra(MainActivity.STARTUP_TYPE, MainActivity.STARTUP_NRDB_AUTH);
         startActivity(mainIntent);
         finish();
-//
-//        findViewById(R.id.authorized).setVisibility(View.VISIBLE);
-//        findViewById(R.id.not_authorized).setVisibility(View.GONE);
-//        findViewById(R.id.loading_container).setVisibility(View.GONE);
-//
-//        AuthState state = mStateManager.getCurrent();
-//
-//        TextView refreshTokenInfoView = (TextView) findViewById(R.id.refresh_token_info);
-//        refreshTokenInfoView.setText((state.getRefreshToken() == null)
-//                ? R.string.no_refresh_token_returned
-//                : R.string.refresh_token_returned);
-//
-//        TextView idTokenInfoView = (TextView) findViewById(R.id.id_token_info);
-//        idTokenInfoView.setText((state.getIdToken()) == null
-//                ? R.string.no_id_token_returned
-//                : R.string.id_token_returned);
-//
-//        TextView accessTokenInfoView = (TextView) findViewById(R.id.access_token_info);
-//        if (state.getAccessToken() == null) {
-//            accessTokenInfoView.setText(R.string.no_access_token_returned);
-//        } else {
-//            Long expiresAt = state.getAccessTokenExpirationTime();
-//            if (expiresAt == null) {
-//                accessTokenInfoView.setText(R.string.no_access_token_expiry);
-//            } else if (expiresAt < System.currentTimeMillis()) {
-//                accessTokenInfoView.setText(R.string.access_token_expired);
-//            } else {
-//                String template = getResources().getString(R.string.access_token_expires_at);
-//                accessTokenInfoView.setText(String.format(template,
-//                        DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss ZZ").print(expiresAt)));
-//            }
-//        }
-//
-//        Button refreshTokenButton = (Button) findViewById(R.id.refresh_token);
-//        refreshTokenButton.setVisibility(state.getRefreshToken() != null
-//                ? View.VISIBLE
-//                : View.GONE);
-//        refreshTokenButton.setOnClickListener((View view) -> refreshAccessToken());
-//
-//        Button viewProfileButton = (Button) findViewById(R.id.view_profile);
-//
-//        AuthorizationServiceDiscovery discoveryDoc =
-//                state.getAuthorizationServiceConfiguration().discoveryDoc;
-//        if ((discoveryDoc == null || discoveryDoc.getUserinfoEndpoint() == null)
-//                && mConfiguration.getUserInfoEndpointUri() == null) {
-//            viewProfileButton.setVisibility(View.GONE);
-//        } else {
-//            viewProfileButton.setVisibility(View.VISIBLE);
-//            viewProfileButton.setOnClickListener((View view) -> fetchUserInfo());
-//        }
-//
-//        ((Button)findViewById(R.id.sign_out)).setOnClickListener((View view) -> signOut());
-//
-//        View userInfoCard = findViewById(R.id.userinfo_card);
-//        JSONObject userInfo = mUserInfoJson.get();
-//        if (userInfo == null) {
-//            userInfoCard.setVisibility(View.INVISIBLE);
-//        } else {
-//            try {
-//                String name = "???";
-//                if (userInfo.has("name")) {
-//                    name = userInfo.getString("name");
-//                }
-//                ((TextView) findViewById(R.id.userinfo_name)).setText(name);
-//
-//                if (userInfo.has("picture")) {
-//                    GlideApp.with(TokenActivity.this)
-//                            .load(Uri.parse(userInfo.getString("picture")))
-//                            .fitCenter()
-//                            .into((ImageView) findViewById(R.id.userinfo_profile));
-//                }
-//
-//                ((TextView) findViewById(R.id.userinfo_json)).setText(mUserInfoJson.toString());
-//                userInfoCard.setVisibility(View.VISIBLE);
-//            } catch (JSONException ex) {
-//                Log.e(TAG, "Failed to read userinfo JSON", ex);
-//            }
-//        }
-    }
-
-    @MainThread
-    private void refreshAccessToken() {
-        displayLoading("Refreshing access token");
-        performTokenRequest(
-                mStateManager.getCurrent().createTokenRefreshRequest(),
-                this::handleAccessTokenResponse);
     }
 
     @MainThread
@@ -328,91 +220,5 @@ public class TokenActivity extends AppCompatActivity {
         } else {
             runOnUiThread(this::displayAuthorized);
         }
-    }
-
-    /**
-     * Demonstrates the use of {no link AuthState#performActionWithFreshTokens} to retrieve
-     * user info from the IDP's user info endpoint. This callback will negotiate a new access
-     * token / id token for use in a follow-up action, or provide an error if this fails.
-     */
-    @MainThread
-    private void fetchUserInfo() {
-        displayLoading("Fetching user info");
-        mStateManager.getCurrent().performActionWithFreshTokens(mAuthService, this::fetchUserInfo);
-    }
-
-    @MainThread
-    private void fetchUserInfo(String accessToken, String idToken, AuthorizationException ex) {
-        if (ex != null) {
-            Log.e(TAG, "Token refresh failed when fetching user info");
-            mUserInfoJson.set(null);
-            runOnUiThread(this::displayAuthorized);
-            return;
-        }
-
-        AuthorizationServiceDiscovery discovery =
-                mStateManager.getCurrent()
-                        .getAuthorizationServiceConfiguration()
-                        .discoveryDoc;
-
-        URL userInfoEndpoint;
-        try {
-            userInfoEndpoint =
-                    mConfiguration.getUserInfoEndpointUri() != null
-                        ? new URL(mConfiguration.getUserInfoEndpointUri().toString())
-                        : new URL(discovery.getUserinfoEndpoint().toString());
-        } catch (MalformedURLException urlEx) {
-            Log.e(TAG, "Failed to construct user info endpoint URL", urlEx);
-            mUserInfoJson.set(null);
-            runOnUiThread(this::displayAuthorized);
-            return;
-        }
-
-        mExecutor.submit(() -> {
-            try {
-                HttpURLConnection conn =
-                        (HttpURLConnection) userInfoEndpoint.openConnection();
-                conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-                conn.setInstanceFollowRedirects(false);
-                String response = Okio.buffer(Okio.source(conn.getInputStream()))
-                        .readString(Charset.forName("UTF-8"));
-                mUserInfoJson.set(new JSONObject(response));
-            } catch (IOException ioEx) {
-                Log.e(TAG, "Network error when querying userinfo endpoint", ioEx);
-                showSnackbar("Fetching user info failed");
-            } catch (JSONException jsonEx) {
-                Log.e(TAG, "Failed to parse userinfo response");
-                showSnackbar("Failed to parse user info");
-            }
-
-            runOnUiThread(this::displayAuthorized);
-        });
-    }
-
-    @MainThread
-    private void showSnackbar(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-//        Snackbar.make(findViewById(R.id.coordinator),
-//                message,
-//                Snackbar.LENGTH_SHORT)
-//                .show();
-    }
-
-    @MainThread
-    private void signOut() {
-        // discard the authorization and token state, but retain the configuration and
-        // dynamic client registration (if applicable), to save from retrieving them again.
-        AuthState currentState = mStateManager.getCurrent();
-        AuthState clearedState =
-                new AuthState(currentState.getAuthorizationServiceConfiguration());
-        if (currentState.getLastRegistrationResponse() != null) {
-            clearedState.update(currentState.getLastRegistrationResponse());
-        }
-        mStateManager.replace(clearedState);
-
-        Intent mainIntent = new Intent(this, MainActivity.class);
-        mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(mainIntent);
-        finish();
     }
 }
