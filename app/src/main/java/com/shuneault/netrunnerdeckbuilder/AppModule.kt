@@ -6,6 +6,7 @@ import com.shuneault.netrunnerdeckbuilder.ViewModel.DeckActivityViewModel
 import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.ViewModel.MainActivityViewModel
 import com.shuneault.netrunnerdeckbuilder.db.*
+import com.shuneault.netrunnerdeckbuilder.fragments.SettingsFragment
 import com.shuneault.netrunnerdeckbuilder.fragments.cardgrid.CardGridViewModel
 import com.shuneault.netrunnerdeckbuilder.fragments.nrdb.NrdbFragmentViewModel
 import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider
