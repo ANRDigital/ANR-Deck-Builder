@@ -6,6 +6,15 @@ apply plugin: "androidx.navigation.safeargs"
 
 android {
     compileSdkVersion 28
+    
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'anr digital'
+            keyPassword 'oE3eWqY5YOr3'
+            storeFile file('C:/Users/danj3/Dropbox/Apps/anrdigital.keystore')
+            storePassword 'k1jphBHN1d7h'
+        }
+    }
 
     defaultConfig {
         applicationId "com.shuneault.netrunnerdeckbuilder"
