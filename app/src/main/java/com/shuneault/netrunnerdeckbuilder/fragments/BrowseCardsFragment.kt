@@ -74,7 +74,7 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
     // on list card clicked
     override fun onCardClicked(card: Card, position: Int) {
         sv.clearFocus()
-        fullVM.cardCodes = vm.cardList.codes
+        fullVM.cardCodes = vm.cardList!!.codes
         fullVM.position = position
         val action = BrowseCardsFragmentDirections.actionBrowseCardsFragmentToFullscreenCardsFragment2()
         val navController = NavHostFragment.findNavController(this)

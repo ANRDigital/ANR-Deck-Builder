@@ -10,6 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -38,11 +39,9 @@ class ListDecksFragment : Fragment() {
     private var slideDown: Animation? = null
     private var slideUp: Animation? = null
 
-    // Intent information
-    private lateinit var mSide: String
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Side
-        mSide = requireArguments().getString(EXTRA_SIDE)
+        vm.side = requireArguments().getString(EXTRA_SIDE)
 
         val mainView = inflater.inflate(R.layout.fragment_list_decks, container, false)
 
@@ -50,7 +49,7 @@ class ListDecksFragment : Fragment() {
         fabButton = mainView.findViewById(R.id.fabButton)
         // Set up the FloatingActionButton
         fabButton.setOnClickListener {
-            startChooseIdentityActivity(mSide)
+            startChooseIdentityActivity(vm.side)
         }
 
         // load show/hide animations for fab
@@ -87,10 +86,11 @@ class ListDecksFragment : Fragment() {
             }
         },
         true)
-
-        vm.getDecksForSide(mSide).observe(viewLifecycleOwner, androidx.lifecycle.Observer { data -> deckAdapter.setData(data) })
-
         mRecyclerView.adapter = deckAdapter
+        vm.getLiveDecksForSide(vm.side).observe(viewLifecycleOwner,
+                androidx.lifecycle.Observer { data -> deckAdapter.setData(data as ArrayList<Deck>?) })
+//        vm.getDecksForSide(mSide).observe(viewLifecycleOwner, androidx.lifecycle.Observer { data -> deckAdapter.setData(data) })
+
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0 && mScrollDirection <= 0) { // Scroll Down

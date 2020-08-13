@@ -2,10 +2,13 @@ package com.shuneault.netrunnerdeckbuilder.game;
 
 import android.text.TextUtils;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.shuneault.netrunnerdeckbuilder.adapters.HeaderListItemInterface;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -603,5 +606,9 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public void setNrdbId(int nrdbId) {
         this.nrdbId = nrdbId;
+    }
+
+    public boolean isSide(@NotNull String side) {
+        return this.getSide().equals(side);
     }
 }
