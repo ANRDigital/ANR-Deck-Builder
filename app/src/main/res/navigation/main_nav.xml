@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/action_home">
+
+    <fragment
+        android:id="@+id/action_home"
+        android:name="com.shuneault.netrunnerdeckbuilder.fragments.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/action_cards"
+        android:name="com.shuneault.netrunnerdeckbuilder.fragments.BrowseCardsFragment"
+        android:label="fragment_browse_cards"
+        tools:layout="@layout/fragment_browse_cards">
+    <action
+        android:id="@+id/action_browseCardsFragment_to_fullscreenCardsFragment2"
+        app:destination="@id/fullscreenCardsFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullscreenCardsFragment2"
+        android:name="com.shuneault.netrunnerdeckbuilder.fragments.FullscreenCardsFragment"
+        tools:layout="@layout/fragment_fullscreen_cards" />
+
+    <fragment
+        android:id="@+id/action_settings"
+        android:name="com.shuneault.netrunnerdeckbuilder.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
+
+    <fragment
+        android:id="@+id/action_nrdb"
+        android:name="com.shuneault.netrunnerdeckbuilder.fragments.NrdbScreenFragment"
+        android:label="nrdbFragment"
+        tools:layout="@layout/fragment_nrdb" />
+</navigation>

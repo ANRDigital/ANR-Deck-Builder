@@ -28,7 +28,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.PercentFormatter;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.shuneault.netrunnerdeckbuilder.R;
-import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 
 import java.util.ArrayList;
@@ -74,7 +73,7 @@ public class DeckStatsFragment extends DeckActivityFragment {
         // Check the language to see if we should even bother trying to parse subtypes
         String lang = PreferenceManager
                 .getDefaultSharedPreferences(getActivity().getApplicationContext())
-                .getString(SettingsActivity.KEY_PREF_LANGUAGE, "en");
+                .getString(SettingsFragment.KEY_PREF_LANGUAGE, "en");
         if (lang != null) {
             mTryParseSubtypes = lang.equals("en");
         }

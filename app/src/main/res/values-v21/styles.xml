@@ -2,7 +2,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
            xmlns:tools="http://schemas.android.com/tools">
 
-	<style name="Theme.Netrunner" parent="Theme.AppCompat.Light.DarkActionBar">
+	<style name="Theme.Netrunner" parent="Theme.MaterialComponents.Light.DarkActionBar">
 		<item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar</item>
 		<item name="actionBarStyle">@style/ActionBar</item>
 		<item name="android:colorPrimary">@color/netrunner_blue</item>
@@ -198,6 +198,23 @@
 		<item name="android:colorPrimary">@color/dark_weylandconsortium</item>
 		<item name="android:colorPrimaryDark">@color/darker_weylandconsortium</item>
 		<item name="android:colorAccent">@color/light_weylandconsortium</item>
+	</style>
+
+	<style name="AppTheme" parent="AppBaseTheme">
+		<item name="android:searchViewStyle">@style/MySearchViewStyle</item>
+		<item name="android:autoCompleteTextViewStyle">@style/SearchAutoCompleteTextView</item>
+		<item name="android:colorPrimary">@color/netrunner_blue</item>
+		<item name="android:buttonTint">@color/navigation_text_color</item>
+	</style>
+
+	<style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
+		<item name="android:searchIcon">@drawable/ic_action_search</item>
+		<item name="android:closeIcon">@drawable/ic_close_white_24dp</item>
+	</style>
+
+	<style name="SearchAutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
+		<item name="android:textColor">@color/white</item>
+		<item name="android:textColorHint">@color/white</item>
 	</style>
 
 </resources>

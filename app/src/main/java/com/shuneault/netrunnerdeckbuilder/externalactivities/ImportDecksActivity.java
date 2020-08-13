@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.shuneault.netrunnerdeckbuilder.DeckActivity;
 import com.shuneault.netrunnerdeckbuilder.MainActivity;
 import com.shuneault.netrunnerdeckbuilder.R;
@@ -94,7 +95,7 @@ public class ImportDecksActivity extends AppCompatActivity {
     }
 
     private void alertMustUpdateCardList() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(getString(R.string.msg_error_importing_deck_title));
         builder.setMessage(getString(R.string.msg_error_importing_deck));
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

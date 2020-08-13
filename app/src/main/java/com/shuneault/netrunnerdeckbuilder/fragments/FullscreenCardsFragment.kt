@@ -11,7 +11,7 @@ import com.shuneault.netrunnerdeckbuilder.R
 import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.game.CardCount
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer
-import com.shuneault.netrunnerdeckbuilder.helper.NrdbHelper
+import com.shuneault.netrunnerdeckbuilder.api.NrdbHelper
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.lang.IllegalStateException
 
@@ -82,7 +82,7 @@ class FullscreenCardsFragment : Fragment() {
         return when (item.itemId) {
             R.id.mnuOnline -> {
                 // show nrdb page!
-                NrdbHelper.ShowNrdbWebPage(context, vm.getCurrentCard())
+                NrdbHelper.ShowNrdbWebPage(requireContext(), vm.getCurrentCard())
                 true
             }
             else -> super.onOptionsItemSelected(item)

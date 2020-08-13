@@ -18,7 +18,7 @@ import java.util.Calendar;
 
 import kotlin.Lazy;
 
-import static com.shuneault.netrunnerdeckbuilder.SettingsActivity.SHARED_PREF_LAST_UPDATE_DATE;
+import static com.shuneault.netrunnerdeckbuilder.fragments.SettingsFragment.SHARED_PREF_LAST_UPDATE_DATE;
 import static org.koin.java.standalone.KoinJavaComponent.inject;
 
 /**
@@ -37,9 +37,6 @@ public class AppManager extends MyApplication {
     private static AppManager mInstance;
     private DatabaseHelper mDb;
 
-    // Decks
-    private ArrayList<Deck> mDecks = new ArrayList<>();
-
     public CardRepository mCardRepo;
     public CardRepository getCardRepository() {
         return mCardRepo;
@@ -56,8 +53,6 @@ public class AppManager extends MyApplication {
         ISettingsProvider settingsProvider = new SettingsProvider(this);
         JSONDataLoader fileLoader = new JSONDataLoader(new LocalFileHelper(this));
         mCardRepo = new CardRepository(this, settingsProvider, fileLoader);
-
-        mDecks.addAll(mDeckRepo.getValue().getAllDecks());
 
         // Download the card list every week
         try {
@@ -88,14 +83,6 @@ public class AppManager extends MyApplication {
 
     public DatabaseHelper getDatabase() {
         return mDb;
-    }
-
-    public ArrayList<Deck> getAllDecks() {
-        return mDeckRepo.getValue().getAllDecks();
-    }
-
-    public ArrayList<Pack> getAllPacks() {
-        return mCardRepo.getPacks(true);
     }
 
     public ArrayList<String> getSetNames() {

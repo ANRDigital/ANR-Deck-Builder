@@ -44,6 +44,8 @@ public class CardBuilder {
     private String code;
     private String setCode;
     private String quantity = "3";
+    private String typeCode = "";
+    private String title;
 
     public CardBuilder() {
         this.imageUrlTemplate = "";
@@ -109,6 +111,9 @@ public class CardBuilder {
         c.setCode(code);
         c.setSetCode(setCode);
         c.setQuantity(quantity);
+        if (!typeCode.isEmpty())
+            c.setTypeCode(typeCode);
+        c.setTitle(title);
         return c;
     }
 
@@ -119,6 +124,16 @@ public class CardBuilder {
 
     public CardBuilder withQuantity(int quantity) {
         this.quantity = String.valueOf(quantity);
+        return this;
+    }
+
+    public CardBuilder withTypeCode(String typeCode) {
+        this.typeCode = String.valueOf(typeCode);
+        return this;
+    }
+
+    public CardBuilder withTitle(String title) {
+        this.title = title;
         return this;
     }
 }

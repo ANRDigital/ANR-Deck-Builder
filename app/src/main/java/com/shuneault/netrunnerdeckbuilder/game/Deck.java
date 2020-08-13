@@ -2,11 +2,13 @@ package com.shuneault.netrunnerdeckbuilder.game;
 
 import android.text.TextUtils;
 
-import com.shuneault.netrunnerdeckbuilder.SettingsActivity;
+import androidx.lifecycle.MutableLiveData;
+
 import com.shuneault.netrunnerdeckbuilder.adapters.HeaderListItemInterface;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,6 +64,7 @@ public class Deck implements Serializable, HeaderListItemInterface {
     private Format format;
     private ArrayList<String> packFilter = new ArrayList<>();
     private int coreCount = 0; // 0 indicates no override
+    private int nrdbId;
 
     public Deck(Card identity, Format format) {
         this.mIdentity = identity;
@@ -595,5 +598,17 @@ public class Deck implements Serializable, HeaderListItemInterface {
 
     public String getSideCode() {
         return getIdentity().getSideCode();
+    }
+
+    public int getNrdbId() {
+        return nrdbId;
+    }
+
+    public void setNrdbId(int nrdbId) {
+        this.nrdbId = nrdbId;
+    }
+
+    public boolean isSide(@NotNull String side) {
+        return this.getSide().equals(side);
     }
 }

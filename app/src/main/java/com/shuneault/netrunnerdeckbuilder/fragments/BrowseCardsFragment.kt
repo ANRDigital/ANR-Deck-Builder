@@ -13,10 +13,8 @@ import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.adapters.BrowseCardRecyclerViewAdapter
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository
 import com.shuneault.netrunnerdeckbuilder.game.Card
-import com.shuneault.netrunnerdeckbuilder.game.Format
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.java.standalone.KoinJavaComponent
-import java.util.*
 
 /**
  * A fragment representing a list of Items.
@@ -35,17 +33,20 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_browse_cards, container, false)
         setHasOptionsMenu(true)
-        activity?.title = getString(R.string.title_browse_cards)
+        vm.init()
+        updateTitle()
         // Set the adapter
         if (view is RecyclerView) {
             val context = view.getContext()
-            val recyclerView = view
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            vm.init()
+            view.layoutManager = LinearLayoutManager(context)
             mAdapter = BrowseCardRecyclerViewAdapter(vm.cardList, this, cardRepo.value)
-            recyclerView.adapter = mAdapter
+            view.adapter = mAdapter
         }
         return view
+    }
+
+    private fun updateTitle() {
+        activity?.title = getString(R.string.title_browse_cards) + " [" + vm.browseFormat.name + "]"
     }
 
     override fun onQueryTextSubmit(query: String): Boolean {
@@ -61,19 +62,19 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
     }
 
     private fun updateResults() {
+        updateTitle()
         vm.doSearch(vm.searchText)
         mAdapter!!.notifyDataSetChanged()
     }
 
-    fun updatePackFilter(packFilter: ArrayList<String?>?) {
-        vm.updatePackFilter(packFilter)
+    fun notifyDataUpdated() {
         updateResults()
     }
 
     // on list card clicked
     override fun onCardClicked(card: Card, position: Int) {
         sv.clearFocus()
-        fullVM.cardCodes = vm.cardList.codes
+        fullVM.cardCodes = vm.cardList!!.codes
         fullVM.position = position
         val action = BrowseCardsFragmentDirections.actionBrowseCardsFragmentToFullscreenCardsFragment2()
         val navController = NavHostFragment.findNavController(this)
@@ -85,8 +86,7 @@ class BrowseCardsFragment : Fragment(), SearchView.OnQueryTextListener, OnBrowse
 
         val filterItem = menu.findItem(R.id.action_filter)
         filterItem.setOnMenuItemClickListener {
-            val choosePacksDlg = ChoosePacksDialogFragment()
-            choosePacksDlg.setData(vm.packFilter, vm.getFormat(Format.FORMAT_ETERNAL))
+            val choosePacksDlg = ChoosePacksDialogFragment(vm.packFilter, vm.browseFormat, true )
             fragmentManager?.let { it1 -> choosePacksDlg.show(it1, "choosePacks") }
             false
         }

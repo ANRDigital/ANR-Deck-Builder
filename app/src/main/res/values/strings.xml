@@ -9,7 +9,7 @@
     <string name="title_activity_choose_identity">Choose identity</string>
 
     <!-- Various strings -->
-    <string name="app_name">NetRunnerDeckBuilder</string>
+    <string name="app_name">Deck Builder for Netrunner</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="drawer_open">Open</string>
@@ -207,8 +207,10 @@
     <string name="card_list_updated_successfully">Card list updated successfully</string>
     <string name="set_card_pool">Set card pool</string>
     <string name="choose_packs">Choose the packs to use</string>
+    <string name="pack_filter">Packs: </string>
+
     <string name="reset">Reset</string>
-    <string name="title_browse_cards">Browse cards</string>
+    <string name="title_browse_cards">Cards</string>
     <string name="action_search">Search</string>
     <string name="action_filter">Filter</string>
     <string name="mwl_version">MWL Version</string>
@@ -220,5 +222,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="format_label">Format:</string>
+    <string name="action_decks">Decks</string>
+    <string name="action_cards">Cards</string>
+    <string name="action_nrdb">NRDB</string>
+    <string name="nrdb_sign_in">Sign In</string>
+    <string name="nrdb_public">Decklists</string>
+    <string name="nrdb_my_decks">My decks</string>
+    <string name="accessing_nrdb">\"Accessing Nrdb\"</string>
+    <string name="view">View</string>
+    <string name="save_a_copy">Save a copy</string>
+    <string name="on_copy_saved">Copy saved</string>
+    <string name="confirm_signout">Sign out from Nrdb?</string>
 
 </resources>

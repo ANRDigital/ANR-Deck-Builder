@@ -1,0 +1,11 @@
+<androidx.appcompat.widget.AppCompatCheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/item_check"
+    style="@style/DialogListCheckBoxStyle"
+    android:layout_width="match_parent"
+    android:layout_height="42sp"
+
+    android:textSize="18sp"
+    tools:text="item" />
+

@@ -3,6 +3,7 @@ package com.shuneault.netrunnerdeckbuilder.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,7 +120,7 @@ public class DeckInfoFragment extends DeckActivityFragment {
         // Set the info
         ImageDisplayer.fill(imgIdentity, mDeck.getIdentity(), getActivity());
         txtDeckName.setText(mDeck.getName());
-        txtDeckDescription.setText(mDeck.getNotes());
+        txtDeckDescription.setText(Html.fromHtml(mDeck.getNotes()));
         Format deckFormat = mDeck.getFormat();
         spnFormat.setSelection(mFormatAdapter.getPosition(deckFormat));
         updateMwlDisplay(deckFormat);
