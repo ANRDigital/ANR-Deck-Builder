@@ -22,13 +22,11 @@ class DeckRepository(private val cardRepo: CardRepository, private val dbHelper:
     }
 
     override fun allDecksLiveData(): MutableLiveData<java.util.ArrayList<Deck>> {
-
         return mLiveDeckData
     }
 
     override val allDecks: ArrayList<Deck>
         get() = mDecks
-
 
     override fun addDeck(deck: Deck) {
         mDecks.add(deck)
@@ -36,7 +34,6 @@ class DeckRepository(private val cardRepo: CardRepository, private val dbHelper:
     }
 
     private fun refreshLiveData() {
-
         mLiveDeckData.value = mDecks
     }
 

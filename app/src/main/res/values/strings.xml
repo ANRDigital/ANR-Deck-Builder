@@ -9,7 +9,7 @@
     <string name="title_activity_choose_identity">Choose identity</string>
 
     <!-- Various strings -->
-    <string name="app_name">NetRunnerDeckBuilder</string>
+    <string name="app_name">Deck Builder for Netrunner</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="drawer_open">Open</string>

@@ -56,8 +56,6 @@ class MainActivityViewModel(private val cardRepo: CardRepository, private val de
     fun starDeck(deck: Deck, isStarred: Boolean) {
         deck.isStarred = isStarred
         deckRepo.saveDeck(deck)
-        //todo: sort decks
-//        Collections.sort(mCurrentDecks, new Sorter.DeckSorter());
     }
 
     fun cloneDeck(deck: Deck) {
