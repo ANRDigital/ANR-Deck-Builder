@@ -42,6 +42,9 @@
 	<color name="light_criminal">#C3D8E8</color>
 	<color name="dark_criminal">#0288D1</color>
 	<color name="darker_criminal">#016ca7</color>
+	<color name="light_neutral">#AAAAAA</color>
+	<color name="dark_neutral">#636363</color>
+	<color name="darker_neutral">#454545</color>
     <color name="light_haasbioroid">#CDBCDA</color>
 	<color name="dark_haasbioroid">#7D6486</color>
 	<color name="darker_haasbioroid">#64506b</color>

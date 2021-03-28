@@ -2,7 +2,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
            xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Netrunner" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.Netrunner" parent="Theme.MaterialComponents.Light.DarkActionBar">
 	    <item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar</item>
 	    <item name="actionBarStyle">@style/ActionBar</item>
 	    <item name="android:windowContentOverlay">@null</item>

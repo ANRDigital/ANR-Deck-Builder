@@ -74,6 +74,28 @@
 
 	</style>
 
+	<style name="Theme.Netrunner_neutralrunner" parent="Theme.AppCompat.Light.DarkActionBar">
+		<item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar_neutral</item>
+		<item name="actionBarStyle">@style/ActionBar_neutral</item>
+		<item name="android:colorPrimary">@color/dark_neutral</item>
+		<item name="android:colorPrimaryDark">@color/darker_neutral</item>
+		<item name="android:navigationBarColor">@color/dark_neutral</item>
+		<item name="android:colorAccent">@color/light_neutral</item>
+		<item name="android:textColorSecondary">#8E8E8E</item>
+		<item name="android:alertDialogTheme">@style/Theme.AlertDialog_neutral</item>
+	</style>
+
+	<style name="Theme.Netrunner_neutralcorp" parent="Theme.AppCompat.Light.DarkActionBar">
+		<item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar_neutral</item>
+		<item name="actionBarStyle">@style/ActionBar_neutral</item>
+		<item name="android:colorPrimary">@color/dark_neutral</item>
+		<item name="android:colorPrimaryDark">@color/darker_neutral</item>
+		<item name="android:navigationBarColor">@color/dark_neutral</item>
+		<item name="android:colorAccent">@color/light_neutral</item>
+		<item name="android:textColorSecondary">#8E8E8E</item>
+		<item name="android:alertDialogTheme">@style/Theme.AlertDialog_neutral</item>
+	</style>
+
 	<style name="Theme.Netrunner_haasbioroid" parent="Theme.AppCompat.Light.DarkActionBar">
 		<item name="android:actionBarStyle" tools:ignore="NewApi">@style/ActionBar_hb</item>
 		<item name="actionBarStyle">@style/ActionBar_hb</item>
@@ -168,6 +190,12 @@
 		<item name="android:colorPrimary">@color/dark_criminal</item>
 		<item name="android:colorPrimaryDark">@color/darker_criminal</item>
 		<item name="android:colorAccent">@color/light_criminal</item>
+	</style>
+
+	<style name="Theme.AlertDialog_neutral" parent="android:Theme.Material.Light.Dialog.Alert">
+		<item name="android:colorPrimary">@color/dark_neutral</item>
+		<item name="android:colorPrimaryDark">@color/darker_neutral</item>
+		<item name="android:colorAccent">@color/light_neutral</item>
 	</style>
 
 	<style name="Theme.AlertDialog_haasbioroid" parent="android:Theme.Material.Light.Dialog.Alert">
