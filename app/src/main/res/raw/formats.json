@@ -13,7 +13,7 @@
       "description": "Limited cardpool of System Gateway and the latest narrative cycle",
       "packs": [
         "sg",
-        "su",
+        "su21",
         "df",
         "ur"
       ],
