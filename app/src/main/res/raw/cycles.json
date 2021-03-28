@@ -146,21 +146,7 @@
       "position": 26,
       "size": 2,
       "rotated": false
-    },
-    {
-      "code": "system-gateway",
-      "name": "System Gateway",
-      "position": 27,
-      "size": 2,
-      "rotated": false
-    },
-    {
-      "code": "system-update-2021",
-      "name": "System Update 2021",
-      "position": 28,
-      "size": 1,
-      "rotated": false
-    },
+    }
   ],
   "total": 21,
   "success": true,

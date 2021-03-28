@@ -575,46 +575,10 @@
       "position": 1,
       "size": 6,
       "ffg_id": null
-    },
-    {
-      "code": "sm",
-      "cycle_code": "salvaged-memories",
-      "date_release": "2020-12-18",
-      "name": "Salvaged Memories",
-      "position": 1,
-      "size": 18,
-      "ffg_id": null
-    },
-    {
-      "code": "tdc",
-      "cycle_code": "terminal-directive",
-      "date_release": "2017-04-27",
-      "name": "Terminal Directive Campaign",
-      "position": 2,
-      "size": 18,
-      "ffg_id": 42
-    },
-    {
-      "code": "sg",
-      "cycle_code": "system-gateway",
-      "date_release": "2021-03-28",
-      "name": "System Gateway",
-      "position": 1,
-      "size": 75,
-      "ffg_id": null
-    },
-    {
-      "code": "su21",
-      "cycle_code": "system-update-2021",
-      "date_release": "2021-03-28",
-      "name": "System Update 2021",
-      "position": 1,
-      "size": 82,
-      "ffg_id": null
     }
   ],
-  "total": 68,
+  "total": 64,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2021-03-01T13:59:20+00:00"
+  "last_updated": "2019-09-25T15:19:20+00:00"
 }

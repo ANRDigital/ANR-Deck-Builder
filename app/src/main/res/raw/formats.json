@@ -1,50 +1,36 @@
 {
-  "data": [
+  "data":[
     {
-      "id": 1,
-      "name": "Standard",
-      "description": "All packs, following rotation",
-      "rotation": "rotation-2021",
-      "mwl": 18
+      "id":1,
+      "name":"Standard",
+      "description":"All packs, following rotation",
+      "rotation":"rotation-2019",
+      "mwl": 16
     },
     {
-      "id": 6,
-      "name": "Startup",
-      "description": "Limited cardpool of System Gateway and the latest narrative cycle",
-      "packs": [
-        "sg",
-        "su",
-        "df",
-        "ur"
-      ],
-      "filter": false
+      "id":2,
+      "name":"Snapshot",
+      "description":"All packs, following rotation as at Reign & Reverie",
+      "rotation":"rotation-2017",
+      "mwl":9
     },
     {
-      "id": 3,
-      "name": "Eternal",
-      "description": "All packs, ignoring rotation"
+      "id":3,
+      "name":"Eternal",
+      "description":"All packs, ignoring rotation"
     },
     {
-      "id": 2,
-      "name": "Snapshot",
-      "description": "All packs, following rotation as at Reign & Reverie",
-      "rotation": "rotation-2017",
-      "mwl": 9
+      "id":4,
+      "name":"Core Experience",
+      "description":"Latest core set only",
+      "packs":["sc19"],
+      "core_count":1,
+      "filter":false
     },
     {
-      "id": 4,
-      "name": "Core Experience",
-      "description": "Latest core set only",
-      "packs": [
-        "sc19"
-      ],
-      "core_count": 1,
-      "filter": false
-    },
-    {
-      "id": 5,
-      "name": "Casual",
-      "description": "No rules"
+      "id":5,
+      "name":"Casual",
+      "description":"No rules"
     }
   ]
 }
