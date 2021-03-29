@@ -233,8 +233,8 @@ class SettingsFragment() : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     private fun refreshPrefsSummaries() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val stringSet = sharedPreferences.getStringSet(KEY_PREF_COLLECTION, HashSet())
-        prefCollection!!.summary = stringSet.size.toString() + " packs"
-        val defaultFormat = sharedPreferences.getString(KEY_PREF_DEFAULT_FORMAT, Format.FORMAT_STANDARD.toString())
+        prefCollection!!.summary = stringSet?.size.toString() + " packs"
+        val defaultFormat: String = sharedPreferences.getString(KEY_PREF_DEFAULT_FORMAT, Format.FORMAT_STANDARD.toString())!!
         val formatId = defaultFormat.toInt()
         val formatSummary = repo.getFormat(formatId).name
         prefDefFormat!!.summary = formatSummary

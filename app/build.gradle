@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     signingConfigs {
         releaseConfig {
@@ -19,9 +19,9 @@ android {
     defaultConfig {
         applicationId "com.shuneault.netrunnerdeckbuilder"
         minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 90
-        versionName "5.0.0"
+        targetSdkVersion 29
+        versionCode 91
+        versionName "5.0.1"
 
         // Make sure this is consistent with the redirect URI used in res/raw/auth_config.json,
         // or specify additional redirect URIs in AndroidManifest.xml

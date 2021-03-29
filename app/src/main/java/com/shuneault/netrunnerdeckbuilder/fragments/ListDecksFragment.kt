@@ -41,7 +41,7 @@ class ListDecksFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Side
-        vm.side = requireArguments().getString(EXTRA_SIDE)
+        vm.side = requireArguments().getString(EXTRA_SIDE)!!
 
         val mainView = inflater.inflate(R.layout.fragment_list_decks, container, false)
 
