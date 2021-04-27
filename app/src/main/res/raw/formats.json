@@ -17,8 +17,7 @@
         "df",
         "ur"
       ],
-      "core_count": 1,
-      "filter": false
+      "core_count": 1
     },
     {
       "id": 3,
