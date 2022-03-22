@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import com.shuneault.netrunnerdeckbuilder.R
 import com.shuneault.netrunnerdeckbuilder.game.Pack
-import kotlinx.android.synthetic.main.fragment_item.view.*
 
 class PackListRecyclerViewAdapter(
     private val mValues: List<Pack>,
@@ -55,7 +54,7 @@ class PackListRecyclerViewAdapter(
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView), View.OnClickListener {
-        private val mCheck: CheckBox = mView.item_check
+        private val mCheck: CheckBox = mView.findViewById(R.id.item_check);
         init {
             mCheck.setOnClickListener(this)
         }
