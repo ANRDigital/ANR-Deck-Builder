@@ -1,8 +1,5 @@
 package com.shuneault.netrunnerdeckbuilder.game
 
-import com.shuneault.netrunnerdeckbuilder.adapters.HeaderListItemInterface
-import com.shuneault.netrunnerdeckbuilder.game.CardCount
-import com.shuneault.netrunnerdeckbuilder.game.Deck
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager
 import android.text.TextUtils
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper
@@ -14,7 +11,7 @@ import java.io.Serializable
 import java.lang.Exception
 import java.util.*
 
-class Deck(var identity: Card, var format: Format) : Serializable, HeaderListItemInterface {
+class Deck(var identity: Card, var format: Format) : Serializable {
     var name = ""
     var notes = ""
     var isStarred = false
@@ -43,14 +40,6 @@ class Deck(var identity: Card, var format: Format) : Serializable, HeaderListIte
         } catch (e: Exception) {
             ""
         }
-
-    override fun getItemType(): Int {
-        return HeaderListItemInterface.TYPE_ITEM
-    }
-
-    override fun getItemName(): String {
-        return name
-    }
 
     fun updateCardCount(card: Card, count: Int) {
         // Add or remove the card count
