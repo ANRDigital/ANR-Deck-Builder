@@ -1,15 +1,29 @@
 package com.shuneault.netrunnerdeckbuilder.db
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.shuneault.netrunnerdeckbuilder.game.Deck
 import com.shuneault.netrunnerdeckbuilder.game.Format
+import com.shuneault.netrunnerdeckbuilder.util.DeckSort
 import kotlin.collections.ArrayList
 
 class DeckRepository(private val cardRepo: CardRepository, private val dbHelper: DatabaseHelper) : IDeckRepository {
     private val mLiveDeckData: MutableLiveData<ArrayList<Deck>> = MutableLiveData()
+
     private val mDecks: ArrayList<Deck> = dbHelper.getAllDecks(true, cardRepo)
+    private val currentOrder = DeckSort.DATEASCENDING
+    val decks = MediatorLiveData<List<Deck>>()
+
     init {
         mLiveDeckData.value = mDecks
+
+        decks.addSource(mLiveDeckData){ result: List<Deck>? ->
+            result?.let { decks.value = sortDecks(it, currentOrder)}
+        }
+    }
+
+    private fun sortDecks(list: List<Deck>, currentOrder: Any): List<Deck>? {
+        return list.sortedBy { it.name }
     }
 
     override fun getDeck(deckId: Long): Deck? {
@@ -25,6 +39,7 @@ class DeckRepository(private val cardRepo: CardRepository, private val dbHelper:
         return mLiveDeckData
     }
 
+    // this is used to export data, not display.
     override val allDecks: ArrayList<Deck>
         get() = mDecks
 
@@ -46,9 +61,11 @@ class DeckRepository(private val cardRepo: CardRepository, private val dbHelper:
 
     override fun changeIdentity(deck: Deck, identityCode: String) {
         val identity = cardRepo.getCard(identityCode)
-        val d = getDeck(deck.rowId)
-        d!!.identity = identity
-        dbHelper.updateDeck(d)
+        deck.rowId?.let {
+            val x = getDeck(it)
+            x!!.identity = identity
+            dbHelper.updateDeck(x)
+        }
     }
 
     override fun cloneDeck(deck: Deck): Long {
@@ -60,7 +77,7 @@ class DeckRepository(private val cardRepo: CardRepository, private val dbHelper:
 
         // Save in the database
         doCreateDeck(newDeck)
-        return newDeck.rowId
+        return newDeck.rowId!!
     }
 
     private fun doCreateDeck(newDeck: Deck) {

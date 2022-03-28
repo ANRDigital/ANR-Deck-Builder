@@ -9,7 +9,7 @@ import org.json.JSONObject
 import java.util.*
 
 class NrdbDeckFactory(val repo: CardRepository) {
-    fun convertToDeck(deckList: NrdbDeckList): Deck {
+    fun convertToDeck(deckList: NrdbDeckList): Deck? {
         val format = repo.defaultFormat
         val cards = ArrayList<CardCount>()
         var identityCard: Card? = null
@@ -23,13 +23,16 @@ class NrdbDeckFactory(val repo: CardRepository) {
                 cards.add(CardCount(card, count))
             }
         }
-        val deck = Deck(identityCard, format)
-        for (cc: CardCount in cards)
-            deck.setCardCount(cc.card, cc.count)
+        val deck = identityCard?.let {
+            val d = Deck(it, format)
+            for (cc: CardCount in cards)
+                d.setCardCount(cc.card, cc.count)
 
-        deck.nrdbId = deckList.id
-        deck.name = deckList.name
-        deck.notes = deckList.description
+            d.nrdbId = deckList.id
+            d.name = deckList.name
+            d.notes = deckList.description
+            return d
+        }
         return deck
     }
 

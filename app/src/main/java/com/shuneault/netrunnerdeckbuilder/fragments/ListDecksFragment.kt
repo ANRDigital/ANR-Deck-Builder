@@ -66,7 +66,7 @@ class ListDecksFragment : Fragment() {
         val deckAdapter = ListDecksAdapter(object : IViewHolderClicks {
             override fun onDeckClick(deck: Deck) {
                 // Load the deck activity
-                if (!deck.hasUnknownCards()) startDeckActivity(deck.rowId)
+                if (!deck.hasUnknownCards()) deck.rowId?.let { startDeckActivity(it) }
             }
 
             override fun onDeckStarred(deck: Deck, isStarred: Boolean) {
@@ -77,7 +77,7 @@ class ListDecksFragment : Fragment() {
 
             override fun onDeckView(deck: Deck) {
                 // Load the deck view activity
-                if (!deck.hasUnknownCards()) startDeckViewActivity(deck.rowId)
+                if (!deck.hasUnknownCards()) deck.rowId?.let { startDeckViewActivity(it) }
             }
 
             override fun onSaveACopy(deck: Deck) {
@@ -128,7 +128,7 @@ class ListDecksFragment : Fragment() {
                 // Create a new deck
                 val mDeck: Deck = vm.createDeck(identityCardCode)
                 // Start the new deck activity
-                startDeckActivity(mDeck.rowId)
+                mDeck.rowId?.let { startDeckActivity(it) }
             }
         }
     }

@@ -84,7 +84,7 @@ public class DeckActivity extends AppCompatActivity implements OnDeckChangedList
         viewModel.setDeckId(deckId);
 
         try {
-            setTheme(ThemeHelper.Companion.getTheme(viewModel.getDeckFactionCode(), this));
+            setTheme(ThemeHelper.Companion.getTheme(viewModel.getDeck().getFactionCode(), this));
         } catch (Exception e) {
             // do nothing, will use default blue theme instead
             e.printStackTrace();

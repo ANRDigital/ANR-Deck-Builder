@@ -46,7 +46,7 @@ class NrdbFragmentViewModel(private val cardRepository: CardRepository, private 
         val data = response.body()!!.data
         for (nrdbDeckList in data) {
             val deck = NrdbDeckFactory(cardRepository).convertToDeck(nrdbDeckList)
-            result.add(deck)
+            deck?.let { result.add(it) }
         }
         todaysDeckLists.value = result
     }
@@ -56,7 +56,7 @@ class NrdbFragmentViewModel(private val cardRepository: CardRepository, private 
         val data = response.body()!!.data
         for (nrdbDeckList in data) {
             val deck = NrdbDeckFactory(cardRepository).convertToDeck(nrdbDeckList)
-            result.add(deck)
+            deck?.let { result.add(it) }
         }
         privateDecks.value = result
     }

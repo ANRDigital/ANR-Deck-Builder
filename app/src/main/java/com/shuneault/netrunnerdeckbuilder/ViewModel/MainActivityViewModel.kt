@@ -9,8 +9,6 @@ import com.shuneault.netrunnerdeckbuilder.db.IDeckRepository
 import com.shuneault.netrunnerdeckbuilder.game.Card
 import com.shuneault.netrunnerdeckbuilder.game.Deck
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter.DeckSorter
-import java.util.*
-import kotlin.collections.ArrayList
 
 class MainActivityViewModel(private val cardRepo: CardRepository, private val deckRepo: IDeckRepository) : ViewModel() {
     private var _side: MutableLiveData<String> = MutableLiveData(Card.Side.SIDE_RUNNER)
@@ -20,24 +18,6 @@ class MainActivityViewModel(private val cardRepo: CardRepository, private val de
             _side.value = value
         }
 
-    private val mCurrentDecks = MutableLiveData<ArrayList<Deck>>() // this needs renaming or splitting into runner / corp??
-
-    // Only the selected tab decks
-    fun getDecksForSide(side: String): MutableLiveData<ArrayList<Deck>> {
-        val decks = ArrayList<Deck>()
-
-        // Only the selected tab decks
-        for (deck in deckRepo.allDecks) {
-            if (deck != null && deck.side == side) {
-                decks.add(deck)
-            }
-        }
-        // Sort the list
-        Collections.sort(decks, DeckSorter())
-        mCurrentDecks.value = decks
-        return mCurrentDecks
-    }
-
     fun getLiveDecksForSide(side: String): LiveData<List<Deck>> {
         return Transformations.map(deckRepo.allDecksLiveData()) {
             it.sortWith(DeckSorter())
@@ -45,6 +25,7 @@ class MainActivityViewModel(private val cardRepo: CardRepository, private val de
         }
     }
 
+    // Called when the choose identity activity returns when creating a new deck (ListDeckFragment)
     fun createDeck(identityCardCode: String?): Deck {
         val identity = cardRepo.getCard(identityCardCode)
         val format = cardRepo.defaultFormat

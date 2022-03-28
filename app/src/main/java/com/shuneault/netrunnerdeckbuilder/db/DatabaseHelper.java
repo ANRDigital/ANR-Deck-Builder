@@ -95,8 +95,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String ALTER_TABLE_DECK_ADD_FORMAT = "ALTER TABLE " + TABLE_DECKS + " " +
             "ADD " + KEY_DECKS_FORMAT + " INTEGER";
 
-
     private static final String ALTER_TABLE_DECK_ADD_CORE_COUNT = "ALTER TABLE " + TABLE_DECKS + " " +
+            "ADD " + KEY_DECKS_CORE_COUNT + " INTEGER";
+
+    private static final String ALTER_TABLE_DECK_ADD_AUDIT_FIELDS = "ALTER TABLE " + TABLE_DECKS + " " +
             "ADD " + KEY_DECKS_CORE_COUNT + " INTEGER";
 
 
