@@ -100,7 +100,7 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
 
             txtDeckTitle.setText(deck.getName());
             String deckNotes = deck.getNotes();
-            if(deck.hasUnknownCards()){
+            if(deck.getHasUnknownCards()){
                 deckNotes = context.getString(R.string.has_unknown_cards);
             }
             txtDeckNotes.setText(Html.fromHtml(deckNotes));

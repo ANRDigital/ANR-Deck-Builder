@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardCount;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
-import com.shuneault.netrunnerdeckbuilder.game.CardPool;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.game.Format;
 
@@ -191,7 +190,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Deck deck = new Deck(identity, format);
             if (identity.isUnknown())
             {
-                deck.setHasUnknownCards();
+                deck.setHasUnknownCards(true);
             }
             deck.setName(deckName);
             deck.setNotes(c.getString(c.getColumnIndex(KEY_DECKS_NOTES)));
@@ -223,7 +222,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         String cardCode = c1.getString(c1.getColumnIndex(KEY_DECK_CARDS_CODE));
                         Card card = repo.getCard(cardCode);
                         if (card.isUnknown()) {
-                            d.setHasUnknownCards();
+                            d.setHasUnknownCards(true);
                         }
                         int count = c1.getInt(c1.getColumnIndex(KEY_DECK_CARDS_COUNT));
 

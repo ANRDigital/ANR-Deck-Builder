@@ -6,11 +6,16 @@ data class NrdbDeckLists (
     val data: List<NrdbDeckList>
 )
 
-data class NrdbDeckList (
+// Represents the data as returned from NRDB api calls
+data class NrdbDeckList(
     val id: Int,
     val name: String,
     val description: String,
-    val cards: Map<String, Int>
+    val cards: Map<String, Int>,
+    val date_creation: Date,
+    val date_update: Date,
+    val mwl_code: String,
+    val tags: String = ""
 ){
     fun getCardCounts(): ArrayList<ItemCount>{
         val result = ArrayList<ItemCount>()

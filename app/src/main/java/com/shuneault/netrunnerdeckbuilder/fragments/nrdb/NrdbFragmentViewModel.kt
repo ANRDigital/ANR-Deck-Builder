@@ -58,7 +58,8 @@ class NrdbFragmentViewModel(private val cardRepository: CardRepository, private 
             val deck = NrdbDeckFactory(cardRepository).convertToDeck(nrdbDeckList)
             deck?.let { result.add(it) }
         }
-        privateDecks.value = result
+
+        privateDecks.value = ArrayList<Deck>(result.sortedByDescending { d -> d.updated })
     }
 
     fun cloneDeck(deck: Deck) {

@@ -54,7 +54,7 @@ class NrdbFragment : Fragment() {
         val mDeckAdapter = ListDecksAdapter(object : ListDecksAdapter.DeckViewHolder.IViewHolderClicks {
             override fun onDeckClick(deck: Deck) {
                 // Load the deck activity
-                if (!deck.hasUnknownCards()) startDeckViewActivityForNrdbDeck(deck)
+                if (!deck.hasUnknownCards) startDeckViewActivityForNrdbDeck(deck)
             }
 
             override fun onDeckStarred(deck: Deck, isStarred: Boolean) {
@@ -63,7 +63,7 @@ class NrdbFragment : Fragment() {
 
             override fun onDeckView(deck: Deck) {
                 // Load the deck view activity
-                if (!deck.hasUnknownCards()) startDeckViewActivityForNrdbDeck(deck)
+                if (!deck.hasUnknownCards) startDeckViewActivityForNrdbDeck(deck)
             }
 
             override fun onSaveACopy(deck: Deck) {

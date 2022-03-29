@@ -8,6 +8,7 @@ import com.shuneault.netrunnerdeckbuilder.game.Deck
 import org.json.JSONObject
 import java.util.*
 
+// Converts nrdb deck to Native Deck Object
 class NrdbDeckFactory(val repo: CardRepository) {
     fun convertToDeck(deckList: NrdbDeckList): Deck? {
         val format = repo.defaultFormat
@@ -31,6 +32,7 @@ class NrdbDeckFactory(val repo: CardRepository) {
             d.nrdbId = deckList.id
             d.name = deckList.name
             d.notes = deckList.description
+            d.updated = deckList.date_update
             return d
         }
         return deck

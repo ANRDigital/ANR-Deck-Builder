@@ -11,6 +11,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -31,6 +33,9 @@ public class NrdbApiTest {
             List<NrdbDeckList> data = response.body().getData();
             assertTrue(data.size() > 0);
             assertTrue(data.get(0).getCardCounts().size() > 0);
+            assertTrue(data.get(0).getDate_creation().before(new Date()));
+            assertTrue(data.get(0).getDate_update().before(new Date()));
+            assertNotNull(data.get(0).getMwl_code());
         }
         else
             fail();

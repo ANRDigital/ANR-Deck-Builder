@@ -13,26 +13,40 @@ import java.util.*
 
 class Deck(var identity: Card, var format: Format) : Serializable {
     var name = ""
+    val fileSafeName: String
+        get() = name.replace(ReservedChars.toRegex(), "_")
+
     var notes = ""
+    var created = Date()
+    var updated: Date? = null
     var isStarred = false
+    var hasUnknownCards = false
+    // database row id
+    var rowId: Long? = null
+    var nrdbId = 0
+    // uuid not really used at present
     var uUID = UUID.randomUUID()
         private set
-    var rowId: Long? = null
+
+    // cards in the deck
     private val mCards = HashMap<Card, Int?>()
 
+    // BUILD functionality
     // Cards to add and cards to remove for deck building
     private val mCardsToAdd = HashMap<Card, CardCount?>()
     private val mCardsToRemove = HashMap<Card, CardCount?>()
     private val mArrCardsToAdd = ArrayList<CardCount?>()
     private val mArrCardsToRemove = ArrayList<CardCount?>()
-    private var hasUnknownCards = false
+
     var packFilter = ArrayList<String?>()
     var coreCount = 0 // 0 indicates no override
-    var nrdbId = 0
-    val fileSafeName: String
-        get() = name.replace(ReservedChars.toRegex(), "_")
+
     val factionCode: String
         get() = identity.factionCode
+    val minimumDeckSize: Int
+        get() = identity.minimumDeckSize
+    val influenceLimit: Int
+        get() = identity.influenceLimit
 
     val side: String
         get() = try {
@@ -162,7 +176,7 @@ class Deck(var identity: Card, var format: Format) : Serializable {
         }// Some cards have a different influence based on the text// First copy of each program does not count toward the influence value
     // removed mwl handling here
 
-    // IDENTITY: The Professor (03029) does count influence diffently
+    // IDENTITY: The Professor (03029) does count influence differently
     val deckInfluence: Int
         get() {
             var iInfluence = 0
@@ -245,10 +259,6 @@ class Deck(var identity: Card, var format: Format) : Serializable {
             }
             return iInfluence
         }
-    val minimumDeckSize: Int
-        get() = identity.minimumDeckSize
-    val influenceLimit: Int
-        get() = identity.influenceLimit
     val deckAgenda: Int
         get() {
             var iAgendaPoints = 0
@@ -365,14 +375,6 @@ class Deck(var identity: Card, var format: Format) : Serializable {
 
     val isApex: Boolean
         get() = identity.code == Card.SpecialCards.APEX
-
-    fun setHasUnknownCards() {
-        hasUnknownCards = true
-    }
-
-    fun hasUnknownCards(): Boolean {
-        return hasUnknownCards
-    }
 
     val cardCounts: ArrayList<CardCount>
         get() {
