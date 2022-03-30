@@ -19,8 +19,8 @@ android {
         applicationId "com.shuneault.netrunnerdeckbuilder"
         minSdkVersion 16
         targetSdkVersion 31
-        versionCode 93
-        versionName "5.1.0"
+        versionCode 94
+        versionName "5.1.1"
 
         // Make sure this is consistent with the redirect URI used in res/raw/auth_config.json,
         // or specify additional redirect URIs in AndroidManifest.xml
