@@ -8,25 +8,32 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".DeckFragment" >
+    tools:context=".fragments.DeckInfoFragment" >
 
-    <EditText
-        android:id="@+id/lblLabel"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/deck_name"
-        android:singleLine="true" />
+        >
+        <ImageView
+            android:id="@+id/imgIdentity"
+            android:layout_width="56dp"
+            android:layout_height="80dp"
+            android:paddingTop="4dp"
+            android:scaleType="fitCenter"
+            android:src="@raw/image" />
 
-    <EditText
-        android:id="@+id/txtDeckDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:gravity="top|left"
-        android:hint="@string/description"
-        android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/lblLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imgIdentity"
 
+            android:ems="10"
+            android:hint="@string/deck_name"
+        />
+
+
+    </RelativeLayout>
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -37,9 +44,6 @@
 
             <TextView
                 android:id="@+id/lblFormat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/mwl_version"
                 android:padding="4dp"
                 android:text="Format:"
                 android:textColor="@color/text_default"
@@ -74,12 +78,12 @@
 
     </TableLayout>
 
-    <ImageView
-        android:id="@+id/imgIdentity"
+    <EditText
+        android:id="@+id/txtDeckDescription"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="4dp"
-        android:scaleType="fitCenter"
-        android:src="@raw/image" />
-
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="top|left"
+        android:hint="@string/description"
+        android:inputType="textMultiLine" />
 </LinearLayout>

@@ -33,7 +33,7 @@
 				android:layout_height="80dp"
 				android:layout_alignParentLeft="true"
 				android:layout_marginRight="8dp"
-				android:src="@drawable/card_back_corp"/>
+				android:src="@drawable/card_back_corp" />
 
 			<TextView
 				android:id="@+id/txtDeckTitle"
