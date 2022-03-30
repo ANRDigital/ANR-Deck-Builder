@@ -13,6 +13,7 @@ import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.adapters.BrowseCardRecyclerViewAdapter
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository
 import com.shuneault.netrunnerdeckbuilder.game.Card
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -21,11 +22,12 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  *
  * Activities containing this fragment MUST implement the [OnBrowseCardsClickListener] interface.
  */
-class BrowseCardsFragment(val cardRepo: CardRepository) : Fragment(), SearchView.OnQueryTextListener, OnBrowseCardsClickListener {
+class BrowseCardsFragment() : Fragment(), SearchView.OnQueryTextListener, OnBrowseCardsClickListener {
     private lateinit var sv: SearchView
     private var mAdapter: BrowseCardRecyclerViewAdapter? = null
     val vm: BrowseCardsViewModel by sharedViewModel()
     val fullVM: FullScreenViewModel by sharedViewModel()
+    val cardRepo: CardRepository by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
