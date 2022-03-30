@@ -46,3 +46,4 @@ proguard/
 apk/release/output.json
 *.orig
 app/release/output.json
+*.hprof
