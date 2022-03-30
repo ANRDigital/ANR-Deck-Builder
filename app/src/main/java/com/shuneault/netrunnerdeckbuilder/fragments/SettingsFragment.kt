@@ -224,7 +224,7 @@ class SettingsFragment() : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
                 }
 
                 // Log
-                Log.e("LOG", e.message)
+                Log.e("LOG", e.message!!)
             }
         })
         sd.execute()

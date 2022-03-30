@@ -1,5 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder.externalactivities;
 
+import static org.koin.java.KoinJavaComponent.inject;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 
 import kotlin.Lazy;
 
-import static org.koin.java.standalone.KoinJavaComponent.inject;
 
 public class ImportDecksActivity extends AppCompatActivity {
 

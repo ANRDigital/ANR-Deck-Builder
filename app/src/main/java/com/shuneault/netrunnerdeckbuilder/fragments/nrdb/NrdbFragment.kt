@@ -14,7 +14,7 @@ import com.shuneault.netrunnerdeckbuilder.R
 import com.shuneault.netrunnerdeckbuilder.adapters.ListDecksAdapter
 import com.shuneault.netrunnerdeckbuilder.appauth.AuthStateManager
 import com.shuneault.netrunnerdeckbuilder.game.Deck
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 private const val ARG_MODE = "MODE_PARAMETER"

@@ -38,7 +38,7 @@ class Deck(var identity: Card, var format: Format) : Serializable {
     private val mArrCardsToAdd = ArrayList<CardCount?>()
     private val mArrCardsToRemove = ArrayList<CardCount?>()
 
-    var packFilter = ArrayList<String?>()
+    var packFilter = ArrayList<String>()
     var coreCount = 0 // 0 indicates no override
 
     val factionCode: String

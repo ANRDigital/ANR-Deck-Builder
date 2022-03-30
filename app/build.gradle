@@ -1,11 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-//apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     signingConfigs {
         releaseConfig {
@@ -19,7 +18,7 @@ android {
     defaultConfig {
         applicationId "com.shuneault.netrunnerdeckbuilder"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 92
         versionName "5.0.2"
 
@@ -52,6 +51,8 @@ android {
     }
 }
 
+def koin_version= "3.1.5"
+
 dependencies {
     implementation 'com.google.android.material:material:1.3.0-alpha01'
 
@@ -80,9 +81,17 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation files('libs/mpandroidchartlibrary-2-1-2.jar')
 
-    implementation 'org.koin:koin-java:1.0.2'
-    implementation 'org.koin:koin-android:1.0.2'
-    implementation 'org.koin:koin-android-viewmodel:1.0.2'
+    // Koin for Android
+    implementation "io.insert-koin:koin-android:$koin_version"
+    // Java Compatibility
+    implementation "io.insert-koin:koin-android-compat:$koin_version"
+    // Jetpack WorkManager
+    //    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+    // Navigation Graph
+    implementation "io.insert-koin:koin-androidx-navigation:$koin_version"
+    // Jetpack Compose
+    //    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
 
     implementation 'com.squareup.retrofit2:retrofit:2.7.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.0'

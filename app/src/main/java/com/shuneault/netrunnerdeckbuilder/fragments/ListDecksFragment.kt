@@ -10,7 +10,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -20,8 +19,7 @@ import com.shuneault.netrunnerdeckbuilder.adapters.ListDecksAdapter
 import com.shuneault.netrunnerdeckbuilder.adapters.ListDecksAdapter.DeckViewHolder.IViewHolderClicks
 import com.shuneault.netrunnerdeckbuilder.game.Card
 import com.shuneault.netrunnerdeckbuilder.game.Deck
-import com.shuneault.netrunnerdeckbuilder.helper.Sorter.DeckSorter
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import java.util.*
 

@@ -29,7 +29,7 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.FragmentActivity;
 import kotlin.Lazy;
 
-import static org.koin.java.standalone.KoinJavaComponent.inject;
+import static org.koin.java.KoinJavaComponent.inject;
 
 public class DeckInfoFragment extends DeckActivityFragment {
 

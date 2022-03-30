@@ -11,7 +11,7 @@ import com.shuneault.netrunnerdeckbuilder.fragments.ChoosePacksDialogFragment
 import com.shuneault.netrunnerdeckbuilder.fragments.ChoosePacksDialogFragment.ChoosePacksDialogListener
 import com.shuneault.netrunnerdeckbuilder.fragments.OnBrowseCardsClickListener
 import com.shuneault.netrunnerdeckbuilder.game.Card
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BrowseActivity : AppCompatActivity(), OnBrowseCardsClickListener, ChoosePacksDialogListener {
     val vm: BrowseCardsViewModel by viewModel()

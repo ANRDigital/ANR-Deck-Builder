@@ -1,7 +1,5 @@
 package com.shuneault.netrunnerdeckbuilder.fragments
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,16 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
-import com.shuneault.netrunnerdeckbuilder.ChooseIdentityActivity
-import com.shuneault.netrunnerdeckbuilder.DeckActivity
-import com.shuneault.netrunnerdeckbuilder.MainActivity
 import com.shuneault.netrunnerdeckbuilder.R
 import com.shuneault.netrunnerdeckbuilder.ViewModel.MainActivityViewModel
 import com.shuneault.netrunnerdeckbuilder.game.Card
-import com.shuneault.netrunnerdeckbuilder.game.Deck
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A simple [Fragment] subclass.

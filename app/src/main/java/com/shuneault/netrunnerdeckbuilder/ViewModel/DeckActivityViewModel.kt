@@ -97,7 +97,7 @@ class DeckActivityViewModel(
         deck!!.notes = description!!
     }
 
-    fun setPackFilter(packFilter: ArrayList<String?>?) {
+    fun setPackFilter(packFilter: ArrayList<String>?) {
         deck!!.packFilter = packFilter!!
         mDeckRepo.updateDeck(deck!!)
         refreshCardPool()

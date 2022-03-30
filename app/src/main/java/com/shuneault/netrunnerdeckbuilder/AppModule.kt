@@ -10,10 +10,10 @@ import com.shuneault.netrunnerdeckbuilder.fragments.nrdb.NrdbFragmentViewModel
 import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper
 import com.shuneault.netrunnerdeckbuilder.helper.SettingsProvider
-import org.koin.android.ext.android.startKoin
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.viewmodel.ext.koin.viewModel
-import org.koin.dsl.module.module
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.dsl.module
 
 val appModule = module {
 
@@ -37,6 +37,9 @@ open class MyApplication : Application(){
     override fun onCreate() {
         super.onCreate()
 
-        startKoin(this, listOf(appModule))
+        startKoin {
+            androidContext(this@MyApplication)
+            modules(appModule)
+        }
     }
 }

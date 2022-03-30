@@ -15,7 +15,7 @@ import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.adapters.CardCountImageAdapter
 import com.shuneault.netrunnerdeckbuilder.game.CardCount
 import com.shuneault.netrunnerdeckbuilder.api.NrdbHelper
-import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CardGridFragment : Fragment() {
 

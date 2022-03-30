@@ -6,7 +6,7 @@ import androidx.navigation.findNavController
 import com.shuneault.netrunnerdeckbuilder.ViewModel.FullScreenViewModel
 import com.shuneault.netrunnerdeckbuilder.game.Deck
 import com.shuneault.netrunnerdeckbuilder.ui.ThemeHelper
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DeckViewActivity : AppCompatActivity() {
     companion object  {
