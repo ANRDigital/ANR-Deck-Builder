@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,10 +21,8 @@ import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter.OnButtonClickListener;
-import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
 import java.util.ArrayList;
@@ -106,8 +106,8 @@ public class DeckMyCardsFragment extends DeckActivityFragment {
         mListCards = activityViewModel.getMyGroupedCards(mHeaders, deck);
 
         // Adapters
-        CardRepository cardRepo = AppManager.getInstance().getCardRepository();
-        mDeckCardsAdapter = new ExpandableDeckCardListAdapter(cardRepo, getActivity(), mHeaders, mListCards, this.mDeck, new OnButtonClickListener() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mDeckCardsAdapter = new ExpandableDeckCardListAdapter(getActivity(), mHeaders, mListCards, this.mDeck, new OnButtonClickListener() {
             @Override
             public void onPlusClick(Card card) {
                 activityViewModel.addCard(card);
@@ -126,7 +126,11 @@ public class DeckMyCardsFragment extends DeckActivityFragment {
                 // Update the list
                 mListener.onDeckCardsChanged();
             }
-        }, true, AppManager.getInstance().getSharedPrefs().getBoolean(SettingsFragment.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false));
+        }, true,
+            sharedPrefs.getBoolean(SettingsFragment.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false),
+                activityViewModel.getMostWantedList(),
+                activityViewModel.getCardPool()
+        );
         lstDeckCards.setAdapter(mDeckCardsAdapter);
         lstDeckCards.setOnChildClickListener(new OnChildClickListener() {
 

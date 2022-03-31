@@ -12,11 +12,13 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.shuneault.netrunnerdeckbuilder.adapters.IdentitySpinnerAdapter
+import com.shuneault.netrunnerdeckbuilder.db.CardRepository
 import com.shuneault.netrunnerdeckbuilder.fragments.NewDeckChooseIdentityFragment
 import com.shuneault.netrunnerdeckbuilder.game.Card
 import com.shuneault.netrunnerdeckbuilder.game.Format
 import com.shuneault.netrunnerdeckbuilder.helper.AppManager
 import com.shuneault.netrunnerdeckbuilder.helper.Sorter.IdentitySorter
+import org.koin.android.ext.android.inject
 import java.util.*
 
 class ChooseIdentityActivity : AppCompatActivity() {
@@ -29,6 +31,9 @@ class ChooseIdentityActivity : AppCompatActivity() {
     private var mSideCode: String? = null
     private var mInitialIdentity: String? = null
     private var mFormat: Format? = null
+
+    val cardRepo: CardRepository by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.fragment_pick_identity)
@@ -38,8 +43,7 @@ class ChooseIdentityActivity : AppCompatActivity() {
         btnOK = findViewById<View>(R.id.btnOK) as Button
         btnCancel = findViewById<View>(R.id.btnCancel) as Button
         pagerIdentity = findViewById<View>(R.id.pagerIdentity) as ViewPager
-        val appManager = AppManager.getInstance()
-        val repo = appManager.cardRepository
+        val repo = cardRepo
 
         // Arguments
         val intent = intent

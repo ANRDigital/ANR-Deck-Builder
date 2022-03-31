@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
-import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardMWL;
 import com.shuneault.netrunnerdeckbuilder.game.CardPool;
@@ -39,7 +38,6 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
     private boolean mMyCards;
     private OnButtonClickListener mListener;
     private final MostWantedList mMostWantedList;
-    private CardRepository repo;
 
     public interface OnButtonClickListener {
         void onPlusClick(Card card);
@@ -48,19 +46,17 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
     }
 
 
-    public ExpandableDeckCardListAdapter(CardRepository repo, Context context, ArrayList<String> listDataHeader,
+    public ExpandableDeckCardListAdapter(Context context, ArrayList<String> listDataHeader,
                                          HashMap<String, ArrayList<Card>> listChildData, Deck deck,
-                                         OnButtonClickListener listener, boolean myCardsMode, boolean showPackNames) {
-        this.repo = repo;
+                                         OnButtonClickListener listener, boolean myCardsMode, boolean showPackNames, MostWantedList mostWantedList, CardPool cardPool) {
         this.mContext = context;
         this.mArrDataHeader = listDataHeader;
         this.mArrDataChild = listChildData;
         this.mArrDataHeaderOriginal = (ArrayList<String>) listDataHeader.clone();
         this.mArrDataChildOriginal = (HashMap<String, ArrayList<Card>>) listChildData.clone();
         this.mDeck = deck;
-        Format mFormat = deck.getFormat();
-        this.pool = repo.getCardPool(mFormat, deck.getPackFilter(), deck.getCoreCount());
-        this.mMostWantedList = repo.getMostWantedList(mFormat.getMwlId());
+        this.pool = cardPool;
+        this.mMostWantedList = mostWantedList;
         this.mListener = listener;
         this.mMyCards = myCardsMode;
         this.showPackNames = showPackNames;
@@ -273,7 +269,7 @@ public class ExpandableDeckCardListAdapter extends BaseExpandableListAdapter {
 
             // Set names
             if (showPackNames) {
-                lblSetName.setText(repo.getPack(card.getSetCode()).getName());
+                lblSetName.setText(card.getPack().getName());
                 lblSetName.setVisibility(View.VISIBLE);
             } else {
                 lblSetName.setVisibility(View.GONE);

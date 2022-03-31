@@ -4,12 +4,9 @@ package com.shuneault.netrunnerdeckbuilder.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,19 +17,20 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.preference.PreferenceManager;
 
 import com.shuneault.netrunnerdeckbuilder.R;
 import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter;
 import com.shuneault.netrunnerdeckbuilder.adapters.ExpandableDeckCardListAdapter.OnButtonClickListener;
-import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.interfaces.OnDeckChangedListener;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -87,12 +85,12 @@ public class DeckCardsFragment extends DeckActivityFragment implements MenuItemC
         SearchView.SearchAutoComplete searchAutoComplete = sv.findViewById(androidx.appcompat.R.id.search_src_text);
         searchAutoComplete.setHintTextColor(Color.WHITE);
         searchAutoComplete.setTextColor(Color.WHITE);
-        try {
-            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-            mCursorDrawableRes.setAccessible(true);
-            mCursorDrawableRes.set(searchAutoComplete, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
-        } catch (Exception e) {
-        }
+//        try {
+//            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+//            mCursorDrawableRes.setAccessible(true);
+//            mCursorDrawableRes.set(searchAutoComplete, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+//        } catch (Exception e) {
+//        }
         sv.setIconifiedByDefault(false);
         ImageView searchIcon = (ImageView) sv.findViewById(androidx.appcompat.R.id.search_mag_icon);
         searchIcon.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
@@ -148,8 +146,8 @@ public class DeckCardsFragment extends DeckActivityFragment implements MenuItemC
 
         // Set the adapter
         //todo: can we get this from the viewModel?
-        CardRepository cardRepo = AppManager.getInstance().getCardRepository();
-        mDeckCardsAdapter = new ExpandableDeckCardListAdapter(cardRepo, getActivity(), mHeaders, mListCards, deck, new OnButtonClickListener() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mDeckCardsAdapter = new ExpandableDeckCardListAdapter(getActivity(), mHeaders, mListCards, deck, new OnButtonClickListener() {
 
             @Override
             public void onPlusClick(Card card) {
@@ -162,7 +160,11 @@ public class DeckCardsFragment extends DeckActivityFragment implements MenuItemC
                 activityViewModel.reduceCard(card);
                 mListener.onDeckCardsChanged();
             }
-        }, false, AppManager.getInstance().getSharedPrefs().getBoolean(SettingsFragment.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false));
+        }, false,
+                sharedPrefs.getBoolean(SettingsFragment.KEY_PREF_DISPLAY_SET_NAMES_WITH_CARDS, false),
+                activityViewModel.getMostWantedList(),
+                activityViewModel.getCardPool()
+        );
 
         lstDeckCards.setAdapter(mDeckCardsAdapter);
         lstDeckCards.setOnChildClickListener(new OnChildClickListener() {

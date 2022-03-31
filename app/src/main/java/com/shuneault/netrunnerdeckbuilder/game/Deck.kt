@@ -1,6 +1,5 @@
 package com.shuneault.netrunnerdeckbuilder.game
 
-import com.shuneault.netrunnerdeckbuilder.helper.AppManager
 import android.text.TextUtils
 import com.shuneault.netrunnerdeckbuilder.db.DatabaseHelper
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository
@@ -92,6 +91,12 @@ class Deck(var identity: Card, var format: Format) : Serializable {
         }
 
     fun getCardCount(card: Card): Int {
+        val iCount = mCards[card]
+        return iCount ?: 0
+    }
+
+    private fun getCardCountByCode(code: String): Int {
+        val card = mCards.keys.find { c -> c.code == code }
         val iCount = mCards[card]
         return iCount ?: 0
     }
@@ -246,14 +251,11 @@ class Deck(var identity: Card, var format: Format) : Serializable {
                             "10076" -> if (getCardCountByType(Card.Type.ASSET) >= 7) {
                                 continue
                             }
-                            "10038" -> if (getCardCount(
-                                    AppManager.getInstance().getCard("01109")
-                                ) == 3
-                            ) {
+                            "10038" -> if (getCardCountByCode("01109") == 3) {
                                 continue
                             }
                         }
-                        iInfluence = iInfluence + card.factionCost * getCardCount(card)
+                        iInfluence += card.factionCost * getCardCount(card)
                     }
                 }
             }
@@ -263,7 +265,7 @@ class Deck(var identity: Card, var format: Format) : Serializable {
         get() {
             var iAgendaPoints = 0
             for (card in cards) {
-                iAgendaPoints = iAgendaPoints + card.agendaPoints * getCardCount(card)
+                iAgendaPoints += card.agendaPoints * getCardCount(card)
             }
             return iAgendaPoints
         }// Calculation: BASE_AGENDA + (floor(CardCount)/5*2)

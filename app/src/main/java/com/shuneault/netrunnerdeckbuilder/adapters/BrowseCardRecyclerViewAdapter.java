@@ -86,7 +86,7 @@ public class BrowseCardRecyclerViewAdapter extends RecyclerView.Adapter<BrowseCa
 
             lblText.setText(TextFormatter.getFormattedString(context, card.getText()));
             ImageDisplayer.fillSmall(imgImage, card, context);
-            lblSetName.setText(repo.getPack(card.getSetCode()).getName());
+            lblSetName.setText(card.getPack().getName());
 
             mView.setOnClickListener(v -> {
                 if (null != mListener) {

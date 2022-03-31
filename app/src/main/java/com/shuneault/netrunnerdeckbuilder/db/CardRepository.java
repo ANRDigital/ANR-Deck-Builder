@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.fragments.SettingsFragment;
 import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.CardList;
 import com.shuneault.netrunnerdeckbuilder.game.CardPool;
@@ -14,6 +15,7 @@ import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.game.NetRunnerBD;
 import com.shuneault.netrunnerdeckbuilder.game.Pack;
 import com.shuneault.netrunnerdeckbuilder.game.Rotation;
+import com.shuneault.netrunnerdeckbuilder.helper.AppManager;
 import com.shuneault.netrunnerdeckbuilder.helper.ISettingsProvider;
 import com.shuneault.netrunnerdeckbuilder.helper.LocalFileHelper;
 import com.shuneault.netrunnerdeckbuilder.helper.StringDownloader;
@@ -93,9 +95,14 @@ public class CardRepository {
     private void loadCards() {
         try {
             ArrayList<Card> cards = fileLoader.getCardsFromFile(mLanguagePref);
+            for (Card c : cards) {
+                Pack pack = this.getPack(c.getSetCode());
+                if (pack != null) {
+                    c.setPack(pack);
+                }
+            }
             mCards.clear();
             mCards.addAll(cards);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -297,7 +304,8 @@ public class CardRepository {
 
     private void doDownloadCards() {
         // Cards List
-        StringDownloader sdCards = new StringDownloader(mContext, NetRunnerBD.getAllCardsUrl(),
+        String locale = settingsProvider.getLanguagePref();
+        StringDownloader sdCards = new StringDownloader(mContext, NetRunnerBD.getAllCardsUrl(locale),
                 LocalFileHelper.FILE_CARDS_JSON, new StringDownloader.FileDownloaderListener() {
             @Override
             public void onBeforeTask() {

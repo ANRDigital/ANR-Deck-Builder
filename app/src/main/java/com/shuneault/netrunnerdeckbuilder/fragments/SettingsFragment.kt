@@ -187,7 +187,11 @@ class SettingsFragment() : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     }
 
     private fun doLanguageChange() {
-        val sd = StringDownloader(context, String.format(NetRunnerBD.getAllCardsUrl()), LocalFileHelper.FILE_CARDS_JSON, object : FileDownloaderListener {
+        // Set the adapter
+        //todo: can we get this from a viewModel?
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        val locale = sharedPrefs.getString(KEY_PREF_LANGUAGE, "en")
+        val sd = StringDownloader(context, String.format(NetRunnerBD.getAllCardsUrl(locale)), LocalFileHelper.FILE_CARDS_JSON, object : FileDownloaderListener {
             var mDialog: ProgressDialog? = null
             override fun onBeforeTask() {
                 // Display a progress dialog

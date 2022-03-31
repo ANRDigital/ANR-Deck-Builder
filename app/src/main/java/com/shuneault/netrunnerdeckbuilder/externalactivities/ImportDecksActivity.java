@@ -33,16 +33,12 @@ import kotlin.Lazy;
 
 public class ImportDecksActivity extends AppCompatActivity {
 
-    private AppManager mApp;
     private Lazy<IDeckRepository> deckRepo = inject(IDeckRepository.class);
     Lazy<CardRepository> cardRepo = inject(CardRepository.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Database and App Manager
-        mApp = AppManager.getInstance();
 
         // Intent
         Intent intent = getIntent();

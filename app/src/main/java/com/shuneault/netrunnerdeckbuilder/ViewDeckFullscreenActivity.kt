@@ -1,6 +1,5 @@
 package com.shuneault.netrunnerdeckbuilder
 
-import android.app.AlertDialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -11,7 +10,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ViewDeckFullscreenActivity : AppCompatActivity() {
     private val vm: FullScreenViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) { // load data
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // load data
         vm.setCardCode ( intent.getStringExtra(EXTRA_CARD_CODE))
         vm.position = intent.getIntExtra(EXTRA_POSITION, 0)
         val cardList = intent.getSerializableExtra(EXTRA_CARDS)
@@ -28,8 +30,6 @@ class ViewDeckFullscreenActivity : AppCompatActivity() {
         if (factionCode != null) {
             setTheme(ThemeHelper.getTheme(factionCode, this))
         }
-        // super must be called after setTheme or else notification and navigation bars won't be themed properly
-        super.onCreate(savedInstanceState)
         // This too
         val mActionBar = supportActionBar
         if (mActionBar != null) {

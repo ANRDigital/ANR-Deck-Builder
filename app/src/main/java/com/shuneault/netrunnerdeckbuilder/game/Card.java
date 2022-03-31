@@ -49,6 +49,7 @@ public class Card implements java.io.Serializable {
     private URL imageSrc;
     private int mostWantedInfluence;
     private boolean isUnknown = false;
+    private Pack pack;
 
     public Card() {
 
@@ -395,6 +396,9 @@ public class Card implements java.io.Serializable {
     public int getDeckLimit() {
         return deckLimit;
     }
+
+    public Pack getPack() { return pack; }
+    public void setPack(Pack pack) { this.pack = pack; }
 
     public static class Faction {
         public static final String FACTION_NEUTRAL = "neutral-";

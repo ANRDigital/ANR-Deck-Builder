@@ -89,8 +89,8 @@ class ChoosePacksDialogFragment(val packFilter: ArrayList<String>, startFormat: 
         mPackCodes.clear()
         mPackNames.clear()
         for (p in packs) {
-            mPackCodes.add(p.code)
-            mPackNames.add(p.name)
+            mPackCodes.add(p.code!!)
+            mPackNames.add(p.name!!)
         }
 
         // Set the pack list adapter

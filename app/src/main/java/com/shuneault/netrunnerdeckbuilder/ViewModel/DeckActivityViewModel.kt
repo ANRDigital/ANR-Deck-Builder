@@ -14,11 +14,15 @@ class DeckActivityViewModel(
     private val mCardRepo: CardRepository,
     private val settingsProvider: ISettingsProvider
 ) : ViewModel() {
+    var mostWantedList: MostWantedList? = null
+        private set
     var deck: Deck? = null
         private set
     var isValid = false
         private set
-    private var mCardPool: CardPool? = null
+    var cardPool: CardPool? = null
+        private set
+
     fun setDeckId(deckId: Long) {
         if (deck == null) {
             reloadDeck(deckId)
@@ -28,6 +32,7 @@ class DeckActivityViewModel(
     private fun reloadDeck(deckId: Long) {
         deck = mDeckRepo.getDeck(deckId)
         refreshCardPool()
+        mostWantedList = mCardRepo.getMostWantedList(deck!!.format.mwlId)
         validateDeck()
     }
 
@@ -59,21 +64,21 @@ class DeckActivityViewModel(
     }
 
     private fun refreshCardPool() {
-        mCardPool = mCardRepo.getCardPool(deck!!.format, deck!!.packFilter, deck!!.coreCount)
+        cardPool = mCardRepo.getCardPool(deck!!.format, deck!!.packFilter, deck!!.coreCount)
     }
 
     //todo: this probably belongs somewhere else
     private fun autoReplaceCards() {
         val identity = deck!!.identity
-        val id = mCardPool!!.findCardByTitle(identity.title)
+        val id = cardPool!!.findCardByTitle(identity.title)
         if (id != null) {
             deck!!.identity = id
         }
 
         // loop the cards in the deck and replace with
         for (card in deck!!.cards) {
-            if (mCardPool!!.getMaxCardCount(card) == 0) {
-                val replacement = mCardPool!!.findCardByTitle(card.title)
+            if (cardPool!!.getMaxCardCount(card) == 0) {
+                val replacement = cardPool!!.findCardByTitle(card.title)
                 if (replacement != null) {
                     deck!!.replaceCard(card, replacement)
                 }
@@ -83,7 +88,6 @@ class DeckActivityViewModel(
 
     fun validateDeck() {
         val format = deck!!.format
-        val mostWantedList = mCardRepo.getMostWantedList(format.mwlId)
         val packs = mCardRepo.getPacks(format, deck!!.packFilter)
         val validator = DeckValidator(mostWantedList)
         isValid = validator.validate(deck, packs)
@@ -122,7 +126,7 @@ class DeckActivityViewModel(
     fun getGroupedCards(deck: Deck, headers: ArrayList<String>): HashMap<String, ArrayList<Card>?> {
         val mListCards = HashMap<String, ArrayList<Card>?>()
         val sideCode = deck.sideCode
-        val cardCollection = mCardPool!!.cards
+        val cardCollection = cardPool!!.cards
         cardCollection.addExtras(deck.cards)
         for (theCard in cardCollection) {
             // Only add the cards that are on my side
@@ -200,7 +204,7 @@ class DeckActivityViewModel(
     }
 
     fun addCard(card: Card?) {
-        val max = mCardPool!!.getMaxCardCount(card)
+        val max = cardPool!!.getMaxCardCount(card)
         deck!!.AddCard(card!!, max)
     }
 

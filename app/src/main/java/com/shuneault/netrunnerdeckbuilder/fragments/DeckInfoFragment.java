@@ -42,7 +42,7 @@ public class DeckInfoFragment extends DeckActivityFragment {
 
     private TextView lblMwlVersion;
     private AppCompatSpinner spnFormat;
-    private Lazy<CardRepository> cardRepo = inject(CardRepository.class);
+    private final Lazy<CardRepository> cardRepo = inject(CardRepository.class);
 
     private ArrayAdapter<Format> mFormatAdapter;
 
