@@ -51,7 +51,10 @@ object NrdbHelper {
         val authorizationService = AuthorizationService(context)
         val postAuthorizationIntent = Intent(context, TokenActivity::class.java)
 
-        val pendingIntent = PendingIntent.getActivity(context, request.hashCode(), postAuthorizationIntent, 0)
+        val pendingIntent = PendingIntent.getActivity(context,
+            request.hashCode(),
+            postAuthorizationIntent,
+            PendingIntent.FLAG_MUTABLE)
         authorizationService.performAuthorizationRequest(request, pendingIntent)
 
         isSignedIn = true;

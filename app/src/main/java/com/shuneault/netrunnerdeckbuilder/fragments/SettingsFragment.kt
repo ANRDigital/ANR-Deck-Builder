@@ -51,7 +51,7 @@ class SettingsFragment() : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
         requireActivity().setTitle(R.string.action_settings)
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
         prefAbout = findPreference(KEY_PREF_ABOUT)
         prefAbout!!.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference: Preference? ->
@@ -189,7 +189,7 @@ class SettingsFragment() : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     private fun doLanguageChange() {
         // Set the adapter
         //todo: can we get this from a viewModel?
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireActivity())
         val locale = sharedPrefs.getString(KEY_PREF_LANGUAGE, "en")
         val sd = StringDownloader(context, String.format(NetRunnerBD.getAllCardsUrl(locale)), LocalFileHelper.FILE_CARDS_JSON, object : FileDownloaderListener {
             var mDialog: ProgressDialog? = null
@@ -235,7 +235,7 @@ class SettingsFragment() : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     }
 
     private fun refreshPrefsSummaries() {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val stringSet = sharedPreferences.getStringSet(KEY_PREF_COLLECTION, HashSet())
         prefCollection!!.summary = stringSet?.size.toString() + " packs"
         val defaultFormat: String = sharedPreferences.getString(KEY_PREF_DEFAULT_FORMAT, Format.FORMAT_STANDARD.toString())!!

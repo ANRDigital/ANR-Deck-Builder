@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId "com.shuneault.netrunnerdeckbuilder"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 31
         versionCode 94
         versionName "5.1.1"
@@ -66,7 +66,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
 
-    implementation 'net.openid:appauth:0.7.1'
+    implementation 'net.openid:appauth:0.11.1'
     implementation "com.squareup.okio:okio:1.17.5"
 
     // ViewModel and LiveData
