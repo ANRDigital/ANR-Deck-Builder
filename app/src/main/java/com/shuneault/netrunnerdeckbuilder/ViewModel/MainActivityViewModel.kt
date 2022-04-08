@@ -43,4 +43,8 @@ class MainActivityViewModel(private val cardRepo: CardRepository, private val de
         deckRepo.cloneDeck(deck)
     }
 
+    fun deleteDeck(deck: Deck) {
+        deckRepo.deleteDeck(deck);
+    }
+
 }

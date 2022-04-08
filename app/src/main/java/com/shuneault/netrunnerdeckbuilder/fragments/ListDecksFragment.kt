@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.shuneault.netrunnerdeckbuilder.*
 import com.shuneault.netrunnerdeckbuilder.ViewModel.MainActivityViewModel
@@ -81,6 +82,22 @@ class ListDecksFragment : Fragment() {
             override fun onSaveACopy(deck: Deck) {
                 vm.cloneDeck(deck)
                 Toast.makeText(requireContext(), R.string.on_copy_saved, Toast.LENGTH_SHORT ).show()
+            }
+            
+            override fun onDeleteDeck(deck: Deck) {
+                val builder = MaterialAlertDialogBuilder(requireContext())
+                builder.setTitle(R.string.delete_deck)
+                builder.setMessage(R.string.message_delete_deck)
+                builder.setPositiveButton(R.string.ok) { dialog, which ->
+                    vm.deleteDeck(deck)
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.message_deck_deleted,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                builder.setNegativeButton(R.string.cancel) { dialog, which -> }
+                builder.show()
             }
         },
         true)

@@ -6,4 +6,7 @@
     <item
         android:id="@+id/save_copy_item"
         android:title="@string/save_a_copy" />
+    <item
+        android:id="@+id/delete_deck"
+        android:title="@string/delete_deck" />
 </menu>

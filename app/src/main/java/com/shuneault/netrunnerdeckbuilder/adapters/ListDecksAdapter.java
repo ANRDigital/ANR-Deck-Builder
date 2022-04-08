@@ -125,6 +125,12 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
             copyItem.setOnMenuItemClickListener(menuItem -> {
                 mListener.onSaveACopy(deck);
                 return true;
+            });            
+            
+            MenuItem deleteItem = menu.findItem(R.id.delete_deck);
+            deleteItem.setOnMenuItemClickListener(menuItem -> {
+                mListener.onDeleteDeck(deck);
+                return true;
             });
         }
 
@@ -136,7 +142,8 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
             void onDeckView(Deck deck);
 
             void onSaveACopy(Deck deck);
+
+            void onDeleteDeck(Deck deck);
         }
     }
-
 }

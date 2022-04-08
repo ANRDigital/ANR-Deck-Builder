@@ -70,6 +70,10 @@ class NrdbFragment : Fragment() {
                 vm.cloneDeck(deck)
                 Toast.makeText(requireContext(), R.string.on_copy_saved, Toast.LENGTH_SHORT ).show()
             }
+
+            override fun onDeleteDeck(deck: Deck?) {
+                // do nothing - can't trigger a delete from nrdbfragment at this time
+            }
         },
         false)
 
