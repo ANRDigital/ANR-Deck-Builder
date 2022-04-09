@@ -1,6 +1,7 @@
 package com.shuneault.netrunnerdeckbuilder.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
@@ -14,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
 import com.shuneault.netrunnerdeckbuilder.db.CardRepository;
+import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Format;
 import com.shuneault.netrunnerdeckbuilder.game.MostWantedList;
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
@@ -54,6 +57,12 @@ public class DeckInfoFragment extends DeckActivityFragment {
 
         // GUI
         imgIdentity = mainView.findViewById(R.id.imgIdentity);
+        imgIdentity.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), ViewDeckFullscreenActivity.class);
+            intent.putExtra(ViewDeckFullscreenActivity.EXTRA_CARD_CODE, mDeck.getIdentity().getCode());
+            startActivity(intent);
+        });
+
         txtDeckName = mainView.findViewById(R.id.lblLabel);
         txtDeckDescription = mainView.findViewById(R.id.txtDeckDescription);
         lblMwlVersion = mainView.findViewById(R.id.lblMwlVersion);

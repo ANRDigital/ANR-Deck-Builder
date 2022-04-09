@@ -3,6 +3,7 @@ package com.shuneault.netrunnerdeckbuilder.adapters;
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.text.Html;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -11,10 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shuneault.netrunnerdeckbuilder.R;
+import com.shuneault.netrunnerdeckbuilder.ViewDeckFullscreenActivity;
+import com.shuneault.netrunnerdeckbuilder.game.Card;
 import com.shuneault.netrunnerdeckbuilder.game.Deck;
 import com.shuneault.netrunnerdeckbuilder.helper.ImageDisplayer;
 
@@ -81,7 +85,6 @@ public class ListDecksAdapter extends RecyclerView.Adapter<ListDecksAdapter.Deck
             txtDeckTitle = v.findViewById(R.id.txtDeckTitle);
             txtDeckNotes = v.findViewById(R.id.txtDeckNotes);
             imgDeckIdentity = v.findViewById(R.id.imgDeckIdentity);
-            // hold menu
 
             // Favourite / Star image
             chkStarred = v.findViewById(R.id.chkStar);

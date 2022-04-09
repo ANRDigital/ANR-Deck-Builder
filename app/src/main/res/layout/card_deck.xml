@@ -44,16 +44,15 @@
 				android:ellipsize="end"
 				android:maxLines="1"
 				android:text="txtDeckTitle"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				/>
+				android:textAppearance="?android:attr/textAppearanceMedium" />
 
 			<CheckBox
 				android:id="@+id/chkStar"
-				android:layout_width="wrap_content"
+				android:layout_width="36dp"
 				android:layout_height="wrap_content"
-				android:layout_alignParentBottom="true"
+				android:layout_alignTop="@id/txtDeckNotes"
 				android:layout_alignParentRight="true"
-				android:button="@drawable/star"/>
+				android:button="@drawable/star" />
 
 			<TextView
 				android:id="@+id/txtDeckNotes"
@@ -65,7 +64,7 @@
 				android:ellipsize="end"
 				android:maxLines="3"
 				android:text="txtDeckNotes"
-				android:textAppearance="?android:attr/textAppearanceSmall"/>
+				android:textAppearance="?android:attr/textAppearanceSmall" />
 
 		</RelativeLayout>
 	</com.balysv.materialripple.MaterialRippleLayout>

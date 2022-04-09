@@ -8,7 +8,9 @@
     <fragment
         android:id="@+id/cardGridFragment"
         android:name="com.shuneault.netrunnerdeckbuilder.fragments.cardgrid.CardGridFragment"
-        android:label="card_grid_fragment" >
+        android:label="card_grid_fragment"
+        tools:layout="@layout/activity_view_deck_grid"
+        >
         <action
             android:id="@+id/action_cardGridFragment_to_fullscreenCardsFragment"
             app:destination="@id/fullscreenCardsFragment" />
