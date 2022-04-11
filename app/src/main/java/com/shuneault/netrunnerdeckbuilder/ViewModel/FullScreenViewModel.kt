@@ -54,6 +54,7 @@ class FullScreenViewModel(private val deckRepository: IDeckRepository, private v
             cardCounts.clear()
             cardCounts.addAll(it.cardCounts)
             cardCounts.sortWith(Sorter.CardCountSorterByTypeThenName());
+            cardCounts.add(0, CardCount(it.identity, 1))
         }
     }
 
