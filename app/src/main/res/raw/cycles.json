@@ -19,7 +19,7 @@
       "name": "Creation and Control",
       "position": 3,
       "size": 1,
-      "rotated": false
+      "rotated": true
     },
     {
       "code": "spin",
@@ -40,14 +40,14 @@
       "name": "Honor and Profit",
       "position": 5,
       "size": 1,
-      "rotated": false
+      "rotated": true
     },
     {
       "code": "lunar",
       "name": "Lunar",
       "position": 6,
       "size": 6,
-      "rotated": false
+      "rotated": true
     },
     {
       "code": "order-and-chaos",
@@ -61,7 +61,7 @@
       "name": "SanSan",
       "position": 8,
       "size": 6,
-      "rotated": false
+      "rotated": true
     },
     {
       "code": "data-and-destiny",
@@ -95,7 +95,7 @@
       "code": "terminal-directive",
       "name": "Terminal Directive",
       "position": 13,
-      "size": 1,
+      "size": 2,
       "rotated": true
     },
     {
@@ -138,32 +138,53 @@
       "name": "System Core 2019",
       "position": 25,
       "size": 1,
-      "rotated": false
+      "rotated": true
     },
     {
       "code": "ashes",
       "name": "Ashes",
       "position": 26,
-      "size": 2,
+      "size": 3,
       "rotated": false
+    },
+    {
+      "code": "magnum-opus-reprint",
+      "name": "Magnum Opus Reprint",
+      "position": 28,
+      "size": 1,
+      "rotated": false
+    },
+    {
+      "code": "salvaged-memories",
+      "name": "Salvaged Memories",
+      "position": 29,
+      "size": 1,
+      "rotated": true
     },
     {
       "code": "system-gateway",
       "name": "System Gateway",
-      "position": 27,
-      "size": 2,
+      "position": 30,
+      "size": 1,
       "rotated": false
     },
     {
       "code": "system-update-2021",
       "name": "System Update 2021",
-      "position": 28,
+      "position": 31,
       "size": 1,
+      "rotated": false
+    },
+    {
+      "code": "borealis",
+      "name": "Borealis",
+      "position": 32,
+      "size": 3,
       "rotated": false
     }
   ],
-  "total": 21,
+  "total": 26,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2019-02-20T20:07:54+00:00"
+  "last_updated": "2022-03-06T17:38:20+00:00"
 }

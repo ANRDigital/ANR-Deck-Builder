@@ -409,7 +409,7 @@
       "code": "td",
       "cycle_code": "terminal-directive",
       "date_release": "2017-04-27",
-      "name": "Terminal Directive",
+      "name": "Terminal Directive Cards",
       "position": 1,
       "size": 57,
       "ffg_id": 42
@@ -600,7 +600,7 @@
       "date_release": "2021-03-28",
       "name": "System Gateway",
       "position": 1,
-      "size": 75,
+      "size": 77,
       "ffg_id": null
     },
     {
@@ -611,10 +611,19 @@
       "position": 1,
       "size": 82,
       "ffg_id": null
+    },
+    {
+      "code": "msbp",
+      "cycle_code": "borealis",
+      "date_release": "2022-03-18",
+      "name": "Midnight Sun Booster Pack",
+      "position": 1,
+      "size": 7,
+      "ffg_id": null
     }
   ],
-  "total": 68,
+  "total": 69,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2021-03-01T13:59:20+00:00"
+  "last_updated": "2022-03-06T17:38:23+00:00"
 }
