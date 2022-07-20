@@ -4,8 +4,8 @@
       "id": 1,
       "name": "Standard",
       "description": "All packs, following rotation",
-      "rotation": "rotation-2021",
-      "mwl": 21
+      "rotation": "rotation-2022",
+      "mwl": 22
     },
     {
       "id": 6,
@@ -16,7 +16,8 @@
         "su21",
         "df",
         "ur",
-        "msbp"
+        "msbp",
+        "ms"
       ],
       "core_count": 1
     },

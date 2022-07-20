@@ -620,10 +620,19 @@
       "position": 1,
       "size": 7,
       "ffg_id": null
+    },
+    {
+      "code": "ms",
+      "cycle_code": "borealis",
+      "date_release": "2022-07-22",
+      "name": "Midnight Sun",
+      "position": 2,
+      "size": 65,
+      "ffg_id": null
     }
   ],
-  "total": 69,
+  "total": 70,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2022-03-06T17:38:23+00:00"
+  "last_updated": "2022-06-12T17:11:41+00:00"
 }

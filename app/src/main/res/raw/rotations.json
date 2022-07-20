@@ -80,6 +80,23 @@
       ],
       "name": "Fourth Rotation",
       "date_start": "2021-03-28"
+    },
+    {
+      "code": "rotation-2022",
+      "cycles": [
+        "data-and-destiny",
+        "flashpoint",
+        "red-sand",
+        "kitara",
+        "reign-and-reverie",
+        "magnum-opus",
+        "ashes",
+        "system-gateway",
+        "system-update-2021",
+        "borealis"
+      ],
+      "name": "Fifth Rotation",
+      "date_start": "2021-08-22"
     }
   ]
 }
