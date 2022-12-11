@@ -14,10 +14,8 @@
       "packs": [
         "sg",
         "su21",
-        "df",
-        "ur",
-        "msbp",
-        "ms"
+        "ms",
+        "ph"
       ],
       "core_count": 1
     },

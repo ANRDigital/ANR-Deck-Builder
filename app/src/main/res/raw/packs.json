@@ -629,10 +629,19 @@
       "position": 2,
       "size": 65,
       "ffg_id": null
+    },
+    {
+      "code": "ph",
+      "cycle_code": "borealis",
+      "date_release": "2022-12-09",
+      "name": "Parhelion",
+      "position": 3,
+      "size": 63,
+      "ffg_id": null
     }
   ],
-  "total": 70,
+  "total": 71,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2022-06-12T17:11:41+00:00"
+  "last_updated": "2022-12-02T15:07:25+00:00"
 }

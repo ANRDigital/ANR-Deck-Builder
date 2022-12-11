@@ -3,7 +3,7 @@
     {
       "id": 1,
       "date_creation": "2018-05-01T15:24:02+00:00",
-      "date_update": "2021-04-13T02:12:43+00:00",
+      "date_update": "2022-09-23T22:53:54+00:00",
       "code": "NAPD_MWL_1.0",
       "name": "NAPD MWL 1.0",
       "active": false,
@@ -56,13 +56,22 @@
         },
         "29014": {
           "global_penalty": 1
+        },
+        "31038": {
+          "global_penalty": 1
+        },
+        "31043": {
+          "global_penalty": 1
+        },
+        "31069": {
+          "global_penalty": 1
         }
       }
     },
     {
       "id": 5,
       "date_creation": "2016-07-12T19:18:47+00:00",
-      "date_update": "2021-04-13T02:12:43+00:00",
+      "date_update": "2022-09-23T22:53:54+00:00",
       "code": "NAPD_MWL_1.1",
       "name": "NAPD MWL 1.1",
       "active": false,
@@ -127,13 +136,22 @@
         },
         "29014": {
           "global_penalty": 1
+        },
+        "31038": {
+          "global_penalty": 1
+        },
+        "31043": {
+          "global_penalty": 1
+        },
+        "31069": {
+          "global_penalty": 1
         }
       }
     },
     {
       "id": 6,
       "date_creation": "2017-04-13T10:34:32+00:00",
-      "date_update": "2021-04-13T02:12:43+00:00",
+      "date_update": "2022-09-23T22:53:55+00:00",
       "code": "NAPD_MWL_1.2",
       "name": "NAPD MWL 1.2",
       "active": false,
@@ -207,13 +225,16 @@
         },
         "29014": {
           "universal_faction_cost": 1
+        },
+        "31069": {
+          "universal_faction_cost": 1
         }
       }
     },
     {
       "id": 7,
       "date_creation": "2017-10-06T05:09:19+00:00",
-      "date_update": "2021-04-13T02:12:43+00:00",
+      "date_update": "2022-09-23T22:53:55+00:00",
       "code": "NAPD_MWL_2.0",
       "name": "NAPD MWL 2.0",
       "active": false,
@@ -308,13 +329,16 @@
         },
         "25056": {
           "is_restricted": 1
+        },
+        "31035": {
+          "is_restricted": 1
         }
       }
     },
     {
       "id": 8,
       "date_creation": "2018-02-22T07:19:25+00:00",
-      "date_update": "2021-04-13T02:12:43+00:00",
+      "date_update": "2022-09-23T22:53:55+00:00",
       "code": "NAPD_MWL_2.1",
       "name": "NAPD MWL 2.1",
       "active": false,
@@ -424,13 +448,16 @@
         },
         "25056": {
           "is_restricted": 1
+        },
+        "31035": {
+          "is_restricted": 1
         }
       }
     },
     {
       "id": 9,
       "date_creation": "2018-08-24T16:27:55+00:00",
-      "date_update": "2021-04-13T02:12:43+00:00",
+      "date_update": "2022-09-23T22:53:55+00:00",
       "code": "NAPD_MWL_2.2",
       "name": "NAPD MWL 2.2",
       "active": false,
@@ -564,13 +591,16 @@
         },
         "25056": {
           "is_restricted": 1
+        },
+        "31035": {
+          "is_restricted": 1
         }
       }
     },
     {
       "id": 10,
       "date_creation": "2018-11-30T17:12:57+00:00",
-      "date_update": "2021-04-13T02:12:43+00:00",
+      "date_update": "2022-09-23T22:53:56+00:00",
       "code": "standard-mwl-3-0",
       "name": "Standard MWL 3.0",
       "active": false,
@@ -707,13 +737,16 @@
         },
         "29017": {
           "is_restricted": 1
+        },
+        "31035": {
+          "is_restricted": 1
         }
       }
     },
     {
       "id": 11,
       "date_creation": "2019-02-09T04:14:11+00:00",
-      "date_update": "2021-04-13T02:12:43+00:00",
+      "date_update": "2022-09-23T22:53:56+00:00",
       "code": "standard-mwl-3.1",
       "name": "Standard MWL 3.1",
       "active": false,
@@ -859,13 +892,16 @@
         },
         "29017": {
           "is_restricted": 1
+        },
+        "31035": {
+          "is_restricted": 1
         }
       }
     },
     {
       "id": 12,
       "date_creation": "2019-05-01T13:23:25+00:00",
-      "date_update": "2021-04-13T02:12:44+00:00",
+      "date_update": "2022-09-23T22:53:56+00:00",
       "code": "standard-mwl-3.2",
       "name": "Standard MWL 3.2",
       "active": false,
@@ -1017,13 +1053,16 @@
         },
         "29017": {
           "is_restricted": 1
+        },
+        "31035": {
+          "is_restricted": 1
         }
       }
     },
     {
       "id": 13,
       "date_creation": "2019-07-08T23:16:45+00:00",
-      "date_update": "2021-04-13T02:12:44+00:00",
+      "date_update": "2022-09-23T22:53:56+00:00",
       "code": "standard-mwl-3-3",
       "name": "Standard MWL 3.3",
       "active": false,
@@ -1184,13 +1223,16 @@
         },
         "28002": {
           "deck_limit": 0
+        },
+        "31035": {
+          "is_restricted": 1
         }
       }
     },
     {
       "id": 14,
       "date_creation": "2019-09-09T18:14:27+00:00",
-      "date_update": "2021-04-13T02:12:44+00:00",
+      "date_update": "2022-09-23T22:53:57+00:00",
       "code": "standard-mwl-3-4",
       "name": "Standard MWL 3.4",
       "active": false,
@@ -1351,13 +1393,16 @@
         },
         "28002": {
           "deck_limit": 0
+        },
+        "31035": {
+          "is_restricted": 1
         }
       }
     },
     {
       "id": 15,
       "date_creation": "2019-12-27T23:27:07+00:00",
-      "date_update": "2021-04-13T02:12:44+00:00",
+      "date_update": "2022-09-23T22:53:57+00:00",
       "code": "standard-mwl-3-4-b",
       "name": "Standard MWL 3.4b",
       "active": false,
@@ -1506,6 +1551,9 @@
         },
         "28002": {
           "deck_limit": 0
+        },
+        "31035": {
+          "is_restricted": 1
         }
       }
     },
@@ -2710,10 +2758,10 @@
     {
       "id": 21,
       "date_creation": "2021-10-20T02:24:28+00:00",
-      "date_update": "2021-10-29T04:00:01+00:00",
+      "date_update": "2022-08-05T04:00:02+00:00",
       "code": "standard-ban-list-21-10",
       "name": "Standard Ban List 21.10",
-      "active": true,
+      "active": false,
       "date_start": "2021-10-29",
       "cards": {
         "01067": {
@@ -2961,63 +3009,12 @@
     {
       "id": 22,
       "date_creation": "2022-07-15T14:37:43+00:00",
-      "date_update": "2022-07-15T14:37:43+00:00",
+      "date_update": "2022-09-23T22:54:45+00:00",
       "code": "standard-ban-list-22-08",
       "name": "Standard Ban List 22.08",
       "active": false,
       "date_start": "2022-08-05",
       "cards": {
-        "06022": {
-          "deck_limit": 0
-        },
-        "06025": {
-          "deck_limit": 0
-        },
-        "06026": {
-          "deck_limit": 0
-        },
-        "06028": {
-          "deck_limit": 0
-        },
-        "06031": {
-          "deck_limit": 0
-        },
-        "06034": {
-          "deck_limit": 0
-        },
-        "06036": {
-          "deck_limit": 0
-        },
-        "06038": {
-          "deck_limit": 0
-        },
-        "06046": {
-          "deck_limit": 0
-        },
-        "07003": {
-          "deck_limit": 0
-        },
-        "07006": {
-          "deck_limit": 0
-        },
-        "07020": {
-          "deck_limit": 0
-        },
-        "07033": {
-          "deck_limit": 0
-        },
-        "08008": {
-          "deck_limit": 0
-        },
-        "08017": {
-          "deck_limit": 0
-        },
-        "08021": {
-          "deck_limit": 0
-        },
-        "08072": {
-          "deck_limit": 0
-        },
         "09019": {
           "deck_limit": 0
         },
@@ -3028,30 +3025,6 @@
           "deck_limit": 0
         },
         "09053": {
-          "deck_limit": 0
-        },
-        "10019": {
-          "deck_limit": 0
-        },
-        "10025": {
-          "deck_limit": 0
-        },
-        "10045": {
-          "deck_limit": 0
-        },
-        "10049": {
-          "deck_limit": 0
-        },
-        "10052": {
-          "deck_limit": 0
-        },
-        "10053": {
-          "deck_limit": 0
-        },
-        "10055": {
-          "deck_limit": 0
-        },
-        "10111": {
           "deck_limit": 0
         },
         "11001": {
@@ -3205,10 +3178,201 @@
           "deck_limit": 0
         }
       }
+    },
+    {
+      "id": 23,
+      "date_creation": "2022-09-23T22:53:58+00:00",
+      "date_update": "2022-09-23T22:54:45+00:00",
+      "code": "standard-ban-list-22-09",
+      "name": "Standard Ban List 22.09",
+      "active": true,
+      "date_start": "2022-09-23",
+      "cards": {
+        "01058": {
+          "deck_limit": 0
+        },
+        "09019": {
+          "deck_limit": 0
+        },
+        "09021": {
+          "deck_limit": 0
+        },
+        "09023": {
+          "deck_limit": 0
+        },
+        "09053": {
+          "deck_limit": 0
+        },
+        "11001": {
+          "deck_limit": 0
+        },
+        "11003": {
+          "deck_limit": 0
+        },
+        "11007": {
+          "deck_limit": 0
+        },
+        "11022": {
+          "deck_limit": 0
+        },
+        "11026": {
+          "deck_limit": 0
+        },
+        "11054": {
+          "deck_limit": 0
+        },
+        "11057": {
+          "deck_limit": 0
+        },
+        "11059": {
+          "deck_limit": 0
+        },
+        "11060": {
+          "deck_limit": 0
+        },
+        "11069": {
+          "deck_limit": 0
+        },
+        "11080": {
+          "deck_limit": 0
+        },
+        "11087": {
+          "deck_limit": 0
+        },
+        "11090": {
+          "deck_limit": 0
+        },
+        "11100": {
+          "deck_limit": 0
+        },
+        "11101": {
+          "deck_limit": 0
+        },
+        "11106": {
+          "deck_limit": 0
+        },
+        "11111": {
+          "deck_limit": 0
+        },
+        "11117": {
+          "deck_limit": 0
+        },
+        "12013": {
+          "deck_limit": 0
+        },
+        "12022": {
+          "deck_limit": 0
+        },
+        "12026": {
+          "deck_limit": 0
+        },
+        "12072": {
+          "deck_limit": 0
+        },
+        "12079": {
+          "deck_limit": 0
+        },
+        "12080": {
+          "deck_limit": 0
+        },
+        "12081": {
+          "deck_limit": 0
+        },
+        "12089": {
+          "deck_limit": 0
+        },
+        "12103": {
+          "deck_limit": 0
+        },
+        "12113": {
+          "deck_limit": 0
+        },
+        "12116": {
+          "deck_limit": 0
+        },
+        "20071": {
+          "deck_limit": 0
+        },
+        "21038": {
+          "deck_limit": 0
+        },
+        "21044": {
+          "deck_limit": 0
+        },
+        "21058": {
+          "deck_limit": 0
+        },
+        "21070": {
+          "deck_limit": 0
+        },
+        "21086": {
+          "deck_limit": 0
+        },
+        "21106": {
+          "deck_limit": 0
+        },
+        "21114": {
+          "deck_limit": 0
+        },
+        "21119": {
+          "deck_limit": 0
+        },
+        "22008": {
+          "deck_limit": 0
+        },
+        "22032": {
+          "deck_limit": 0
+        },
+        "23013": {
+          "deck_limit": 0
+        },
+        "23045": {
+          "deck_limit": 0
+        },
+        "23100": {
+          "deck_limit": 0
+        },
+        "23101": {
+          "deck_limit": 0
+        },
+        "25079": {
+          "deck_limit": 0
+        },
+        "26026": {
+          "deck_limit": 0
+        },
+        "26097": {
+          "deck_limit": 0
+        },
+        "26108": {
+          "deck_limit": 0
+        },
+        "26116": {
+          "deck_limit": 0
+        },
+        "26127": {
+          "deck_limit": 0
+        },
+        "26128": {
+          "deck_limit": 0
+        },
+        "27007": {
+          "deck_limit": 0
+        },
+        "28002": {
+          "deck_limit": 0
+        },
+        "28004": {
+          "deck_limit": 0
+        },
+        "31047": {
+          "deck_limit": 0
+        }
+      }
     }
   ],
-  "total": 19,
+  "total": 20,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2022-07-15T14:37:43+00:00"
+  "last_updated": "2022-09-23T22:54:45+00:00"
 }
