@@ -591,7 +591,7 @@
       "date_release": "2017-04-27",
       "name": "Terminal Directive Campaign",
       "position": 2,
-      "size": 18,
+      "size": 28,
       "ffg_id": 42
     },
     {
@@ -638,10 +638,19 @@
       "position": 3,
       "size": 63,
       "ffg_id": null
+    },
+    {
+      "code": "tai",
+      "cycle_code": "liberation",
+      "date_release": "2023-07-31",
+      "name": "The Automata Initiative",
+      "position": 1,
+      "size": 65,
+      "ffg_id": null
     }
   ],
-  "total": 71,
+  "total": 72,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2022-12-02T15:07:25+00:00"
+  "last_updated": "2023-07-24T17:40:54+00:00"
 }

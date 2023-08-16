@@ -5,7 +5,7 @@
       "name": "Standard",
       "description": "All packs, following rotation",
       "rotation": "rotation-2022",
-      "mwl": 22
+      "mwl": 25
     },
     {
       "id": 6,
@@ -15,7 +15,8 @@
         "sg",
         "su21",
         "ms",
-        "ph"
+        "ph",
+        "tai"
       ],
       "core_count": 1
     },

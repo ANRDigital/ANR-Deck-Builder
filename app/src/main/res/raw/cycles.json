@@ -54,7 +54,7 @@
       "name": "Order and Chaos",
       "position": 7,
       "size": 1,
-      "rotated": false
+      "rotated": true
     },
     {
       "code": "sansan",
@@ -68,21 +68,21 @@
       "name": "Data and Destiny",
       "position": 9,
       "size": 1,
-      "rotated": false
+      "rotated": true
     },
     {
       "code": "mumbad",
       "name": "Mumbad",
       "position": 10,
       "size": 6,
-      "rotated": false
+      "rotated": true
     },
     {
       "code": "flashpoint",
       "name": "Flashpoint",
       "position": 11,
       "size": 6,
-      "rotated": false
+      "rotated": true
     },
     {
       "code": "red-sand",
@@ -181,10 +181,17 @@
       "position": 32,
       "size": 3,
       "rotated": false
+    },
+    {
+      "code": "liberation",
+      "name": "Liberation",
+      "position": 33,
+      "size": 2,
+      "rotated": false
     }
   ],
-  "total": 26,
+  "total": 27,
   "success": true,
   "version_number": "2.0",
-  "last_updated": "2022-03-06T17:38:20+00:00"
+  "last_updated": "2023-08-12T00:50:00+00:00"
 }

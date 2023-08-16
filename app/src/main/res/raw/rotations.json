@@ -97,6 +97,22 @@
       ],
       "name": "Fifth Rotation",
       "date_start": "2021-08-22"
+    },
+    {
+      "code": "rotation-2023",
+      "cycles": [
+        "red-sand",
+        "kitara",
+        "reign-and-reverie",
+        "magnum-opus",
+        "ashes",
+        "system-gateway",
+        "system-update-2021",
+        "borealis",
+        "liberation"
+      ],
+      "name": "Sixth Rotation",
+      "date_start": "2023-08-11"
     }
   ]
 }
